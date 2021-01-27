@@ -30,7 +30,7 @@ func NewClientOptions(token string) (ClientOptions, error) {
 	}
 
 	return ClientOptions{
-		Endpoint:     "grpc.authzed.com",
+		Endpoint:     "grpc.authzed.com:443",
 		Certificates: certPool,
 		Token:        token,
 	}, nil
