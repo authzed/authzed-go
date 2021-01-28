@@ -28,6 +28,27 @@ type PartialTuple struct {
 	relation string
 }
 
+type Tuple struct {
+	namespace Namespace
+	relation  string
+	terminal  Terminal
+}
+
+func (t Tuple) asProto() *api.RelationTuple {
+	return &api.RelationTuple{
+		ObjectAndRelation: &api.ObjectAndRelation{
+			Namespace: t.namespace.namespace,
+			ObjectId:  t.namespace.objectId,
+			Relation:  t.relation,
+		},
+		User: &api.User{
+			UserOneof: &api.User_Userset{
+				Userset: &t.terminal.ObjectAndRelation,
+			},
+		},
+	}
+}
+
 func (p PartialTuple) Of(n Namespace) *api.RelationTuple {
 	if !stringz.SliceContains(n.relations, p.relation) {
 		panic("unexpected relation for namespace: " + p.relation)

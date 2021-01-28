@@ -15,13 +15,7 @@ var (
 )
 
 func main() {
-	// Initialize a new gRPC Client.
-	opts, err := authzed.NewGrpcClientOptions("t_my_token_1234567deadbeef")
-	if err != nil {
-		log.Fatalf("unable to init client options: %s", err)
-	}
-
-	client, err := authzed.NewGrpcClient(opts)
+	client, err := authzed.NewClient("t_my_token_1235768deadbeef")
 	if err != nil {
 		log.Fatalf("unable to init client: %s", err)
 	}
@@ -32,39 +26,24 @@ func main() {
 	techwriter := User("user_id_2")
 	reviewer := User("user_id_3")
 
-	// Assign some relationships to these instances.
-	createTuples := []*api.RelationTuple{
+	// Writing tuples to Authzed produces a revision value.
+	// Providing these revisions to read calls is what guarantees freshness.
+	//
+	// We recommend saving this after every call to Write or ContentChangeCheck
+	// and storing it alongside the object referenced in the write or check.
+	revision, err := client.Write(authzed.CREATE,
 		ceo.Is("manager").Of(doc1),
 		techwriter.Is("contributor").Of(doc1),
 		reviewer.Is("viewer").Of(doc1),
-	}
-
-	var tupleUpdates []*api.RelationTupleUpdate
-	for _, tpl := range createTuples {
-		tupleUpdates = append(tupleUpdates, &api.RelationTupleUpdate{
-			Operation: api.RelationTupleUpdate_CREATE,
-			Tuple:     tpl,
-		})
-	}
-
-	writeResp, err := client.Write(context.TODO(), &api.WriteRequest{
-		Updates: tupleUpdates,
-	})
+	)
 	if err != nil {
 		log.Fatalf("unable to write updates: %s", err)
 	}
 
-	// Save the revision from our previous call, so that we can guarantee future
-	// queries are at least that fresh.
-	//
-	// We recommend saving this after every call to Write or ContentChangeCheck
-	// and storing it alongside the object referenced in the write or check.
-	revision := writeResp.Revision
-
 	// Create some assertions to check.
 	expected := []struct {
-		Tuple   *api.RelationTuple
-		Allowed bool
+		tuple   Tuple
+		allowed bool
 	}{
 		{ceo.Is("viewer").Of(doc1), true},
 		{ceo.Is("contributor").Of(doc1), true},
@@ -72,16 +51,12 @@ func main() {
 
 	for _, tt := range expected {
 		// Execute a check against the server.
-		resp, err := client.Check(context.TODO(), &api.CheckRequest{
-			TestUserset: tt.Tuple.ObjectAndRelation,
-			User:        tt.Tuple.User,
-			AtRevision:  revision,
-		})
+		allowed, err := client.Check(tt.tuple, revision)
 		if err != nil {
 			log.Fatalf("unable to check access: %s", err)
 		}
 
-		if resp.IsMember != tt.Allowed {
+		if allowed != tt.allowed {
 			log.Fatalf("check for %#v returned wrong result: %#v", tt, resp)
 		}
 	}
