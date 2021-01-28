@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
-// ClientOptions represents the options that can be used to configure the client.
-type ClientOptions struct {
+// GrpcClientOptions represents the options that can be used to configure the client.
+type GrpcClientOptions struct {
 	// Endpoint is the grpc DNS name at which to find the service. Defaults to the production endpoint.
 	Endpoint string
 
@@ -23,13 +23,13 @@ type ClientOptions struct {
 }
 
 // NewClientOptions returns a ClientOptions with defaults set.
-func NewClientOptions(token string) (ClientOptions, error) {
+func NewGrpcClientOptions(token string) (GrpcClientOptions, error) {
 	certPool, err := x509.SystemCertPool()
 	if err != nil {
-		return ClientOptions{}, err
+		return GrpcClientOptions{}, err
 	}
 
-	return ClientOptions{
+	return GrpcClientOptions{
 		Endpoint:     "grpc.authzed.com:443",
 		Certificates: certPool,
 		Token:        token,
@@ -37,7 +37,7 @@ func NewClientOptions(token string) (ClientOptions, error) {
 }
 
 // NewClient creates a new Authzed client authorized with the given token.
-func NewClient(options ClientOptions) (api.ACLServiceClient, error) {
+func NewGrpcClient(options GrpcClientOptions) (api.ACLServiceClient, error) {
 	conn, err := getConnection(options)
 	if err != nil {
 		return nil, err
@@ -47,7 +47,7 @@ func NewClient(options ClientOptions) (api.ACLServiceClient, error) {
 }
 
 // NewManagementClient creates a new Authzed management client with the given token.
-func NewManagementClient(options ClientOptions) (api.NamespaceServiceClient, error) {
+func NewGrpcManagementClient(options GrpcClientOptions) (api.NamespaceServiceClient, error) {
 	conn, err := getConnection(options)
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ type presharedKeyCredentials struct {
 
 // NewPresharedKeyCredentials creates a new credentials type which applies a
 // fixed authorization metadataum of the form `authorization: Bearer presharedKey`
-func NewPresharedKeyCredentials(presharedKey string) credentials.PerRPCCredentials {
+func NewGrpcPresharedKeyCredentials(presharedKey string) credentials.PerRPCCredentials {
 	return presharedKeyCredentials{
 		metadata: map[string]string{
 			"authorization": "Bearer " + presharedKey,
@@ -78,7 +78,7 @@ func (pskc presharedKeyCredentials) RequireTransportSecurity() bool {
 	return false
 }
 
-func getConnection(options ClientOptions) (*grpc.ClientConn, error) {
+func getConnection(options GrpcClientOptions) (*grpc.ClientConn, error) {
 	creds := credentials.NewTLS(&tls.Config{
 		InsecureSkipVerify: false,
 		RootCAs:            options.Certificates,
@@ -87,6 +87,6 @@ func getConnection(options ClientOptions) (*grpc.ClientConn, error) {
 	return grpc.Dial(
 		options.Endpoint,
 		grpc.WithTransportCredentials(creds),
-		grpc.WithPerRPCCredentials(NewPresharedKeyCredentials(options.Token)),
+		grpc.WithPerRPCCredentials(NewGrpcPresharedKeyCredentials(options.Token)),
 	)
 }
