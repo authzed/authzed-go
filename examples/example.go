@@ -1,11 +1,3 @@
-# authzed-go
-Golang client library for Authzed.
-
-## Quickstart
-
-The following self-documented example shows how to get started with the client.
-
-```go
 package main
 
 import (
@@ -130,4 +122,3 @@ func createTuple(tpl *api.RelationTuple) *api.RelationTupleUpdate {
 		Tuple:     tpl,
 	}
 }
-```
