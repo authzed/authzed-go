@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	client "github.com/authzed/authzed-go"
+	"github.com/authzed/authzed-go"
 	api "github.com/authzed/authzed-go/arrakisapi/api"
 )
 
@@ -14,12 +14,12 @@ const user_ns = "yourtenant/user"
 func main() {
 	token := "t_your_token_here_1234567deadbeef"
 
-	options, err := client.NewClientOptions(token)
+	options, err := authzed.NewClientOptions(token)
 	if err != nil {
 		log.Fatalf("Unable to create client options: %s", err)
 	}
 
-	client, err := client.NewClient(options)
+	client, err := authzed.NewClient(options)
 	if err != nil {
 		log.Fatalf("Unable to initialize client: %s", err)
 	}
