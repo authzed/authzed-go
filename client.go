@@ -20,6 +20,10 @@ type ClientOptions struct {
 
 	// Token is the token which is used to authorized all requests.
 	Token string
+
+	// Insecure, if true, indicates that the client should use an insecure
+	// channel to connect.
+	Insecure bool
 }
 
 // NewClientOptions returns a ClientOptions with defaults set.
@@ -79,6 +83,14 @@ func (pskc presharedKeyCredentials) RequireTransportSecurity() bool {
 }
 
 func getConnection(options ClientOptions) (*grpc.ClientConn, error) {
+	if options.Insecure {
+		return grpc.Dial(
+			options.Endpoint,
+			grpc.WithInsecure(),
+			grpc.WithPerRPCCredentials(NewPresharedKeyCredentials(options.Token)),
+		)
+	}
+
 	creds := credentials.NewTLS(&tls.Config{
 		InsecureSkipVerify: false,
 		RootCAs:            options.Certificates,
