@@ -8,50 +8,50 @@ import (
 	api "github.com/authzed/authzed-go/arrakisapi/api"
 )
 
-const document_ns = "yourtenant/document"
-const user_ns = "yourtenant/user"
+const (
+	document_ns = "yourtenant/document"
+	user_ns     = "yourtenant/user"
+)
 
 func main() {
-	token := "t_your_token_here_1234567deadbeef"
-
-	options, err := authzed.NewClientOptions(token)
+	// Create an Authzed client.
+	client, err := authzed.NewClient(
+		"grpc.authzed.com:443",
+		authzed.Token("t_your_token_here_1234567deadbeef"),
+		authzed.SystemCerts(authzed.VerifyCA),
+	)
 	if err != nil {
-		log.Fatalf("Unable to create client options: %s", err)
+		log.Fatalf("unable to initialize client: %s", err)
 	}
 
-	client, err := authzed.NewClient(options)
-	if err != nil {
-		log.Fatalf("Unable to initialize client: %s", err)
-	}
-
-	// Create some objects
+	// Create some objects that will be protected by Authzed.
 	aDoc := createObject(document_ns, "doc1")
 	anOwner := createObject(user_ns, "theowner")("...")
 	anEditor := createObject(user_ns, "userwhocanedit")("...")
 	aViewer := createObject(user_ns, "viewonlyuser")("...")
 
-	// Create some tuples that represent roles granted between users and objects
-	newTuples := []*api.RelationTupleUpdate{
-		createTuple(tuple(aDoc("owner"), anOwner)),
-		createTuple(tuple(aDoc("contributor"), anEditor)),
-		createTuple(tuple(aDoc("viewer"), aViewer)),
-	}
-
-	req := api.WriteRequest{
-		Updates: newTuples,
-	}
-
-	resp, err := client.Write(context.Background(), &req)
+	// Create some tuples that represent roles granted between users and objects.
+	resp, err := client.Write(context.Background(), &api.WriteRequest{
+		Updates: []*api.RelationTupleUpdate{
+			createTuple(tuple(aDoc("owner"), anOwner)),
+			createTuple(tuple(aDoc("contributor"), anEditor)),
+			createTuple(tuple(aDoc("viewer"), aViewer)),
+		}})
 	if err != nil {
-		log.Fatalf("Unable to write tuples: %s", err)
+		log.Fatalf("unable to write tuples: %s", err)
 	}
 
-	// Save the zookie that the call above generated to prevent new enemies
+	// Save the revision from the Write for future requests in order to enforce
+	// that responses are at least as fresh as our last write.
+	//
 	// We recommend saving this from any call to Write or ContentChangeCheck,
 	// and storing it alongside the object referenced in the write or check (in this case aDoc)"
+	//
+	// For more info see:
+	// https://docs.authzed.com/authz/new-enemy
 	whenPermsChanged := resp.Revision
 
-	// Run some checks on the written data
+	// Run some permission checks on the written data.
 	aNobody := createObject(user_ns, "randomnobody")("...")
 	expected := []checkData{
 		{permission: aDoc("read"), user: anOwner, hasAccess: true},
@@ -69,22 +69,20 @@ func main() {
 	}
 
 	for _, test := range expected {
-		testReq := api.CheckRequest{
+		testResp, err := client.Check(context.Background(), &api.CheckRequest{
 			TestUserset: test.permission,
-			User: &api.User{
-				UserOneof: &api.User_Userset{
-					Userset: test.user,
-				},
-			},
-			AtRevision: whenPermsChanged,
-		}
-		testResp, err := client.Check(context.Background(), &testReq)
+			User: &api.User{UserOneof: &api.User_Userset{
+				Userset: test.user,
+			}},
+			AtRevision: whenPermsChanged, // Guarantee checks occur on data fresher than the write.
+		})
 		if err != nil {
-			log.Fatalf("Unable to run check request: %s", err)
+			log.Fatalf("unable to run check request: %s", err)
 		}
 
-		if testResp.IsMember != test.hasAccess {
-			log.Fatalf("Check returned the wrong result: %v", test)
+		hasAccess := testResp.GetMembership() == api.CheckResponse_MEMBER
+		if hasAccess != test.hasAccess {
+			log.Fatalf("check returned the wrong result: %v", test)
 		}
 	}
 }
