@@ -1,9 +1,11 @@
 package authzed_test
 
 import (
+	"context"
 	"log"
 
 	"github.com/authzed/authzed-go"
+	api "github.com/authzed/authzed-go/arrakisapi/api"
 )
 
 func ExampleNewClient() {
@@ -15,4 +17,19 @@ func ExampleNewClient() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	client.Check(context.Background(), &api.CheckRequest{
+		TestUserset: &api.ObjectAndRelation{
+			Namespace: "mytenant/document",
+			ObjectId:  "readme",
+			Relation:  "viewer",
+		},
+		User: &api.User{UserOneof: &api.User_Userset{
+			Userset: &api.ObjectAndRelation{
+				Namespace: "mytenant/user",
+				ObjectId:  "jimmy",
+				Relation:  "...",
+			},
+		}},
+	})
 }
