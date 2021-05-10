@@ -1,20 +1,13 @@
+// +build integration
+
 package authzed
 
 import (
 	"context"
-	"os"
 	"testing"
 
 	api "github.com/authzed/authzed-go/arrakisapi/api"
 )
-
-var fred = &api.User{UserOneof: &api.User_Userset{
-	Userset: &api.ObjectAndRelation{
-		Namespace: "petricorp_jimmy_test_dev/user",
-		ObjectId:  "fred",
-		Relation:  "...",
-	},
-}}
 
 type doc struct {
 	ID string
@@ -24,22 +17,14 @@ var _ Checkable = doc{}
 
 func (d doc) AsObjectAndRelation(relation string) *api.ObjectAndRelation {
 	return &api.ObjectAndRelation{
-		Namespace: "petricorp_jimmy_test_dev/document",
+		Namespace: "test/document",
 		ObjectId:  d.ID,
 		Relation:  relation,
 	}
 }
 
 func TestFilterIter(t *testing.T) {
-	client, err := NewClient(
-		"grpc.authzed.com:443",
-		Token(os.Getenv("AUTHZED_GO_TOKEN")),
-		SystemCerts(VerifyCA),
-	)
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	client := setupTenant(t)
 	docs := []doc{{ID: "firstdoc"}, {ID: "seconddoc"}}
 	iter := client.NewFilterIter(docs, fred, "reader", nil)
 
