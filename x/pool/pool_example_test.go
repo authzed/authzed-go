@@ -28,7 +28,7 @@ func ExampleNewClientPool() {
 	}
 	defer client.Close() // Returns client to pool; does not disconnect client.
 
-	client.Check(ctx, &api.CheckRequest{
+	_, err = client.Check(ctx, &api.CheckRequest{
 		TestUserset: &api.ObjectAndRelation{
 			Namespace: "mytenant/document",
 			ObjectId:  "readme",
@@ -42,4 +42,7 @@ func ExampleNewClientPool() {
 			},
 		}},
 	})
+	if err != nil {
+		log.Fatal(err)
+	}
 }

@@ -49,18 +49,17 @@ func (p *ClientPool) Get(ctx context.Context) (*Client, error) {
 	}
 
 	return &Client{
-		&authzed.Client{
-			api.NewACLServiceClient(conn),
-			api.NewNamespaceServiceClient(conn),
+		Client: &authzed.Client{
+			ACLServiceClient:       api.NewACLServiceClient(conn),
+			NamespaceServiceClient: api.NewNamespaceServiceClient(conn),
 		},
-		conn.Close,
+		closefn: conn.Close,
 	}, nil
 }
 
 // NewClientPool returns a new pool of reusable Authzed clients.
 func NewClientPool(endpoint string, poolSize int, opts ...grpc.DialOption) (*ClientPool, error) {
-	var factory grpcpool.Factory
-	factory = func() (*grpc.ClientConn, error) {
+	factory := func() (*grpc.ClientConn, error) {
 		return grpc.Dial(stringz.DefaultEmpty(endpoint, "grpc.authzed.com:443"), opts...)
 	}
 

@@ -18,7 +18,7 @@ func ExampleNewClient() {
 		log.Fatal(err)
 	}
 
-	client.Check(context.Background(), &api.CheckRequest{
+	_, err = client.Check(context.Background(), &api.CheckRequest{
 		TestUserset: &api.ObjectAndRelation{
 			Namespace: "mytenant/document",
 			ObjectId:  "readme",
@@ -32,4 +32,7 @@ func ExampleNewClient() {
 			},
 		}},
 	})
+	if err != nil {
+		log.Fatal(err)
+	}
 }
