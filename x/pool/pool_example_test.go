@@ -1,4 +1,4 @@
-package authzed_test
+package pool_test
 
 import (
 	"context"
@@ -6,11 +6,13 @@ import (
 
 	"github.com/authzed/authzed-go"
 	api "github.com/authzed/authzed-go/arrakisapi/api"
+	"github.com/authzed/authzed-go/x/pool"
 )
 
-func ExampleNewClient() {
-	client, err := authzed.NewClient(
+func ExampleNewClientPool() {
+	clientPool, err := pool.NewClientPool(
 		"grpc.authzed.com:443",
+		10,
 		authzed.Token("my_token_deadbeefdeadbeefdeadbeef"),
 		authzed.SystemCerts(authzed.VerifyCA),
 	)
@@ -18,7 +20,15 @@ func ExampleNewClient() {
 		log.Fatal(err)
 	}
 
-	_, err = client.Check(context.Background(), &api.CheckRequest{
+	ctx := context.Background()
+
+	client, err := clientPool.Get(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer client.Close() // Returns client to pool; does not disconnect client.
+
+	_, err = client.Check(ctx, &api.CheckRequest{
 		TestUserset: &api.ObjectAndRelation{
 			Namespace: "mytenant/document",
 			ObjectId:  "readme",
