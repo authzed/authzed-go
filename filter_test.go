@@ -6,7 +6,7 @@ import (
 	"context"
 	"testing"
 
-	api "github.com/authzed/authzed-go/arrakisapi/api"
+	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
 )
 
 type doc struct {
@@ -15,8 +15,8 @@ type doc struct {
 
 var _ Checkable = doc{}
 
-func (d doc) AsObjectAndRelation(relation string) *api.ObjectAndRelation {
-	return &api.ObjectAndRelation{
+func (d doc) AsObjectAndRelation(relation string) *v0.ObjectAndRelation {
+	return &v0.ObjectAndRelation{
 		Namespace: "test/document",
 		ObjectId:  d.ID,
 		Relation:  relation,

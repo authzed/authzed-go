@@ -9,7 +9,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	api "github.com/authzed/authzed-go/arrakisapi/api"
+	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
 	"github.com/authzed/authzed-go/x/nsbuilder"
 )
 
@@ -24,8 +24,8 @@ var (
 )
 
 var (
-	fred = &api.User{UserOneof: &api.User_Userset{
-		Userset: &api.ObjectAndRelation{
+	fred = &v0.User{UserOneof: &v0.User_Userset{
+		Userset: &v0.ObjectAndRelation{
 			Namespace: "test/user",
 			ObjectId:  "fred",
 			Relation:  "...",
@@ -40,19 +40,19 @@ func setupTenant(t *testing.T) *Client {
 	}
 
 	setupOnce.Do(func() {
-		if _, err := client.WriteConfig(context.Background(), &api.WriteConfigRequest{Configs: []*api.NamespaceDefinition{
+		if _, err := client.WriteConfig(context.Background(), &v0.WriteConfigRequest{Configs: []*v0.NamespaceDefinition{
 			namespaceUser,
 			namespaceDoc,
 		}}); err != nil {
 			t.Fatal(err)
 		}
 
-		_, err := client.Write(context.Background(), &api.WriteRequest{
-			Updates: []*api.RelationTupleUpdate{
+		_, err := client.Write(context.Background(), &v0.WriteRequest{
+			Updates: []*v0.RelationTupleUpdate{
 				{
-					Operation: api.RelationTupleUpdate_CREATE,
-					Tuple: &api.RelationTuple{
-						ObjectAndRelation: &api.ObjectAndRelation{
+					Operation: v0.RelationTupleUpdate_CREATE,
+					Tuple: &v0.RelationTuple{
+						ObjectAndRelation: &v0.ObjectAndRelation{
 							Namespace: "test/document",
 							ObjectId:  "firstdoc",
 							Relation:  "writer",

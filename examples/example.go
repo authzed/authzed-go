@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/authzed/authzed-go"
-	api "github.com/authzed/authzed-go/arrakisapi/api"
+	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
 )
 
 const (
@@ -31,8 +31,8 @@ func main() {
 	aViewer := createObject(user_ns, "viewonlyuser")("...")
 
 	// Create some tuples that represent roles granted between users and objects.
-	resp, err := client.Write(context.Background(), &api.WriteRequest{
-		Updates: []*api.RelationTupleUpdate{
+	resp, err := client.Write(context.Background(), &v0.WriteRequest{
+		Updates: []*v0.RelationTupleUpdate{
 			createTuple(tuple(aDoc("owner"), anOwner)),
 			createTuple(tuple(aDoc("contributor"), anEditor)),
 			createTuple(tuple(aDoc("viewer"), aViewer)),
@@ -69,9 +69,9 @@ func main() {
 	}
 
 	for _, test := range expected {
-		testResp, err := client.Check(context.Background(), &api.CheckRequest{
+		testResp, err := client.Check(context.Background(), &v0.CheckRequest{
 			TestUserset: test.permission,
-			User: &api.User{UserOneof: &api.User_Userset{
+			User: &v0.User{UserOneof: &v0.User_Userset{
 				Userset: test.user,
 			}},
 			AtRevision: whenPermsChanged, // Guarantee checks occur on data fresher than the write.
@@ -80,7 +80,7 @@ func main() {
 			log.Fatalf("unable to run check request: %s", err)
 		}
 
-		hasAccess := testResp.GetMembership() == api.CheckResponse_MEMBER
+		hasAccess := testResp.GetMembership() == v0.CheckResponse_MEMBER
 		if hasAccess != test.hasAccess {
 			log.Fatalf("check returned the wrong result: %v", test)
 		}
@@ -88,14 +88,14 @@ func main() {
 }
 
 type checkData struct {
-	permission *api.ObjectAndRelation
-	user       *api.ObjectAndRelation
+	permission *v0.ObjectAndRelation
+	user       *v0.ObjectAndRelation
 	hasAccess  bool
 }
 
-func createObject(namespace, objectID string) func(string) *api.ObjectAndRelation {
-	return func(relation string) *api.ObjectAndRelation {
-		return &api.ObjectAndRelation{
+func createObject(namespace, objectID string) func(string) *v0.ObjectAndRelation {
+	return func(relation string) *v0.ObjectAndRelation {
+		return &v0.ObjectAndRelation{
 			Namespace: namespace,
 			ObjectId:  objectID,
 			Relation:  relation,
@@ -103,20 +103,20 @@ func createObject(namespace, objectID string) func(string) *api.ObjectAndRelatio
 	}
 }
 
-func tuple(onr *api.ObjectAndRelation, userset *api.ObjectAndRelation) *api.RelationTuple {
-	return &api.RelationTuple{
+func tuple(onr *v0.ObjectAndRelation, userset *v0.ObjectAndRelation) *v0.RelationTuple {
+	return &v0.RelationTuple{
 		ObjectAndRelation: onr,
-		User: &api.User{
-			UserOneof: &api.User_Userset{
+		User: &v0.User{
+			UserOneof: &v0.User_Userset{
 				Userset: userset,
 			},
 		},
 	}
 }
 
-func createTuple(tpl *api.RelationTuple) *api.RelationTupleUpdate {
-	return &api.RelationTupleUpdate{
-		Operation: api.RelationTupleUpdate_CREATE,
+func createTuple(tpl *v0.RelationTuple) *v0.RelationTupleUpdate {
+	return &v0.RelationTupleUpdate{
+		Operation: v0.RelationTupleUpdate_CREATE,
 		Tuple:     tpl,
 	}
 }
