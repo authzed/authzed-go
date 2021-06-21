@@ -40,10 +40,11 @@ func setupTenant(t *testing.T) *Client {
 	}
 
 	setupOnce.Do(func() {
-		for _, nsdef := range []*api.NamespaceDefinition{namespaceUser, namespaceDoc} {
-			if _, err := client.WriteConfig(context.Background(), &api.WriteConfigRequest{Config: nsdef}); err != nil {
-				t.Fatal(err)
-			}
+		if _, err := client.WriteConfig(context.Background(), &api.WriteConfigRequest{Configs: []*api.NamespaceDefinition{
+			namespaceUser,
+			namespaceDoc,
+		}}); err != nil {
+			t.Fatal(err)
 		}
 
 		_, err := client.Write(context.Background(), &api.WriteRequest{
