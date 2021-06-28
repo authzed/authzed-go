@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/authzed/authzed-go"
-	api "github.com/authzed/authzed-go/arrakisapi/api"
+	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
 )
 
 // Client implements an Authzed client with an additional Close() method that
@@ -50,8 +50,8 @@ func (p *ClientPool) Get(ctx context.Context) (*Client, error) {
 
 	return &Client{
 		Client: &authzed.Client{
-			ACLServiceClient:       api.NewACLServiceClient(conn),
-			NamespaceServiceClient: api.NewNamespaceServiceClient(conn),
+			ACLServiceClient:       v0.NewACLServiceClient(conn),
+			NamespaceServiceClient: v0.NewNamespaceServiceClient(conn),
 		},
 		closefn: conn.Close,
 	}, nil

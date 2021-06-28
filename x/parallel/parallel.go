@@ -7,14 +7,14 @@ import (
 
 	"google.golang.org/grpc"
 
-	api "github.com/authzed/authzed-go/arrakisapi/api"
 	"github.com/authzed/authzed-go/internal/ctxgroup"
+	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
 )
 
 // Check performs the provided list of CheckRequests in parallel and returns
 // a slice of responses that are stored at their respective indices.
-func Check(ctx context.Context, client api.ACLServiceClient, in []*api.CheckRequest, opts ...grpc.CallOption) ([]*api.CheckResponse, error) {
-	results := make([]*api.CheckResponse, len(in))
+func Check(ctx context.Context, client v0.ACLServiceClient, in []*v0.CheckRequest, opts ...grpc.CallOption) ([]*v0.CheckResponse, error) {
+	results := make([]*v0.CheckResponse, len(in))
 	g := ctxgroup.WithContext(ctx)
 	for i, request := range in {
 		i, request := i, request // close over the value that will not change
@@ -33,8 +33,8 @@ func Check(ctx context.Context, client api.ACLServiceClient, in []*api.CheckRequ
 // ContentChangeCheck performs the provided list of ContentChangeCheckRequests
 // in parallel and returns a slice of responses that are stored at their
 // respective indices.
-func ContentChangeCheck(ctx context.Context, client api.ACLServiceClient, in []*api.ContentChangeCheckRequest, opts ...grpc.CallOption) ([]*api.CheckResponse, error) {
-	results := make([]*api.CheckResponse, len(in))
+func ContentChangeCheck(ctx context.Context, client v0.ACLServiceClient, in []*v0.ContentChangeCheckRequest, opts ...grpc.CallOption) ([]*v0.CheckResponse, error) {
+	results := make([]*v0.CheckResponse, len(in))
 	g := ctxgroup.WithContext(ctx)
 	for i, request := range in {
 		i, request := i, request // close over the value that will not change
@@ -52,9 +52,9 @@ func ContentChangeCheck(ctx context.Context, client api.ACLServiceClient, in []*
 
 // AllChecksAreMember returns true if every provided CheckResponse has
 // membership.
-func AllChecksAreMember(resps []*api.CheckResponse) bool {
+func AllChecksAreMember(resps []*v0.CheckResponse) bool {
 	for _, resp := range resps {
-		if resp.Membership != api.CheckResponse_MEMBER {
+		if resp.Membership != v0.CheckResponse_MEMBER {
 			return false
 		}
 	}

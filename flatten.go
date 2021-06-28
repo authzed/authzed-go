@@ -3,7 +3,7 @@ package authzed
 import (
 	"fmt"
 
-	api "github.com/authzed/authzed-go/arrakisapi/api"
+	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
 )
 
 // FlattenExpand reduces an ExpandResponse into the slice of Users present in
@@ -12,20 +12,20 @@ import (
 // Notably, this removes the context of which relations caused users to be
 // included in the expansion, but often you only need to know which users are
 // present.
-func FlattenExpand(resp *api.ExpandResponse) ([]*api.User, error) { return flatten(resp.TreeNode), nil }
+func FlattenExpand(resp *v0.ExpandResponse) ([]*v0.User, error) { return flatten(resp.TreeNode), nil }
 
-func flatten(node *api.RelationTupleTreeNode) []*api.User {
+func flatten(node *v0.RelationTupleTreeNode) []*v0.User {
 	switch typed := node.NodeType.(type) {
-	case *api.RelationTupleTreeNode_IntermediateNode:
+	case *v0.RelationTupleTreeNode_IntermediateNode:
 		switch typed.IntermediateNode.Operation {
-		case api.SetOperationUserset_UNION:
+		case v0.SetOperationUserset_UNION:
 			return flattenUnion(typed.IntermediateNode.ChildNodes)
-		case api.SetOperationUserset_INTERSECTION:
+		case v0.SetOperationUserset_INTERSECTION:
 			return flattenIntersection(typed.IntermediateNode.ChildNodes)
-		case api.SetOperationUserset_EXCLUSION:
+		case v0.SetOperationUserset_EXCLUSION:
 			return flattenExclusion(typed.IntermediateNode.ChildNodes)
 		}
-	case *api.RelationTupleTreeNode_LeafNode:
+	case *v0.RelationTupleTreeNode_LeafNode:
 		users := newUserSet()
 		users.add(typed.LeafNode.Users...)
 		return users.toSlice()
@@ -33,7 +33,7 @@ func flatten(node *api.RelationTupleTreeNode) []*api.User {
 	return nil
 }
 
-func flattenUnion(children []*api.RelationTupleTreeNode) []*api.User {
+func flattenUnion(children []*v0.RelationTupleTreeNode) []*v0.User {
 	users := newUserSet()
 	for _, child := range children {
 		users.add(flatten(child)...)
@@ -41,7 +41,7 @@ func flattenUnion(children []*api.RelationTupleTreeNode) []*api.User {
 	return users.toSlice()
 }
 
-func flattenIntersection(children []*api.RelationTupleTreeNode) []*api.User {
+func flattenIntersection(children []*v0.RelationTupleTreeNode) []*v0.User {
 	firstChildChildren := flatten(children[0])
 
 	if len(children) == 1 {
@@ -56,7 +56,7 @@ func flattenIntersection(children []*api.RelationTupleTreeNode) []*api.User {
 		maxChildren = len(inOthers)
 	}
 
-	toReturn := make([]*api.User, 0, maxChildren)
+	toReturn := make([]*v0.User, 0, maxChildren)
 	for _, child := range firstChildChildren {
 		if inOthers.contains(child) {
 			toReturn = append(toReturn, child)
@@ -66,7 +66,7 @@ func flattenIntersection(children []*api.RelationTupleTreeNode) []*api.User {
 	return toReturn
 }
 
-func flattenExclusion(children []*api.RelationTupleTreeNode) []*api.User {
+func flattenExclusion(children []*v0.RelationTupleTreeNode) []*v0.User {
 	firstChildChildren := flatten(children[0])
 
 	if len(children) == 1 || len(firstChildChildren) == 0 {
@@ -82,10 +82,10 @@ func flattenExclusion(children []*api.RelationTupleTreeNode) []*api.User {
 	return users.toSlice()
 }
 
-func leaf(start *api.ObjectAndRelation, children ...*api.User) *api.RelationTupleTreeNode {
-	return &api.RelationTupleTreeNode{
-		NodeType: &api.RelationTupleTreeNode_LeafNode{
-			LeafNode: &api.DirectUserset{
+func leaf(start *v0.ObjectAndRelation, children ...*v0.User) *v0.RelationTupleTreeNode {
+	return &v0.RelationTupleTreeNode{
+		NodeType: &v0.RelationTupleTreeNode_LeafNode{
+			LeafNode: &v0.DirectUserset{
 				Users: children,
 			},
 		},
@@ -94,13 +94,13 @@ func leaf(start *api.ObjectAndRelation, children ...*api.User) *api.RelationTupl
 }
 
 func setResult(
-	op api.SetOperationUserset_Operation,
-	start *api.ObjectAndRelation,
-	children []*api.RelationTupleTreeNode,
-) *api.RelationTupleTreeNode {
-	return &api.RelationTupleTreeNode{
-		NodeType: &api.RelationTupleTreeNode_IntermediateNode{
-			IntermediateNode: &api.SetOperationUserset{
+	op v0.SetOperationUserset_Operation,
+	start *v0.ObjectAndRelation,
+	children []*v0.RelationTupleTreeNode,
+) *v0.RelationTupleTreeNode {
+	return &v0.RelationTupleTreeNode{
+		NodeType: &v0.RelationTupleTreeNode_IntermediateNode{
+			IntermediateNode: &v0.SetOperationUserset{
 				Operation:  op,
 				ChildNodes: children,
 			},
@@ -109,16 +109,16 @@ func setResult(
 	}
 }
 
-func union(start *api.ObjectAndRelation, children ...*api.RelationTupleTreeNode) *api.RelationTupleTreeNode {
-	return setResult(api.SetOperationUserset_UNION, start, children)
+func union(start *v0.ObjectAndRelation, children ...*v0.RelationTupleTreeNode) *v0.RelationTupleTreeNode {
+	return setResult(v0.SetOperationUserset_UNION, start, children)
 }
 
-func intersection(start *api.ObjectAndRelation, children ...*api.RelationTupleTreeNode) *api.RelationTupleTreeNode {
-	return setResult(api.SetOperationUserset_INTERSECTION, start, children)
+func intersection(start *v0.ObjectAndRelation, children ...*v0.RelationTupleTreeNode) *v0.RelationTupleTreeNode {
+	return setResult(v0.SetOperationUserset_INTERSECTION, start, children)
 }
 
-func exclusion(start *api.ObjectAndRelation, children ...*api.RelationTupleTreeNode) *api.RelationTupleTreeNode {
-	return setResult(api.SetOperationUserset_EXCLUSION, start, children)
+func exclusion(start *v0.ObjectAndRelation, children ...*v0.RelationTupleTreeNode) *v0.RelationTupleTreeNode {
+	return setResult(v0.SetOperationUserset_EXCLUSION, start, children)
 }
 
 type userSet map[string]struct{}
@@ -127,39 +127,39 @@ func newUserSet() userSet {
 	return make(map[string]struct{})
 }
 
-func (us userSet) add(users ...*api.User) {
+func (us userSet) add(users ...*v0.User) {
 	for _, usr := range users {
 		us[toKey(usr)] = struct{}{}
 	}
 }
 
-func (us userSet) contains(usr *api.User) bool {
+func (us userSet) contains(usr *v0.User) bool {
 	_, ok := us[toKey(usr)]
 	return ok
 }
 
-func (us userSet) remove(users ...*api.User) {
+func (us userSet) remove(users ...*v0.User) {
 	for _, usr := range users {
 		delete(us, toKey(usr))
 	}
 }
 
-func (us userSet) toSlice() []*api.User {
-	users := make([]*api.User, 0, len(us))
+func (us userSet) toSlice() []*v0.User {
+	users := make([]*v0.User, 0, len(us))
 	for key := range us {
 		users = append(users, fromKey(key))
 	}
 	return users
 }
 
-func toKey(usr *api.User) string {
+func toKey(usr *v0.User) string {
 	return fmt.Sprintf("%s %s %s", usr.GetUserset().Namespace, usr.GetUserset().ObjectId, usr.GetUserset().Relation)
 }
 
-func fromKey(key string) *api.User {
-	userset := &api.ObjectAndRelation{}
+func fromKey(key string) *v0.User {
+	userset := &v0.ObjectAndRelation{}
 	fmt.Sscanf(key, "%s %s %s", &userset.Namespace, &userset.ObjectId, &userset.Relation)
-	return &api.User{
-		UserOneof: &api.User_Userset{Userset: userset},
+	return &v0.User{
+		UserOneof: &v0.User_Userset{Userset: userset},
 	}
 }

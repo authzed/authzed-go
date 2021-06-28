@@ -20,7 +20,7 @@ import (
 	"log"
 
 	"github.com/authzed/authzed-go"
-	api "github.com/authzed/authzed-go/arrakisapi/api"
+	"github.com/authzed/authzed-go/proto/authzed/api/v0"
 )
 
 func main() {
@@ -35,13 +35,13 @@ func main() {
 	}
 
 	// Check if User #26 has read access to note #47
-	resp, err := client.Check(context.Background(), &api.CheckRequest{
-		TestUserset: &api.ObjectAndRelation{
+	resp, err := client.Check(context.Background(), &v0.CheckRequest{
+		TestUserset: &v0.ObjectAndRelation{
 			Namespace: "mynoteapp/note", // Object Type
 			ObjectId:  "47",             // Unique id for a object being accessed
 			Relation:  "reader"          // Relationship required for access
 		},
-		User: &api.User{UserOneof: &api.User_Userset{Userset: &api.ObjectAndRelation{
+		User: &v0.User{UserOneof: &v0.User_Userset{Userset: &v0.ObjectAndRelation{
 			Namespace: "mynoteapp/user", // User Type
 			ObjectId: "26",              // Unique id for a user accessing the object
 			Relation: "...",
@@ -51,7 +51,7 @@ func main() {
 		log.Fatalf("unable to run check request: %s", err)
 	}
 
-	fmt.Println(resp.GetMembership() == api.CheckResponse_MEMBER)
+	fmt.Println(resp.GetMembership() == v0.CheckResponse_MEMBER)
 	// Outputs:
 	// true
 }

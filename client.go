@@ -5,18 +5,19 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 
-	api "github.com/authzed/authzed-go/arrakisapi/api"
 	"github.com/jzelinskie/stringz"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+
+	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
 )
 
 // Client represents an open connection to Authzed.
 //
 // Clients are backed by a gRPC client and as such are thread-safe.
 type Client struct {
-	api.ACLServiceClient
-	api.NamespaceServiceClient
+	v0.ACLServiceClient
+	v0.NamespaceServiceClient
 }
 
 type grpcMetadataCreds map[string]string
@@ -67,7 +68,7 @@ func NewClient(endpoint string, opts ...grpc.DialOption) (*Client, error) {
 	}
 
 	return &Client{
-		api.NewACLServiceClient(conn),
-		api.NewNamespaceServiceClient(conn),
+		v0.NewACLServiceClient(conn),
+		v0.NewNamespaceServiceClient(conn),
 	}, nil
 }

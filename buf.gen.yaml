@@ -1,0 +1,12 @@
+#!/usr/bin/env -S buf generate buf.build/authzed/api:3444bd6f843d49928d6a1226965d88b7 --template
+version: "v1beta1"
+plugins:
+  - name: "go"
+    out: "proto"
+    opt: "paths=source_relative"
+  - name: "go-grpc"
+    out: "proto"
+    opt: "paths=source_relative"
+  - name: "validate"
+    out: "proto"
+    opt: "paths=source_relative,lang=go"

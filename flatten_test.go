@@ -3,15 +3,15 @@ package authzed
 import (
 	"testing"
 
-	api "github.com/authzed/authzed-go/arrakisapi/api"
+	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
 )
 
-func user(namespace, object, relation string) *api.User {
-	return &api.User{UserOneof: &api.User_Userset{Userset: onr(namespace, object, relation)}}
+func user(namespace, object, relation string) *v0.User {
+	return &v0.User{UserOneof: &v0.User_Userset{Userset: onr(namespace, object, relation)}}
 }
 
-func onr(namespace, object, relation string) *api.ObjectAndRelation {
-	return &api.ObjectAndRelation{
+func onr(namespace, object, relation string) *v0.ObjectAndRelation {
+	return &v0.ObjectAndRelation{
 		Namespace: namespace,
 		ObjectId:  object,
 		Relation:  relation,
@@ -21,13 +21,13 @@ func onr(namespace, object, relation string) *api.ObjectAndRelation {
 func TestFlatten(t *testing.T) {
 	testCases := []struct {
 		name     string
-		tree     *api.RelationTupleTreeNode
-		expected []*api.ObjectAndRelation
+		tree     *v0.RelationTupleTreeNode
+		expected []*v0.ObjectAndRelation
 	}{
 		{
 			"simple leaf",
 			leaf(nil, user("user", "user1", "...")),
-			[]*api.ObjectAndRelation{onr("user", "user1", "...")},
+			[]*v0.ObjectAndRelation{onr("user", "user1", "...")},
 		},
 		{
 			"simple union",
@@ -36,7 +36,7 @@ func TestFlatten(t *testing.T) {
 				leaf(nil, user("user", "user2", "...")),
 				leaf(nil, user("user", "user3", "...")),
 			),
-			[]*api.ObjectAndRelation{
+			[]*v0.ObjectAndRelation{
 				onr("user", "user1", "..."),
 				onr("user", "user2", "..."),
 				onr("user", "user3", "..."),
@@ -58,7 +58,7 @@ func TestFlatten(t *testing.T) {
 					user("user", "user4", "..."),
 				),
 			),
-			[]*api.ObjectAndRelation{onr("user", "user2", "...")},
+			[]*v0.ObjectAndRelation{onr("user", "user2", "...")},
 		},
 		{
 			"empty intersection",
@@ -72,7 +72,7 @@ func TestFlatten(t *testing.T) {
 					user("user", "user4", "..."),
 				),
 			),
-			[]*api.ObjectAndRelation{},
+			[]*v0.ObjectAndRelation{},
 		},
 		{
 			"simple exclusion",
@@ -84,7 +84,7 @@ func TestFlatten(t *testing.T) {
 				leaf(nil, user("user", "user2", "...")),
 				leaf(nil, user("user", "user3", "...")),
 			),
-			[]*api.ObjectAndRelation{onr("user", "user1", "...")},
+			[]*v0.ObjectAndRelation{onr("user", "user1", "...")},
 		},
 		{
 			"empty exclusion",
@@ -96,7 +96,7 @@ func TestFlatten(t *testing.T) {
 				leaf(nil, user("user", "user1", "...")),
 				leaf(nil, user("user", "user2", "...")),
 			),
-			[]*api.ObjectAndRelation{},
+			[]*v0.ObjectAndRelation{},
 		},
 		{
 			"nested union",
@@ -104,7 +104,7 @@ func TestFlatten(t *testing.T) {
 				leaf(nil, user("user", "user1", "...")),
 				union(nil, leaf(nil, user("user", "user2", "..."))),
 			),
-			[]*api.ObjectAndRelation{
+			[]*v0.ObjectAndRelation{
 				onr("user", "user1", "..."),
 				onr("user", "user2", "..."),
 			},

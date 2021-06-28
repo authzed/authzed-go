@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"reflect"
 
-	api "github.com/authzed/authzed-go/arrakisapi/api"
+	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
 	"github.com/authzed/authzed-go/x/parallel"
 )
 
@@ -24,7 +24,7 @@ const (
 // `CheckableAtRevision`. If `CheckableAtRevision` is implemented, the revision
 // returned by `Revision()` is used instead of the optional one provided as an
 // arugment to this function.
-func (c *Client) NewFilterIter(slice interface{}, user *api.User, relation string, optionalRevision *api.Zookie) FilterIter {
+func (c *Client) NewFilterIter(slice interface{}, user *v0.User, relation string, optionalRevision *v0.Zookie) FilterIter {
 	return &iter{
 		client:   c,
 		user:     user,
@@ -41,14 +41,14 @@ func (c *Client) NewFilterIter(slice interface{}, user *api.User, relation strin
 // Checkable represents any object that can be represented as an
 // ObjectAndRelation.
 type Checkable interface {
-	AsObjectAndRelation(relation string) *api.ObjectAndRelation
+	AsObjectAndRelation(relation string) *v0.ObjectAndRelation
 }
 
 // CheckableAtRevision represents any object that can be represented at a
 // specific revision.
 type CheckableAtRevision interface {
 	Checkable
-	Revision() *api.Zookie
+	Revision() *v0.Zookie
 }
 
 // FilterIter represents an iterator over a list of values that have been
@@ -61,9 +61,9 @@ type FilterIter interface {
 
 type iter struct {
 	client   *Client
-	user     *api.User
+	user     *v0.User
 	relation string
-	revision *api.Zookie
+	revision *v0.Zookie
 
 	batchSize  int
 	batchIndex int
@@ -88,7 +88,7 @@ func (it *iter) Next(ctx context.Context) bool {
 		it.batchIndex = batchEndIndex
 		it.batchSize = it.batchSize * growthFactor
 
-		reqs := make([]*api.CheckRequest, 0, batchEndIndex-batchStartIndex)
+		reqs := make([]*v0.CheckRequest, 0, batchEndIndex-batchStartIndex)
 		for i := batchStartIndex; i < batchEndIndex; i++ {
 			req, err := intoRequest(it.unfiltered.Index(i).Interface(), it.user, it.relation, it.revision)
 			if err != nil {
@@ -105,7 +105,7 @@ func (it *iter) Next(ctx context.Context) bool {
 		}
 
 		for i, resp := range resps {
-			if resp.Membership == api.CheckResponse_MEMBER {
+			if resp.Membership == v0.CheckResponse_MEMBER {
 				it.filtered = append(it.filtered, it.unfiltered.Index(i+batchStartIndex).Interface())
 			}
 		}
@@ -130,16 +130,16 @@ func (it *iter) Item() interface{} {
 
 func (it *iter) Err() error { return it.err }
 
-func intoRequest(i interface{}, user *api.User, relation string, rev *api.Zookie) (*api.CheckRequest, error) {
+func intoRequest(i interface{}, user *v0.User, relation string, rev *v0.Zookie) (*v0.CheckRequest, error) {
 	switch x := i.(type) {
 	case CheckableAtRevision:
-		return &api.CheckRequest{
+		return &v0.CheckRequest{
 			TestUserset: x.AsObjectAndRelation(relation),
 			User:        user,
 			AtRevision:  x.Revision(),
 		}, nil
 	case Checkable:
-		return &api.CheckRequest{
+		return &v0.CheckRequest{
 			TestUserset: x.AsObjectAndRelation(relation),
 			User:        user,
 			AtRevision:  rev,

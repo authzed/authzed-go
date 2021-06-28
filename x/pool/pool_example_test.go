@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/authzed/authzed-go"
-	api "github.com/authzed/authzed-go/arrakisapi/api"
+	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
 	"github.com/authzed/authzed-go/x/pool"
 )
 
@@ -28,14 +28,14 @@ func ExampleNewClientPool() {
 	}
 	defer client.Close() // Returns client to pool; does not disconnect client.
 
-	_, err = client.Check(ctx, &api.CheckRequest{
-		TestUserset: &api.ObjectAndRelation{
+	_, err = client.Check(ctx, &v0.CheckRequest{
+		TestUserset: &v0.ObjectAndRelation{
 			Namespace: "mytenant/document",
 			ObjectId:  "readme",
 			Relation:  "viewer",
 		},
-		User: &api.User{UserOneof: &api.User_Userset{
-			Userset: &api.ObjectAndRelation{
+		User: &v0.User{UserOneof: &v0.User_Userset{
+			Userset: &v0.ObjectAndRelation{
 				Namespace: "mytenant/user",
 				ObjectId:  "jimmy",
 				Relation:  "...",
