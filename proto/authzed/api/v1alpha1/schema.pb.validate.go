@@ -196,10 +196,10 @@ func (m *WriteSchemaRequest) Validate() error {
 		return nil
 	}
 
-	if len(m.GetObjectDefinitions()) < 1 {
+	if len(m.GetSchema()) > 262144 {
 		return WriteSchemaRequestValidationError{
-			field:  "ObjectDefinitions",
-			reason: "value must contain at least 1 item(s)",
+			field:  "Schema",
+			reason: "value length must be at most 262144 bytes",
 		}
 	}
 
