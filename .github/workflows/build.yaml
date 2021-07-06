@@ -44,7 +44,10 @@ jobs:
           echo "${GO_MOD_OUPUT}"
           exit 1
         fi
-    - uses: golangci/golangci-lint-action@v2
+    - name: "go lint"
+      run: |
+        go install github.com/mgechev/revive@latest
+        revive ./...
 
   test:
     name: "Test"
