@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 
 	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
-	"github.com/authzed/authzed-go/x/nsbuilder"
+	"github.com/authzed/authzed-go/v0/x/nsbuilder"
 )
 
 var setupOnce sync.Once

@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/authzed/authzed-go"
 	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
+	"github.com/authzed/authzed-go/v0"
 )
 
 const (
