@@ -23,15 +23,13 @@ var (
 	)
 )
 
-var (
-	fred = &v0.User{UserOneof: &v0.User_Userset{
-		Userset: &v0.ObjectAndRelation{
-			Namespace: "test/user",
-			ObjectId:  "fred",
-			Relation:  "...",
-		},
-	}}
-)
+var fred = &v0.User{UserOneof: &v0.User_Userset{
+	Userset: &v0.ObjectAndRelation{
+		Namespace: "test/user",
+		ObjectId:  "fred",
+		Relation:  "...",
+	},
+}}
 
 func setupTenant(t *testing.T) *Client {
 	client, err := NewClient("localhost:50051", grpc.WithInsecure())

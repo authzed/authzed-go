@@ -53,7 +53,8 @@ func SystemCerts(v CertVerification) grpc.DialOption {
 
 	return grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{
 		RootCAs:            certPool,
-		InsecureSkipVerify: bool(v)}))
+		InsecureSkipVerify: bool(v),
+	}))
 }
 
 // NewClient initializes a brand new client for interacting with Authzed.

@@ -5,11 +5,12 @@ import (
 	"log"
 	"testing"
 
-	"github.com/authzed/authzed-go/v1alpha1"
 	"github.com/authzed/grpcutil"
+
+	authzed "github.com/authzed/authzed-go/v1alpha1"
 )
 
-func ExampleNewClient(t *testing.T) {
+func ExampleNewClient(_ *testing.T) {
 	client, err := authzed.NewClient(
 		"grpc.authzed.com:443",
 		grpcutil.WithBearerToken("tc_my_token_deadbeefdeadbeefdeadbeef"),

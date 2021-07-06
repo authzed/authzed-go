@@ -36,7 +36,8 @@ func main() {
 			createTuple(tuple(aDoc("owner"), anOwner)),
 			createTuple(tuple(aDoc("contributor"), anEditor)),
 			createTuple(tuple(aDoc("viewer"), aViewer)),
-		}})
+		},
+	})
 	if err != nil {
 		log.Fatalf("unable to write tuples: %s", err)
 	}
