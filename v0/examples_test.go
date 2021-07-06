@@ -1,18 +1,16 @@
-package pool_test
+package authzed_test
 
 import (
 	"context"
 	"log"
 
-	"github.com/authzed/authzed-go"
 	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
-	"github.com/authzed/authzed-go/x/pool"
+	"github.com/authzed/authzed-go/v0"
 )
 
-func ExampleNewClientPool() {
-	clientPool, err := pool.NewClientPool(
+func ExampleNewClient() {
+	client, err := authzed.NewClient(
 		"grpc.authzed.com:443",
-		10,
 		authzed.Token("my_token_deadbeefdeadbeefdeadbeef"),
 		authzed.SystemCerts(authzed.VerifyCA),
 	)
@@ -20,15 +18,7 @@ func ExampleNewClientPool() {
 		log.Fatal(err)
 	}
 
-	ctx := context.Background()
-
-	client, err := clientPool.Get(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer client.Close() // Returns client to pool; does not disconnect client.
-
-	_, err = client.Check(ctx, &v0.CheckRequest{
+	_, err = client.Check(context.Background(), &v0.CheckRequest{
 		TestUserset: &v0.ObjectAndRelation{
 			Namespace: "mytenant/document",
 			ObjectId:  "readme",

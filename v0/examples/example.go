@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/authzed/authzed-go"
 	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
+	"github.com/authzed/authzed-go/v0"
 )
 
 const (
@@ -36,7 +36,8 @@ func main() {
 			createTuple(tuple(aDoc("owner"), anOwner)),
 			createTuple(tuple(aDoc("contributor"), anEditor)),
 			createTuple(tuple(aDoc("viewer"), aViewer)),
-		}})
+		},
+	})
 	if err != nil {
 		log.Fatalf("unable to write tuples: %s", err)
 	}

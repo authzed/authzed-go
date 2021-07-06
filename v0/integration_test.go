@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 
 	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
-	"github.com/authzed/authzed-go/x/nsbuilder"
+	"github.com/authzed/authzed-go/v0/x/nsbuilder"
 )
 
 var setupOnce sync.Once
@@ -23,15 +23,13 @@ var (
 	)
 )
 
-var (
-	fred = &v0.User{UserOneof: &v0.User_Userset{
-		Userset: &v0.ObjectAndRelation{
-			Namespace: "test/user",
-			ObjectId:  "fred",
-			Relation:  "...",
-		},
-	}}
-)
+var fred = &v0.User{UserOneof: &v0.User_Userset{
+	Userset: &v0.ObjectAndRelation{
+		Namespace: "test/user",
+		ObjectId:  "fred",
+		Relation:  "...",
+	},
+}}
 
 func setupTenant(t *testing.T) *Client {
 	client, err := NewClient("localhost:50051", grpc.WithInsecure())

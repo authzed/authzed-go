@@ -1,16 +1,17 @@
 # authzed-go
 
 The official Go client library for Authzed.
+This repository is a collection of Go packages specialized for each versions of the Authzed API.
 
-## Example
+## Example (v0 API)
 
 This example demonstrates initializing a client and making a [Check request] to an existing [Namespace].
 
-A more full example can be found in the [examples directory].
+A more full example can be found in [v0/examples].
 
 [Check request]:https://docs.authzed.com/concept/check
 [Namespace]: https://docs.authzed.com/concept/namespaces
-[examples directory]: examples
+[v0/examples]: /v0/examples
 
 ```go
 package main
@@ -19,7 +20,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/authzed/authzed-go"
+	"github.com/authzed/authzed-go/v0"
 	"github.com/authzed/authzed-go/proto/authzed/api/v0"
 )
 
