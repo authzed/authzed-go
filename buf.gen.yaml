@@ -1,4 +1,4 @@
-#!/usr/bin/env -S buf generate buf.build/authzed/api:bf9b8ca524394d9689e6a5697fba9e9b --template
+#!/usr/bin/env -S buf generate buf.build/authzed/api:b7e7cd9ac92b44638de0d01e03db6ec2 --template
 version: "v1beta1"
 plugins:
   - name: "go"
