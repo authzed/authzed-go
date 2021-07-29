@@ -1,59 +1,39 @@
-# authzed-go
+# Authzed Go Client
 
-The official Go client library for Authzed.
-This repository is a collection of Go packages specialized for each versions of the Authzed API.
+[![GoDoc](https://godoc.org/github.com/authzed/authzed-go?status.svg)](https://godoc.org/github.com/authzed/authzed-go)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![Build Status](https://github.com/authzed/authzed-go/workflows/build/badge.svg)](https://github.com/authzed/authzed-go/actions)
+[![Discord Server](https://img.shields.io/discord/844600078504951838?color=7289da&logo=discord "Discord Server")](https://discord.gg/jTysUaxXzM)
+[![Twitter](https://img.shields.io/twitter/follow/authzed?color=%23179CF0&logo=twitter&style=flat-square)](https://twitter.com/authzed)
 
-## Example (v0 API)
+This repository houses the Go client library for Authzed.
 
-This example demonstrates initializing a client and making a [Check request] to an existing [Namespace].
+The library maintains various versions the Authzed gRPC APIs.
+You can find more info on each API on the [Authzed API reference documentation].
+Additionally, Protobuf API documentation can be found on the [Buf Registry Authzed API repository].
 
-A more full example can be found in [v0/examples].
+Supported API versions:
+- v1alpha1
+- v0
 
-[Check request]:https://docs.authzed.com/concept/check
-[Namespace]: https://docs.authzed.com/concept/namespaces
-[v0/examples]: /v0/examples
+[Authzed API Reference documentation]: https://docs.authzed.com/reference/api
+[Buf Registry Authzed API repository]: https://buf.build/authzed/api/docs/main
 
-```go
-package main
+## Installation
 
-import (
-	"context"
-	"log"
+If you're using a modern version of [Go], run the following command:
 
-	"github.com/authzed/authzed-go/v0"
-	"github.com/authzed/authzed-go/proto/authzed/api/v0"
-)
-
-func main() {
-	// Create an Authzed client
-	client, err := authzed.NewClient(
-		"grpc.authzed.com:443",
-		authzed.Token("t_your_token_here_1234567deadbeef"),
-		authzed.SystemCerts(authzed.VerifyCA),
-	)
-	if err != nil {
-		log.Fatalf("unable to initialize client: %s", err)
-	}
-
-	// Check if User #26 has read access to note #47
-	resp, err := client.Check(context.Background(), &v0.CheckRequest{
-		TestUserset: &v0.ObjectAndRelation{
-			Namespace: "mynoteapp/note", // Object Type
-			ObjectId:  "47",             // Unique id for a object being accessed
-			Relation:  "reader"          // Relationship required for access
-		},
-		User: &v0.User{UserOneof: &v0.User_Userset{Userset: &v0.ObjectAndRelation{
-			Namespace: "mynoteapp/user", // User Type
-			ObjectId: "26",              // Unique id for a user accessing the object
-			Relation: "...",
-		}}},
-	})
-	if err != nil {
-		log.Fatalf("unable to run check request: %s", err)
-	}
-
-	fmt.Println(resp.GetMembership() == v0.CheckResponse_MEMBER)
-	// Outputs:
-	// true
-}
+```sh
+$ go get github.com/authzed/authzed-go
 ```
+
+[Go]: https://golang.org/dl/
+
+## Examples
+
+You can follow the [Protecting Your First App] guide to see the latest best practice for using Authzed client libraries.
+
+If you're interested in examples of a specific version of the API, they can be found in their respective folders in the [examples directory].
+
+[Protecting Your First App]: https://docs.authzed.com/guides/first-app
+[examples directory]: /examples
