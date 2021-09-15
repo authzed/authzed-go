@@ -1,3 +1,4 @@
+//go:build TODO
 // +build TODO
 
 package authzed
