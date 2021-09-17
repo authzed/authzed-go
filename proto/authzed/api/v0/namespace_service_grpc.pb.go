@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type NamespaceServiceClient interface {
 	ReadConfig(ctx context.Context, in *ReadConfigRequest, opts ...grpc.CallOption) (*ReadConfigResponse, error)
 	WriteConfig(ctx context.Context, in *WriteConfigRequest, opts ...grpc.CallOption) (*WriteConfigResponse, error)
+	DeleteConfigs(ctx context.Context, in *DeleteConfigsRequest, opts ...grpc.CallOption) (*DeleteConfigsResponse, error)
 }
 
 type namespaceServiceClient struct {
@@ -48,12 +49,22 @@ func (c *namespaceServiceClient) WriteConfig(ctx context.Context, in *WriteConfi
 	return out, nil
 }
 
+func (c *namespaceServiceClient) DeleteConfigs(ctx context.Context, in *DeleteConfigsRequest, opts ...grpc.CallOption) (*DeleteConfigsResponse, error) {
+	out := new(DeleteConfigsResponse)
+	err := c.cc.Invoke(ctx, "/authzed.api.v0.NamespaceService/DeleteConfigs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NamespaceServiceServer is the server API for NamespaceService service.
 // All implementations must embed UnimplementedNamespaceServiceServer
 // for forward compatibility
 type NamespaceServiceServer interface {
 	ReadConfig(context.Context, *ReadConfigRequest) (*ReadConfigResponse, error)
 	WriteConfig(context.Context, *WriteConfigRequest) (*WriteConfigResponse, error)
+	DeleteConfigs(context.Context, *DeleteConfigsRequest) (*DeleteConfigsResponse, error)
 	mustEmbedUnimplementedNamespaceServiceServer()
 }
 
@@ -66,6 +77,9 @@ func (UnimplementedNamespaceServiceServer) ReadConfig(context.Context, *ReadConf
 }
 func (UnimplementedNamespaceServiceServer) WriteConfig(context.Context, *WriteConfigRequest) (*WriteConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WriteConfig not implemented")
+}
+func (UnimplementedNamespaceServiceServer) DeleteConfigs(context.Context, *DeleteConfigsRequest) (*DeleteConfigsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteConfigs not implemented")
 }
 func (UnimplementedNamespaceServiceServer) mustEmbedUnimplementedNamespaceServiceServer() {}
 
@@ -116,6 +130,24 @@ func _NamespaceService_WriteConfig_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NamespaceService_DeleteConfigs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteConfigsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NamespaceServiceServer).DeleteConfigs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/authzed.api.v0.NamespaceService/DeleteConfigs",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NamespaceServiceServer).DeleteConfigs(ctx, req.(*DeleteConfigsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NamespaceService_ServiceDesc is the grpc.ServiceDesc for NamespaceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,6 +162,10 @@ var NamespaceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "WriteConfig",
 			Handler:    _NamespaceService_WriteConfig_Handler,
+		},
+		{
+			MethodName: "DeleteConfigs",
+			Handler:    _NamespaceService_DeleteConfigs_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
