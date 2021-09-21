@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	document_ns = "yourtenant/document"
-	user_ns     = "yourtenant/user"
+	documentNS = "yourtenant/document"
+	userNS     = "yourtenant/user"
 )
 
 func main() {
@@ -25,10 +25,10 @@ func main() {
 	}
 
 	// Create some objects that will be protected by Authzed.
-	aDoc := createObject(document_ns, "doc1")
-	anOwner := createObject(user_ns, "theowner")("...")
-	anEditor := createObject(user_ns, "userwhocanedit")("...")
-	aViewer := createObject(user_ns, "viewonlyuser")("...")
+	aDoc := createObject(documentNS, "doc1")
+	anOwner := createObject(userNS, "theowner")("...")
+	anEditor := createObject(userNS, "userwhocanedit")("...")
+	aViewer := createObject(userNS, "viewonlyuser")("...")
 
 	// Create some tuples that represent roles granted between users and objects.
 	resp, err := client.Write(context.Background(), &v0.WriteRequest{
@@ -53,7 +53,7 @@ func main() {
 	whenPermsChanged := resp.Revision
 
 	// Run some permission checks on the written data.
-	aNobody := createObject(user_ns, "randomnobody")("...")
+	aNobody := createObject(userNS, "randomnobody")("...")
 	expected := []checkData{
 		{permission: aDoc("read"), user: anOwner, hasAccess: true},
 		{permission: aDoc("write"), user: anOwner, hasAccess: true},

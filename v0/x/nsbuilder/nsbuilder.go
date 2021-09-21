@@ -62,7 +62,7 @@ func This() *v0.SetOperation_Child {
 	}
 }
 
-// ComputesUserset creates a child for a set operation that follows a relation on the given starting object.
+// ComputedUserset creates a child for a set operation that follows a relation on the given starting object.
 func ComputedUserset(relation string) *v0.SetOperation_Child {
 	return &v0.SetOperation_Child{
 		ChildType: &v0.SetOperation_Child_ComputedUserset{

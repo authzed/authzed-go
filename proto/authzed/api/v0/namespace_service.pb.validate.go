@@ -387,3 +387,175 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = WriteConfigResponseValidationError{}
+
+// Validate checks the field values on DeleteConfigsRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *DeleteConfigsRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if len(m.GetNamespaces()) < 1 {
+		return DeleteConfigsRequestValidationError{
+			field:  "Namespaces",
+			reason: "value must contain at least 1 item(s)",
+		}
+	}
+
+	for idx, item := range m.GetNamespaces() {
+		_, _ = idx, item
+
+		if len(item) > 128 {
+			return DeleteConfigsRequestValidationError{
+				field:  fmt.Sprintf("Namespaces[%v]", idx),
+				reason: "value length must be at most 128 bytes",
+			}
+		}
+
+		if !_DeleteConfigsRequest_Namespaces_Pattern.MatchString(item) {
+			return DeleteConfigsRequestValidationError{
+				field:  fmt.Sprintf("Namespaces[%v]", idx),
+				reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// DeleteConfigsRequestValidationError is the validation error returned by
+// DeleteConfigsRequest.Validate if the designated constraints aren't met.
+type DeleteConfigsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeleteConfigsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeleteConfigsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeleteConfigsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeleteConfigsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeleteConfigsRequestValidationError) ErrorName() string {
+	return "DeleteConfigsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e DeleteConfigsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeleteConfigsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeleteConfigsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeleteConfigsRequestValidationError{}
+
+var _DeleteConfigsRequest_Namespaces_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+
+// Validate checks the field values on DeleteConfigsResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *DeleteConfigsResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if v, ok := interface{}(m.GetRevision()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return DeleteConfigsResponseValidationError{
+				field:  "Revision",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	return nil
+}
+
+// DeleteConfigsResponseValidationError is the validation error returned by
+// DeleteConfigsResponse.Validate if the designated constraints aren't met.
+type DeleteConfigsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeleteConfigsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeleteConfigsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeleteConfigsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeleteConfigsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeleteConfigsResponseValidationError) ErrorName() string {
+	return "DeleteConfigsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e DeleteConfigsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeleteConfigsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeleteConfigsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeleteConfigsResponseValidationError{}
