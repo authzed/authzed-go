@@ -152,20 +152,45 @@ func (m *RelationshipFilter) Validate() error {
 		return nil
 	}
 
-	if m.GetResourceFilter() == nil {
+	if len(m.GetResourceType()) > 128 {
 		return RelationshipFilterValidationError{
-			field:  "ResourceFilter",
-			reason: "value is required",
+			field:  "ResourceType",
+			reason: "value length must be at most 128 bytes",
 		}
 	}
 
-	if v, ok := interface{}(m.GetResourceFilter()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return RelationshipFilterValidationError{
-				field:  "ResourceFilter",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
+	if !_RelationshipFilter_ResourceType_Pattern.MatchString(m.GetResourceType()) {
+		return RelationshipFilterValidationError{
+			field:  "ResourceType",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+		}
+	}
+
+	if len(m.GetOptionalResourceId()) > 64 {
+		return RelationshipFilterValidationError{
+			field:  "OptionalResourceId",
+			reason: "value length must be at most 64 bytes",
+		}
+	}
+
+	if !_RelationshipFilter_OptionalResourceId_Pattern.MatchString(m.GetOptionalResourceId()) {
+		return RelationshipFilterValidationError{
+			field:  "OptionalResourceId",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9])?$\"",
+		}
+	}
+
+	if len(m.GetOptionalRelation()) > 64 {
+		return RelationshipFilterValidationError{
+			field:  "OptionalRelation",
+			reason: "value length must be at most 64 bytes",
+		}
+	}
+
+	if !_RelationshipFilter_OptionalRelation_Pattern.MatchString(m.GetOptionalRelation()) {
+		return RelationshipFilterValidationError{
+			field:  "OptionalRelation",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9])?$\"",
 		}
 	}
 
@@ -238,62 +263,64 @@ var _ interface {
 	ErrorName() string
 } = RelationshipFilterValidationError{}
 
-// Validate checks the field values on ObjectFilter with the rules defined in
+var _RelationshipFilter_ResourceType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+
+var _RelationshipFilter_OptionalResourceId_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
+
+var _RelationshipFilter_OptionalRelation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
+
+// Validate checks the field values on SubjectFilter with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
 // is returned.
-func (m *ObjectFilter) Validate() error {
+func (m *SubjectFilter) Validate() error {
 	if m == nil {
 		return nil
 	}
 
-	if len(m.GetObjectType()) > 128 {
-		return ObjectFilterValidationError{
-			field:  "ObjectType",
+	if len(m.GetSubjectType()) > 128 {
+		return SubjectFilterValidationError{
+			field:  "SubjectType",
 			reason: "value length must be at most 128 bytes",
 		}
 	}
 
-	if !_ObjectFilter_ObjectType_Pattern.MatchString(m.GetObjectType()) {
-		return ObjectFilterValidationError{
-			field:  "ObjectType",
+	if !_SubjectFilter_SubjectType_Pattern.MatchString(m.GetSubjectType()) {
+		return SubjectFilterValidationError{
+			field:  "SubjectType",
 			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
 		}
 	}
 
-	if len(m.GetOptionalObjectId()) > 64 {
-		return ObjectFilterValidationError{
-			field:  "OptionalObjectId",
+	if len(m.GetOptionalSubjectId()) > 64 {
+		return SubjectFilterValidationError{
+			field:  "OptionalSubjectId",
 			reason: "value length must be at most 64 bytes",
 		}
 	}
 
-	if !_ObjectFilter_OptionalObjectId_Pattern.MatchString(m.GetOptionalObjectId()) {
-		return ObjectFilterValidationError{
-			field:  "OptionalObjectId",
+	if !_SubjectFilter_OptionalSubjectId_Pattern.MatchString(m.GetOptionalSubjectId()) {
+		return SubjectFilterValidationError{
+			field:  "OptionalSubjectId",
 			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9])?$\"",
 		}
 	}
 
-	if len(m.GetOptionalRelation()) > 64 {
-		return ObjectFilterValidationError{
-			field:  "OptionalRelation",
-			reason: "value length must be at most 64 bytes",
-		}
-	}
-
-	if !_ObjectFilter_OptionalRelation_Pattern.MatchString(m.GetOptionalRelation()) {
-		return ObjectFilterValidationError{
-			field:  "OptionalRelation",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9])?$\"",
+	if v, ok := interface{}(m.GetOptionalRelation()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return SubjectFilterValidationError{
+				field:  "OptionalRelation",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
 		}
 	}
 
 	return nil
 }
 
-// ObjectFilterValidationError is the validation error returned by
-// ObjectFilter.Validate if the designated constraints aren't met.
-type ObjectFilterValidationError struct {
+// SubjectFilterValidationError is the validation error returned by
+// SubjectFilter.Validate if the designated constraints aren't met.
+type SubjectFilterValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -301,22 +328,22 @@ type ObjectFilterValidationError struct {
 }
 
 // Field function returns field value.
-func (e ObjectFilterValidationError) Field() string { return e.field }
+func (e SubjectFilterValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ObjectFilterValidationError) Reason() string { return e.reason }
+func (e SubjectFilterValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ObjectFilterValidationError) Cause() error { return e.cause }
+func (e SubjectFilterValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ObjectFilterValidationError) Key() bool { return e.key }
+func (e SubjectFilterValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ObjectFilterValidationError) ErrorName() string { return "ObjectFilterValidationError" }
+func (e SubjectFilterValidationError) ErrorName() string { return "SubjectFilterValidationError" }
 
 // Error satisfies the builtin error interface
-func (e ObjectFilterValidationError) Error() string {
+func (e SubjectFilterValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -328,14 +355,14 @@ func (e ObjectFilterValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sObjectFilter.%s: %s%s",
+		"invalid %sSubjectFilter.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ObjectFilterValidationError{}
+var _ error = SubjectFilterValidationError{}
 
 var _ interface {
 	Field() string
@@ -343,13 +370,11 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ObjectFilterValidationError{}
+} = SubjectFilterValidationError{}
 
-var _ObjectFilter_ObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _SubjectFilter_SubjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
 
-var _ObjectFilter_OptionalObjectId_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
-
-var _ObjectFilter_OptionalRelation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
+var _SubjectFilter_OptionalSubjectId_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
 
 // Validate checks the field values on ReadRelationshipsRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -1590,3 +1615,87 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = LookupResourcesResponseValidationError{}
+
+// Validate checks the field values on SubjectFilter_RelationFilter with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *SubjectFilter_RelationFilter) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if len(m.GetRelation()) > 64 {
+		return SubjectFilter_RelationFilterValidationError{
+			field:  "Relation",
+			reason: "value length must be at most 64 bytes",
+		}
+	}
+
+	if !_SubjectFilter_RelationFilter_Relation_Pattern.MatchString(m.GetRelation()) {
+		return SubjectFilter_RelationFilterValidationError{
+			field:  "Relation",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9])?$\"",
+		}
+	}
+
+	return nil
+}
+
+// SubjectFilter_RelationFilterValidationError is the validation error returned
+// by SubjectFilter_RelationFilter.Validate if the designated constraints
+// aren't met.
+type SubjectFilter_RelationFilterValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SubjectFilter_RelationFilterValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SubjectFilter_RelationFilterValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SubjectFilter_RelationFilterValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SubjectFilter_RelationFilterValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SubjectFilter_RelationFilterValidationError) ErrorName() string {
+	return "SubjectFilter_RelationFilterValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SubjectFilter_RelationFilterValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSubjectFilter_RelationFilter.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SubjectFilter_RelationFilterValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SubjectFilter_RelationFilterValidationError{}
+
+var _SubjectFilter_RelationFilter_Relation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
