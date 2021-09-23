@@ -85,6 +85,12 @@ func (m *Consistency) Validate() error {
 			}
 		}
 
+	default:
+		return ConsistencyValidationError{
+			field:  "Requirement",
+			reason: "value is required",
+		}
+
 	}
 
 	return nil
@@ -176,7 +182,7 @@ func (m *RelationshipFilter) Validate() error {
 	if !_RelationshipFilter_OptionalResourceId_Pattern.MatchString(m.GetOptionalResourceId()) {
 		return RelationshipFilterValidationError{
 			field:  "OptionalResourceId",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9])?$\"",
+			reason: "value does not match regex pattern \"^([a-zA-Z0-9_][a-zA-Z0-9/_-]{0,63})?$\"",
 		}
 	}
 
@@ -265,7 +271,7 @@ var _ interface {
 
 var _RelationshipFilter_ResourceType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
 
-var _RelationshipFilter_OptionalResourceId_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
+var _RelationshipFilter_OptionalResourceId_Pattern = regexp.MustCompile("^([a-zA-Z0-9_][a-zA-Z0-9/_-]{0,63})?$")
 
 var _RelationshipFilter_OptionalRelation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
 
@@ -301,7 +307,7 @@ func (m *SubjectFilter) Validate() error {
 	if !_SubjectFilter_OptionalSubjectId_Pattern.MatchString(m.GetOptionalSubjectId()) {
 		return SubjectFilterValidationError{
 			field:  "OptionalSubjectId",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9])?$\"",
+			reason: "value does not match regex pattern \"^([a-zA-Z0-9_][a-zA-Z0-9/_-]{0,63})?$\"",
 		}
 	}
 
@@ -374,7 +380,7 @@ var _ interface {
 
 var _SubjectFilter_SubjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
 
-var _SubjectFilter_OptionalSubjectId_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
+var _SubjectFilter_OptionalSubjectId_Pattern = regexp.MustCompile("^([a-zA-Z0-9_][a-zA-Z0-9/_-]{0,63})?$")
 
 // Validate checks the field values on ReadRelationshipsRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -565,7 +571,19 @@ func (m *Precondition) Validate() error {
 		return nil
 	}
 
-	// no validation rules for Operation
+	if _, ok := Precondition_Operation_name[int32(m.GetOperation())]; !ok {
+		return PreconditionValidationError{
+			field:  "Operation",
+			reason: "value must be one of the defined enum values",
+		}
+	}
+
+	if m.GetFilter() == nil {
+		return PreconditionValidationError{
+			field:  "Filter",
+			reason: "value is required",
+		}
+	}
 
 	if v, ok := interface{}(m.GetFilter()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {

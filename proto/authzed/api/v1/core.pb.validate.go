@@ -68,7 +68,7 @@ func (m *Relationship) Validate() error {
 	if !_Relationship_Relation_Pattern.MatchString(m.GetRelation()) {
 		return RelationshipValidationError{
 			field:  "Relation",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9])?$\"",
+			reason: "value does not match regex pattern \"^[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
 		}
 	}
 
@@ -146,7 +146,7 @@ var _ interface {
 	ErrorName() string
 } = RelationshipValidationError{}
 
-var _Relationship_Relation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
+var _Relationship_Relation_Pattern = regexp.MustCompile("^[a-z][a-z0-9_]{2,62}[a-z0-9]$")
 
 // Validate checks the field values on SubjectReference with the rules defined
 // in the proto definition for this message. If any rules are violated, an
@@ -542,6 +542,12 @@ func (m *PermissionRelationshipTree) Validate() error {
 					cause:  err,
 				}
 			}
+		}
+
+	default:
+		return PermissionRelationshipTreeValidationError{
+			field:  "TreeType",
+			reason: "value is required",
 		}
 
 	}
