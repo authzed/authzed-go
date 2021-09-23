@@ -37,8 +37,8 @@ var namespaces = []struct {
 	{strings.Repeat("/", 4), false},
 	{strings.Repeat("\\", 4), false},
 	{strings.Repeat("f", 64), true},
-	{fmt.Sprintf("%s/%s", strings.Repeat("f", 63), strings.Repeat("f", 63)), true},
-	{fmt.Sprintf("%s/%s", strings.Repeat("f", 64), strings.Repeat("f", 64)), false}, // This doesn't match the code
+	{fmt.Sprintf("%s/%s", strings.Repeat("f", 63), strings.Repeat("f", 64)), true},
+	{fmt.Sprintf("%s/%s", strings.Repeat("f", 64), strings.Repeat("f", 64)), false},
 	{fmt.Sprintf("%s/%s", strings.Repeat("f", 65), strings.Repeat("f", 64)), false},
 	{fmt.Sprintf("%s/%s", strings.Repeat("f", 64), strings.Repeat("f", 65)), false},
 	{strings.Repeat("f", 65), false},
@@ -54,11 +54,12 @@ var objectIDs = []struct {
 	{"A-A-A", true},
 	{"123e4567-e89b-12d3-a456-426614174000", true},
 	{strings.Repeat("f", 64), true},
+	{strings.Repeat("f", 128), true},
 	{"", false},
 	{"  ", false},
 	{"-", false},
 	{strings.Repeat("\u0394", 4), false},
-	{strings.Repeat("f", 65), false},
+	{strings.Repeat("f", 129), false},
 }
 
 type relationValidity int
