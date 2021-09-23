@@ -6,6 +6,7 @@ require (
 	github.com/authzed/grpcutil v0.0.0-20210913124023-cad23ae5a9e8
 	github.com/envoyproxy/protoc-gen-validate v0.6.1
 	github.com/jzelinskie/stringz v0.0.0-20210414224931-d6a8ce844a70
+	github.com/stretchr/testify v1.7.0
 	golang.org/x/net v0.0.0-20210913180222-943fd674d43e // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/sys v0.0.0-20210910150752-751e447fb3d0 // indirect
