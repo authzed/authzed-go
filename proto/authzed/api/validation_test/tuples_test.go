@@ -10,6 +10,17 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const (
+	minTenantLength    = 4
+	minNamespaceLength = 4
+	minRelationLength  = 4
+
+	maxTenantLength    = 63
+	maxNamespaceLength = 64
+	maxObjectIDLength  = 128
+	maxRelationLength  = 64
+)
+
 var namespaces = []struct {
 	name  string
 	valid bool
@@ -28,20 +39,19 @@ var namespaces = []struct {
 	{"foo/b", false},
 	{"Foo/bar", false},
 	{"foo/bar/baz", false},
-	{strings.Repeat("f", 3), false},
-	{strings.Repeat("f", 4), true},
-	{strings.Repeat("\u0394", 4), false},
-	{strings.Repeat("\n", 4), false},
-	{strings.Repeat("_", 4), false},
-	{strings.Repeat("-", 4), false},
-	{strings.Repeat("/", 4), false},
-	{strings.Repeat("\\", 4), false},
-	{strings.Repeat("f", 64), true},
-	{fmt.Sprintf("%s/%s", strings.Repeat("f", 63), strings.Repeat("f", 64)), true},
-	{fmt.Sprintf("%s/%s", strings.Repeat("f", 64), strings.Repeat("f", 64)), false},
-	{fmt.Sprintf("%s/%s", strings.Repeat("f", 65), strings.Repeat("f", 64)), false},
-	{fmt.Sprintf("%s/%s", strings.Repeat("f", 64), strings.Repeat("f", 65)), false},
-	{strings.Repeat("f", 65), false},
+	{strings.Repeat("f", minNamespaceLength-1), false},
+	{strings.Repeat("f", minNamespaceLength), true},
+	{strings.Repeat("\u0394", minNamespaceLength), false},
+	{strings.Repeat("\n", minNamespaceLength), false},
+	{strings.Repeat("_", minNamespaceLength), false},
+	{strings.Repeat("-", minNamespaceLength), false},
+	{strings.Repeat("/", minNamespaceLength), false},
+	{strings.Repeat("\\", minNamespaceLength), false},
+	{strings.Repeat("f", maxNamespaceLength), true},
+	{fmt.Sprintf("%s/%s", strings.Repeat("f", maxTenantLength), strings.Repeat("f", maxNamespaceLength)), true},
+	{fmt.Sprintf("%s/%s", strings.Repeat("f", maxTenantLength+1), strings.Repeat("f", maxNamespaceLength)), false},
+	{fmt.Sprintf("%s/%s", strings.Repeat("f", maxTenantLength), strings.Repeat("f", maxNamespaceLength+1)), false},
+	{strings.Repeat("f", maxNamespaceLength+1), false},
 }
 
 var objectIDs = []struct {
@@ -54,12 +64,12 @@ var objectIDs = []struct {
 	{"A-A-A", true},
 	{"123e4567-e89b-12d3-a456-426614174000", true},
 	{strings.Repeat("f", 64), true},
-	{strings.Repeat("f", 128), true},
+	{strings.Repeat("f", maxObjectIDLength), true},
 	{"", false},
 	{"  ", false},
 	{"-", false},
 	{strings.Repeat("\u0394", 4), false},
-	{strings.Repeat("f", 129), false},
+	{strings.Repeat("f", maxObjectIDLength+1), false},
 }
 
 type relationValidity int
@@ -107,16 +117,16 @@ var relations = []relationEntry{
 	{"foo/b", alwaysInvalid},
 	{"Foo/bar", alwaysInvalid},
 	{"foo/bar/baz", alwaysInvalid},
-	{strings.Repeat("f", 3), alwaysInvalid},
-	{strings.Repeat("f", 4), alwaysValid},
-	{strings.Repeat("\u0394", 4), alwaysInvalid},
-	{strings.Repeat("\n", 4), alwaysInvalid},
-	{strings.Repeat("_", 4), alwaysInvalid},
-	{strings.Repeat("-", 4), alwaysInvalid},
-	{strings.Repeat("/", 4), alwaysInvalid},
-	{strings.Repeat("\\", 4), alwaysInvalid},
-	{strings.Repeat("f", 64), alwaysValid},
-	{strings.Repeat("f", 65), alwaysInvalid},
+	{strings.Repeat("f", minRelationLength-1), alwaysInvalid},
+	{strings.Repeat("f", minRelationLength), alwaysValid},
+	{strings.Repeat("\u0394", minRelationLength), alwaysInvalid},
+	{strings.Repeat("\n", minRelationLength), alwaysInvalid},
+	{strings.Repeat("_", minRelationLength), alwaysInvalid},
+	{strings.Repeat("-", minRelationLength), alwaysInvalid},
+	{strings.Repeat("/", minRelationLength), alwaysInvalid},
+	{strings.Repeat("\\", minRelationLength), alwaysInvalid},
+	{strings.Repeat("f", maxRelationLength), alwaysValid},
+	{strings.Repeat("f", maxRelationLength+1), alwaysInvalid},
 }
 
 func TestV0CoreObjectValidity(t *testing.T) {
