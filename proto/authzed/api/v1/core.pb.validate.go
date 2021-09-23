@@ -257,21 +257,21 @@ func (m *ObjectReference) Validate() error {
 	if !_ObjectReference_ObjectType_Pattern.MatchString(m.GetObjectType()) {
 		return ObjectReferenceValidationError{
 			field:  "ObjectType",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
 		}
 	}
 
-	if len(m.GetObjectId()) > 64 {
+	if len(m.GetObjectId()) > 128 {
 		return ObjectReferenceValidationError{
 			field:  "ObjectId",
-			reason: "value length must be at most 64 bytes",
+			reason: "value length must be at most 128 bytes",
 		}
 	}
 
 	if !_ObjectReference_ObjectId_Pattern.MatchString(m.GetObjectId()) {
 		return ObjectReferenceValidationError{
 			field:  "ObjectId",
-			reason: "value does not match regex pattern \"^[a-zA-Z0-9_][a-zA-Z0-9/_-]{0,63}$\"",
+			reason: "value does not match regex pattern \"^[a-zA-Z0-9_][a-zA-Z0-9/_-]{0,127}$\"",
 		}
 	}
 
@@ -332,9 +332,9 @@ var _ interface {
 	ErrorName() string
 } = ObjectReferenceValidationError{}
 
-var _ObjectReference_ObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _ObjectReference_ObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
 
-var _ObjectReference_ObjectId_Pattern = regexp.MustCompile("^[a-zA-Z0-9_][a-zA-Z0-9/_-]{0,63}$")
+var _ObjectReference_ObjectId_Pattern = regexp.MustCompile("^[a-zA-Z0-9_][a-zA-Z0-9/_-]{0,127}$")
 
 // Validate checks the field values on ZedToken with the rules defined in the
 // proto definition for this message. If any rules are violated, an error is returned.

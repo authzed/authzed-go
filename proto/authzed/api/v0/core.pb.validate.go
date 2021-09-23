@@ -150,21 +150,21 @@ func (m *ObjectAndRelation) Validate() error {
 	if !_ObjectAndRelation_Namespace_Pattern.MatchString(m.GetNamespace()) {
 		return ObjectAndRelationValidationError{
 			field:  "Namespace",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
 		}
 	}
 
-	if len(m.GetObjectId()) > 64 {
+	if len(m.GetObjectId()) > 128 {
 		return ObjectAndRelationValidationError{
 			field:  "ObjectId",
-			reason: "value length must be at most 64 bytes",
+			reason: "value length must be at most 128 bytes",
 		}
 	}
 
 	if !_ObjectAndRelation_ObjectId_Pattern.MatchString(m.GetObjectId()) {
 		return ObjectAndRelationValidationError{
 			field:  "ObjectId",
-			reason: "value does not match regex pattern \"^[a-zA-Z0-9_][a-zA-Z0-9/_-]{0,63}$\"",
+			reason: "value does not match regex pattern \"^[a-zA-Z0-9_][a-zA-Z0-9/_-]{0,127}$\"",
 		}
 	}
 
@@ -241,9 +241,9 @@ var _ interface {
 	ErrorName() string
 } = ObjectAndRelationValidationError{}
 
-var _ObjectAndRelation_Namespace_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _ObjectAndRelation_Namespace_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
 
-var _ObjectAndRelation_ObjectId_Pattern = regexp.MustCompile("^[a-zA-Z0-9_][a-zA-Z0-9/_-]{0,63}$")
+var _ObjectAndRelation_ObjectId_Pattern = regexp.MustCompile("^[a-zA-Z0-9_][a-zA-Z0-9/_-]{0,127}$")
 
 var _ObjectAndRelation_Relation_Pattern = regexp.MustCompile("^(\\.\\.\\.|[a-z][a-z0-9_]{2,62}[a-z0-9])$")
 
@@ -265,7 +265,7 @@ func (m *RelationReference) Validate() error {
 	if !_RelationReference_Namespace_Pattern.MatchString(m.GetNamespace()) {
 		return RelationReferenceValidationError{
 			field:  "Namespace",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
 		}
 	}
 
@@ -342,7 +342,7 @@ var _ interface {
 	ErrorName() string
 } = RelationReferenceValidationError{}
 
-var _RelationReference_Namespace_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _RelationReference_Namespace_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
 
 var _RelationReference_Relation_Pattern = regexp.MustCompile("^(\\.\\.\\.|[a-z][a-z0-9_]{2,62}[a-z0-9])$")
 
