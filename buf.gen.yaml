@@ -1,12 +1,18 @@
-#!/usr/bin/env -S buf generate buf.build/authzed/api:7a18d413329a4f4fb0c4237afb640e8e --template
-version: "v1beta1"
+#!/usr/bin/env -S buf generate buf.build/authzed/api:67357f5a752f8e985833adc0944b46a2c1e2083b --template
+version: "v1"
 plugins:
-  - name: "go"
+  - remote: "buf.build/library/plugins/go:v1.27.1-1"
     out: "proto"
     opt: "paths=source_relative"
-  - name: "go-grpc"
+  - remote: "buf.build/library/plugins/go-grpc:v1.1.0-2"
     out: "proto"
     opt: "paths=source_relative"
   - name: "validate"
     out: "proto"
     opt: "paths=source_relative,lang=go"
+  - remote: "buf.build/grpc-ecosystem/plugins/grpc-gateway:v2.6.0-1"
+    out: "proto"
+    opt: "paths=source_relative"
+  - remote: "buf.build/grpc-ecosystem/plugins/openapiv2:v2.6.0-1"
+    out: "proto"
+    opt: "allow_merge=true"
