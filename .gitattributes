@@ -1,2 +1,3 @@
 *.pb.go -diff linguist-generated=true
+*.pb.*.go -diff linguist-generated=true
 go.sum -diff linguist-generated=true
