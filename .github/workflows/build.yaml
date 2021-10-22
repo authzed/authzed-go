@@ -2,10 +2,10 @@ name: "build"
 on:
   push:
     branches:
-    - "!dependabot/*"
-    - "*"
+    - "master" 
   pull_request:
     branches:
+    - "!dependabot/*"
     - "*"
 jobs:
   lint: 
