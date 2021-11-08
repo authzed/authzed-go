@@ -511,7 +511,7 @@
     "apiv1WatchRequest": {
       "type": "object",
       "properties": {
-        "objectTypes": {
+        "optionalObjectTypes": {
           "type": "array",
           "items": {
             "type": "string"
@@ -561,6 +561,10 @@
             "type": "string"
           },
           "description": "The Object Definitions that were requested."
+        },
+        "computedDefinitionsRevision": {
+          "type": "string",
+          "description": "The computed revision of the returned object definitions."
         }
       },
       "description": "ReadSchemaResponse is the resulting data after having read the Object\nDefinitions from a Schema."
@@ -574,6 +578,10 @@
             "type": "string"
           },
           "description": "The names of the Object Definitions that were written."
+        },
+        "computedDefinitionsRevision": {
+          "type": "string",
+          "description": "The computed revision of the written object definitions."
         }
       },
       "description": "WriteSchemaResponse is the resulting data after having written a Schema to\na Permissions System."

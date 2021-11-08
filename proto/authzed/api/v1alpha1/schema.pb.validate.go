@@ -129,6 +129,8 @@ func (m *ReadSchemaResponse) Validate() error {
 		return nil
 	}
 
+	// no validation rules for ComputedDefinitionsRevision
+
 	return nil
 }
 
@@ -203,6 +205,8 @@ func (m *WriteSchemaRequest) Validate() error {
 		}
 	}
 
+	// no validation rules for OptionalDefinitionsRevisionPrecondition
+
 	return nil
 }
 
@@ -269,6 +273,8 @@ func (m *WriteSchemaResponse) Validate() error {
 	if m == nil {
 		return nil
 	}
+
+	// no validation rules for ComputedDefinitionsRevision
 
 	return nil
 }
