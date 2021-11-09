@@ -41,26 +41,19 @@ func (m *WatchRequest) Validate() error {
 		return nil
 	}
 
-	if len(m.GetObjectTypes()) < 1 {
-		return WatchRequestValidationError{
-			field:  "ObjectTypes",
-			reason: "value must contain at least 1 item(s)",
-		}
-	}
-
-	for idx, item := range m.GetObjectTypes() {
+	for idx, item := range m.GetOptionalObjectTypes() {
 		_, _ = idx, item
 
 		if len(item) > 128 {
 			return WatchRequestValidationError{
-				field:  fmt.Sprintf("ObjectTypes[%v]", idx),
+				field:  fmt.Sprintf("OptionalObjectTypes[%v]", idx),
 				reason: "value length must be at most 128 bytes",
 			}
 		}
 
-		if !_WatchRequest_ObjectTypes_Pattern.MatchString(item) {
+		if !_WatchRequest_OptionalObjectTypes_Pattern.MatchString(item) {
 			return WatchRequestValidationError{
-				field:  fmt.Sprintf("ObjectTypes[%v]", idx),
+				field:  fmt.Sprintf("OptionalObjectTypes[%v]", idx),
 				reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
 			}
 		}
@@ -134,7 +127,7 @@ var _ interface {
 	ErrorName() string
 } = WatchRequestValidationError{}
 
-var _WatchRequest_ObjectTypes_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _WatchRequest_OptionalObjectTypes_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
 
 // Validate checks the field values on WatchResponse with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
