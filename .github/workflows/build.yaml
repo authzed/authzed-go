@@ -18,9 +18,7 @@ jobs:
     - name: "Install linting tools"
       run: |
         # This is done before checking out, as to not modify go.mod
-        go install mvdan.cc/gofumpt/gofumports@latest
-        go install github.com/mgechev/revive@latest
-        go install golang.org/x/tools/cmd/stringer@latest
+        go install mvdan.cc/gofumpt/gofumports@v0.1.1
     - uses: "actions/checkout@v2"
     - name: "Go Mod Tidy"
       run: "go mod tidy && bash -c '[ $(git status --porcelain | tee /dev/fd/2 | wc -c) -eq 0 ]'"
@@ -32,8 +30,12 @@ jobs:
           echo "${GOFUMPT_OUTPUT}"
           exit 1
         fi
-    - name: "Linting (revive)"
-      run: "bash -c '[ $(find . -iname '*.go' -type f | grep -v 'pb.*.go' | xargs revive | tee /dev/fd/2 | wc -c) -eq 0 ]'"
+    - uses: "golangci/golangci-lint-action@v2"
+      with:
+        version: "v1.43"
+        skip-go-installation: true
+        skip-pkg-cache: true
+        skip-build-cache: false
 
   test:
     name: "Test"

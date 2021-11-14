@@ -1,9 +1,10 @@
 package authzed
 
 import (
-	v1 "github.com/authzed/authzed-go/proto/authzed/api/v1"
 	"github.com/jzelinskie/stringz"
 	"google.golang.org/grpc"
+
+	v1 "github.com/authzed/authzed-go/proto/authzed/api/v1"
 )
 
 // Client represents an open connection to Authzed.
