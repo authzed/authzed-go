@@ -13,6 +13,7 @@ import (
 type Client struct {
 	v1.SchemaServiceClient
 	v1.PermissionsServiceClient
+	v1.WatchServiceClient
 }
 
 // NewClient initializes a brand new client for interacting with Authzed.
@@ -28,5 +29,6 @@ func NewClient(endpoint string, opts ...grpc.DialOption) (*Client, error) {
 	return &Client{
 		v1.NewSchemaServiceClient(conn),
 		v1.NewPermissionsServiceClient(conn),
+		v1.NewWatchServiceClient(conn),
 	}, nil
 }
