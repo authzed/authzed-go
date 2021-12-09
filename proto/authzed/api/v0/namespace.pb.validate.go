@@ -425,6 +425,121 @@ var _ interface {
 	ErrorName() string
 } = TypeInformationValidationError{}
 
+// Validate checks the field values on AllowedRelation with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *AllowedRelation) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if len(m.GetNamespace()) > 128 {
+		return AllowedRelationValidationError{
+			field:  "Namespace",
+			reason: "value length must be at most 128 bytes",
+		}
+	}
+
+	if !_AllowedRelation_Namespace_Pattern.MatchString(m.GetNamespace()) {
+		return AllowedRelationValidationError{
+			field:  "Namespace",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+		}
+	}
+
+	switch m.RelationOrWildcard.(type) {
+
+	case *AllowedRelation_Relation:
+
+		if len(m.GetRelation()) > 64 {
+			return AllowedRelationValidationError{
+				field:  "Relation",
+				reason: "value length must be at most 64 bytes",
+			}
+		}
+
+		if !_AllowedRelation_Relation_Pattern.MatchString(m.GetRelation()) {
+			return AllowedRelationValidationError{
+				field:  "Relation",
+				reason: "value does not match regex pattern \"^(\\\\.\\\\.\\\\.|[a-z][a-z0-9_]{2,62}[a-z0-9])$\"",
+			}
+		}
+
+	case *AllowedRelation_PublicWildcard_:
+
+		if v, ok := interface{}(m.GetPublicWildcard()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return AllowedRelationValidationError{
+					field:  "PublicWildcard",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// AllowedRelationValidationError is the validation error returned by
+// AllowedRelation.Validate if the designated constraints aren't met.
+type AllowedRelationValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AllowedRelationValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AllowedRelationValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AllowedRelationValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AllowedRelationValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AllowedRelationValidationError) ErrorName() string { return "AllowedRelationValidationError" }
+
+// Error satisfies the builtin error interface
+func (e AllowedRelationValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAllowedRelation.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AllowedRelationValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AllowedRelationValidationError{}
+
+var _AllowedRelation_Namespace_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+
+var _AllowedRelation_Relation_Pattern = regexp.MustCompile("^(\\.\\.\\.|[a-z][a-z0-9_]{2,62}[a-z0-9])$")
+
 // Validate checks the field values on UsersetRewrite with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
 // is returned.
@@ -837,6 +952,74 @@ var _ interface {
 } = ComputedUsersetValidationError{}
 
 var _ComputedUserset_Relation_Pattern = regexp.MustCompile("^[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+
+// Validate checks the field values on AllowedRelation_PublicWildcard with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *AllowedRelation_PublicWildcard) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// AllowedRelation_PublicWildcardValidationError is the validation error
+// returned by AllowedRelation_PublicWildcard.Validate if the designated
+// constraints aren't met.
+type AllowedRelation_PublicWildcardValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AllowedRelation_PublicWildcardValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AllowedRelation_PublicWildcardValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AllowedRelation_PublicWildcardValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AllowedRelation_PublicWildcardValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AllowedRelation_PublicWildcardValidationError) ErrorName() string {
+	return "AllowedRelation_PublicWildcardValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AllowedRelation_PublicWildcardValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAllowedRelation_PublicWildcard.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AllowedRelation_PublicWildcardValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AllowedRelation_PublicWildcardValidationError{}
 
 // Validate checks the field values on SetOperation_Child with the rules
 // defined in the proto definition for this message. If any rules are

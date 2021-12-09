@@ -377,6 +377,9 @@
     }
   },
   "definitions": {
+    "AllowedRelationPublicWildcard": {
+      "type": "object"
+    },
     "CheckPermissionResponsePermissionship": {
       "type": "string",
       "enum": [
@@ -612,6 +615,20 @@
           "items": {
             "$ref": "#/definitions/protobufAny"
           }
+        }
+      }
+    },
+    "v0AllowedRelation": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string"
+        },
+        "relation": {
+          "type": "string"
+        },
+        "publicWildcard": {
+          "$ref": "#/definitions/AllowedRelationPublicWildcard"
         }
       }
     },
@@ -1050,7 +1067,7 @@
         "allowedDirectRelations": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v0RelationReference"
+            "$ref": "#/definitions/v0AllowedRelation"
           }
         }
       }

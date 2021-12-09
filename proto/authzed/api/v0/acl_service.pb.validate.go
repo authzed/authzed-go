@@ -1022,6 +1022,13 @@ func (m *LookupRequest) Validate() error {
 		return nil
 	}
 
+	if m.GetObjectRelation() == nil {
+		return LookupRequestValidationError{
+			field:  "ObjectRelation",
+			reason: "value is required",
+		}
+	}
+
 	if v, ok := interface{}(m.GetObjectRelation()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return LookupRequestValidationError{
@@ -1029,6 +1036,13 @@ func (m *LookupRequest) Validate() error {
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
+		}
+	}
+
+	if m.GetUser() == nil {
+		return LookupRequestValidationError{
+			field:  "User",
+			reason: "value is required",
 		}
 	}
 
