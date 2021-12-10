@@ -156,6 +156,13 @@ func (m *SubjectReference) Validate() error {
 		return nil
 	}
 
+	if m.GetObject() == nil {
+		return SubjectReferenceValidationError{
+			field:  "Object",
+			reason: "value is required",
+		}
+	}
+
 	if v, ok := interface{}(m.GetObject()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return SubjectReferenceValidationError{
