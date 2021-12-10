@@ -72,6 +72,13 @@ var objectIDs = []struct {
 	{strings.Repeat("f", maxObjectIDLength+1), false},
 }
 
+var subjectIDs = append([]struct {
+	name  string
+	valid bool
+}{
+	{"*", true},
+}, objectIDs...)
+
 type relationValidity int
 
 const (
@@ -132,99 +139,111 @@ var relations = []relationEntry{
 func TestV0CoreObjectValidity(t *testing.T) {
 	for _, ns := range namespaces {
 		for _, objectID := range objectIDs {
-			for _, relation := range relations {
-				testName := fmt.Sprintf("%s:%s#%s", ns.name, objectID.name, relation.name)
-				t.Run(testName, func(t *testing.T) {
-					require := require.New(t)
+			for _, subjectID := range objectIDs {
+				for _, relation := range relations {
+					testName := fmt.Sprintf("%s:%s#%s@%s", ns.name, objectID.name, relation.name, subjectID.name)
+					t.Run(testName, func(t *testing.T) {
+						require := require.New(t)
 
-					v0Valid := ns.valid && objectID.valid &&
-						(relation.validity == alwaysValid ||
+						v0ObjectValid := ns.valid && objectID.valid && (relation.validity == alwaysValid ||
 							relation.validity == validV0SubjectOnly)
+						v0SubjectValid := ns.valid && subjectID.valid && (relation.validity == alwaysValid ||
+							relation.validity == validV0SubjectOnly)
+						v0Valid := v0ObjectValid && v0SubjectValid
 
-					onr := &v0.ObjectAndRelation{
-						Namespace: ns.name,
-						ObjectId:  objectID.name,
-						Relation:  relation.name,
-					}
-					err := onr.Validate()
-					require.Equal(v0Valid, err == nil, "should be valid: %v %s", v0Valid, err)
+						onr := &v0.ObjectAndRelation{
+							Namespace: ns.name,
+							ObjectId:  objectID.name,
+							Relation:  relation.name,
+						}
+						err := onr.Validate()
+						require.Equal(v0ObjectValid, err == nil, "should be valid: %v %s", v0ObjectValid, err)
 
-					asObject := &v0.RelationTuple{
-						ObjectAndRelation: onr,
-						User: &v0.User{
-							UserOneof: &v0.User_Userset{
-								Userset: knownGoodONR,
+						asObject := &v0.RelationTuple{
+							ObjectAndRelation: onr,
+							User: &v0.User{
+								UserOneof: &v0.User_Userset{
+									Userset: knownGoodONR,
+								},
 							},
-						},
-					}
-					err = asObject.Validate()
-					require.Equal(v0Valid, err == nil, "should be valid: %v %s", v0Valid, err)
+						}
+						err = asObject.Validate()
+						require.Equal(v0ObjectValid, err == nil, "should be valid: %v %s", v0ObjectValid, err)
 
-					asSubject := &v0.RelationTuple{
-						ObjectAndRelation: onr,
-						User: &v0.User{
-							UserOneof: &v0.User_Userset{
-								Userset: knownGoodONR,
+						asSubject := &v0.RelationTuple{
+							ObjectAndRelation: onr,
+							User: &v0.User{
+								UserOneof: &v0.User_Userset{
+									Userset: &v0.ObjectAndRelation{
+										Namespace: ns.name,
+										ObjectId:  subjectID.name,
+										Relation:  relation.name,
+									},
+								},
 							},
-						},
-					}
-					err = asSubject.Validate()
-					require.Equal(v0Valid, err == nil, "should be valid: %v %s", v0Valid, err)
+						}
+						err = asSubject.Validate()
+						require.Equal(v0Valid, err == nil, "should be valid: %v %s", v0Valid, err)
 
-					// test all of the types of tupleset filters
-					justNS := &v0.RelationTupleFilter{
-						Namespace: ns.name,
-					}
-					filterValid := ns.valid
-					err = justNS.Validate()
-					require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+						// test all of the types of tupleset filters
+						justNS := &v0.RelationTupleFilter{
+							Namespace: ns.name,
+						}
+						filterValid := ns.valid
+						err = justNS.Validate()
+						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
-					objectIDFilter := &v0.RelationTupleFilter{
-						Namespace: ns.name,
-						ObjectId:  objectID.name,
-						Filters: []v0.RelationTupleFilter_Filter{
-							v0.RelationTupleFilter_OBJECT_ID,
-						},
-					}
-					filterValid = ns.valid && (objectID.valid || objectID.name == "")
-					err = objectIDFilter.Validate()
-					require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+						objectIDFilter := &v0.RelationTupleFilter{
+							Namespace: ns.name,
+							ObjectId:  objectID.name,
+							Filters: []v0.RelationTupleFilter_Filter{
+								v0.RelationTupleFilter_OBJECT_ID,
+							},
+						}
+						filterValid = ns.valid && (objectID.valid || objectID.name == "")
+						err = objectIDFilter.Validate()
+						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
-					objectRelationFilter := &v0.RelationTupleFilter{
-						Namespace: ns.name,
-						Relation:  relation.name,
-						Filters: []v0.RelationTupleFilter_Filter{
-							v0.RelationTupleFilter_RELATION,
-						},
-					}
-					filterValid = ns.valid && (relation.validity == alwaysValid || relation.name == "")
-					err = objectRelationFilter.Validate()
-					require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+						objectRelationFilter := &v0.RelationTupleFilter{
+							Namespace: ns.name,
+							Relation:  relation.name,
+							Filters: []v0.RelationTupleFilter_Filter{
+								v0.RelationTupleFilter_RELATION,
+							},
+						}
+						filterValid = ns.valid && (relation.validity == alwaysValid || relation.name == "")
+						err = objectRelationFilter.Validate()
+						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
-					fullObjectFilter := &v0.RelationTupleFilter{
-						Namespace: ns.name,
-						ObjectId:  objectID.name,
-						Relation:  relation.name,
-						Filters: []v0.RelationTupleFilter_Filter{
-							v0.RelationTupleFilter_OBJECT_ID,
-							v0.RelationTupleFilter_RELATION,
-						},
-					}
-					filterValid = ns.valid && (objectID.valid || objectID.name == "") &&
-						(relation.validity == alwaysValid || relation.name == "")
-					err = fullObjectFilter.Validate()
-					require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+						fullObjectFilter := &v0.RelationTupleFilter{
+							Namespace: ns.name,
+							ObjectId:  objectID.name,
+							Relation:  relation.name,
+							Filters: []v0.RelationTupleFilter_Filter{
+								v0.RelationTupleFilter_OBJECT_ID,
+								v0.RelationTupleFilter_RELATION,
+							},
+						}
+						filterValid = ns.valid && (objectID.valid || objectID.name == "") &&
+							(relation.validity == alwaysValid || relation.name == "")
+						err = fullObjectFilter.Validate()
+						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
-					subjectFilter := &v0.RelationTupleFilter{
-						Namespace: knownGoodObjectRef.ObjectType,
-						Userset:   onr,
-						Filters: []v0.RelationTupleFilter_Filter{
-							v0.RelationTupleFilter_USERSET,
-						},
-					}
-					err = subjectFilter.Validate()
-					require.Equal(v0Valid, err == nil, "should be valid: %v %s", v0Valid, err)
-				})
+						subjectFilter := &v0.RelationTupleFilter{
+							Namespace: knownGoodObjectRef.ObjectType,
+							Userset: &v0.ObjectAndRelation{
+								Namespace: ns.name,
+								ObjectId:  subjectID.name,
+								Relation:  relation.name,
+							},
+							Filters: []v0.RelationTupleFilter_Filter{
+								v0.RelationTupleFilter_USERSET,
+							},
+						}
+						err = subjectFilter.Validate()
+						require.Equal(v0SubjectValid, err == nil, "should be valid: %v %s", v0SubjectValid, err)
+					})
+				}
 			}
 		}
 	}
@@ -233,129 +252,139 @@ func TestV0CoreObjectValidity(t *testing.T) {
 func TestV1CoreObjectValidity(t *testing.T) {
 	for _, ns := range namespaces {
 		for _, objectID := range objectIDs {
-			for _, relation := range relations {
-				testName := fmt.Sprintf("%s:%s#%s", ns.name, objectID.name, relation.name)
-				t.Run(testName, func(t *testing.T) {
-					require := require.New(t)
+			for _, subjectID := range subjectIDs {
+				for _, relation := range relations {
+					testName := fmt.Sprintf("%s:%s#%s@%s", ns.name, objectID.name, relation.name, subjectID.name)
+					t.Run(testName, func(t *testing.T) {
+						require := require.New(t)
 
-					objRef := &v1.ObjectReference{
-						ObjectType: ns.name,
-						ObjectId:   objectID.name,
-					}
-					objRefValid := ns.valid && objectID.valid
-					err := objRef.Validate()
-					require.Equal(objRefValid, err == nil, "should be valid: %v %s", objRefValid, err)
+						objRef := &v1.ObjectReference{
+							ObjectType: ns.name,
+							ObjectId:   objectID.name,
+						}
+						objRefValid := ns.valid && objectID.valid
+						err := objRef.Validate()
+						require.Equal(objRefValid, err == nil, "should be valid: %v %s", objRefValid, err)
 
-					subRef := &v1.SubjectReference{
-						Object:           objRef,
-						OptionalRelation: relation.name,
-					}
-					subjectValid := ns.valid && objectID.valid &&
-						(relation.validity == alwaysValid || relation.validity == validV1SubjectOnly)
-					err = subRef.Validate()
-					require.Equal(subjectValid, err == nil, "should be valid: %v %s", subjectValid, err)
+						subjObjRef := &v1.ObjectReference{
+							ObjectType: ns.name,
+							ObjectId:   subjectID.name,
+						}
+						subObjRefValid := ns.valid && subjectID.valid
+						err = subjObjRef.Validate()
+						require.Equal(subObjRefValid, err == nil, "should be valid: %v %s", subObjRefValid, err)
 
-					asResource := &v1.Relationship{
-						Resource: objRef,
-						Relation: relation.name,
-						Subject:  knownGoodSubjectRef,
-					}
-					asResourceValid := objRefValid && relation.validity == alwaysValid
-					err = asResource.Validate()
-					require.Equal(asResourceValid, err == nil, "should be valid: %v %s", asResourceValid, err)
+						subRef := &v1.SubjectReference{
+							Object:           subjObjRef,
+							OptionalRelation: relation.name,
+						}
+						subjectValid := ns.valid && subjectID.valid &&
+							(relation.validity == alwaysValid || relation.validity == validV1SubjectOnly)
+						err = subRef.Validate()
+						require.Equal(subjectValid, err == nil, "should be valid: %v %s", subjectValid, err)
 
-					asSubject := &v1.Relationship{
-						Resource: knownGoodObjectRef,
-						Relation: knownGoodSubjectRef.OptionalRelation,
-						Subject:  subRef,
-					}
-					err = asSubject.Validate()
-					require.Equal(subjectValid, err == nil, "should be valid: %v %s", subjectValid, err)
+						asResource := &v1.Relationship{
+							Resource: objRef,
+							Relation: relation.name,
+							Subject:  knownGoodSubjectRef,
+						}
+						asResourceValid := objRefValid && relation.validity == alwaysValid
+						err = asResource.Validate()
+						require.Equal(asResourceValid, err == nil, "should be valid: %v %s", asResourceValid, err)
 
-					// Test all the components of a filter
-					justNS := &v1.RelationshipFilter{
-						ResourceType: ns.name,
-					}
-					filterValid := ns.valid
-					err = justNS.Validate()
-					require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+						asSubject := &v1.Relationship{
+							Resource: knownGoodObjectRef,
+							Relation: knownGoodSubjectRef.OptionalRelation,
+							Subject:  subRef,
+						}
+						err = asSubject.Validate()
+						require.Equal(subjectValid, err == nil, "should be valid: %v %s", subjectValid, err)
 
-					objectIDFilter := &v1.RelationshipFilter{
-						ResourceType:       ns.name,
-						OptionalResourceId: objectID.name,
-					}
-					filterValid = ns.valid && (objectID.valid || objectID.name == "")
-					err = objectIDFilter.Validate()
-					require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+						// Test all the components of a filter
+						justNS := &v1.RelationshipFilter{
+							ResourceType: ns.name,
+						}
+						filterValid := ns.valid
+						err = justNS.Validate()
+						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
-					objectRelationFilter := &v1.RelationshipFilter{
-						ResourceType:     ns.name,
-						OptionalRelation: relation.name,
-					}
-					filterValid = ns.valid && (relation.validity == alwaysValid || relation.name == "")
-					err = objectRelationFilter.Validate()
-					require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+						objectIDFilter := &v1.RelationshipFilter{
+							ResourceType:       ns.name,
+							OptionalResourceId: objectID.name,
+						}
+						filterValid = ns.valid && (objectID.valid || objectID.name == "")
+						err = objectIDFilter.Validate()
+						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
-					fullObjectFilter := &v1.RelationshipFilter{
-						ResourceType:       ns.name,
-						OptionalResourceId: objectID.name,
-						OptionalRelation:   relation.name,
-					}
-					filterValid = ns.valid && (objectID.valid || objectID.name == "") &&
-						(relation.validity == alwaysValid || relation.name == "")
-					err = fullObjectFilter.Validate()
-					require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+						objectRelationFilter := &v1.RelationshipFilter{
+							ResourceType:     ns.name,
+							OptionalRelation: relation.name,
+						}
+						filterValid = ns.valid && (relation.validity == alwaysValid || relation.name == "")
+						err = objectRelationFilter.Validate()
+						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
-					bothTypesFilter := &v1.RelationshipFilter{
-						ResourceType: knownGoodObjectRef.ObjectType,
-						OptionalSubjectFilter: &v1.SubjectFilter{
-							SubjectType: ns.name,
-						},
-					}
-					filterValid = ns.valid
-					err = bothTypesFilter.Validate()
-					require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+						fullObjectFilter := &v1.RelationshipFilter{
+							ResourceType:       ns.name,
+							OptionalResourceId: objectID.name,
+							OptionalRelation:   relation.name,
+						}
+						filterValid = ns.valid && (objectID.valid || objectID.name == "") &&
+							(relation.validity == alwaysValid || relation.name == "")
+						err = fullObjectFilter.Validate()
+						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
-					subjectIDFilter := &v1.RelationshipFilter{
-						ResourceType: knownGoodObjectRef.ObjectType,
-						OptionalSubjectFilter: &v1.SubjectFilter{
-							SubjectType:       ns.name,
-							OptionalSubjectId: objectID.name,
-						},
-					}
-					filterValid = ns.valid && (objectID.valid || objectID.name == "")
-					err = subjectIDFilter.Validate()
-					require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
-
-					subjectRelationFilter := &v1.RelationshipFilter{
-						ResourceType: knownGoodObjectRef.ObjectType,
-						OptionalSubjectFilter: &v1.SubjectFilter{
-							SubjectType: ns.name,
-							OptionalRelation: &v1.SubjectFilter_RelationFilter{
-								Relation: relation.name,
+						bothTypesFilter := &v1.RelationshipFilter{
+							ResourceType: knownGoodObjectRef.ObjectType,
+							OptionalSubjectFilter: &v1.SubjectFilter{
+								SubjectType: ns.name,
 							},
-						},
-					}
-					filterValid = ns.valid &&
-						(relation.validity == alwaysValid || relation.validity == validV1SubjectOnly)
-					err = subjectRelationFilter.Validate()
-					require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+						}
+						filterValid = ns.valid
+						err = bothTypesFilter.Validate()
+						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
-					fullSubjectFilter := &v1.RelationshipFilter{
-						ResourceType: knownGoodObjectRef.ObjectType,
-						OptionalSubjectFilter: &v1.SubjectFilter{
-							SubjectType:       ns.name,
-							OptionalSubjectId: objectID.name,
-							OptionalRelation: &v1.SubjectFilter_RelationFilter{
-								Relation: relation.name,
+						subjectIDFilter := &v1.RelationshipFilter{
+							ResourceType: knownGoodObjectRef.ObjectType,
+							OptionalSubjectFilter: &v1.SubjectFilter{
+								SubjectType:       ns.name,
+								OptionalSubjectId: subjectID.name,
 							},
-						},
-					}
-					filterValid = ns.valid && (objectID.valid || objectID.name == "") &&
-						(relation.validity == alwaysValid || relation.validity == validV1SubjectOnly)
-					err = fullSubjectFilter.Validate()
-					require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
-				})
+						}
+						filterValid = ns.valid && (subjectID.valid || subjectID.name == "")
+						err = subjectIDFilter.Validate()
+						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+
+						subjectRelationFilter := &v1.RelationshipFilter{
+							ResourceType: knownGoodObjectRef.ObjectType,
+							OptionalSubjectFilter: &v1.SubjectFilter{
+								SubjectType: ns.name,
+								OptionalRelation: &v1.SubjectFilter_RelationFilter{
+									Relation: relation.name,
+								},
+							},
+						}
+						filterValid = ns.valid &&
+							(relation.validity == alwaysValid || relation.validity == validV1SubjectOnly)
+						err = subjectRelationFilter.Validate()
+						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+
+						fullSubjectFilter := &v1.RelationshipFilter{
+							ResourceType: knownGoodObjectRef.ObjectType,
+							OptionalSubjectFilter: &v1.SubjectFilter{
+								SubjectType:       ns.name,
+								OptionalSubjectId: subjectID.name,
+								OptionalRelation: &v1.SubjectFilter_RelationFilter{
+									Relation: relation.name,
+								},
+							},
+						}
+						filterValid = ns.valid && (subjectID.valid || subjectID.name == "") &&
+							(relation.validity == alwaysValid || relation.validity == validV1SubjectOnly)
+						err = fullSubjectFilter.Validate()
+						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
+					})
+				}
 			}
 		}
 	}
