@@ -37,6 +37,9 @@
     },
     {
       "name": "SchemaService"
+    },
+    {
+      "name": "WatchResourcesService"
     }
   ],
   "schemes": [
@@ -374,20 +377,53 @@
           "WatchService"
         ]
       }
+    },
+    "/v1alpha1/lookupwatch": {
+      "post": {
+        "summary": "WatchResources initiates a watch for permission changes for the provided\n(resource type, permission, subject) pair.",
+        "operationId": "WatchResourcesService_WatchResources",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v1alpha1WatchResourcesResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v1alpha1WatchResourcesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1alpha1WatchResourcesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "WatchResourcesService"
+        ]
+      }
     }
   },
   "definitions": {
     "AllowedRelationPublicWildcard": {
       "type": "object"
-    },
-    "CheckPermissionResponsePermissionship": {
-      "type": "string",
-      "enum": [
-        "PERMISSIONSHIP_UNSPECIFIED",
-        "PERMISSIONSHIP_NO_PERMISSION",
-        "PERMISSIONSHIP_HAS_PERMISSION"
-      ],
-      "default": "PERMISSIONSHIP_UNSPECIFIED"
     },
     "CheckResponseMembership": {
       "type": "string",
@@ -1202,10 +1238,19 @@
           "$ref": "#/definitions/v1ZedToken"
         },
         "permissionship": {
-          "$ref": "#/definitions/CheckPermissionResponsePermissionship",
+          "$ref": "#/definitions/v1CheckPermissionResponsePermissionship",
           "description": "Permissionship communicates whether or not the subject has the requested\npermission or has a relationship with the given resource, over the given\nrelation.\n\nThis value will be authzed.api.v1.PERMISSIONSHIP_HAS_PERMISSION if the\nrequested subject is a member of the computed permission set or there\nexists a relationship with the requested relation from the given resource\nto the given subject."
         }
       }
+    },
+    "v1CheckPermissionResponsePermissionship": {
+      "type": "string",
+      "enum": [
+        "PERMISSIONSHIP_UNSPECIFIED",
+        "PERMISSIONSHIP_NO_PERMISSION",
+        "PERMISSIONSHIP_HAS_PERMISSION"
+      ],
+      "default": "PERMISSIONSHIP_UNSPECIFIED"
     },
     "v1Consistency": {
       "type": "object",
@@ -1520,6 +1565,76 @@
         }
       },
       "description": "ZedToken is used to provide causality metadata between Write and Check\nrequests.\n\nSee the authzed.api.v1.Consistency message for more information."
+    },
+    "v1alpha1PermissionUpdate": {
+      "type": "object",
+      "properties": {
+        "subject": {
+          "$ref": "#/definitions/v1SubjectReference",
+          "description": "subject defines the subject resource whose permissions have changed."
+        },
+        "resource": {
+          "$ref": "#/definitions/v1ObjectReference",
+          "description": "resource defines the specific object in the system."
+        },
+        "relation": {
+          "type": "string"
+        },
+        "updatedPermission": {
+          "$ref": "#/definitions/v1alpha1PermissionUpdatePermissionship"
+        }
+      },
+      "description": "PermissionUpdate represents a single permission update for a specific\nsubject's permissions."
+    },
+    "v1alpha1PermissionUpdatePermissionship": {
+      "type": "string",
+      "enum": [
+        "PERMISSIONSHIP_UNSPECIFIED",
+        "PERMISSIONSHIP_NO_PERMISSION",
+        "PERMISSIONSHIP_HAS_PERMISSION"
+      ],
+      "default": "PERMISSIONSHIP_UNSPECIFIED",
+      "description": "todo: work this into the v1 core API at some point since it's used\nacross services."
+    },
+    "v1alpha1WatchResourcesRequest": {
+      "type": "object",
+      "properties": {
+        "resourceObjectType": {
+          "type": "string",
+          "description": "resource_object_type is the type of resource object for which we will\nwatch for changes."
+        },
+        "permission": {
+          "type": "string",
+          "description": "permission is the name of the permission or relation for which we will\nwatch for changes."
+        },
+        "subjectObjectType": {
+          "type": "string",
+          "description": "subject_object_type is the type of the subject resource for which we will\nwatch for changes."
+        },
+        "optionalSubjectRelation": {
+          "type": "string",
+          "description": "optional_subject_relation allows you to specify a group of subjects to watch\nfor a given subject type."
+        },
+        "optionalStartCursor": {
+          "$ref": "#/definitions/v1ZedToken"
+        }
+      },
+      "description": "WatchResourcesRequest starts a watch for specific permission updates\nfor the given resource and subject types."
+    },
+    "v1alpha1WatchResourcesResponse": {
+      "type": "object",
+      "properties": {
+        "updates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1alpha1PermissionUpdate"
+          }
+        },
+        "changesThrough": {
+          "$ref": "#/definitions/v1ZedToken"
+        }
+      },
+      "description": "WatchResourcesResponse enumerates the list of permission updates that have\noccurred as a result of one or more relationship updates."
     }
   },
   "securityDefinitions": {
