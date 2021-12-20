@@ -9,6 +9,9 @@ func (m *CheckPermissionRequest) HandwrittenValidate() error {
 			reason: "alphanumeric value is required",
 		}
 	}
+	if m.GetSubject() != nil {
+		return m.GetSubject().HandwrittenValidate()
+	}
 
 	return nil
 }
@@ -39,6 +42,19 @@ func (m *RelationshipFilter) HandwrittenValidate() error {
 			reason: "alphanumeric value is required",
 		}
 	}
+	if m.GetOptionalSubjectFilter() != nil {
+		return m.GetOptionalSubjectFilter().HandwrittenValidate()
+	}
+	return nil
+}
+
+func (m *SubjectFilter) HandwrittenValidate() error {
+	if m.GetOptionalSubjectId() == "*" && m.GetOptionalRelation() != nil && m.GetOptionalRelation().GetRelation() != "" {
+		return SubjectFilterValidationError{
+			field:  "OptionalRelation",
+			reason: "optionalrelation must be empty on subject if object ID is a wildcard",
+		}
+	}
 	return nil
 }
 
@@ -49,12 +65,26 @@ func (m *RelationshipUpdate) HandwrittenValidate() error {
 	return nil
 }
 
+func (m *SubjectReference) HandwrittenValidate() error {
+	if m.GetObject() != nil && m.GetObject().GetObjectId() == "*" && m.GetOptionalRelation() != "" {
+		return SubjectReferenceValidationError{
+			field:  "OptionalRelation",
+			reason: "optionalrelation must be empty on subject if object ID is a wildcard",
+		}
+	}
+	return nil
+}
+
 func (m *Relationship) HandwrittenValidate() error {
 	if m.GetResource() != nil && m.GetResource().GetObjectId() == "*" {
 		return ObjectReferenceValidationError{
 			field:  "ObjectId",
 			reason: "alphanumeric value is required",
 		}
+	}
+
+	if m.GetSubject() != nil {
+		return m.GetSubject().HandwrittenValidate()
 	}
 
 	return nil
