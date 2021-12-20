@@ -389,3 +389,26 @@ func TestV1CoreObjectValidity(t *testing.T) {
 		}
 	}
 }
+
+func TestWildcardSubjectRelation(t *testing.T) {
+	subjObjRef := &v1.ObjectReference{
+		ObjectType: "somenamespace",
+		ObjectId:   "*",
+	}
+	subRef := &v1.SubjectReference{
+		Object:           subjObjRef,
+		OptionalRelation: "somerelation",
+	}
+	require.Error(t, subRef.HandwrittenValidate())
+}
+
+func TestWildcardSubjectRelationEmpty(t *testing.T) {
+	subjObjRef := &v1.ObjectReference{
+		ObjectType: "somenamespace",
+		ObjectId:   "*",
+	}
+	subRef := &v1.SubjectReference{
+		Object: subjObjRef,
+	}
+	require.NoError(t, subRef.HandwrittenValidate())
+}
