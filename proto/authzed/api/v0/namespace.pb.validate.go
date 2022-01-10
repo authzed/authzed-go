@@ -145,7 +145,7 @@ func (m *NamespaceDefinition) Validate() error {
 	if !_NamespaceDefinition_Name_Pattern.MatchString(m.GetName()) {
 		return NamespaceDefinitionValidationError{
 			field:  "Name",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 	}
 
@@ -233,7 +233,7 @@ var _ interface {
 	ErrorName() string
 } = NamespaceDefinitionValidationError{}
 
-var _NamespaceDefinition_Name_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _NamespaceDefinition_Name_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 // Validate checks the field values on Relation with the rules defined in the
 // proto definition for this message. If any rules are violated, an error is returned.
@@ -252,7 +252,7 @@ func (m *Relation) Validate() error {
 	if !_Relation_Name_Pattern.MatchString(m.GetName()) {
 		return RelationValidationError{
 			field:  "Name",
-			reason: "value does not match regex pattern \"^[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 	}
 
@@ -343,7 +343,7 @@ var _ interface {
 	ErrorName() string
 } = RelationValidationError{}
 
-var _Relation_Name_Pattern = regexp.MustCompile("^[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _Relation_Name_Pattern = regexp.MustCompile("^[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 // Validate checks the field values on TypeInformation with the rules defined
 // in the proto definition for this message. If any rules are violated, an
@@ -890,7 +890,7 @@ func (m *ComputedUserset) Validate() error {
 	if !_ComputedUserset_Relation_Pattern.MatchString(m.GetRelation()) {
 		return ComputedUsersetValidationError{
 			field:  "Relation",
-			reason: "value does not match regex pattern \"^[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 	}
 
@@ -951,7 +951,7 @@ var _ interface {
 	ErrorName() string
 } = ComputedUsersetValidationError{}
 
-var _ComputedUserset_Relation_Pattern = regexp.MustCompile("^[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _ComputedUserset_Relation_Pattern = regexp.MustCompile("^[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 // Validate checks the field values on AllowedRelation_PublicWildcard with the
 // rules defined in the proto definition for this message. If any rules are
@@ -1252,7 +1252,7 @@ func (m *TupleToUserset_Tupleset) Validate() error {
 	if !_TupleToUserset_Tupleset_Relation_Pattern.MatchString(m.GetRelation()) {
 		return TupleToUserset_TuplesetValidationError{
 			field:  "Relation",
-			reason: "value does not match regex pattern \"^[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 	}
 
@@ -1315,4 +1315,4 @@ var _ interface {
 	ErrorName() string
 } = TupleToUserset_TuplesetValidationError{}
 
-var _TupleToUserset_Tupleset_Relation_Pattern = regexp.MustCompile("^[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _TupleToUserset_Tupleset_Relation_Pattern = regexp.MustCompile("^[a-z][a-z0-9_]{1,62}[a-z0-9]$")

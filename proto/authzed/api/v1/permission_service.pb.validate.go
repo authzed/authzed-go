@@ -168,7 +168,7 @@ func (m *RelationshipFilter) Validate() error {
 	if !_RelationshipFilter_ResourceType_Pattern.MatchString(m.GetResourceType()) {
 		return RelationshipFilterValidationError{
 			field:  "ResourceType",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 	}
 
@@ -196,7 +196,7 @@ func (m *RelationshipFilter) Validate() error {
 	if !_RelationshipFilter_OptionalRelation_Pattern.MatchString(m.GetOptionalRelation()) {
 		return RelationshipFilterValidationError{
 			field:  "OptionalRelation",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9])?$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\"",
 		}
 	}
 
@@ -269,11 +269,11 @@ var _ interface {
 	ErrorName() string
 } = RelationshipFilterValidationError{}
 
-var _RelationshipFilter_ResourceType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _RelationshipFilter_ResourceType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 var _RelationshipFilter_OptionalResourceId_Pattern = regexp.MustCompile("^([a-zA-Z0-9_][a-zA-Z0-9/_-]{0,127})?$")
 
-var _RelationshipFilter_OptionalRelation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
+var _RelationshipFilter_OptionalRelation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
 
 // Validate checks the field values on SubjectFilter with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
@@ -293,7 +293,7 @@ func (m *SubjectFilter) Validate() error {
 	if !_SubjectFilter_SubjectType_Pattern.MatchString(m.GetSubjectType()) {
 		return SubjectFilterValidationError{
 			field:  "SubjectType",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 	}
 
@@ -378,7 +378,7 @@ var _ interface {
 	ErrorName() string
 } = SubjectFilterValidationError{}
 
-var _SubjectFilter_SubjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _SubjectFilter_SubjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 var _SubjectFilter_OptionalSubjectId_Pattern = regexp.MustCompile("^(([a-zA-Z0-9_][a-zA-Z0-9/_-]{0,127})|\\*)?$")
 
@@ -1069,7 +1069,7 @@ func (m *CheckPermissionRequest) Validate() error {
 	if !_CheckPermissionRequest_Permission_Pattern.MatchString(m.GetPermission()) {
 		return CheckPermissionRequestValidationError{
 			field:  "Permission",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9])?$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\"",
 		}
 	}
 
@@ -1149,7 +1149,7 @@ var _ interface {
 	ErrorName() string
 } = CheckPermissionRequestValidationError{}
 
-var _CheckPermissionRequest_Permission_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
+var _CheckPermissionRequest_Permission_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
 
 // Validate checks the field values on CheckPermissionResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -1275,7 +1275,7 @@ func (m *ExpandPermissionTreeRequest) Validate() error {
 	if !_ExpandPermissionTreeRequest_Permission_Pattern.MatchString(m.GetPermission()) {
 		return ExpandPermissionTreeRequestValidationError{
 			field:  "Permission",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9])?$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\"",
 		}
 	}
 
@@ -1339,7 +1339,7 @@ var _ interface {
 	ErrorName() string
 } = ExpandPermissionTreeRequestValidationError{}
 
-var _ExpandPermissionTreeRequest_Permission_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
+var _ExpandPermissionTreeRequest_Permission_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
 
 // Validate checks the field values on ExpandPermissionTreeResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -1457,7 +1457,7 @@ func (m *LookupResourcesRequest) Validate() error {
 	if !_LookupResourcesRequest_ResourceObjectType_Pattern.MatchString(m.GetResourceObjectType()) {
 		return LookupResourcesRequestValidationError{
 			field:  "ResourceObjectType",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 	}
 
@@ -1471,7 +1471,7 @@ func (m *LookupResourcesRequest) Validate() error {
 	if !_LookupResourcesRequest_Permission_Pattern.MatchString(m.GetPermission()) {
 		return LookupResourcesRequestValidationError{
 			field:  "Permission",
-			reason: "value does not match regex pattern \"^[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 	}
 
@@ -1551,9 +1551,9 @@ var _ interface {
 	ErrorName() string
 } = LookupResourcesRequestValidationError{}
 
-var _LookupResourcesRequest_ResourceObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,61}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _LookupResourcesRequest_ResourceObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
-var _LookupResourcesRequest_Permission_Pattern = regexp.MustCompile("^[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _LookupResourcesRequest_Permission_Pattern = regexp.MustCompile("^[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 // Validate checks the field values on LookupResourcesResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -1652,7 +1652,7 @@ func (m *SubjectFilter_RelationFilter) Validate() error {
 	if !_SubjectFilter_RelationFilter_Relation_Pattern.MatchString(m.GetRelation()) {
 		return SubjectFilter_RelationFilterValidationError{
 			field:  "Relation",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9])?$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\"",
 		}
 	}
 
@@ -1716,4 +1716,4 @@ var _ interface {
 	ErrorName() string
 } = SubjectFilter_RelationFilterValidationError{}
 
-var _SubjectFilter_RelationFilter_Relation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9])?$")
+var _SubjectFilter_RelationFilter_Relation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
