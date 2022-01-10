@@ -61,7 +61,7 @@ func (m *WatchRequest) Validate() error {
 		if !_WatchRequest_Namespaces_Pattern.MatchString(item) {
 			return WatchRequestValidationError{
 				field:  fmt.Sprintf("Namespaces[%v]", idx),
-				reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$\"",
+				reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 			}
 		}
 
@@ -134,7 +134,7 @@ var _ interface {
 	ErrorName() string
 } = WatchRequestValidationError{}
 
-var _WatchRequest_Namespaces_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{2,62}[a-z0-9]/)?[a-z][a-z0-9_]{2,62}[a-z0-9]$")
+var _WatchRequest_Namespaces_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 // Validate checks the field values on WatchResponse with the rules defined in
 // the proto definition for this message. If any rules are violated, an error

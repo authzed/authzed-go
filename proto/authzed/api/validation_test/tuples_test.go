@@ -11,9 +11,9 @@ import (
 )
 
 const (
-	minTenantLength    = 4
-	minNamespaceLength = 4
-	minRelationLength  = 4
+	minTenantLength    = 3
+	minNamespaceLength = 3
+	minRelationLength  = 3
 
 	maxTenantLength    = 63
 	maxNamespaceLength = 64
@@ -27,15 +27,15 @@ var namespaces = []struct {
 }{
 	{"", false},
 	{"...", false},
-	{"foo", false},
-	{"bar", false},
+	{"foo", true},
+	{"bar", true},
 	{"foo1", true},
 	{"bar1", true},
 	{"ab", false},
 	{"Foo1", false},
 	{"foo_bar", true},
 	{"foo_bar_", false},
-	{"foo/bar", false},
+	{"foo/bar", true},
 	{"foo/b", false},
 	{"Foo/bar", false},
 	{"foo/bar/baz", false},
@@ -112,8 +112,8 @@ var knownGoodSubjectRef *v1.SubjectReference = &v1.SubjectReference{
 var relations = []relationEntry{
 	{"...", validV0SubjectOnly},
 	{"", validV1SubjectOnly},
-	{"foo", alwaysInvalid},
-	{"bar", alwaysInvalid},
+	{"foo", alwaysValid},
+	{"bar", alwaysValid},
 	{"foo1", alwaysValid},
 	{"bar1", alwaysValid},
 	{"ab", alwaysInvalid},

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S buf generate buf.build/authzed/api:041a426b3ad1488d1cd1cd221d462ef334a031fe --template
+#!/usr/bin/env -S buf generate buf.build/authzed/api:f5b9628ff30a18b94c2f150375aee4a1f46e71be --template
 ---
 version: "v1"
 plugins:
