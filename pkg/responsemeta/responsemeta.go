@@ -57,10 +57,10 @@ func SetResponseTrailerMetadata(ctx context.Context, values map[ResponseMetadata
 func GetIntResponseTrailerMetadata(trailer metadata.MD, key ResponseMetadataTrailerKey) (int, error) {
 	values := trailer.Get(string(key))
 	if len(values) == 0 {
-		return -1, fmt.Errorf("key `%s` not found in trailer", key)
+		return 0, fmt.Errorf("key `%s` not found in trailer", key)
 	}
 	if len(values) != 1 {
-		return -1, fmt.Errorf("key `%s` found multiple times in trailer", key)
+		return 0, fmt.Errorf("key `%s` found multiple times in trailer", key)
 	}
 
 	return strconv.Atoi(values[0])
