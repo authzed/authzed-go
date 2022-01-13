@@ -31,3 +31,15 @@ jobs:
           skip-go-installation: true
           skip-pkg-cache: true
           skip-build-cache: false
+
+  forty-two-crunch-openapi-audit:
+    name: "42crunch OpenAPI Audit"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "42Crunch/api-security-audit-action@v3"
+        with:
+          api-token: "${{ secrets.FORTY_TWO_CRUNCH_AUDIT_TOKEN }}"
+          log-level: "DEBUG"
+          share-everyone: "READ_ONLY"
+          upload-to-code-scanning: true
