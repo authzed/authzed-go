@@ -2,6 +2,7 @@ package prefix
 
 import (
 	"context"
+
 	"github.com/grpc-ecosystem/go-grpc-middleware/util/metautils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
@@ -15,8 +16,8 @@ var ctxPrefixKey ctxKeyType = "prefix"
 // grpcMDPrefixKey is for storing/fetching from grpc MD (must be a string)
 const grpcMDPrefixKey = "spicedb-prefix"
 
-// WithPrefixUnaryClientInterceptor annotates requests with the desired prefix
-func WithPrefixUnaryClientInterceptor(prefix string) grpc.UnaryClientInterceptor {
+// WithUnaryClientInterceptor annotates requests with the desired prefix
+func WithUnaryClientInterceptor(prefix string) grpc.UnaryClientInterceptor {
 	return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, callOpts ...grpc.CallOption,
 	) error {
 		ctx = metadata.AppendToOutgoingContext(ctx, grpcMDPrefixKey, prefix)
@@ -24,26 +25,26 @@ func WithPrefixUnaryClientInterceptor(prefix string) grpc.UnaryClientInterceptor
 	}
 }
 
-// WithPrefixStreamClientInterceptor annotates requests with the desired prefix
-func WithPrefixStreamClientInterceptor(prefix string) grpc.StreamClientInterceptor {
+// WithStreamClientInterceptor annotates requests with the desired prefix
+func WithStreamClientInterceptor(prefix string) grpc.StreamClientInterceptor {
 	return func(ctx context.Context, desc *grpc.StreamDesc, cc *grpc.ClientConn, method string, streamer grpc.Streamer, opts ...grpc.CallOption) (grpc.ClientStream, error) {
 		ctx = metadata.AppendToOutgoingContext(ctx, grpcMDPrefixKey, prefix)
 		return streamer(ctx, desc, cc, method, opts...)
 	}
 }
 
-// PrefixFromContext reads the prefix from the context
-func PrefixFromContext(ctx context.Context) string {
+// FromContext reads the prefix from the context
+func FromContext(ctx context.Context) string {
 	if c := ctx.Value(ctxPrefixKey); c != nil {
 		return c.(string)
 	}
 	return ""
 }
 
-// MustPrefixFromContext reads the prefix from the context and panics if it has
+// MustFromContext reads the prefix from the context and panics if it has
 // not been set on the context.
-func MustPrefixFromContext(ctx context.Context) string {
-	prefix := PrefixFromContext(ctx)
+func MustFromContext(ctx context.Context) string {
+	prefix := FromContext(ctx)
 	if prefix == "" {
 		panic("prefix missing")
 	}

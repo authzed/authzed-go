@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/authzed/grpcutil v0.0.0-20210913124023-cad23ae5a9e8
 	github.com/envoyproxy/protoc-gen-validate v0.6.1
+	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.0
 	github.com/jzelinskie/stringz v0.0.0-20210414224931-d6a8ce844a70
 	github.com/stretchr/testify v1.7.0
