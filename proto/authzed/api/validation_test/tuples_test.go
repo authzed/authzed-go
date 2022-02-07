@@ -70,6 +70,12 @@ var objectIDs = []struct {
 	{"-", false},
 	{strings.Repeat("\u0394", 4), false},
 	{strings.Repeat("f", maxObjectIDLength+1), false},
+	{"a@b.com", false},
+	{"test@example.com", false},
+	{"test*", false},
+	{"*test", false},
+	{"t*t", false},
+	{"test@example.*", false},
 }
 
 var subjectIDs = append([]struct {
