@@ -17,7 +17,10 @@ const _ = grpc.SupportPackageIsVersion7
 // WatchServiceClient is the client API for WatchService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type WatchServiceClient interface {
+	// Deprecated: Do not use.
 	Watch(ctx context.Context, in *WatchRequest, opts ...grpc.CallOption) (WatchService_WatchClient, error)
 }
 
@@ -25,10 +28,12 @@ type watchServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewWatchServiceClient(cc grpc.ClientConnInterface) WatchServiceClient {
 	return &watchServiceClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *watchServiceClient) Watch(ctx context.Context, in *WatchRequest, opts ...grpc.CallOption) (WatchService_WatchClient, error) {
 	stream, err := c.cc.NewStream(ctx, &WatchService_ServiceDesc.Streams[0], "/authzed.api.v0.WatchService/Watch", opts...)
 	if err != nil {
@@ -64,7 +69,10 @@ func (x *watchServiceWatchClient) Recv() (*WatchResponse, error) {
 // WatchServiceServer is the server API for WatchService service.
 // All implementations must embed UnimplementedWatchServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type WatchServiceServer interface {
+	// Deprecated: Do not use.
 	Watch(*WatchRequest, WatchService_WatchServer) error
 	mustEmbedUnimplementedWatchServiceServer()
 }
@@ -85,6 +93,7 @@ type UnsafeWatchServiceServer interface {
 	mustEmbedUnimplementedWatchServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterWatchServiceServer(s grpc.ServiceRegistrar, srv WatchServiceServer) {
 	s.RegisterService(&WatchService_ServiceDesc, srv)
 }

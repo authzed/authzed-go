@@ -17,9 +17,14 @@ const _ = grpc.SupportPackageIsVersion7
 // NamespaceServiceClient is the client API for NamespaceService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type NamespaceServiceClient interface {
+	// Deprecated: Do not use.
 	ReadConfig(ctx context.Context, in *ReadConfigRequest, opts ...grpc.CallOption) (*ReadConfigResponse, error)
+	// Deprecated: Do not use.
 	WriteConfig(ctx context.Context, in *WriteConfigRequest, opts ...grpc.CallOption) (*WriteConfigResponse, error)
+	// Deprecated: Do not use.
 	DeleteConfigs(ctx context.Context, in *DeleteConfigsRequest, opts ...grpc.CallOption) (*DeleteConfigsResponse, error)
 }
 
@@ -27,10 +32,12 @@ type namespaceServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewNamespaceServiceClient(cc grpc.ClientConnInterface) NamespaceServiceClient {
 	return &namespaceServiceClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *namespaceServiceClient) ReadConfig(ctx context.Context, in *ReadConfigRequest, opts ...grpc.CallOption) (*ReadConfigResponse, error) {
 	out := new(ReadConfigResponse)
 	err := c.cc.Invoke(ctx, "/authzed.api.v0.NamespaceService/ReadConfig", in, out, opts...)
@@ -40,6 +47,7 @@ func (c *namespaceServiceClient) ReadConfig(ctx context.Context, in *ReadConfigR
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *namespaceServiceClient) WriteConfig(ctx context.Context, in *WriteConfigRequest, opts ...grpc.CallOption) (*WriteConfigResponse, error) {
 	out := new(WriteConfigResponse)
 	err := c.cc.Invoke(ctx, "/authzed.api.v0.NamespaceService/WriteConfig", in, out, opts...)
@@ -49,6 +57,7 @@ func (c *namespaceServiceClient) WriteConfig(ctx context.Context, in *WriteConfi
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *namespaceServiceClient) DeleteConfigs(ctx context.Context, in *DeleteConfigsRequest, opts ...grpc.CallOption) (*DeleteConfigsResponse, error) {
 	out := new(DeleteConfigsResponse)
 	err := c.cc.Invoke(ctx, "/authzed.api.v0.NamespaceService/DeleteConfigs", in, out, opts...)
@@ -61,9 +70,14 @@ func (c *namespaceServiceClient) DeleteConfigs(ctx context.Context, in *DeleteCo
 // NamespaceServiceServer is the server API for NamespaceService service.
 // All implementations must embed UnimplementedNamespaceServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type NamespaceServiceServer interface {
+	// Deprecated: Do not use.
 	ReadConfig(context.Context, *ReadConfigRequest) (*ReadConfigResponse, error)
+	// Deprecated: Do not use.
 	WriteConfig(context.Context, *WriteConfigRequest) (*WriteConfigResponse, error)
+	// Deprecated: Do not use.
 	DeleteConfigs(context.Context, *DeleteConfigsRequest) (*DeleteConfigsResponse, error)
 	mustEmbedUnimplementedNamespaceServiceServer()
 }
@@ -90,6 +104,7 @@ type UnsafeNamespaceServiceServer interface {
 	mustEmbedUnimplementedNamespaceServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterNamespaceServiceServer(s grpc.ServiceRegistrar, srv NamespaceServiceServer) {
 	s.RegisterService(&NamespaceService_ServiceDesc, srv)
 }
