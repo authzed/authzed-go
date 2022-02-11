@@ -18,7 +18,7 @@ Once stored, data can be performantly queried to answer questions such as "Does 
 Supported client API versions:
 - [v1](https://buf.build/authzed/api/docs/main/authzed.api.v1)
 - [v1alpha1](https://buf.build/authzed/api/docs/main/authzed.api.v1alpha1)
-- [v0](https://buf.build/authzed/api/docs/main/authzed.api.v0)
+- "v0" - deprecated
 
 You can find more info about the API in the [Authzed Documentation API Reference] or the [Authzed API Buf Registry repository].
 
@@ -60,7 +60,7 @@ Because this library is using [gRPC] under the hood, you are free to leverage th
 
 In order to successfully connect, you will have to provide a [Bearer Token] with your own API Token from the [Authzed dashboard] in place of `t_your_token_here_1234567deadbeef` in the following example:
 
-[`NewClient()`]: https://pkg.go.dev/github.com/authzed/authzed-go/v0#NewClient
+[`NewClient()`]: https://pkg.go.dev/github.com/authzed/authzed-go/v1#NewClient
 [Bearer Token]: https://datatracker.ietf.org/doc/html/rfc6750#section-2.1
 [Authzed Dashboard]: https://app.authzed.com
 [gRPC]: https://grpc.io

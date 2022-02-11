@@ -1,3 +1,4 @@
+// Deprecated: Do not use.
 package authzed
 
 import (
@@ -15,6 +16,7 @@ import (
 // Client represents an open connection to Authzed.
 //
 // Clients are backed by a gRPC client and as such are thread-safe.
+// Deprecated: Do not use.
 type Client struct {
 	v0.ACLServiceClient
 	v0.NamespaceServiceClient
@@ -58,6 +60,7 @@ func SystemCerts(v CertVerification) grpc.DialOption {
 }
 
 // NewClient initializes a brand new client for interacting with Authzed.
+// Deprecated: Do not use.
 func NewClient(endpoint string, opts ...grpc.DialOption) (*Client, error) {
 	conn, err := grpc.Dial(
 		stringz.DefaultEmpty(endpoint, "grpc.authzed.com:443"),
