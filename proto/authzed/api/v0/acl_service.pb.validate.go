@@ -65,7 +65,7 @@ func (m *RelationTupleFilter) Validate() error {
 	if !_RelationTupleFilter_ObjectId_Pattern.MatchString(m.GetObjectId()) {
 		return RelationTupleFilterValidationError{
 			field:  "ObjectId",
-			reason: "value does not match regex pattern \"^([a-zA-Z0-9_][a-zA-Z0-9/_-]{0,127})?$\"",
+			reason: "value does not match regex pattern \"^([a-zA-Z0-9_][a-zA-Z0-9/_|-]{0,127})?$\"",
 		}
 	}
 
@@ -166,7 +166,7 @@ var _ interface {
 
 var _RelationTupleFilter_Namespace_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
-var _RelationTupleFilter_ObjectId_Pattern = regexp.MustCompile("^([a-zA-Z0-9_][a-zA-Z0-9/_-]{0,127})?$")
+var _RelationTupleFilter_ObjectId_Pattern = regexp.MustCompile("^([a-zA-Z0-9_][a-zA-Z0-9/_|-]{0,127})?$")
 
 var _RelationTupleFilter_Relation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
 
