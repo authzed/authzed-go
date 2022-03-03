@@ -76,6 +76,11 @@ var objectIDs = []struct {
 	{"*test", false},
 	{"t*t", false},
 	{"test@example.*", false},
+	{"authn|someauthnvalue", true},
+	{"authn|a@b.com", false},
+	{"authn|", true},
+	{"authn|a-b-c-d-e", true},
+	{"authn|a_b", true},
 }
 
 var subjectIDs = append([]struct {
