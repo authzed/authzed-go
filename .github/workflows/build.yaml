@@ -34,6 +34,7 @@ jobs:
       - uses: "authzed/actions/go-test@main"
         with:
           tags: "integration"
+          race: "false"
 
   protobuf:
     name: "Generate Protobufs"
