@@ -154,6 +154,8 @@ func TestV0CoreObjectValidity(t *testing.T) {
 				for _, relation := range relations {
 					testName := fmt.Sprintf("%s:%s#%s@%s", ns.name, objectID.name, relation.name, subjectID.name)
 					t.Run(testName, func(t *testing.T) {
+						t.Parallel()
+
 						require := require.New(t)
 
 						v0ObjectValid := ns.valid && objectID.valid && (relation.validity == alwaysValid ||
@@ -267,6 +269,8 @@ func TestV1CoreObjectValidity(t *testing.T) {
 				for _, relation := range relations {
 					testName := fmt.Sprintf("%s:%s#%s@%s", ns.name, objectID.name, relation.name, subjectID.name)
 					t.Run(testName, func(t *testing.T) {
+						t.Parallel()
+
 						require := require.New(t)
 
 						objRef := &v1.ObjectReference{
