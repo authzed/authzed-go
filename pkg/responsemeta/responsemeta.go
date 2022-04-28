@@ -15,6 +15,10 @@ type ResponseMetadataHeaderKey string
 const (
 	// RequestID is the key in the response header metadata for the request's tracking ID, if any.
 	RequestID ResponseMetadataHeaderKey = "io.spicedb.respmeta.requestid"
+
+	// ServerVersion is the key in the response header metadata holding the version of the server
+	// handling the API request, if requested via a request header.
+	ServerVersion ResponseMetadataHeaderKey = "io.spicedb.debug.version"
 )
 
 // ResponseMetadataTrailerKey defines a key in the response metadata trailer.
@@ -52,16 +56,39 @@ func SetResponseTrailerMetadata(ctx context.Context, values map[ResponseMetadata
 	return grpc.SetTrailer(ctx, metadata.Pairs(pairs...))
 }
 
+// ListResponseTrailerMetadata retrieves the string value(s) for the given key in the trailer
+// metadata of a SpiceDB API response.
+func ListResponseTrailerMetadata(trailer metadata.MD, key ResponseMetadataTrailerKey) ([]string, error) {
+	values := trailer.Get(string(key))
+	if len(values) == 0 {
+		return []string{}, fmt.Errorf("key `%s` not found in trailer", key)
+	}
+
+	return values, nil
+}
+
+// GetResponseTrailerMetadata retrieves a string value for the given key in the trailer
+// metadata of a SpiceDB API response.
+func GetResponseTrailerMetadata(trailer metadata.MD, key ResponseMetadataTrailerKey) (string, error) {
+	values, err := ListResponseTrailerMetadata(trailer, key)
+	if err != nil {
+		return "", err
+	}
+
+	if len(values) != 1 {
+		return "", fmt.Errorf("key `%s` found multiple times in trailer", key)
+	}
+
+	return values[0], nil
+}
+
 // GetIntResponseTrailerMetadata retrieves an integer value for the given key in the trailer
 // metadata of a SpiceDB API response.
 func GetIntResponseTrailerMetadata(trailer metadata.MD, key ResponseMetadataTrailerKey) (int, error) {
-	values := trailer.Get(string(key))
-	if len(values) == 0 {
-		return 0, fmt.Errorf("key `%s` not found in trailer", key)
-	}
-	if len(values) != 1 {
-		return 0, fmt.Errorf("key `%s` found multiple times in trailer", key)
+	found, err := GetResponseTrailerMetadata(trailer, key)
+	if err != nil {
+		return 0, err
 	}
 
-	return strconv.Atoi(values[0])
+	return strconv.Atoi(found)
 }
