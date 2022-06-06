@@ -11,6 +11,7 @@ import (
 	"net/mail"
 	"net/url"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 	"unicode/utf8"
@@ -31,36 +32,78 @@ var (
 	_ = (*url.URL)(nil)
 	_ = (*mail.Address)(nil)
 	_ = anypb.Any{}
+	_ = sort.Sort
 )
 
 // Validate checks the field values on WatchRequest with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
 func (m *WatchRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on WatchRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in WatchRequestMultiError, or
+// nil if none found.
+func (m *WatchRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *WatchRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
+
+	var errors []error
 
 	for idx, item := range m.GetOptionalObjectTypes() {
 		_, _ = idx, item
 
 		if len(item) > 128 {
-			return WatchRequestValidationError{
+			err := WatchRequestValidationError{
 				field:  fmt.Sprintf("OptionalObjectTypes[%v]", idx),
 				reason: "value length must be at most 128 bytes",
 			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
 
 		if !_WatchRequest_OptionalObjectTypes_Pattern.MatchString(item) {
-			return WatchRequestValidationError{
+			err := WatchRequestValidationError{
 				field:  fmt.Sprintf("OptionalObjectTypes[%v]", idx),
 				reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
 
 	}
 
-	if v, ok := interface{}(m.GetOptionalStartCursor()).(interface{ Validate() error }); ok {
+	if all {
+		switch v := interface{}(m.GetOptionalStartCursor()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, WatchRequestValidationError{
+					field:  "OptionalStartCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, WatchRequestValidationError{
+					field:  "OptionalStartCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetOptionalStartCursor()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return WatchRequestValidationError{
 				field:  "OptionalStartCursor",
@@ -70,8 +113,28 @@ func (m *WatchRequest) Validate() error {
 		}
 	}
 
+	if len(errors) > 0 {
+		return WatchRequestMultiError(errors)
+	}
+
 	return nil
 }
+
+// WatchRequestMultiError is an error wrapping multiple validation errors
+// returned by WatchRequest.ValidateAll() if the designated constraints aren't met.
+type WatchRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m WatchRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m WatchRequestMultiError) AllErrors() []error { return m }
 
 // WatchRequestValidationError is the validation error returned by
 // WatchRequest.Validate if the designated constraints aren't met.
@@ -130,17 +193,50 @@ var _ interface {
 var _WatchRequest_OptionalObjectTypes_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 // Validate checks the field values on WatchResponse with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
 func (m *WatchResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on WatchResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in WatchResponseMultiError, or
+// nil if none found.
+func (m *WatchResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *WatchResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
+	var errors []error
+
 	for idx, item := range m.GetUpdates() {
 		_, _ = idx, item
 
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, WatchResponseValidationError{
+						field:  fmt.Sprintf("Updates[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, WatchResponseValidationError{
+						field:  fmt.Sprintf("Updates[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return WatchResponseValidationError{
 					field:  fmt.Sprintf("Updates[%v]", idx),
@@ -152,7 +248,26 @@ func (m *WatchResponse) Validate() error {
 
 	}
 
-	if v, ok := interface{}(m.GetChangesThrough()).(interface{ Validate() error }); ok {
+	if all {
+		switch v := interface{}(m.GetChangesThrough()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, WatchResponseValidationError{
+					field:  "ChangesThrough",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, WatchResponseValidationError{
+					field:  "ChangesThrough",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetChangesThrough()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return WatchResponseValidationError{
 				field:  "ChangesThrough",
@@ -162,8 +277,29 @@ func (m *WatchResponse) Validate() error {
 		}
 	}
 
+	if len(errors) > 0 {
+		return WatchResponseMultiError(errors)
+	}
+
 	return nil
 }
+
+// WatchResponseMultiError is an error wrapping multiple validation errors
+// returned by WatchResponse.ValidateAll() if the designated constraints
+// aren't met.
+type WatchResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m WatchResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m WatchResponseMultiError) AllErrors() []error { return m }
 
 // WatchResponseValidationError is the validation error returned by
 // WatchResponse.Validate if the designated constraints aren't met.

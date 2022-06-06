@@ -197,64 +197,6 @@ func TestV0CoreObjectValidity(t *testing.T) {
 						}
 						err = asSubject.Validate()
 						require.Equal(v0Valid, err == nil, "should be valid: %v %s", v0Valid, err)
-
-						// test all of the types of tupleset filters
-						justNS := &v0.RelationTupleFilter{
-							Namespace: ns.name,
-						}
-						filterValid := ns.valid
-						err = justNS.Validate()
-						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
-
-						objectIDFilter := &v0.RelationTupleFilter{
-							Namespace: ns.name,
-							ObjectId:  objectID.name,
-							Filters: []v0.RelationTupleFilter_Filter{
-								v0.RelationTupleFilter_OBJECT_ID,
-							},
-						}
-						filterValid = ns.valid && (objectID.valid || objectID.name == "")
-						err = objectIDFilter.Validate()
-						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
-
-						objectRelationFilter := &v0.RelationTupleFilter{
-							Namespace: ns.name,
-							Relation:  relation.name,
-							Filters: []v0.RelationTupleFilter_Filter{
-								v0.RelationTupleFilter_RELATION,
-							},
-						}
-						filterValid = ns.valid && (relation.validity == alwaysValid || relation.name == "")
-						err = objectRelationFilter.Validate()
-						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
-
-						fullObjectFilter := &v0.RelationTupleFilter{
-							Namespace: ns.name,
-							ObjectId:  objectID.name,
-							Relation:  relation.name,
-							Filters: []v0.RelationTupleFilter_Filter{
-								v0.RelationTupleFilter_OBJECT_ID,
-								v0.RelationTupleFilter_RELATION,
-							},
-						}
-						filterValid = ns.valid && (objectID.valid || objectID.name == "") &&
-							(relation.validity == alwaysValid || relation.name == "")
-						err = fullObjectFilter.Validate()
-						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
-
-						subjectFilter := &v0.RelationTupleFilter{
-							Namespace: knownGoodObjectRef.ObjectType,
-							Userset: &v0.ObjectAndRelation{
-								Namespace: ns.name,
-								ObjectId:  subjectID.name,
-								Relation:  relation.name,
-							},
-							Filters: []v0.RelationTupleFilter_Filter{
-								v0.RelationTupleFilter_USERSET,
-							},
-						}
-						err = subjectFilter.Validate()
-						require.Equal(v0SubjectValid, err == nil, "should be valid: %v %s", v0SubjectValid, err)
 					})
 				}
 			}

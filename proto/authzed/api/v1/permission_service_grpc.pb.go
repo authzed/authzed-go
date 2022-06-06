@@ -21,22 +21,23 @@ type PermissionsServiceClient interface {
 	// ReadRelationships reads a set of the relationships matching one or more
 	// filters.
 	ReadRelationships(ctx context.Context, in *ReadRelationshipsRequest, opts ...grpc.CallOption) (PermissionsService_ReadRelationshipsClient, error)
-	// WriteRelationships writes and/or deletes a set of specified relationships,
-	// with an optional set of precondition relationships that must exist before
-	// the operation can commit.
+	// WriteRelationships atomically writes and/or deletes a set of specified
+	// relationships. An optional set of preconditions can be provided that must
+	// be satisfied for the operation to commit.
 	WriteRelationships(ctx context.Context, in *WriteRelationshipsRequest, opts ...grpc.CallOption) (*WriteRelationshipsResponse, error)
-	// DeleteRelationships deletes relationships matching one or more filters, in
-	// bulk.
+	// DeleteRelationships atomically bulk deletes relationships matching one or
+	// more filters. An optional set of preconditions can be provided that must
+	// be satisfied for the operation to commit.
 	DeleteRelationships(ctx context.Context, in *DeleteRelationshipsRequest, opts ...grpc.CallOption) (*DeleteRelationshipsResponse, error)
-	// CheckPermission checks whether a subject has a particular permission or is
-	// a member of a particular relation, on a given resource.
+	// CheckPermission determines for a given resource whether a subject computes
+	// to having a permission or is a direct member of a particular relation.
 	CheckPermission(ctx context.Context, in *CheckPermissionRequest, opts ...grpc.CallOption) (*CheckPermissionResponse, error)
-	// ExpandPermissionTree expands the relationships reachable from a particular
-	// permission or relation of a given resource.
+	// ExpandPermissionTree reveals the graph structure for a resource's
+	// permission or relation. This RPC does not recurse infinitely deep and may
+	// require multiple calls to fully unnest a deeply nested graph.
 	ExpandPermissionTree(ctx context.Context, in *ExpandPermissionTreeRequest, opts ...grpc.CallOption) (*ExpandPermissionTreeResponse, error)
-	// LookupResources returns the IDs of all resources on which the specified
-	// subject has permission or on which the specified subject is a member of the
-	// relation.
+	// LookupResources returns all the resources of a given type that a subject
+	// can access whether via a computed permission or relation membership.
 	LookupResources(ctx context.Context, in *LookupResourcesRequest, opts ...grpc.CallOption) (PermissionsService_LookupResourcesClient, error)
 }
 
@@ -155,22 +156,23 @@ type PermissionsServiceServer interface {
 	// ReadRelationships reads a set of the relationships matching one or more
 	// filters.
 	ReadRelationships(*ReadRelationshipsRequest, PermissionsService_ReadRelationshipsServer) error
-	// WriteRelationships writes and/or deletes a set of specified relationships,
-	// with an optional set of precondition relationships that must exist before
-	// the operation can commit.
+	// WriteRelationships atomically writes and/or deletes a set of specified
+	// relationships. An optional set of preconditions can be provided that must
+	// be satisfied for the operation to commit.
 	WriteRelationships(context.Context, *WriteRelationshipsRequest) (*WriteRelationshipsResponse, error)
-	// DeleteRelationships deletes relationships matching one or more filters, in
-	// bulk.
+	// DeleteRelationships atomically bulk deletes relationships matching one or
+	// more filters. An optional set of preconditions can be provided that must
+	// be satisfied for the operation to commit.
 	DeleteRelationships(context.Context, *DeleteRelationshipsRequest) (*DeleteRelationshipsResponse, error)
-	// CheckPermission checks whether a subject has a particular permission or is
-	// a member of a particular relation, on a given resource.
+	// CheckPermission determines for a given resource whether a subject computes
+	// to having a permission or is a direct member of a particular relation.
 	CheckPermission(context.Context, *CheckPermissionRequest) (*CheckPermissionResponse, error)
-	// ExpandPermissionTree expands the relationships reachable from a particular
-	// permission or relation of a given resource.
+	// ExpandPermissionTree reveals the graph structure for a resource's
+	// permission or relation. This RPC does not recurse infinitely deep and may
+	// require multiple calls to fully unnest a deeply nested graph.
 	ExpandPermissionTree(context.Context, *ExpandPermissionTreeRequest) (*ExpandPermissionTreeResponse, error)
-	// LookupResources returns the IDs of all resources on which the specified
-	// subject has permission or on which the specified subject is a member of the
-	// relation.
+	// LookupResources returns all the resources of a given type that a subject
+	// can access whether via a computed permission or relation membership.
 	LookupResources(*LookupResourcesRequest, PermissionsService_LookupResourcesServer) error
 	mustEmbedUnimplementedPermissionsServiceServer()
 }

@@ -11,6 +11,7 @@ import (
 	"net/mail"
 	"net/url"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 	"unicode/utf8"
@@ -31,18 +32,54 @@ var (
 	_ = (*url.URL)(nil)
 	_ = (*mail.Address)(nil)
 	_ = anypb.Any{}
+	_ = sort.Sort
 )
 
 // Validate checks the field values on ReadSchemaRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, an
-// error is returned.
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
 func (m *ReadSchemaRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadSchemaRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReadSchemaRequestMultiError, or nil if none found.
+func (m *ReadSchemaRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadSchemaRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
+	var errors []error
+
+	if len(errors) > 0 {
+		return ReadSchemaRequestMultiError(errors)
+	}
+
 	return nil
 }
+
+// ReadSchemaRequestMultiError is an error wrapping multiple validation errors
+// returned by ReadSchemaRequest.ValidateAll() if the designated constraints
+// aren't met.
+type ReadSchemaRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadSchemaRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadSchemaRequestMultiError) AllErrors() []error { return m }
 
 // ReadSchemaRequestValidationError is the validation error returned by
 // ReadSchemaRequest.Validate if the designated constraints aren't met.
@@ -102,16 +139,51 @@ var _ interface {
 
 // Validate checks the field values on ReadSchemaResponse with the rules
 // defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
+// violated, the first error encountered is returned, or nil if there are no violations.
 func (m *ReadSchemaResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadSchemaResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReadSchemaResponseMultiError, or nil if none found.
+func (m *ReadSchemaResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadSchemaResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
+	var errors []error
+
 	// no validation rules for SchemaText
+
+	if len(errors) > 0 {
+		return ReadSchemaResponseMultiError(errors)
+	}
 
 	return nil
 }
+
+// ReadSchemaResponseMultiError is an error wrapping multiple validation errors
+// returned by ReadSchemaResponse.ValidateAll() if the designated constraints
+// aren't met.
+type ReadSchemaResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadSchemaResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadSchemaResponseMultiError) AllErrors() []error { return m }
 
 // ReadSchemaResponseValidationError is the validation error returned by
 // ReadSchemaResponse.Validate if the designated constraints aren't met.
@@ -171,21 +243,60 @@ var _ interface {
 
 // Validate checks the field values on WriteSchemaRequest with the rules
 // defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
+// violated, the first error encountered is returned, or nil if there are no violations.
 func (m *WriteSchemaRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on WriteSchemaRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// WriteSchemaRequestMultiError, or nil if none found.
+func (m *WriteSchemaRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *WriteSchemaRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
+	var errors []error
+
 	if len(m.GetSchema()) > 262144 {
-		return WriteSchemaRequestValidationError{
+		err := WriteSchemaRequestValidationError{
 			field:  "Schema",
 			reason: "value length must be at most 262144 bytes",
 		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return WriteSchemaRequestMultiError(errors)
 	}
 
 	return nil
 }
+
+// WriteSchemaRequestMultiError is an error wrapping multiple validation errors
+// returned by WriteSchemaRequest.ValidateAll() if the designated constraints
+// aren't met.
+type WriteSchemaRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m WriteSchemaRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m WriteSchemaRequestMultiError) AllErrors() []error { return m }
 
 // WriteSchemaRequestValidationError is the validation error returned by
 // WriteSchemaRequest.Validate if the designated constraints aren't met.
@@ -245,14 +356,49 @@ var _ interface {
 
 // Validate checks the field values on WriteSchemaResponse with the rules
 // defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
+// violated, the first error encountered is returned, or nil if there are no violations.
 func (m *WriteSchemaResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on WriteSchemaResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// WriteSchemaResponseMultiError, or nil if none found.
+func (m *WriteSchemaResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *WriteSchemaResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
+	var errors []error
+
+	if len(errors) > 0 {
+		return WriteSchemaResponseMultiError(errors)
+	}
+
 	return nil
 }
+
+// WriteSchemaResponseMultiError is an error wrapping multiple validation
+// errors returned by WriteSchemaResponse.ValidateAll() if the designated
+// constraints aren't met.
+type WriteSchemaResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m WriteSchemaResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m WriteSchemaResponseMultiError) AllErrors() []error { return m }
 
 // WriteSchemaResponseValidationError is the validation error returned by
 // WriteSchemaResponse.Validate if the designated constraints aren't met.

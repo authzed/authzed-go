@@ -24,9 +24,3 @@ linters:
     - "typecheck"
     - "unused"
     - "varcheck"
-issues:
-  exclude-rules:
-    - linters:
-        - "staticcheck"
-      path: "v0"  # Temporarily skip deprecation checks during grace period
-      text: "SA1019:"
