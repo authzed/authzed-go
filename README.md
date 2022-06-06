@@ -18,7 +18,6 @@ Once stored, data can be performantly queried to answer questions such as "Does 
 Supported client API versions:
 - [v1](https://buf.build/authzed/api/docs/main/authzed.api.v1)
 - [v1alpha1](https://buf.build/authzed/api/docs/main/authzed.api.v1alpha1)
-- "v0" - deprecated
 
 You can find more info about the API in the [Authzed Documentation API Reference] or the [Authzed API Buf Registry repository].
 
