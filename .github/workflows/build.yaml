@@ -44,7 +44,7 @@ jobs:
         with:
           go-version: "^1.16"
       - name: "Install local Go Protobuf plugins"
-        run: "go install github.com/envoyproxy/protoc-gen-validate@v0.6.1"
+        run: "go install github.com/envoyproxy/protoc-gen-validate@v0.6.7"
       - uses: "actions/checkout@v2"
       - uses: "bufbuild/buf-setup-action@v0.6.0"
         with:
