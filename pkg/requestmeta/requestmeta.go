@@ -17,6 +17,11 @@ const (
 	// server version in the response header (if supported).
 	// Value: `1`
 	RequestServerVersion BoolRequestMetadataHeaderKey = "io.spicedb.requestversion"
+
+	// RequestDebugInformation, if specified in a request header, asks SpiceDB to return debug information
+	// for the API call (if applicable and supported).
+	// Value: `1`
+	RequestDebugInformation BoolRequestMetadataHeaderKey = "io.spicedb.requestdebuginfo"
 )
 
 // AddRequestHeaders returns a new context with the given values as request headers.
@@ -35,5 +40,5 @@ func SetRequestHeaders(ctx context.Context, values map[RequestMetadataHeaderKey]
 		pairs = append(pairs, string(key))
 		pairs = append(pairs, value)
 	}
-	return metadata.NewOutgoingContext(ctx, metadata.Pairs(pairs...))
+	return metadata.AppendToOutgoingContext(ctx, pairs...)
 }
