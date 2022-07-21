@@ -12,6 +12,7 @@ on:
 
 jobs:
   CLAssistant:
+    name: "Check for Signature"
     runs-on: "ubuntu-latest"
     steps:
       - name: "CLA Assistant"
