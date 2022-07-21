@@ -8,19 +8,39 @@ output:
 linters-settings:
   goimports:
     local-prefixes: "github.com/authzed/authzed-go"
+  gosec:
+    excludes:
+      - "G402" # Allow users to configure InsecureSkipVerify
 linters:
   enable:
+    - "bidichk"
+    - "bodyclose"
     - "deadcode"
     - "errcheck"
+    - "errname"
+    - "errorlint"
     - "gofumpt"
     - "goimports"
+    - "goprintffuncname"
+    - "gosec"
     - "gosimple"
     - "govet"
+    - "ifshort"
+    - "importas"
     - "ineffassign"
+    - "makezero"
+    - "prealloc"
+    - "predeclared"
+    - "promlinter"
     - "revive"
     - "rowserrcheck"
     - "staticcheck"
     - "structcheck"
+    - "stylecheck"
+    - "tenv"
     - "typecheck"
+    - "unconvert"
     - "unused"
     - "varcheck"
+    - "wastedassign"
+    - "whitespace"

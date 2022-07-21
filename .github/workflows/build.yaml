@@ -1,5 +1,5 @@
 ---
-name: "build"
+name: "Build & Test"
 on: # yamllint disable-line rule:truthy
   - "push"
   - "pull_request"

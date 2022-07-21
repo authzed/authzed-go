@@ -143,8 +143,7 @@ type Group struct {
 // Wait() after Done has been closed is guaranteed to return an error.
 func (g Group) Wait() error {
 	ctxErr := g.ctx.Err()
-	err := g.wrapped.Wait()
-	if err != nil {
+	if err := g.wrapped.Wait(); err != nil {
 		return err
 	}
 	return ctxErr
