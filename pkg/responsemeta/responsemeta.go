@@ -34,6 +34,10 @@ const (
 	// the number of *cached* operations that would have been otherwise dispatched
 	// to perform the overall API call.
 	CachedOperationsCount ResponseMetadataTrailerKey = "io.spicedb.respmeta.cachedoperationscount"
+
+	// DebugInformation contains the JSON-encoded form of the debug information for the API call,
+	// if requested and supported.
+	DebugInformation ResponseMetadataTrailerKey = "io.spicedb.respmeta.debuginfo"
 )
 
 // SetResponseHeaderMetadata sets the external response metadata header on the given context.
@@ -80,6 +84,22 @@ func GetResponseTrailerMetadata(trailer metadata.MD, key ResponseMetadataTrailer
 	}
 
 	return values[0], nil
+}
+
+// GetResponseTrailerMetadataOrNil retrieves a string value for the given key in the trailer
+// metadata of a SpiceDB API response or nil if not found.
+func GetResponseTrailerMetadataOrNil(trailer metadata.MD, key ResponseMetadataTrailerKey) (*string, error) {
+	values := trailer.Get(string(key))
+	if len(values) == 0 {
+		return nil, nil
+	}
+
+	if len(values) != 1 {
+		return nil, fmt.Errorf("key `%s` found multiple times in trailer", key)
+	}
+
+	vle := values[0]
+	return &vle, nil
 }
 
 // GetIntResponseTrailerMetadata retrieves an integer value for the given key in the trailer
