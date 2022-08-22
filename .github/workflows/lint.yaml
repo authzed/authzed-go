@@ -1,8 +1,12 @@
 ---
 name: "Lint"
-on: # yamllint disable-line rule:truthy
-  - "push"
-  - "pull_request"
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - "!dependabot/*"
+      - "main"
+  pull_request:
+    branches: ["*"]
 jobs:
   go-lint:
     name: "Lint Go"
@@ -16,6 +20,26 @@ jobs:
       - uses: "authzed/actions/go-mod-tidy@main"
       - uses: "authzed/actions/go-generate@main"
       - uses: "authzed/actions/golangci-lint@main"
+  extra-lint:
+    name: "Lint YAML"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: "authzed/actions/yaml-lint@main"
+  codeql:
+    name: "Analyze with CodeQL"
+    runs-on: "ubuntu-latest"
+    permissions:
+      actions: "read"
+      contents: "read"
+      security-events: "write"
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["go"]
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: "authzed/actions/codeql@main"
   trivy:
     name: "Analyze with Trivy"
     runs-on: "ubuntu-latest"

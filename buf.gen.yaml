@@ -16,5 +16,5 @@ plugins:
     opt: "paths=source_relative"
   - name: "openapiv2"
     out: "proto"
-    strategy: all
+    strategy: "all"
     opt: "allow_merge=true"
