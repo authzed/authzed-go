@@ -66,6 +66,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "CheckPermissionRequest issues a check on whether a subject has a permission\nor is a member of a relation, on a specific resource.",
             "in": "body",
             "required": true,
             "schema": {
@@ -99,6 +100,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "ExpandPermissionTreeRequest returns a tree representing the expansion of all\nrelationships found accessible from a permission or relation on a particular\nresource.\n\nExpandPermissionTreeRequest is typically used to determine the full set of\nsubjects with a permission, along with the relationships that grant said\naccess.",
             "in": "body",
             "required": true,
             "schema": {
@@ -141,6 +143,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "LookupResourcesRequest performs a lookup of all resources of a particular\nkind on which the subject has the specified permission or the relation in\nwhich the subject exists, streaming back the IDs of those resources.",
             "in": "body",
             "required": true,
             "schema": {
@@ -174,6 +177,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "DeleteRelationshipsRequest specifies which Relationships should be deleted,\nrequesting the delete of *ALL* relationships that match the specified\nfilters. If the optional_preconditions parameter is included, all of the\nspecified preconditions must also be satisfied before the delete will be\nexecuted.",
             "in": "body",
             "required": true,
             "schema": {
@@ -216,6 +220,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "ReadRelationshipsRequest specifies one or more filters used to read matching\nrelationships within the system.",
             "in": "body",
             "required": true,
             "schema": {
@@ -249,6 +254,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "WriteRelationshipsRequest contains a list of Relationship mutations that\nshould be applied to the service. If the optional_preconditions parameter\nis included, all of the specified preconditions must also be satisfied before\nthe write will be committed.",
             "in": "body",
             "required": true,
             "schema": {
@@ -283,6 +289,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "ReadSchemaRequest returns the schema from the database.",
             "in": "body",
             "required": true,
             "schema": {
@@ -316,6 +323,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "WriteSchemaRequest is the required data used to \"upsert\" the Schema of a\nPermissions System.",
             "in": "body",
             "required": true,
             "schema": {
@@ -357,6 +365,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "WatchRequest specifies the object definitions for which we want to start\nwatching mutations, and an optional start snapshot for when to start\nwatching.",
             "in": "body",
             "required": true,
             "schema": {
@@ -399,6 +408,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "WatchResourcesRequest starts a watch for specific permission updates\nfor the given resource and subject types.",
             "in": "body",
             "required": true,
             "schema": {

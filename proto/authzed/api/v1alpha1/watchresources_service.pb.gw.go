@@ -114,12 +114,13 @@ func RegisterWatchResourcesServiceHandlerClient(ctx context.Context, mux *runtim
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1alpha1.WatchResourcesService/WatchResources", runtime.WithHTTPPathPattern("/v1alpha1/lookupwatch"))
+		var err error
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1alpha1.WatchResourcesService/WatchResources", runtime.WithHTTPPathPattern("/v1alpha1/lookupwatch"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_WatchResourcesService_WatchResources_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_WatchResourcesService_WatchResources_0(ctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
