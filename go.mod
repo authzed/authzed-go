@@ -5,14 +5,14 @@ go 1.18
 require (
 	github.com/authzed/grpcutil v0.0.0-20210913124023-cad23ae5a9e8
 	github.com/envoyproxy/protoc-gen-validate v0.6.7
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.2
 	github.com/jzelinskie/stringz v0.0.0-20210414224931-d6a8ce844a70
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4
-	google.golang.org/genproto v0.0.0-20220719170305-83ca9fad585f
+	google.golang.org/genproto v0.0.0-20220819174105-e9f053255caa
 	google.golang.org/grpc v1.48.0
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0
-	google.golang.org/protobuf v1.28.0
+	google.golang.org/protobuf v1.28.1
 )
 
 require (
