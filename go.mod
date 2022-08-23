@@ -7,7 +7,7 @@ require (
 	github.com/envoyproxy/protoc-gen-validate v0.6.7
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.2
 	github.com/jzelinskie/stringz v0.0.0-20210414224931-d6a8ce844a70
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.8.0
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4
 	google.golang.org/genproto v0.0.0-20220819174105-e9f053255caa
 	google.golang.org/grpc v1.48.0
