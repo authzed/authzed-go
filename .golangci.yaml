@@ -10,7 +10,7 @@ linters-settings:
     local-prefixes: "github.com/authzed/authzed-go"
   gosec:
     excludes:
-      - "G402" # Allow users to configure InsecureSkipVerify
+      - "G402"  # Allow users to configure InsecureSkipVerify
 linters:
   enable:
     - "bidichk"
