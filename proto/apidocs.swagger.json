@@ -156,9 +156,52 @@
         ]
       }
     },
+    "/v1/permissions/subjects": {
+      "post": {
+        "summary": "LookupSubjects returns all the subjects of a given type that\nhave access whether via a computed permission or relation membership.",
+        "operationId": "PermissionsService_LookupSubjects",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v1LookupSubjectsResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v1LookupSubjectsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "LookupSubjectsRequest performs a lookup of all subjects of a particular\nkind for which the subject has the specified permission or the relation in\nwhich the subject exists, streaming back the IDs of those subjects.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1LookupSubjectsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PermissionsService"
+        ]
+      }
+    },
     "/v1/relationships/delete": {
       "post": {
-        "summary": "DeleteRelationships atomically bulk deletes relationships matching one or\nmore filters. An optional set of preconditions can be provided that must\nbe satisfied for the operation to commit.",
+        "summary": "DeleteRelationships atomically bulk deletes all relationships matching the\nprovided filter. If no relationships match, none will be deleted and the\noperation will succeed. An optional set of preconditions can be provided that must\nbe satisfied for the operation to commit.",
         "operationId": "PermissionsService_DeleteRelationships",
         "responses": {
           "200": {
@@ -924,6 +967,51 @@
         }
       },
       "description": "LookupResourcesResponse contains a single matching resource object ID for the\nrequested object type, permission, and subject."
+    },
+    "v1LookupSubjectsRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency"
+        },
+        "resource": {
+          "$ref": "#/definitions/v1ObjectReference",
+          "description": "resource is the resource for which all matching subjects for the permission\nor relation will be returned."
+        },
+        "permission": {
+          "type": "string",
+          "description": "permission is the name of the permission (or relation) for which to find\nthe subjects."
+        },
+        "subjectObjectType": {
+          "type": "string",
+          "description": "subject_object_type is the type of subject object for which the IDs will\nbe returned."
+        },
+        "optionalSubjectRelation": {
+          "type": "string",
+          "description": "optional_subject_relation is the optional relation for the subject."
+        }
+      },
+      "description": "LookupSubjectsRequest performs a lookup of all subjects of a particular\nkind for which the subject has the specified permission or the relation in\nwhich the subject exists, streaming back the IDs of those subjects."
+    },
+    "v1LookupSubjectsResponse": {
+      "type": "object",
+      "properties": {
+        "lookedUpAt": {
+          "$ref": "#/definitions/v1ZedToken"
+        },
+        "subjectObjectId": {
+          "type": "string",
+          "description": "subject_object_id is the Object ID of the subject found. May be a `*` if\na wildcard was found."
+        },
+        "excludedSubjectIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "excluded_subject_ids are the Object IDs of the subjects excluded. This list\nwill only contain object IDs if `subject_object_id` is a wildcard (`*`) and\nwill only be populated if exclusions exist from the wildcard."
+        }
+      },
+      "description": "LookupSubjectsResponse contains a single matching subject object ID for the\nrequested subject object type on the permission or relation."
     },
     "v1ObjectReference": {
       "type": "object",
