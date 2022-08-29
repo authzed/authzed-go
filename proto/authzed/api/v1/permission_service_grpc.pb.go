@@ -29,8 +29,9 @@ type PermissionsServiceClient interface {
 	// relationships. An optional set of preconditions can be provided that must
 	// be satisfied for the operation to commit.
 	WriteRelationships(ctx context.Context, in *WriteRelationshipsRequest, opts ...grpc.CallOption) (*WriteRelationshipsResponse, error)
-	// DeleteRelationships atomically bulk deletes relationships matching one or
-	// more filters. An optional set of preconditions can be provided that must
+	// DeleteRelationships atomically bulk deletes all relationships matching the
+	// provided filter. If no relationships match, none will be deleted and the
+	// operation will succeed. An optional set of preconditions can be provided that must
 	// be satisfied for the operation to commit.
 	DeleteRelationships(ctx context.Context, in *DeleteRelationshipsRequest, opts ...grpc.CallOption) (*DeleteRelationshipsResponse, error)
 	// CheckPermission determines for a given resource whether a subject computes
@@ -43,6 +44,9 @@ type PermissionsServiceClient interface {
 	// LookupResources returns all the resources of a given type that a subject
 	// can access whether via a computed permission or relation membership.
 	LookupResources(ctx context.Context, in *LookupResourcesRequest, opts ...grpc.CallOption) (PermissionsService_LookupResourcesClient, error)
+	// LookupSubjects returns all the subjects of a given type that
+	// have access whether via a computed permission or relation membership.
+	LookupSubjects(ctx context.Context, in *LookupSubjectsRequest, opts ...grpc.CallOption) (PermissionsService_LookupSubjectsClient, error)
 }
 
 type permissionsServiceClient struct {
@@ -153,6 +157,38 @@ func (x *permissionsServiceLookupResourcesClient) Recv() (*LookupResourcesRespon
 	return m, nil
 }
 
+func (c *permissionsServiceClient) LookupSubjects(ctx context.Context, in *LookupSubjectsRequest, opts ...grpc.CallOption) (PermissionsService_LookupSubjectsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &PermissionsService_ServiceDesc.Streams[2], "/authzed.api.v1.PermissionsService/LookupSubjects", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &permissionsServiceLookupSubjectsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type PermissionsService_LookupSubjectsClient interface {
+	Recv() (*LookupSubjectsResponse, error)
+	grpc.ClientStream
+}
+
+type permissionsServiceLookupSubjectsClient struct {
+	grpc.ClientStream
+}
+
+func (x *permissionsServiceLookupSubjectsClient) Recv() (*LookupSubjectsResponse, error) {
+	m := new(LookupSubjectsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // PermissionsServiceServer is the server API for PermissionsService service.
 // All implementations must embed UnimplementedPermissionsServiceServer
 // for forward compatibility
@@ -164,8 +200,9 @@ type PermissionsServiceServer interface {
 	// relationships. An optional set of preconditions can be provided that must
 	// be satisfied for the operation to commit.
 	WriteRelationships(context.Context, *WriteRelationshipsRequest) (*WriteRelationshipsResponse, error)
-	// DeleteRelationships atomically bulk deletes relationships matching one or
-	// more filters. An optional set of preconditions can be provided that must
+	// DeleteRelationships atomically bulk deletes all relationships matching the
+	// provided filter. If no relationships match, none will be deleted and the
+	// operation will succeed. An optional set of preconditions can be provided that must
 	// be satisfied for the operation to commit.
 	DeleteRelationships(context.Context, *DeleteRelationshipsRequest) (*DeleteRelationshipsResponse, error)
 	// CheckPermission determines for a given resource whether a subject computes
@@ -178,6 +215,9 @@ type PermissionsServiceServer interface {
 	// LookupResources returns all the resources of a given type that a subject
 	// can access whether via a computed permission or relation membership.
 	LookupResources(*LookupResourcesRequest, PermissionsService_LookupResourcesServer) error
+	// LookupSubjects returns all the subjects of a given type that
+	// have access whether via a computed permission or relation membership.
+	LookupSubjects(*LookupSubjectsRequest, PermissionsService_LookupSubjectsServer) error
 	mustEmbedUnimplementedPermissionsServiceServer()
 }
 
@@ -202,6 +242,9 @@ func (UnimplementedPermissionsServiceServer) ExpandPermissionTree(context.Contex
 }
 func (UnimplementedPermissionsServiceServer) LookupResources(*LookupResourcesRequest, PermissionsService_LookupResourcesServer) error {
 	return status.Errorf(codes.Unimplemented, "method LookupResources not implemented")
+}
+func (UnimplementedPermissionsServiceServer) LookupSubjects(*LookupSubjectsRequest, PermissionsService_LookupSubjectsServer) error {
+	return status.Errorf(codes.Unimplemented, "method LookupSubjects not implemented")
 }
 func (UnimplementedPermissionsServiceServer) mustEmbedUnimplementedPermissionsServiceServer() {}
 
@@ -330,6 +373,27 @@ func (x *permissionsServiceLookupResourcesServer) Send(m *LookupResourcesRespons
 	return x.ServerStream.SendMsg(m)
 }
 
+func _PermissionsService_LookupSubjects_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(LookupSubjectsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(PermissionsServiceServer).LookupSubjects(m, &permissionsServiceLookupSubjectsServer{stream})
+}
+
+type PermissionsService_LookupSubjectsServer interface {
+	Send(*LookupSubjectsResponse) error
+	grpc.ServerStream
+}
+
+type permissionsServiceLookupSubjectsServer struct {
+	grpc.ServerStream
+}
+
+func (x *permissionsServiceLookupSubjectsServer) Send(m *LookupSubjectsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // PermissionsService_ServiceDesc is the grpc.ServiceDesc for PermissionsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -363,6 +427,11 @@ var PermissionsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "LookupResources",
 			Handler:       _PermissionsService_LookupResources_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "LookupSubjects",
+			Handler:       _PermissionsService_LookupSubjects_Handler,
 			ServerStreams: true,
 		},
 	},
