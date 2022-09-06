@@ -433,6 +433,7 @@ type PermissionRelationshipTree struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to TreeType:
+	//
 	//	*PermissionRelationshipTree_Intermediate
 	//	*PermissionRelationshipTree_Leaf
 	TreeType         isPermissionRelationshipTree_TreeType `protobuf_oneof:"tree_type"`

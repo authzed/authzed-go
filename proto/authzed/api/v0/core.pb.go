@@ -211,6 +211,7 @@ type User struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to UserOneof:
+	//
 	//	*User_Userset
 	UserOneof isUser_UserOneof `protobuf_oneof:"user_oneof"`
 }
