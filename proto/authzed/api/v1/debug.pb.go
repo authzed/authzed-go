@@ -203,6 +203,7 @@ type CheckDebugTrace struct {
 	// resolution holds information about how the problem was resolved.
 	//
 	// Types that are assignable to Resolution:
+	//
 	//	*CheckDebugTrace_WasCachedResult
 	//	*CheckDebugTrace_SubProblems_
 	Resolution isCheckDebugTrace_Resolution `protobuf_oneof:"resolution"`

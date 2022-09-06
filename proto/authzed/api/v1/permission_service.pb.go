@@ -129,6 +129,7 @@ type Consistency struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Requirement:
+	//
 	//	*Consistency_MinimizeLatency
 	//	*Consistency_AtLeastAsFresh
 	//	*Consistency_AtExactSnapshot
