@@ -7,6 +7,7 @@ require (
 	github.com/envoyproxy/protoc-gen-validate v0.6.7
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
 	github.com/jzelinskie/stringz v0.0.0-20210414224931-d6a8ce844a70
+	github.com/planetscale/vtprotobuf v0.3.1-0.20220817155510-0ae748fd2007
 	github.com/stretchr/testify v1.8.0
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4
 	google.golang.org/genproto v0.0.0-20220822174746-9e6da59bd2fc
@@ -27,7 +28,7 @@ require (
 	github.com/spf13/afero v1.9.2 // indirect
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
-	golang.org/x/net v0.0.0-20220812174116-3211cb980234 // indirect
+	golang.org/x/net v0.0.0-20220909164309-bea034e7d591 // indirect
 	golang.org/x/sys v0.0.0-20220818161305-2296e01440c6 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.12 // indirect
