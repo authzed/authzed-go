@@ -10,6 +10,7 @@ import (
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 	reflect "reflect"
 	sync "sync"
 )
@@ -70,7 +71,7 @@ func (x RelationshipUpdate_Operation) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use RelationshipUpdate_Operation.Descriptor instead.
 func (RelationshipUpdate_Operation) EnumDescriptor() ([]byte, []int) {
-	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{4, 0}
+	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{5, 0}
 }
 
 type AlgebraicSubjectSet_Operation int32
@@ -122,7 +123,7 @@ func (x AlgebraicSubjectSet_Operation) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AlgebraicSubjectSet_Operation.Descriptor instead.
 func (AlgebraicSubjectSet_Operation) EnumDescriptor() ([]byte, []int) {
-	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{6, 0}
+	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{7, 0}
 }
 
 // Relationship specifies how a resource relates to a subject. Relationships
@@ -139,6 +140,8 @@ type Relationship struct {
 	Relation string `protobuf:"bytes,2,opt,name=relation,proto3" json:"relation,omitempty"`
 	// subject is the subject to which the resource is related, in some manner.
 	Subject *SubjectReference `protobuf:"bytes,3,opt,name=subject,proto3" json:"subject,omitempty"`
+	// optional_caveat is a reference to a the caveat that must be enforced over the relationship
+	OptionalCaveat *ContextualizedCaveat `protobuf:"bytes,4,opt,name=optional_caveat,json=optionalCaveat,proto3" json:"optional_caveat,omitempty"`
 }
 
 func (x *Relationship) Reset() {
@@ -194,6 +197,73 @@ func (x *Relationship) GetSubject() *SubjectReference {
 	return nil
 }
 
+func (x *Relationship) GetOptionalCaveat() *ContextualizedCaveat {
+	if x != nil {
+		return x.OptionalCaveat
+	}
+	return nil
+}
+
+// ContextualizedCaveat represents a reference to a caveat to be used by caveated relationships.
+// The context consists of key-value pairs that will be injected at evaluation time.
+// The keys must match the arguments defined on the caveat in the schema.
+type ContextualizedCaveat struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// caveat_name is the name of the caveat expression to use, as defined in the schema *
+	CaveatName string `protobuf:"bytes,1,opt,name=caveat_name,json=caveatName,proto3" json:"caveat_name,omitempty"`
+	// context consists of any named values that are defined at write time for the caveat expression *
+	Context *structpb.Struct `protobuf:"bytes,2,opt,name=context,proto3" json:"context,omitempty"`
+}
+
+func (x *ContextualizedCaveat) Reset() {
+	*x = ContextualizedCaveat{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_authzed_api_v1_core_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ContextualizedCaveat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ContextualizedCaveat) ProtoMessage() {}
+
+func (x *ContextualizedCaveat) ProtoReflect() protoreflect.Message {
+	mi := &file_authzed_api_v1_core_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ContextualizedCaveat.ProtoReflect.Descriptor instead.
+func (*ContextualizedCaveat) Descriptor() ([]byte, []int) {
+	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ContextualizedCaveat) GetCaveatName() string {
+	if x != nil {
+		return x.CaveatName
+	}
+	return ""
+}
+
+func (x *ContextualizedCaveat) GetContext() *structpb.Struct {
+	if x != nil {
+		return x.Context
+	}
+	return nil
+}
+
 // SubjectReference is used for referring to the subject portion of a
 // Relationship. The relation component is optional and is used for defining a
 // sub-relation on the subject, e.g. group:123#members
@@ -209,7 +279,7 @@ type SubjectReference struct {
 func (x *SubjectReference) Reset() {
 	*x = SubjectReference{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_authzed_api_v1_core_proto_msgTypes[1]
+		mi := &file_authzed_api_v1_core_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -222,7 +292,7 @@ func (x *SubjectReference) String() string {
 func (*SubjectReference) ProtoMessage() {}
 
 func (x *SubjectReference) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_core_proto_msgTypes[1]
+	mi := &file_authzed_api_v1_core_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -235,7 +305,7 @@ func (x *SubjectReference) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubjectReference.ProtoReflect.Descriptor instead.
 func (*SubjectReference) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{1}
+	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SubjectReference) GetObject() *ObjectReference {
@@ -265,7 +335,7 @@ type ObjectReference struct {
 func (x *ObjectReference) Reset() {
 	*x = ObjectReference{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_authzed_api_v1_core_proto_msgTypes[2]
+		mi := &file_authzed_api_v1_core_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -278,7 +348,7 @@ func (x *ObjectReference) String() string {
 func (*ObjectReference) ProtoMessage() {}
 
 func (x *ObjectReference) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_core_proto_msgTypes[2]
+	mi := &file_authzed_api_v1_core_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -291,7 +361,7 @@ func (x *ObjectReference) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectReference.ProtoReflect.Descriptor instead.
 func (*ObjectReference) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{2}
+	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ObjectReference) GetObjectType() string {
@@ -323,7 +393,7 @@ type ZedToken struct {
 func (x *ZedToken) Reset() {
 	*x = ZedToken{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_authzed_api_v1_core_proto_msgTypes[3]
+		mi := &file_authzed_api_v1_core_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -336,7 +406,7 @@ func (x *ZedToken) String() string {
 func (*ZedToken) ProtoMessage() {}
 
 func (x *ZedToken) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_core_proto_msgTypes[3]
+	mi := &file_authzed_api_v1_core_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -349,7 +419,7 @@ func (x *ZedToken) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ZedToken.ProtoReflect.Descriptor instead.
 func (*ZedToken) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{3}
+	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ZedToken) GetToken() string {
@@ -382,7 +452,7 @@ type RelationshipUpdate struct {
 func (x *RelationshipUpdate) Reset() {
 	*x = RelationshipUpdate{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_authzed_api_v1_core_proto_msgTypes[4]
+		mi := &file_authzed_api_v1_core_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -395,7 +465,7 @@ func (x *RelationshipUpdate) String() string {
 func (*RelationshipUpdate) ProtoMessage() {}
 
 func (x *RelationshipUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_core_proto_msgTypes[4]
+	mi := &file_authzed_api_v1_core_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -408,7 +478,7 @@ func (x *RelationshipUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RelationshipUpdate.ProtoReflect.Descriptor instead.
 func (*RelationshipUpdate) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{4}
+	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *RelationshipUpdate) GetOperation() RelationshipUpdate_Operation {
@@ -444,7 +514,7 @@ type PermissionRelationshipTree struct {
 func (x *PermissionRelationshipTree) Reset() {
 	*x = PermissionRelationshipTree{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_authzed_api_v1_core_proto_msgTypes[5]
+		mi := &file_authzed_api_v1_core_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -457,7 +527,7 @@ func (x *PermissionRelationshipTree) String() string {
 func (*PermissionRelationshipTree) ProtoMessage() {}
 
 func (x *PermissionRelationshipTree) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_core_proto_msgTypes[5]
+	mi := &file_authzed_api_v1_core_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -470,7 +540,7 @@ func (x *PermissionRelationshipTree) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PermissionRelationshipTree.ProtoReflect.Descriptor instead.
 func (*PermissionRelationshipTree) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{5}
+	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{6}
 }
 
 func (m *PermissionRelationshipTree) GetTreeType() isPermissionRelationshipTree_TreeType {
@@ -546,7 +616,7 @@ type AlgebraicSubjectSet struct {
 func (x *AlgebraicSubjectSet) Reset() {
 	*x = AlgebraicSubjectSet{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_authzed_api_v1_core_proto_msgTypes[6]
+		mi := &file_authzed_api_v1_core_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -559,7 +629,7 @@ func (x *AlgebraicSubjectSet) String() string {
 func (*AlgebraicSubjectSet) ProtoMessage() {}
 
 func (x *AlgebraicSubjectSet) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_core_proto_msgTypes[6]
+	mi := &file_authzed_api_v1_core_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -572,7 +642,7 @@ func (x *AlgebraicSubjectSet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AlgebraicSubjectSet.ProtoReflect.Descriptor instead.
 func (*AlgebraicSubjectSet) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{6}
+	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *AlgebraicSubjectSet) GetOperation() AlgebraicSubjectSet_Operation {
@@ -601,7 +671,7 @@ type DirectSubjectSet struct {
 func (x *DirectSubjectSet) Reset() {
 	*x = DirectSubjectSet{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_authzed_api_v1_core_proto_msgTypes[7]
+		mi := &file_authzed_api_v1_core_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -614,7 +684,7 @@ func (x *DirectSubjectSet) String() string {
 func (*DirectSubjectSet) ProtoMessage() {}
 
 func (x *DirectSubjectSet) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_core_proto_msgTypes[7]
+	mi := &file_authzed_api_v1_core_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -627,7 +697,7 @@ func (x *DirectSubjectSet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DirectSubjectSet.ProtoReflect.Descriptor instead.
 func (*DirectSubjectSet) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{7}
+	return file_authzed_api_v1_core_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DirectSubjectSet) GetSubjects() []*SubjectReference {
@@ -642,23 +712,41 @@ var File_authzed_api_v1_core_proto protoreflect.FileDescriptor
 var file_authzed_api_v1_core_proto_rawDesc = []byte{
 	0x0a, 0x19, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31,
 	0x2f, 0x63, 0x6f, 0x72, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0e, 0x61, 0x75, 0x74,
-	0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x1a, 0x17, 0x76, 0x61, 0x6c,
-	0x69, 0x64, 0x61, 0x74, 0x65, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x65, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x22, 0xe0, 0x01, 0x0a, 0x0c, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x73, 0x68, 0x69, 0x70, 0x12, 0x45, 0x0a, 0x08, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63,
-	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65,
-	0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52,
-	0x65, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02,
-	0x10, 0x01, 0x52, 0x08, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x12, 0x43, 0x0a, 0x08,
-	0x72, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x27,
-	0xfa, 0x42, 0x24, 0x72, 0x22, 0x28, 0x40, 0x32, 0x1e, 0x5e, 0x5b, 0x61, 0x2d, 0x7a, 0x5d, 0x5b,
-	0x61, 0x2d, 0x7a, 0x30, 0x2d, 0x39, 0x5f, 0x5d, 0x7b, 0x31, 0x2c, 0x36, 0x32, 0x7d, 0x5b, 0x61,
-	0x2d, 0x7a, 0x30, 0x2d, 0x39, 0x5d, 0x24, 0x52, 0x08, 0x72, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x12, 0x44, 0x0a, 0x07, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x0b, 0x32, 0x20, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69,
-	0x2e, 0x76, 0x31, 0x2e, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x66, 0x65, 0x72,
-	0x65, 0x6e, 0x63, 0x65, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02, 0x10, 0x01, 0x52, 0x07,
-	0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x22, 0xae, 0x01, 0x0a, 0x10, 0x53, 0x75, 0x62, 0x6a,
+	0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x1a, 0x1c, 0x67, 0x6f, 0x6f,
+	0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x73, 0x74, 0x72,
+	0x75, 0x63, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x17, 0x76, 0x61, 0x6c, 0x69, 0x64,
+	0x61, 0x74, 0x65, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x65, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x22, 0xb9, 0x02, 0x0a, 0x0c, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x68, 0x69, 0x70, 0x12, 0x45, 0x0a, 0x08, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e,
+	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x66,
+	0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02, 0x10, 0x01,
+	0x52, 0x08, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x12, 0x43, 0x0a, 0x08, 0x72, 0x65,
+	0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x27, 0xfa, 0x42,
+	0x24, 0x72, 0x22, 0x28, 0x40, 0x32, 0x1e, 0x5e, 0x5b, 0x61, 0x2d, 0x7a, 0x5d, 0x5b, 0x61, 0x2d,
+	0x7a, 0x30, 0x2d, 0x39, 0x5f, 0x5d, 0x7b, 0x31, 0x2c, 0x36, 0x32, 0x7d, 0x5b, 0x61, 0x2d, 0x7a,
+	0x30, 0x2d, 0x39, 0x5d, 0x24, 0x52, 0x08, 0x72, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x44, 0x0a, 0x07, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x20, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
+	0x31, 0x2e, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x66, 0x65, 0x72, 0x65, 0x6e,
+	0x63, 0x65, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02, 0x10, 0x01, 0x52, 0x07, 0x73, 0x75,
+	0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x57, 0x0a, 0x0f, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x61,
+	0x6c, 0x5f, 0x63, 0x61, 0x76, 0x65, 0x61, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x24,
+	0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
+	0x43, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x75, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x64, 0x43, 0x61,
+	0x76, 0x65, 0x61, 0x74, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02, 0x10, 0x00, 0x52, 0x0e,
+	0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x43, 0x61, 0x76, 0x65, 0x61, 0x74, 0x22, 0xa6,
+	0x01, 0x0a, 0x14, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x75, 0x61, 0x6c, 0x69, 0x7a, 0x65,
+	0x64, 0x43, 0x61, 0x76, 0x65, 0x61, 0x74, 0x12, 0x51, 0x0a, 0x0b, 0x63, 0x61, 0x76, 0x65, 0x61,
+	0x74, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x30, 0xfa, 0x42,
+	0x2d, 0x72, 0x2b, 0x28, 0x80, 0x01, 0x32, 0x26, 0x5e, 0x28, 0x5b, 0x61, 0x2d, 0x7a, 0x41, 0x2d,
+	0x5a, 0x30, 0x2d, 0x39, 0x5f, 0x5d, 0x5b, 0x61, 0x2d, 0x7a, 0x41, 0x2d, 0x5a, 0x30, 0x2d, 0x39,
+	0x2f, 0x5f, 0x7c, 0x2d, 0x5d, 0x7b, 0x30, 0x2c, 0x31, 0x32, 0x37, 0x7d, 0x29, 0x24, 0x52, 0x0a,
+	0x63, 0x61, 0x76, 0x65, 0x61, 0x74, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x3b, 0x0a, 0x07, 0x63, 0x6f,
+	0x6e, 0x74, 0x65, 0x78, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x67, 0x6f,
+	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x53, 0x74,
+	0x72, 0x75, 0x63, 0x74, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02, 0x10, 0x00, 0x52, 0x07,
+	0x63, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x22, 0xae, 0x01, 0x0a, 0x10, 0x53, 0x75, 0x62, 0x6a,
 	0x65, 0x63, 0x74, 0x52, 0x65, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x12, 0x41, 0x0a, 0x06,
 	0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x61,
 	0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x4f, 0x62,
@@ -766,36 +854,40 @@ func file_authzed_api_v1_core_proto_rawDescGZIP() []byte {
 }
 
 var file_authzed_api_v1_core_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_authzed_api_v1_core_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_authzed_api_v1_core_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_authzed_api_v1_core_proto_goTypes = []interface{}{
 	(RelationshipUpdate_Operation)(0),  // 0: authzed.api.v1.RelationshipUpdate.Operation
 	(AlgebraicSubjectSet_Operation)(0), // 1: authzed.api.v1.AlgebraicSubjectSet.Operation
 	(*Relationship)(nil),               // 2: authzed.api.v1.Relationship
-	(*SubjectReference)(nil),           // 3: authzed.api.v1.SubjectReference
-	(*ObjectReference)(nil),            // 4: authzed.api.v1.ObjectReference
-	(*ZedToken)(nil),                   // 5: authzed.api.v1.ZedToken
-	(*RelationshipUpdate)(nil),         // 6: authzed.api.v1.RelationshipUpdate
-	(*PermissionRelationshipTree)(nil), // 7: authzed.api.v1.PermissionRelationshipTree
-	(*AlgebraicSubjectSet)(nil),        // 8: authzed.api.v1.AlgebraicSubjectSet
-	(*DirectSubjectSet)(nil),           // 9: authzed.api.v1.DirectSubjectSet
+	(*ContextualizedCaveat)(nil),       // 3: authzed.api.v1.ContextualizedCaveat
+	(*SubjectReference)(nil),           // 4: authzed.api.v1.SubjectReference
+	(*ObjectReference)(nil),            // 5: authzed.api.v1.ObjectReference
+	(*ZedToken)(nil),                   // 6: authzed.api.v1.ZedToken
+	(*RelationshipUpdate)(nil),         // 7: authzed.api.v1.RelationshipUpdate
+	(*PermissionRelationshipTree)(nil), // 8: authzed.api.v1.PermissionRelationshipTree
+	(*AlgebraicSubjectSet)(nil),        // 9: authzed.api.v1.AlgebraicSubjectSet
+	(*DirectSubjectSet)(nil),           // 10: authzed.api.v1.DirectSubjectSet
+	(*structpb.Struct)(nil),            // 11: google.protobuf.Struct
 }
 var file_authzed_api_v1_core_proto_depIdxs = []int32{
-	4,  // 0: authzed.api.v1.Relationship.resource:type_name -> authzed.api.v1.ObjectReference
-	3,  // 1: authzed.api.v1.Relationship.subject:type_name -> authzed.api.v1.SubjectReference
-	4,  // 2: authzed.api.v1.SubjectReference.object:type_name -> authzed.api.v1.ObjectReference
-	0,  // 3: authzed.api.v1.RelationshipUpdate.operation:type_name -> authzed.api.v1.RelationshipUpdate.Operation
-	2,  // 4: authzed.api.v1.RelationshipUpdate.relationship:type_name -> authzed.api.v1.Relationship
-	8,  // 5: authzed.api.v1.PermissionRelationshipTree.intermediate:type_name -> authzed.api.v1.AlgebraicSubjectSet
-	9,  // 6: authzed.api.v1.PermissionRelationshipTree.leaf:type_name -> authzed.api.v1.DirectSubjectSet
-	4,  // 7: authzed.api.v1.PermissionRelationshipTree.expanded_object:type_name -> authzed.api.v1.ObjectReference
-	1,  // 8: authzed.api.v1.AlgebraicSubjectSet.operation:type_name -> authzed.api.v1.AlgebraicSubjectSet.Operation
-	7,  // 9: authzed.api.v1.AlgebraicSubjectSet.children:type_name -> authzed.api.v1.PermissionRelationshipTree
-	3,  // 10: authzed.api.v1.DirectSubjectSet.subjects:type_name -> authzed.api.v1.SubjectReference
-	11, // [11:11] is the sub-list for method output_type
-	11, // [11:11] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	5,  // 0: authzed.api.v1.Relationship.resource:type_name -> authzed.api.v1.ObjectReference
+	4,  // 1: authzed.api.v1.Relationship.subject:type_name -> authzed.api.v1.SubjectReference
+	3,  // 2: authzed.api.v1.Relationship.optional_caveat:type_name -> authzed.api.v1.ContextualizedCaveat
+	11, // 3: authzed.api.v1.ContextualizedCaveat.context:type_name -> google.protobuf.Struct
+	5,  // 4: authzed.api.v1.SubjectReference.object:type_name -> authzed.api.v1.ObjectReference
+	0,  // 5: authzed.api.v1.RelationshipUpdate.operation:type_name -> authzed.api.v1.RelationshipUpdate.Operation
+	2,  // 6: authzed.api.v1.RelationshipUpdate.relationship:type_name -> authzed.api.v1.Relationship
+	9,  // 7: authzed.api.v1.PermissionRelationshipTree.intermediate:type_name -> authzed.api.v1.AlgebraicSubjectSet
+	10, // 8: authzed.api.v1.PermissionRelationshipTree.leaf:type_name -> authzed.api.v1.DirectSubjectSet
+	5,  // 9: authzed.api.v1.PermissionRelationshipTree.expanded_object:type_name -> authzed.api.v1.ObjectReference
+	1,  // 10: authzed.api.v1.AlgebraicSubjectSet.operation:type_name -> authzed.api.v1.AlgebraicSubjectSet.Operation
+	8,  // 11: authzed.api.v1.AlgebraicSubjectSet.children:type_name -> authzed.api.v1.PermissionRelationshipTree
+	4,  // 12: authzed.api.v1.DirectSubjectSet.subjects:type_name -> authzed.api.v1.SubjectReference
+	13, // [13:13] is the sub-list for method output_type
+	13, // [13:13] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_authzed_api_v1_core_proto_init() }
@@ -817,7 +909,7 @@ func file_authzed_api_v1_core_proto_init() {
 			}
 		}
 		file_authzed_api_v1_core_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SubjectReference); i {
+			switch v := v.(*ContextualizedCaveat); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -829,7 +921,7 @@ func file_authzed_api_v1_core_proto_init() {
 			}
 		}
 		file_authzed_api_v1_core_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ObjectReference); i {
+			switch v := v.(*SubjectReference); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -841,7 +933,7 @@ func file_authzed_api_v1_core_proto_init() {
 			}
 		}
 		file_authzed_api_v1_core_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ZedToken); i {
+			switch v := v.(*ObjectReference); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -853,7 +945,7 @@ func file_authzed_api_v1_core_proto_init() {
 			}
 		}
 		file_authzed_api_v1_core_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RelationshipUpdate); i {
+			switch v := v.(*ZedToken); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -865,7 +957,7 @@ func file_authzed_api_v1_core_proto_init() {
 			}
 		}
 		file_authzed_api_v1_core_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PermissionRelationshipTree); i {
+			switch v := v.(*RelationshipUpdate); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -877,7 +969,7 @@ func file_authzed_api_v1_core_proto_init() {
 			}
 		}
 		file_authzed_api_v1_core_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AlgebraicSubjectSet); i {
+			switch v := v.(*PermissionRelationshipTree); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -889,6 +981,18 @@ func file_authzed_api_v1_core_proto_init() {
 			}
 		}
 		file_authzed_api_v1_core_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AlgebraicSubjectSet); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_authzed_api_v1_core_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DirectSubjectSet); i {
 			case 0:
 				return &v.state
@@ -901,7 +1005,7 @@ func file_authzed_api_v1_core_proto_init() {
 			}
 		}
 	}
-	file_authzed_api_v1_core_proto_msgTypes[5].OneofWrappers = []interface{}{
+	file_authzed_api_v1_core_proto_msgTypes[6].OneofWrappers = []interface{}{
 		(*PermissionRelationshipTree_Intermediate)(nil),
 		(*PermissionRelationshipTree_Leaf)(nil),
 	}
@@ -911,7 +1015,7 @@ func file_authzed_api_v1_core_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_authzed_api_v1_core_proto_rawDesc,
 			NumEnums:      2,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

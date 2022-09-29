@@ -2,19 +2,22 @@ package validation_test
 
 import (
 	"fmt"
+	"math/rand"
 	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/structpb"
+
 	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
 	v1 "github.com/authzed/authzed-go/proto/authzed/api/v1"
-	"github.com/stretchr/testify/require"
 )
 
 const (
-	minTenantLength    = 3
 	minNamespaceLength = 3
 	minRelationLength  = 3
 
+	maxCaveatName      = 128
 	maxTenantLength    = 63
 	maxNamespaceLength = 64
 	maxObjectIDLength  = 128
@@ -90,6 +93,20 @@ var subjectIDs = append([]struct {
 	{"*", true},
 }, objectIDs...)
 
+var caveats = []struct {
+	name    string
+	context map[string]any
+	valid   bool
+}{
+	{"test", map[string]any{}, true},
+	{"", map[string]any{"a": "b"}, false},
+	{strings.Repeat("f", maxCaveatName), map[string]any{"a": "b"}, true},
+	{strings.Repeat("f", maxCaveatName+1), map[string]any{"a": "b"}, false},
+	{"test", map[string]any{"a": "b"}, true},
+	{"test", nil, true},
+	{"test", generateMap(128), true},
+}
+
 type relationValidity int
 
 const (
@@ -104,18 +121,18 @@ type relationEntry struct {
 	validity relationValidity
 }
 
-var knownGoodONR *v0.ObjectAndRelation = &v0.ObjectAndRelation{
+var knownGoodONR = &v0.ObjectAndRelation{
 	Namespace: "user",
 	ObjectId:  "testuser",
 	Relation:  "member",
 }
 
-var knownGoodObjectRef *v1.ObjectReference = &v1.ObjectReference{
+var knownGoodObjectRef = &v1.ObjectReference{
 	ObjectType: "user",
 	ObjectId:   "testuser",
 }
 
-var knownGoodSubjectRef *v1.SubjectReference = &v1.SubjectReference{
+var knownGoodSubjectRef = &v1.SubjectReference{
 	Object:           knownGoodObjectRef,
 	OptionalRelation: "member",
 }
@@ -347,6 +364,43 @@ func TestV1CoreObjectValidity(t *testing.T) {
 	}
 }
 
+func TestV1CaveatValidity(t *testing.T) {
+	for _, caveat := range caveats {
+		testName := fmt.Sprintf("caveat->%s_context->%v", caveat.name, caveat.context)
+		t.Run(testName, func(t *testing.T) {
+			t.Parallel()
+			require := require.New(t)
+
+			strct, err := structpb.NewStruct(caveat.context)
+			require.NoError(err)
+
+			optionalCaveat := &v1.ContextualizedCaveat{
+				CaveatName: caveat.name,
+				Context:    strct,
+			}
+			err = optionalCaveat.Validate()
+			require.Equal(caveat.valid, err == nil, "should be valid: %v %s", caveat.valid, err)
+
+			rel := &v1.Relationship{
+				Resource: &v1.ObjectReference{
+					ObjectType: "test",
+					ObjectId:   "test",
+				},
+				Relation: "test",
+				Subject: &v1.SubjectReference{
+					Object: &v1.ObjectReference{
+						ObjectType: "test",
+						ObjectId:   "test",
+					},
+				},
+				OptionalCaveat: optionalCaveat,
+			}
+			err = rel.Validate()
+			require.Equal(caveat.valid, err == nil, "should be valid: %v %s", caveat.valid, err)
+		})
+	}
+}
+
 func TestWildcardSubjectRelation(t *testing.T) {
 	subjObjRef := &v1.ObjectReference{
 		ObjectType: "somenamespace",
@@ -368,4 +422,23 @@ func TestWildcardSubjectRelationEmpty(t *testing.T) {
 		Object: subjObjRef,
 	}
 	require.NoError(t, subRef.HandwrittenValidate())
+}
+
+func generateMap(length int) map[string]any {
+	output := make(map[string]any, length)
+	for i := 0; i < length; i++ {
+		random := randString(32)
+		output[random] = random
+	}
+	return output
+}
+
+var randInput = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func randString(length int) string {
+	b := make([]rune, length)
+	for i := range b {
+		b[i] = randInput[rand.Intn(len(randInput))] //nolint:gosec
+	}
+	return string(b)
 }
