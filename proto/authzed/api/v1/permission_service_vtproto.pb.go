@@ -8,6 +8,7 @@ import (
 	fmt "fmt"
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 	io "io"
 )
 
@@ -296,6 +297,13 @@ func (m *CheckPermissionRequest) CloneVT() *CheckPermissionRequest {
 		Permission:  m.Permission,
 		Subject:     m.Subject.CloneVT(),
 	}
+	if rhs := m.Context; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *structpb.Struct }); ok {
+			r.Context = vtpb.CloneVT()
+		} else {
+			r.Context = proto.Clone(rhs).(*structpb.Struct)
+		}
+	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -307,13 +315,35 @@ func (m *CheckPermissionRequest) CloneGenericVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (m *PartialCaveatInfo) CloneVT() *PartialCaveatInfo {
+	if m == nil {
+		return (*PartialCaveatInfo)(nil)
+	}
+	r := &PartialCaveatInfo{}
+	if rhs := m.MissingRequiredContext; rhs != nil {
+		tmpContainer := make([]string, len(rhs))
+		copy(tmpContainer, rhs)
+		r.MissingRequiredContext = tmpContainer
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
+	return r
+}
+
+func (m *PartialCaveatInfo) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
 func (m *CheckPermissionResponse) CloneVT() *CheckPermissionResponse {
 	if m == nil {
 		return (*CheckPermissionResponse)(nil)
 	}
 	r := &CheckPermissionResponse{
-		CheckedAt:      m.CheckedAt.CloneVT(),
-		Permissionship: m.Permissionship,
+		CheckedAt:         m.CheckedAt.CloneVT(),
+		Permissionship:    m.Permissionship,
+		PartialCaveatInfo: m.PartialCaveatInfo.CloneVT(),
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -375,6 +405,13 @@ func (m *LookupResourcesRequest) CloneVT() *LookupResourcesRequest {
 		Permission:         m.Permission,
 		Subject:            m.Subject.CloneVT(),
 	}
+	if rhs := m.Context; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *structpb.Struct }); ok {
+			r.Context = vtpb.CloneVT()
+		} else {
+			r.Context = proto.Clone(rhs).(*structpb.Struct)
+		}
+	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -391,8 +428,10 @@ func (m *LookupResourcesResponse) CloneVT() *LookupResourcesResponse {
 		return (*LookupResourcesResponse)(nil)
 	}
 	r := &LookupResourcesResponse{
-		LookedUpAt:       m.LookedUpAt.CloneVT(),
-		ResourceObjectId: m.ResourceObjectId,
+		LookedUpAt:        m.LookedUpAt.CloneVT(),
+		ResourceObjectId:  m.ResourceObjectId,
+		Permissionship:    m.Permissionship,
+		PartialCaveatInfo: m.PartialCaveatInfo.CloneVT(),
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -416,6 +455,13 @@ func (m *LookupSubjectsRequest) CloneVT() *LookupSubjectsRequest {
 		SubjectObjectType:       m.SubjectObjectType,
 		OptionalSubjectRelation: m.OptionalSubjectRelation,
 	}
+	if rhs := m.Context; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *structpb.Struct }); ok {
+			r.Context = vtpb.CloneVT()
+		} else {
+			r.Context = proto.Clone(rhs).(*structpb.Struct)
+		}
+	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -432,8 +478,10 @@ func (m *LookupSubjectsResponse) CloneVT() *LookupSubjectsResponse {
 		return (*LookupSubjectsResponse)(nil)
 	}
 	r := &LookupSubjectsResponse{
-		LookedUpAt:      m.LookedUpAt.CloneVT(),
-		SubjectObjectId: m.SubjectObjectId,
+		LookedUpAt:        m.LookedUpAt.CloneVT(),
+		SubjectObjectId:   m.SubjectObjectId,
+		Permissionship:    m.Permissionship,
+		PartialCaveatInfo: m.PartialCaveatInfo.CloneVT(),
 	}
 	if rhs := m.ExcludedSubjectIds; rhs != nil {
 		tmpContainer := make([]string, len(rhs))
@@ -1108,6 +1156,28 @@ func (m *CheckPermissionRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.Context != nil {
+		if vtmsg, ok := interface{}(m.Context).(interface {
+			MarshalToSizedBufferVT([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.Context)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		}
+		i--
+		dAtA[i] = 0x2a
+	}
 	if m.Subject != nil {
 		size, err := m.Subject.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -1148,6 +1218,48 @@ func (m *CheckPermissionRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
+func (m *PartialCaveatInfo) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *PartialCaveatInfo) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *PartialCaveatInfo) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.MissingRequiredContext) > 0 {
+		for iNdEx := len(m.MissingRequiredContext) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.MissingRequiredContext[iNdEx])
+			copy(dAtA[i:], m.MissingRequiredContext[iNdEx])
+			i = encodeVarint(dAtA, i, uint64(len(m.MissingRequiredContext[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *CheckPermissionResponse) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -1177,6 +1289,16 @@ func (m *CheckPermissionResponse) MarshalToSizedBufferVT(dAtA []byte) (int, erro
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.PartialCaveatInfo != nil {
+		size, err := m.PartialCaveatInfo.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1a
 	}
 	if m.Permissionship != 0 {
 		i = encodeVarint(dAtA, i, uint64(m.Permissionship))
@@ -1339,6 +1461,28 @@ func (m *LookupResourcesRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.Context != nil {
+		if vtmsg, ok := interface{}(m.Context).(interface {
+			MarshalToSizedBufferVT([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.Context)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		}
+		i--
+		dAtA[i] = 0x2a
+	}
 	if m.Subject != nil {
 		size, err := m.Subject.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -1406,6 +1550,21 @@ func (m *LookupResourcesResponse) MarshalToSizedBufferVT(dAtA []byte) (int, erro
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.PartialCaveatInfo != nil {
+		size, err := m.PartialCaveatInfo.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x22
+	}
+	if m.Permissionship != 0 {
+		i = encodeVarint(dAtA, i, uint64(m.Permissionship))
+		i--
+		dAtA[i] = 0x18
+	}
 	if len(m.ResourceObjectId) > 0 {
 		i -= len(m.ResourceObjectId)
 		copy(dAtA[i:], m.ResourceObjectId)
@@ -1455,6 +1614,28 @@ func (m *LookupSubjectsRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error)
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.Context != nil {
+		if vtmsg, ok := interface{}(m.Context).(interface {
+			MarshalToSizedBufferVT([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.Context)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		}
+		i--
+		dAtA[i] = 0x32
 	}
 	if len(m.OptionalSubjectRelation) > 0 {
 		i -= len(m.OptionalSubjectRelation)
@@ -1529,6 +1710,21 @@ func (m *LookupSubjectsResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.PartialCaveatInfo != nil {
+		size, err := m.PartialCaveatInfo.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.Permissionship != 0 {
+		i = encodeVarint(dAtA, i, uint64(m.Permissionship))
+		i--
+		dAtA[i] = 0x20
 	}
 	if len(m.ExcludedSubjectIds) > 0 {
 		for iNdEx := len(m.ExcludedSubjectIds) - 1; iNdEx >= 0; iNdEx-- {
@@ -1821,6 +2017,32 @@ func (m *CheckPermissionRequest) SizeVT() (n int) {
 		l = m.Subject.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
+	if m.Context != nil {
+		if size, ok := interface{}(m.Context).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.Context)
+		}
+		n += 1 + l + sov(uint64(l))
+	}
+	n += len(m.unknownFields)
+	return n
+}
+
+func (m *PartialCaveatInfo) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.MissingRequiredContext) > 0 {
+		for _, s := range m.MissingRequiredContext {
+			l = len(s)
+			n += 1 + l + sov(uint64(l))
+		}
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -1837,6 +2059,10 @@ func (m *CheckPermissionResponse) SizeVT() (n int) {
 	}
 	if m.Permissionship != 0 {
 		n += 1 + sov(uint64(m.Permissionship))
+	}
+	if m.PartialCaveatInfo != nil {
+		l = m.PartialCaveatInfo.SizeVT()
+		n += 1 + l + sov(uint64(l))
 	}
 	n += len(m.unknownFields)
 	return n
@@ -1904,6 +2130,16 @@ func (m *LookupResourcesRequest) SizeVT() (n int) {
 		l = m.Subject.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
+	if m.Context != nil {
+		if size, ok := interface{}(m.Context).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.Context)
+		}
+		n += 1 + l + sov(uint64(l))
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -1920,6 +2156,13 @@ func (m *LookupResourcesResponse) SizeVT() (n int) {
 	}
 	l = len(m.ResourceObjectId)
 	if l > 0 {
+		n += 1 + l + sov(uint64(l))
+	}
+	if m.Permissionship != 0 {
+		n += 1 + sov(uint64(m.Permissionship))
+	}
+	if m.PartialCaveatInfo != nil {
+		l = m.PartialCaveatInfo.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -1952,6 +2195,16 @@ func (m *LookupSubjectsRequest) SizeVT() (n int) {
 	if l > 0 {
 		n += 1 + l + sov(uint64(l))
 	}
+	if m.Context != nil {
+		if size, ok := interface{}(m.Context).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.Context)
+		}
+		n += 1 + l + sov(uint64(l))
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -1975,6 +2228,13 @@ func (m *LookupSubjectsResponse) SizeVT() (n int) {
 			l = len(s)
 			n += 1 + l + sov(uint64(l))
 		}
+	}
+	if m.Permissionship != 0 {
+		n += 1 + sov(uint64(m.Permissionship))
+	}
+	if m.PartialCaveatInfo != nil {
+		l = m.PartialCaveatInfo.SizeVT()
+		n += 1 + l + sov(uint64(l))
 	}
 	n += len(m.unknownFields)
 	return n
@@ -3507,6 +3767,133 @@ func (m *CheckPermissionRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Context", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Context == nil {
+				m.Context = &structpb.Struct{}
+			}
+			if unmarshal, ok := interface{}(m.Context).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Context); err != nil {
+					return err
+				}
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *PartialCaveatInfo) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: PartialCaveatInfo: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: PartialCaveatInfo: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MissingRequiredContext", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MissingRequiredContext = append(m.MissingRequiredContext, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skip(dAtA[iNdEx:])
@@ -3613,6 +4000,42 @@ func (m *CheckPermissionResponse) UnmarshalVT(dAtA []byte) error {
 					break
 				}
 			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PartialCaveatInfo", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.PartialCaveatInfo == nil {
+				m.PartialCaveatInfo = &PartialCaveatInfo{}
+			}
+			if err := m.PartialCaveatInfo.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skip(dAtA[iNdEx:])
@@ -4078,6 +4501,50 @@ func (m *LookupResourcesRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Context", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Context == nil {
+				m.Context = &structpb.Struct{}
+			}
+			if unmarshal, ok := interface{}(m.Context).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Context); err != nil {
+					return err
+				}
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skip(dAtA[iNdEx:])
@@ -4196,6 +4663,61 @@ func (m *LookupResourcesResponse) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.ResourceObjectId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Permissionship", wireType)
+			}
+			m.Permissionship = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Permissionship |= LookupPermissionship(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PartialCaveatInfo", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.PartialCaveatInfo == nil {
+				m.PartialCaveatInfo = &PartialCaveatInfo{}
+			}
+			if err := m.PartialCaveatInfo.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -4416,6 +4938,50 @@ func (m *LookupSubjectsRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			m.OptionalSubjectRelation = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Context", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Context == nil {
+				m.Context = &structpb.Struct{}
+			}
+			if unmarshal, ok := interface{}(m.Context).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Context); err != nil {
+					return err
+				}
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skip(dAtA[iNdEx:])
@@ -4566,6 +5132,61 @@ func (m *LookupSubjectsResponse) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.ExcludedSubjectIds = append(m.ExcludedSubjectIds, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Permissionship", wireType)
+			}
+			m.Permissionship = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Permissionship |= LookupPermissionship(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PartialCaveatInfo", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.PartialCaveatInfo == nil {
+				m.PartialCaveatInfo = &PartialCaveatInfo{}
+			}
+			if err := m.PartialCaveatInfo.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
