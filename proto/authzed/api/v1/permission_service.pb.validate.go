@@ -1892,6 +1892,35 @@ func (m *CheckPermissionRequest) validate(all bool) error {
 		}
 	}
 
+	if all {
+		switch v := interface{}(m.GetContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CheckPermissionRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CheckPermissionRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CheckPermissionRequestValidationError{
+				field:  "Context",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return CheckPermissionRequestMultiError(errors)
 	}
@@ -1974,6 +2003,119 @@ var _ interface {
 
 var _CheckPermissionRequest_Permission_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
 
+// Validate checks the field values on PartialCaveatInfo with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *PartialCaveatInfo) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PartialCaveatInfo with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// PartialCaveatInfoMultiError, or nil if none found.
+func (m *PartialCaveatInfo) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PartialCaveatInfo) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetMissingRequiredContext()) < 1 {
+		err := PartialCaveatInfoValidationError{
+			field:  "MissingRequiredContext",
+			reason: "value must contain at least 1 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return PartialCaveatInfoMultiError(errors)
+	}
+
+	return nil
+}
+
+// PartialCaveatInfoMultiError is an error wrapping multiple validation errors
+// returned by PartialCaveatInfo.ValidateAll() if the designated constraints
+// aren't met.
+type PartialCaveatInfoMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PartialCaveatInfoMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PartialCaveatInfoMultiError) AllErrors() []error { return m }
+
+// PartialCaveatInfoValidationError is the validation error returned by
+// PartialCaveatInfo.Validate if the designated constraints aren't met.
+type PartialCaveatInfoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PartialCaveatInfoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PartialCaveatInfoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PartialCaveatInfoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PartialCaveatInfoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PartialCaveatInfoValidationError) ErrorName() string {
+	return "PartialCaveatInfoValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PartialCaveatInfoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPartialCaveatInfo.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PartialCaveatInfoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PartialCaveatInfoValidationError{}
+
 // Validate checks the field values on CheckPermissionResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -2026,6 +2168,35 @@ func (m *CheckPermissionResponse) validate(all bool) error {
 	}
 
 	// no validation rules for Permissionship
+
+	if all {
+		switch v := interface{}(m.GetPartialCaveatInfo()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CheckPermissionResponseValidationError{
+					field:  "PartialCaveatInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CheckPermissionResponseValidationError{
+					field:  "PartialCaveatInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPartialCaveatInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CheckPermissionResponseValidationError{
+				field:  "PartialCaveatInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if len(errors) > 0 {
 		return CheckPermissionResponseMultiError(errors)
@@ -2599,6 +2770,35 @@ func (m *LookupResourcesRequest) validate(all bool) error {
 		}
 	}
 
+	if all {
+		switch v := interface{}(m.GetContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LookupResourcesRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LookupResourcesRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LookupResourcesRequestValidationError{
+				field:  "Context",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return LookupResourcesRequestMultiError(errors)
 	}
@@ -2735,6 +2935,46 @@ func (m *LookupResourcesResponse) validate(all bool) error {
 	}
 
 	// no validation rules for ResourceObjectId
+
+	if _, ok := LookupPermissionship_name[int32(m.GetPermissionship())]; !ok {
+		err := LookupResourcesResponseValidationError{
+			field:  "Permissionship",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetPartialCaveatInfo()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LookupResourcesResponseValidationError{
+					field:  "PartialCaveatInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LookupResourcesResponseValidationError{
+					field:  "PartialCaveatInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPartialCaveatInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LookupResourcesResponseValidationError{
+				field:  "PartialCaveatInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if len(errors) > 0 {
 		return LookupResourcesResponseMultiError(errors)
@@ -2973,6 +3213,35 @@ func (m *LookupSubjectsRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if all {
+		switch v := interface{}(m.GetContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LookupSubjectsRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LookupSubjectsRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LookupSubjectsRequestValidationError{
+				field:  "Context",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return LookupSubjectsRequestMultiError(errors)
 	}
@@ -3111,6 +3380,46 @@ func (m *LookupSubjectsResponse) validate(all bool) error {
 	}
 
 	// no validation rules for SubjectObjectId
+
+	if _, ok := LookupPermissionship_name[int32(m.GetPermissionship())]; !ok {
+		err := LookupSubjectsResponseValidationError{
+			field:  "Permissionship",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetPartialCaveatInfo()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LookupSubjectsResponseValidationError{
+					field:  "PartialCaveatInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LookupSubjectsResponseValidationError{
+					field:  "PartialCaveatInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPartialCaveatInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LookupSubjectsResponseValidationError{
+				field:  "PartialCaveatInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if len(errors) > 0 {
 		return LookupSubjectsResponseMultiError(errors)

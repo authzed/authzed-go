@@ -832,6 +832,10 @@
         "subject": {
           "$ref": "#/definitions/v1SubjectReference",
           "description": "subject is the subject that will be checked for the permission or relation."
+        },
+        "context": {
+          "type": "object",
+          "title": "context consists of named values that are injected into the caveat evaluation context *"
         }
       },
       "description": "CheckPermissionRequest issues a check on whether a subject has a permission\nor is a member of a relation, on a specific resource."
@@ -845,6 +849,10 @@
         "permissionship": {
           "$ref": "#/definitions/v1CheckPermissionResponsePermissionship",
           "description": "Permissionship communicates whether or not the subject has the requested\npermission or has a relationship with the given resource, over the given\nrelation.\n\nThis value will be authzed.api.v1.PERMISSIONSHIP_HAS_PERMISSION if the\nrequested subject is a member of the computed permission set or there\nexists a relationship with the requested relation from the given resource\nto the given subject."
+        },
+        "partialCaveatInfo": {
+          "$ref": "#/definitions/v1PartialCaveatInfo",
+          "title": "partial_caveat_info hods information of a partially-evaluated caveated response"
         }
       }
     },
@@ -853,7 +861,8 @@
       "enum": [
         "PERMISSIONSHIP_UNSPECIFIED",
         "PERMISSIONSHIP_NO_PERMISSION",
-        "PERMISSIONSHIP_HAS_PERMISSION"
+        "PERMISSIONSHIP_HAS_PERMISSION",
+        "PERMISSIONSHIP_CONDITIONAL_PERMISSION"
       ],
       "default": "PERMISSIONSHIP_UNSPECIFIED"
     },
@@ -957,6 +966,16 @@
         }
       }
     },
+    "v1LookupPermissionship": {
+      "type": "string",
+      "enum": [
+        "LOOKUP_PERMISSIONSHIP_UNSPECIFIED",
+        "LOOKUP_PERMISSIONSHIP_HAS_PERMISSION",
+        "LOOKUP_PERMISSIONSHIP_CONDITIONAL_PERMISSION"
+      ],
+      "default": "LOOKUP_PERMISSIONSHIP_UNSPECIFIED",
+      "title": "LookupPermissionship represents whether a Lookup response was partially evaluated or not"
+    },
     "v1LookupResourcesRequest": {
       "type": "object",
       "properties": {
@@ -974,6 +993,10 @@
         "subject": {
           "$ref": "#/definitions/v1SubjectReference",
           "description": "subject is the subject with access to the resources."
+        },
+        "context": {
+          "type": "object",
+          "title": "context consists of named values that are injected into the caveat evaluation context *"
         }
       },
       "description": "LookupResourcesRequest performs a lookup of all resources of a particular\nkind on which the subject has the specified permission or the relation in\nwhich the subject exists, streaming back the IDs of those resources."
@@ -986,6 +1009,14 @@
         },
         "resourceObjectId": {
           "type": "string"
+        },
+        "permissionship": {
+          "$ref": "#/definitions/v1LookupPermissionship",
+          "title": "permissionship indicates whether the response was partially evaluated or not"
+        },
+        "partialCaveatInfo": {
+          "$ref": "#/definitions/v1PartialCaveatInfo",
+          "title": "partial_caveat_info hods information of a partially-evaluated caveated response"
         }
       },
       "description": "LookupResourcesResponse contains a single matching resource object ID for the\nrequested object type, permission, and subject."
@@ -1011,6 +1042,10 @@
         "optionalSubjectRelation": {
           "type": "string",
           "description": "optional_subject_relation is the optional relation for the subject."
+        },
+        "context": {
+          "type": "object",
+          "title": "context consists of named values that are injected into the caveat evaluation context *"
         }
       },
       "description": "LookupSubjectsRequest performs a lookup of all subjects of a particular\nkind for which the subject has the specified permission or the relation in\nwhich the subject exists, streaming back the IDs of those subjects."
@@ -1031,6 +1066,14 @@
             "type": "string"
           },
           "description": "excluded_subject_ids are the Object IDs of the subjects excluded. This list\nwill only contain object IDs if `subject_object_id` is a wildcard (`*`) and\nwill only be populated if exclusions exist from the wildcard."
+        },
+        "permissionship": {
+          "$ref": "#/definitions/v1LookupPermissionship",
+          "title": "permissionship indicates whether the response was partially evaluated or not"
+        },
+        "partialCaveatInfo": {
+          "$ref": "#/definitions/v1PartialCaveatInfo",
+          "title": "partial_caveat_info hods information of a partially-evaluated caveated response"
         }
       },
       "description": "LookupSubjectsResponse contains a single matching subject object ID for the\nrequested subject object type on the permission or relation."
@@ -1046,6 +1089,19 @@
         }
       },
       "description": "ObjectReference is used to refer to a specific object in the system."
+    },
+    "v1PartialCaveatInfo": {
+      "type": "object",
+      "properties": {
+        "missingRequiredContext": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "missing_required_context is a list of one or more fields that were missing and prevented caveats\nfrom being fully evaluated"
+        }
+      },
+      "title": "PartialCaveatInfo carries information necessary for the client to take action\nin the event a response contains a partially evaluated caveat"
     },
     "v1PermissionRelationshipTree": {
       "type": "object",
