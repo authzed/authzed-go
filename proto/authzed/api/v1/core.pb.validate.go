@@ -866,6 +866,17 @@ func (m *RelationshipUpdate) validate(all bool) error {
 
 	var errors []error
 
+	if _, ok := _RelationshipUpdate_Operation_NotInLookup[m.GetOperation()]; ok {
+		err := RelationshipUpdateValidationError{
+			field:  "Operation",
+			reason: "value must not be in list [0]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if _, ok := RelationshipUpdate_Operation_name[int32(m.GetOperation())]; !ok {
 		err := RelationshipUpdateValidationError{
 			field:  "Operation",
@@ -996,6 +1007,10 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = RelationshipUpdateValidationError{}
+
+var _RelationshipUpdate_Operation_NotInLookup = map[RelationshipUpdate_Operation]struct{}{
+	0: {},
+}
 
 // Validate checks the field values on PermissionRelationshipTree with the
 // rules defined in the proto definition for this message. If any rules are
@@ -1228,10 +1243,41 @@ func (m *AlgebraicSubjectSet) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Operation
+	if _, ok := _AlgebraicSubjectSet_Operation_NotInLookup[m.GetOperation()]; ok {
+		err := AlgebraicSubjectSetValidationError{
+			field:  "Operation",
+			reason: "value must not be in list [0]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := AlgebraicSubjectSet_Operation_name[int32(m.GetOperation())]; !ok {
+		err := AlgebraicSubjectSetValidationError{
+			field:  "Operation",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	for idx, item := range m.GetChildren() {
 		_, _ = idx, item
+
+		if item == nil {
+			err := AlgebraicSubjectSetValidationError{
+				field:  fmt.Sprintf("Children[%v]", idx),
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(item).(type) {
@@ -1343,6 +1389,10 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = AlgebraicSubjectSetValidationError{}
+
+var _AlgebraicSubjectSet_Operation_NotInLookup = map[AlgebraicSubjectSet_Operation]struct{}{
+	0: {},
+}
 
 // Validate checks the field values on DirectSubjectSet with the rules defined
 // in the proto definition for this message. If any rules are violated, the
