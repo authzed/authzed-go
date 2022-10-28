@@ -31,7 +31,8 @@ const (
 	//
 	// Example of an ErrorInfo:
 	//
-	//	{ "reason": "ERROR_REASON_SCHEMA_PARSE_ERROR",
+	//	{
+	//	  "reason": "ERROR_REASON_SCHEMA_PARSE_ERROR",
 	//	  "domain": "authzed.com",
 	//	  "metadata": {
 	//	    "start_line_number": "1",
@@ -48,7 +49,8 @@ const (
 	//
 	// Example of an ErrorInfo:
 	//
-	//	{ "reason": "ERROR_REASON_SCHEMA_TYPE_ERROR",
+	//	{
+	//	  "reason": "ERROR_REASON_SCHEMA_TYPE_ERROR",
 	//	  "domain": "authzed.com",
 	//	  "metadata": {
 	//	    "definition_name": "somedefinition",
@@ -60,7 +62,8 @@ const (
 	//
 	// Example of an ErrorInfo:
 	//
-	//	{ "reason": "ERROR_REASON_UNKNOWN_DEFINITION",
+	//	{
+	//	  "reason": "ERROR_REASON_UNKNOWN_DEFINITION",
 	//	  "domain": "authzed.com",
 	//	  "metadata": {
 	//	    "definition_name": "somedefinition"
@@ -71,7 +74,8 @@ const (
 	//
 	// Example of an ErrorInfo:
 	//
-	//	{ "reason": "ERROR_REASON_UNKNOWN_RELATION_OR_PERMISSION",
+	//	{
+	//	  "reason": "ERROR_REASON_UNKNOWN_RELATION_OR_PERMISSION",
 	//	  "domain": "authzed.com",
 	//	  "metadata": {
 	//	    "definition_name": "somedefinition",
@@ -95,7 +99,8 @@ const (
 	//
 	// Example of an ErrorInfo:
 	//
-	//	{ "reason": "ERROR_REASON_TOO_MANY_PRECONDITIONS_IN_REQUEST",
+	//	{
+	//	  "reason": "ERROR_REASON_TOO_MANY_PRECONDITIONS_IN_REQUEST",
 	//	  "domain": "authzed.com",
 	//	  "metadata": {
 	//	    "precondition_count": "525",
@@ -107,7 +112,8 @@ const (
 	//
 	// Example of an ErrorInfo:
 	//
-	//	{ "reason": "ERROR_REASON_WRITE_OR_DELETE_PRECONDITION_FAILURE",
+	//	{
+	//	  "reason": "ERROR_REASON_WRITE_OR_DELETE_PRECONDITION_FAILURE",
 	//	  "domain": "authzed.com",
 	//	  "metadata": {
 	//	    "precondition_resource_type": "document",
@@ -120,7 +126,8 @@ const (
 	//
 	// Example of an ErrorInfo:
 	//
-	//	{ "reason": "ERROR_REASON_SERVICE_READ_ONLY",
+	//	{
+	//	  "reason": "ERROR_REASON_SERVICE_READ_ONLY",
 	//	  "domain": "authzed.com"
 	//	}
 	ErrorReason_ERROR_REASON_SERVICE_READ_ONLY ErrorReason = 8
@@ -128,7 +135,8 @@ const (
 	//
 	// Example of an ErrorInfo:
 	//
-	//	{ "reason": "ERROR_REASON_UNKNOWN_CAVEAT",
+	//	{
+	//	  "reason": "ERROR_REASON_UNKNOWN_CAVEAT",
 	//	  "domain": "authzed.com",
 	//	  "metadata": {
 	//	    "caveat_name": "somecaveat"
@@ -139,7 +147,8 @@ const (
 	//
 	// Example of an ErrorInfo:
 	//
-	//	{ "reason": "ERROR_REASON_INVALID_SUBJECT_TYPE",
+	//	{
+	//	  "reason": "ERROR_REASON_INVALID_SUBJECT_TYPE",
 	//	  "domain": "authzed.com",
 	//	  "metadata": {
 	//	    "definition_name": "somedefinition",
@@ -152,7 +161,8 @@ const (
 	//
 	// Example of an ErrorInfo:
 	//
-	//	{ "reason": "ERROR_REASON_CAVEAT_PARAMETER_TYPE_ERROR",
+	//	{
+	//	  "reason": "ERROR_REASON_CAVEAT_PARAMETER_TYPE_ERROR",
 	//	  "domain": "authzed.com",
 	//	  "metadata": {
 	//	    "definition_name": "somedefinition",

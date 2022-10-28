@@ -809,6 +809,17 @@ func (m *ReadRelationshipsResponse) validate(all bool) error {
 
 	var errors []error
 
+	if m.GetReadAt() == nil {
+		err := ReadRelationshipsResponseValidationError{
+			field:  "ReadAt",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if all {
 		switch v := interface{}(m.GetReadAt()).(type) {
 		case interface{ ValidateAll() error }:
@@ -836,6 +847,17 @@ func (m *ReadRelationshipsResponse) validate(all bool) error {
 				cause:  err,
 			}
 		}
+	}
+
+	if m.GetRelationship() == nil {
+		err := ReadRelationshipsResponseValidationError{
+			field:  "Relationship",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if all {
@@ -969,6 +991,17 @@ func (m *Precondition) validate(all bool) error {
 
 	var errors []error
 
+	if _, ok := _Precondition_Operation_NotInLookup[m.GetOperation()]; ok {
+		err := PreconditionValidationError{
+			field:  "Operation",
+			reason: "value must not be in list [0]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if _, ok := Precondition_Operation_name[int32(m.GetOperation())]; !ok {
 		err := PreconditionValidationError{
 			field:  "Operation",
@@ -1096,6 +1129,10 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = PreconditionValidationError{}
+
+var _Precondition_Operation_NotInLookup = map[Precondition_Operation]struct{}{
+	0: {},
+}
 
 // Validate checks the field values on WriteRelationshipsRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -2167,7 +2204,27 @@ func (m *CheckPermissionResponse) validate(all bool) error {
 		}
 	}
 
-	// no validation rules for Permissionship
+	if _, ok := _CheckPermissionResponse_Permissionship_NotInLookup[m.GetPermissionship()]; ok {
+		err := CheckPermissionResponseValidationError{
+			field:  "Permissionship",
+			reason: "value must not be in list [0]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := CheckPermissionResponse_Permissionship_name[int32(m.GetPermissionship())]; !ok {
+		err := CheckPermissionResponseValidationError{
+			field:  "Permissionship",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if all {
 		switch v := interface{}(m.GetPartialCaveatInfo()).(type) {
@@ -2277,6 +2334,10 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CheckPermissionResponseValidationError{}
+
+var _CheckPermissionResponse_Permissionship_NotInLookup = map[CheckPermissionResponse_Permissionship]struct{}{
+	0: {},
+}
 
 // Validate checks the field values on ExpandPermissionTreeRequest with the
 // rules defined in the proto definition for this message. If any rules are
@@ -2936,6 +2997,17 @@ func (m *LookupResourcesResponse) validate(all bool) error {
 
 	// no validation rules for ResourceObjectId
 
+	if _, ok := _LookupResourcesResponse_Permissionship_NotInLookup[m.GetPermissionship()]; ok {
+		err := LookupResourcesResponseValidationError{
+			field:  "Permissionship",
+			reason: "value must not be in list [0]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if _, ok := LookupPermissionship_name[int32(m.GetPermissionship())]; !ok {
 		err := LookupResourcesResponseValidationError{
 			field:  "Permissionship",
@@ -3055,6 +3127,10 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = LookupResourcesResponseValidationError{}
+
+var _LookupResourcesResponse_Permissionship_NotInLookup = map[LookupPermissionship]struct{}{
+	0: {},
+}
 
 // Validate checks the field values on LookupSubjectsRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -3381,6 +3457,17 @@ func (m *LookupSubjectsResponse) validate(all bool) error {
 
 	// no validation rules for SubjectObjectId
 
+	if _, ok := _LookupSubjectsResponse_Permissionship_NotInLookup[m.GetPermissionship()]; ok {
+		err := LookupSubjectsResponseValidationError{
+			field:  "Permissionship",
+			reason: "value must not be in list [0]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if _, ok := LookupPermissionship_name[int32(m.GetPermissionship())]; !ok {
 		err := LookupSubjectsResponseValidationError{
 			field:  "Permissionship",
@@ -3500,6 +3587,10 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = LookupSubjectsResponseValidationError{}
+
+var _LookupSubjectsResponse_Permissionship_NotInLookup = map[LookupPermissionship]struct{}{
+	0: {},
+}
 
 // Validate checks the field values on SubjectFilter_RelationFilter with the
 // rules defined in the proto definition for this message. If any rules are

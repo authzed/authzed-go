@@ -852,7 +852,7 @@
         },
         "partialCaveatInfo": {
           "$ref": "#/definitions/v1PartialCaveatInfo",
-          "title": "partial_caveat_info hods information of a partially-evaluated caveated response"
+          "title": "partial_caveat_info holds information of a partially-evaluated caveated response"
         }
       }
     },
@@ -1016,7 +1016,7 @@
         },
         "partialCaveatInfo": {
           "$ref": "#/definitions/v1PartialCaveatInfo",
-          "title": "partial_caveat_info hods information of a partially-evaluated caveated response"
+          "title": "partial_caveat_info holds information of a partially-evaluated caveated response"
         }
       },
       "description": "LookupResourcesResponse contains a single matching resource object ID for the\nrequested object type, permission, and subject."
@@ -1073,7 +1073,7 @@
         },
         "partialCaveatInfo": {
           "$ref": "#/definitions/v1PartialCaveatInfo",
-          "title": "partial_caveat_info hods information of a partially-evaluated caveated response"
+          "title": "partial_caveat_info holds information of a partially-evaluated caveated response"
         }
       },
       "description": "LookupSubjectsResponse contains a single matching subject object ID for the\nrequested subject object type on the permission or relation."

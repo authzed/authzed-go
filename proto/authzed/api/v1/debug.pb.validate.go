@@ -230,7 +230,27 @@ func (m *CheckDebugTrace) validate(all bool) error {
 
 	// no validation rules for Permission
 
-	// no validation rules for PermissionType
+	if _, ok := _CheckDebugTrace_PermissionType_NotInLookup[m.GetPermissionType()]; ok {
+		err := CheckDebugTraceValidationError{
+			field:  "PermissionType",
+			reason: "value must not be in list [0]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := CheckDebugTrace_PermissionType_name[int32(m.GetPermissionType())]; !ok {
+		err := CheckDebugTraceValidationError{
+			field:  "PermissionType",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if m.GetSubject() == nil {
 		err := CheckDebugTraceValidationError{
@@ -272,7 +292,27 @@ func (m *CheckDebugTrace) validate(all bool) error {
 		}
 	}
 
-	// no validation rules for Result
+	if _, ok := _CheckDebugTrace_Result_NotInLookup[m.GetResult()]; ok {
+		err := CheckDebugTraceValidationError{
+			field:  "Result",
+			reason: "value must not be in list [0]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := CheckDebugTrace_Permissionship_name[int32(m.GetResult())]; !ok {
+		err := CheckDebugTraceValidationError{
+			field:  "Result",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	switch m.Resolution.(type) {
 
@@ -399,6 +439,14 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CheckDebugTraceValidationError{}
+
+var _CheckDebugTrace_PermissionType_NotInLookup = map[CheckDebugTrace_PermissionType]struct{}{
+	0: {},
+}
+
+var _CheckDebugTrace_Result_NotInLookup = map[CheckDebugTrace_Permissionship]struct{}{
+	0: {},
+}
 
 // Validate checks the field values on CheckDebugTrace_SubProblems with the
 // rules defined in the proto definition for this message. If any rules are
