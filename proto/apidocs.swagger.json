@@ -1058,22 +1058,33 @@
         },
         "subjectObjectId": {
           "type": "string",
-          "description": "subject_object_id is the Object ID of the subject found. May be a `*` if\na wildcard was found."
+          "title": "subject_object_id is the Object ID of the subject found. May be a `*` if\na wildcard was found.\ndeprecated: use `subject`"
         },
         "excludedSubjectIds": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "excluded_subject_ids are the Object IDs of the subjects excluded. This list\nwill only contain object IDs if `subject_object_id` is a wildcard (`*`) and\nwill only be populated if exclusions exist from the wildcard."
+          "title": "excluded_subject_ids are the Object IDs of the subjects excluded. This list\nwill only contain object IDs if `subject_object_id` is a wildcard (`*`) and\nwill only be populated if exclusions exist from the wildcard.\ndeprecated: use `excluded_subjects`"
         },
         "permissionship": {
           "$ref": "#/definitions/v1LookupPermissionship",
-          "title": "permissionship indicates whether the response was partially evaluated or not"
+          "title": "permissionship indicates whether the response was partially evaluated or not\ndeprecated: use `subject.permissionship`"
         },
         "partialCaveatInfo": {
           "$ref": "#/definitions/v1PartialCaveatInfo",
-          "title": "partial_caveat_info holds information of a partially-evaluated caveated response"
+          "title": "partial_caveat_info holds information of a partially-evaluated caveated response\ndeprecated: use `subject.partial_caveat_info`"
+        },
+        "subject": {
+          "$ref": "#/definitions/v1ResolvedSubject",
+          "description": "subject is the subject found, along with its permissionship."
+        },
+        "excludedSubjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1ResolvedSubject"
+          },
+          "description": "excluded_subjects are the subjects excluded. This list\nwill only contain subjects if `subject.subject_object_id` is a wildcard (`*`) and\nwill only be populated if exclusions exist from the wildcard."
         }
       },
       "description": "LookupSubjectsResponse contains a single matching subject object ID for the\nrequested subject object type on the permission or relation."
@@ -1227,6 +1238,24 @@
         "OPERATION_DELETE"
       ],
       "default": "OPERATION_UNSPECIFIED"
+    },
+    "v1ResolvedSubject": {
+      "type": "object",
+      "properties": {
+        "subjectObjectId": {
+          "type": "string",
+          "description": "subject_object_id is the Object ID of the subject found. May be a `*` if\na wildcard was found."
+        },
+        "permissionship": {
+          "$ref": "#/definitions/v1LookupPermissionship",
+          "title": "permissionship indicates whether the response was partially evaluated or not"
+        },
+        "partialCaveatInfo": {
+          "$ref": "#/definitions/v1PartialCaveatInfo",
+          "title": "partial_caveat_info holds information of a partially-evaluated caveated response"
+        }
+      },
+      "description": "ResolvedSubject is a single subject resolved within LookupSubjects."
     },
     "v1SubjectFilter": {
       "type": "object",
