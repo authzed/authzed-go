@@ -561,6 +561,8 @@ func (m *CaveatEvalInfo) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CaveatName
+
 	if len(errors) > 0 {
 		return CaveatEvalInfoMultiError(errors)
 	}
