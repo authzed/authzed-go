@@ -438,8 +438,8 @@ func (x *ZedToken) GetToken() string {
 // TOUCH will upsert the relationship, and will not error if it
 // already exists.
 //
-// DELETE will delete the relationship and error if it doesn't
-// exist.
+// DELETE will delete the relationship. If the relationship does not exist,
+// this operation will no-op.
 type RelationshipUpdate struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
