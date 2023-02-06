@@ -98,12 +98,12 @@ import (
 
 ...
 
-emilia := &pb.SubjectReference{Object: &v1.ObjectReference{
+emilia := &v1.SubjectReference{Object: &v1.ObjectReference{
 	ObjectType: "blog/user",
 	ObjectId:  "emilia",
 }}
 
-firstPost := &pb.ObjectReference{
+firstPost := &v1.ObjectReference{
 	ObjectType: "blog/post",
 	ObjectId: "1",
 }
