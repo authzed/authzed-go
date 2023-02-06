@@ -90,34 +90,48 @@ Requests and response types are located in a package under `proto/` respective t
 Because of the verbosity of these types, we recommend writing your own functions/methods to create these types from your existing application's models.
 
 ```go
+package main
+
 import (
+	"context"
+	"log"
+
 	"github.com/authzed/authzed-go/proto/authzed/api/v1"
 	"github.com/authzed/authzed-go/v1"
 	"github.com/authzed/grpcutil"
 )
 
-...
+func main() {
+	emilia := &v1.SubjectReference{Object: &v1.ObjectReference{
+		ObjectType: "blog/user",
+		ObjectId:   "emilia",
+	}}
 
-emilia := &pb.SubjectReference{Object: &v1.ObjectReference{
-	ObjectType: "blog/user",
-	ObjectId:  "emilia",
-}}
+	firstPost := &v1.ObjectReference{
+		ObjectType: "blog/post",
+		ObjectId:   "1",
+	}
 
-firstPost := &pb.ObjectReference{
-	ObjectType: "blog/post",
-	ObjectId: "1",
-}
+	client, err := authzed.NewClient(
+		"grpc.authzed.com:443",
+		grpcutil.WithSystemCerts(grpcutil.VerifyCA),
+		grpcutil.WithBearerToken("t_your_token_here_1234567deadbeef"),
+	)
+	if err != nil {
+		log.Fatalf("unable to initialize client: %s", err)
+	}
 
-resp, err := client.CheckPermission(ctx, &pb.CheckPermissionRequest{
-	Resource: firstPost,
-	Permission: "read",
-	Subject: emilia,
-})
-if err != nil {
-    log.Fatalf("failed to check permission: %s", err)
-}
+	resp, err := client.CheckPermission(context.Background(), &v1.CheckPermissionRequest{
+		Resource:   firstPost,
+		Permission: "read",
+		Subject:    emilia,
+	})
+	if err != nil {
+		log.Fatalf("failed to check permission: %s", err)
+	}
 
-if resp.Permissionship == pb.CheckPermissionResponse_PERMISSIONSHIP_HAS_PERMISSION {
-	log.Println("allowed!")
+	if resp.Permissionship == v1.CheckPermissionResponse_PERMISSIONSHIP_HAS_PERMISSION {
+		log.Println("allowed!")
+	}
 }
 ```
