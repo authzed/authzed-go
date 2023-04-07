@@ -630,10 +630,10 @@ func (m *ObjectReference) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if len(m.GetObjectId()) > 128 {
+	if len(m.GetObjectId()) > 1024 {
 		err := ObjectReferenceValidationError{
 			field:  "ObjectId",
-			reason: "value length must be at most 128 bytes",
+			reason: "value length must be at most 1024 bytes",
 		}
 		if !all {
 			return err
@@ -644,7 +644,7 @@ func (m *ObjectReference) validate(all bool) error {
 	if !_ObjectReference_ObjectId_Pattern.MatchString(m.GetObjectId()) {
 		err := ObjectReferenceValidationError{
 			field:  "ObjectId",
-			reason: "value does not match regex pattern \"^(([a-zA-Z0-9_][a-zA-Z0-9/_|-]{0,127})|\\\\*)$\"",
+			reason: "value does not match regex pattern \"^(([a-zA-Z0-9/_|\\\\-=+]{1,})|\\\\*)$\"",
 		}
 		if !all {
 			return err
@@ -732,7 +732,7 @@ var _ interface {
 
 var _ObjectReference_ObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
-var _ObjectReference_ObjectId_Pattern = regexp.MustCompile("^(([a-zA-Z0-9_][a-zA-Z0-9/_|-]{0,127})|\\*)$")
+var _ObjectReference_ObjectId_Pattern = regexp.MustCompile("^(([a-zA-Z0-9/_|\\-=+]{1,})|\\*)$")
 
 // Validate checks the field values on ZedToken with the rules defined in the
 // proto definition for this message. If any rules are violated, the first

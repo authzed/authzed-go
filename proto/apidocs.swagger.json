@@ -1294,7 +1294,8 @@
           }
         },
         "optionalStartCursor": {
-          "$ref": "#/definitions/v1ZedToken"
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "optional_start_cursor is the ZedToken holding the point-in-time at\nwhich to start watching for changes.\nIf not specified, the watch will begin at the current head revision\nof the datastore, returning any updates that occur after the caller\nmakes the request.\nNote that if this cursor references a point-in-time containing data\nthat has been garbage collected, an error will be returned."
         }
       },
       "description": "WatchRequest specifies the object definitions for which we want to start\nwatching mutations, and an optional start snapshot for when to start\nwatching."

@@ -20,7 +20,7 @@ const (
 	maxCaveatName      = 128
 	maxTenantLength    = 63
 	maxNamespaceLength = 64
-	maxObjectIDLength  = 128
+	maxObjectIDLength  = 1024
 	maxRelationLength  = 64
 )
 
@@ -70,7 +70,7 @@ var objectIDs = []struct {
 	{strings.Repeat("f", maxObjectIDLength), true},
 	{"", false},
 	{"  ", false},
-	{"-", false},
+	{"-", true},
 	{strings.Repeat("\u0394", 4), false},
 	{strings.Repeat("f", maxObjectIDLength+1), false},
 	{"a@b.com", false},
@@ -84,6 +84,7 @@ var objectIDs = []struct {
 	{"authn|", true},
 	{"authn|a-b-c-d-e", true},
 	{"authn|a_b", true},
+	{"--=base64YWZzZGZh-ZHNmZHPwn5iK8J+YivC/fmIrwn5iK==", true},
 }
 
 var subjectIDs = append([]struct {
@@ -112,8 +113,7 @@ type relationValidity int
 const (
 	alwaysInvalid relationValidity = iota
 	alwaysValid
-	validV0SubjectOnly
-	validV1SubjectOnly
+	onlySubjectValid
 )
 
 type relationEntry struct {
@@ -138,8 +138,7 @@ var knownGoodSubjectRef = &v1.SubjectReference{
 }
 
 var relations = []relationEntry{
-	{"...", validV0SubjectOnly},
-	{"", validV1SubjectOnly},
+	{"", onlySubjectValid},
 	{"foo", alwaysValid},
 	{"bar", alwaysValid},
 	{"foo1", alwaysValid},
@@ -164,72 +163,18 @@ var relations = []relationEntry{
 	{strings.Repeat("f", maxRelationLength+1), alwaysInvalid},
 }
 
-func TestV0CoreObjectValidity(t *testing.T) {
-	for _, ns := range namespaces {
-		for _, objectID := range objectIDs {
-			for _, subjectID := range objectIDs {
-				for _, relation := range relations {
-					testName := fmt.Sprintf("%s:%s#%s@%s", ns.name, objectID.name, relation.name, subjectID.name)
-					t.Run(testName, func(t *testing.T) {
-						t.Parallel()
-
-						require := require.New(t)
-
-						v0ObjectValid := ns.valid && objectID.valid && (relation.validity == alwaysValid ||
-							relation.validity == validV0SubjectOnly)
-						v0SubjectValid := ns.valid && subjectID.valid && (relation.validity == alwaysValid ||
-							relation.validity == validV0SubjectOnly)
-						v0Valid := v0ObjectValid && v0SubjectValid
-
-						onr := &v0.ObjectAndRelation{
-							Namespace: ns.name,
-							ObjectId:  objectID.name,
-							Relation:  relation.name,
-						}
-						err := onr.Validate()
-						require.Equal(v0ObjectValid, err == nil, "should be valid: %v %s", v0ObjectValid, err)
-
-						asObject := &v0.RelationTuple{
-							ObjectAndRelation: onr,
-							User: &v0.User{
-								UserOneof: &v0.User_Userset{
-									Userset: knownGoodONR,
-								},
-							},
-						}
-						err = asObject.Validate()
-						require.Equal(v0ObjectValid, err == nil, "should be valid: %v %s", v0ObjectValid, err)
-
-						asSubject := &v0.RelationTuple{
-							ObjectAndRelation: onr,
-							User: &v0.User{
-								UserOneof: &v0.User_Userset{
-									Userset: &v0.ObjectAndRelation{
-										Namespace: ns.name,
-										ObjectId:  subjectID.name,
-										Relation:  relation.name,
-									},
-								},
-							},
-						}
-						err = asSubject.Validate()
-						require.Equal(v0Valid, err == nil, "should be valid: %v %s", v0Valid, err)
-					})
-				}
-			}
-		}
-	}
-}
-
 func TestV1CoreObjectValidity(t *testing.T) {
 	for _, ns := range namespaces {
 		for _, objectID := range objectIDs {
 			for _, subjectID := range subjectIDs {
 				for _, relation := range relations {
-					testName := fmt.Sprintf("%s:%s#%s@%s", ns.name, objectID.name, relation.name, subjectID.name)
-					t.Run(testName, func(t *testing.T) {
-						t.Parallel()
+					testName := fmt.Sprintf("%s:%s#%s@%s:%s", ns.name, objectID.name, relation.name, ns.name, subjectID.name)
+					ns := ns
+					objectID := objectID
+					subjectID := subjectID
+					relation := relation
 
+					t.Run(testName, func(t *testing.T) {
 						require := require.New(t)
 
 						objRef := &v1.ObjectReference{
@@ -246,14 +191,13 @@ func TestV1CoreObjectValidity(t *testing.T) {
 						}
 						subObjRefValid := ns.valid && subjectID.valid
 						err = subjObjRef.Validate()
-						require.Equal(subObjRefValid, err == nil, "should be valid: %v %s", subObjRefValid, err)
+						require.Equal(subObjRefValid, err == nil, "should be valid: %v %s | ns: %v | subj: %v", subObjRefValid, err, ns.valid, subjectID.valid)
 
 						subRef := &v1.SubjectReference{
 							Object:           subjObjRef,
 							OptionalRelation: relation.name,
 						}
-						subjectValid := ns.valid && subjectID.valid &&
-							(relation.validity == alwaysValid || relation.validity == validV1SubjectOnly)
+						subjectValid := ns.valid && subjectID.valid && (relation.validity == alwaysValid || relation.validity == onlySubjectValid)
 						err = subRef.Validate()
 						require.Equal(subjectValid, err == nil, "should be valid: %v %s", subjectValid, err)
 
@@ -264,7 +208,7 @@ func TestV1CoreObjectValidity(t *testing.T) {
 						}
 						asResourceValid := objRefValid && relation.validity == alwaysValid
 						err = asResource.Validate()
-						require.Equal(asResourceValid, err == nil, "should be valid: %v %s", asResourceValid, err)
+						require.Equal(asResourceValid, err == nil, "should be valid: %v %s | relation: `%s`", asResourceValid, err, relation.name)
 
 						asSubject := &v1.Relationship{
 							Resource: knownGoodObjectRef,
@@ -338,8 +282,7 @@ func TestV1CoreObjectValidity(t *testing.T) {
 								},
 							},
 						}
-						filterValid = ns.valid &&
-							(relation.validity == alwaysValid || relation.validity == validV1SubjectOnly)
+						filterValid = ns.valid && (relation.validity == alwaysValid || relation.validity == onlySubjectValid)
 						err = subjectRelationFilter.Validate()
 						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
@@ -353,8 +296,7 @@ func TestV1CoreObjectValidity(t *testing.T) {
 								},
 							},
 						}
-						filterValid = ns.valid && (subjectID.valid || subjectID.name == "") &&
-							(relation.validity == alwaysValid || relation.validity == validV1SubjectOnly)
+						filterValid = ns.valid && (subjectID.valid || subjectID.name == "") && (relation.validity == alwaysValid || relation.validity == onlySubjectValid)
 						err = fullSubjectFilter.Validate()
 						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 					})
@@ -367,8 +309,8 @@ func TestV1CoreObjectValidity(t *testing.T) {
 func TestV1CaveatValidity(t *testing.T) {
 	for _, caveat := range caveats {
 		testName := fmt.Sprintf("caveat->%s_context->%v", caveat.name, caveat.context)
+		caveat := caveat
 		t.Run(testName, func(t *testing.T) {
-			t.Parallel()
 			require := require.New(t)
 
 			strct, err := structpb.NewStruct(caveat.context)
