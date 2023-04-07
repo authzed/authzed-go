@@ -30,7 +30,14 @@ type WatchRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	OptionalObjectTypes []string  `protobuf:"bytes,1,rep,name=optional_object_types,json=optionalObjectTypes,proto3" json:"optional_object_types,omitempty"`
+	OptionalObjectTypes []string `protobuf:"bytes,1,rep,name=optional_object_types,json=optionalObjectTypes,proto3" json:"optional_object_types,omitempty"`
+	// optional_start_cursor is the ZedToken holding the point-in-time at
+	// which to start watching for changes.
+	// If not specified, the watch will begin at the current head revision
+	// of the datastore, returning any updates that occur after the caller
+	// makes the request.
+	// Note that if this cursor references a point-in-time containing data
+	// that has been garbage collected, an error will be returned.
 	OptionalStartCursor *ZedToken `protobuf:"bytes,2,opt,name=optional_start_cursor,json=optionalStartCursor,proto3" json:"optional_start_cursor,omitempty"`
 }
 

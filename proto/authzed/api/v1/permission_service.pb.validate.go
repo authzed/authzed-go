@@ -280,10 +280,10 @@ func (m *RelationshipFilter) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if len(m.GetOptionalResourceId()) > 128 {
+	if len(m.GetOptionalResourceId()) > 1024 {
 		err := RelationshipFilterValidationError{
 			field:  "OptionalResourceId",
-			reason: "value length must be at most 128 bytes",
+			reason: "value length must be at most 1024 bytes",
 		}
 		if !all {
 			return err
@@ -294,7 +294,7 @@ func (m *RelationshipFilter) validate(all bool) error {
 	if !_RelationshipFilter_OptionalResourceId_Pattern.MatchString(m.GetOptionalResourceId()) {
 		err := RelationshipFilterValidationError{
 			field:  "OptionalResourceId",
-			reason: "value does not match regex pattern \"^([a-zA-Z0-9_][a-zA-Z0-9/_|-]{0,127})?$\"",
+			reason: "value does not match regex pattern \"^([a-zA-Z0-9/_|\\\\-=+]{1,})?$\"",
 		}
 		if !all {
 			return err
@@ -435,7 +435,7 @@ var _ interface {
 
 var _RelationshipFilter_ResourceType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
-var _RelationshipFilter_OptionalResourceId_Pattern = regexp.MustCompile("^([a-zA-Z0-9_][a-zA-Z0-9/_|-]{0,127})?$")
+var _RelationshipFilter_OptionalResourceId_Pattern = regexp.MustCompile("^([a-zA-Z0-9/_|\\-=+]{1,})?$")
 
 var _RelationshipFilter_OptionalRelation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
 
@@ -483,10 +483,10 @@ func (m *SubjectFilter) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if len(m.GetOptionalSubjectId()) > 128 {
+	if len(m.GetOptionalSubjectId()) > 1024 {
 		err := SubjectFilterValidationError{
 			field:  "OptionalSubjectId",
-			reason: "value length must be at most 128 bytes",
+			reason: "value length must be at most 1024 bytes",
 		}
 		if !all {
 			return err
@@ -497,7 +497,7 @@ func (m *SubjectFilter) validate(all bool) error {
 	if !_SubjectFilter_OptionalSubjectId_Pattern.MatchString(m.GetOptionalSubjectId()) {
 		err := SubjectFilterValidationError{
 			field:  "OptionalSubjectId",
-			reason: "value does not match regex pattern \"^(([a-zA-Z0-9_][a-zA-Z0-9/_|-]{0,127})|\\\\*)?$\"",
+			reason: "value does not match regex pattern \"^(([a-zA-Z0-9/_|\\\\-=+]{1,})|\\\\*)?$\"",
 		}
 		if !all {
 			return err
@@ -614,7 +614,7 @@ var _ interface {
 
 var _SubjectFilter_SubjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
-var _SubjectFilter_OptionalSubjectId_Pattern = regexp.MustCompile("^(([a-zA-Z0-9_][a-zA-Z0-9/_|-]{0,127})|\\*)?$")
+var _SubjectFilter_OptionalSubjectId_Pattern = regexp.MustCompile("^(([a-zA-Z0-9/_|\\-=+]{1,})|\\*)?$")
 
 // Validate checks the field values on ReadRelationshipsRequest with the rules
 // defined in the proto definition for this message. If any rules are
