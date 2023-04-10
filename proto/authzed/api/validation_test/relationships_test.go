@@ -175,6 +175,8 @@ func TestV1CoreObjectValidity(t *testing.T) {
 					relation := relation
 
 					t.Run(testName, func(t *testing.T) {
+						t.Parallel()
+
 						require := require.New(t)
 
 						objRef := &v1.ObjectReference{
