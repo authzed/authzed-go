@@ -844,6 +844,115 @@ var _ interface {
 	ErrorName() string
 } = ZedTokenValidationError{}
 
+// Validate checks the field values on Cursor with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Cursor) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Cursor with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in CursorMultiError, or nil if none found.
+func (m *Cursor) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Cursor) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := len(m.GetToken()); l < 1 || l > 102400 {
+		err := CursorValidationError{
+			field:  "Token",
+			reason: "value length must be between 1 and 102400 bytes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return CursorMultiError(errors)
+	}
+
+	return nil
+}
+
+// CursorMultiError is an error wrapping multiple validation errors returned by
+// Cursor.ValidateAll() if the designated constraints aren't met.
+type CursorMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CursorMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CursorMultiError) AllErrors() []error { return m }
+
+// CursorValidationError is the validation error returned by Cursor.Validate if
+// the designated constraints aren't met.
+type CursorValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CursorValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CursorValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CursorValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CursorValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CursorValidationError) ErrorName() string { return "CursorValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CursorValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCursor.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CursorValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CursorValidationError{}
+
 // Validate checks the field values on RelationshipUpdate with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.

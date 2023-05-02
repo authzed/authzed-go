@@ -2747,6 +2747,46 @@ func (m *LookupResourcesRequest) validate(all bool) error {
 		}
 	}
 
+	if val := m.GetOptionalLimit(); val < 0 || val > 1000 {
+		err := LookupResourcesRequestValidationError{
+			field:  "OptionalLimit",
+			reason: "value must be inside range [0, 1000]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetOptionalCursor()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LookupResourcesRequestValidationError{
+					field:  "OptionalCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LookupResourcesRequestValidationError{
+					field:  "OptionalCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetOptionalCursor()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LookupResourcesRequestValidationError{
+				field:  "OptionalCursor",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return LookupResourcesRequestMultiError(errors)
 	}
@@ -2929,6 +2969,35 @@ func (m *LookupResourcesResponse) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return LookupResourcesResponseValidationError{
 				field:  "PartialCaveatInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetAfterResultCursor()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LookupResourcesResponseValidationError{
+					field:  "AfterResultCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LookupResourcesResponseValidationError{
+					field:  "AfterResultCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetAfterResultCursor()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LookupResourcesResponseValidationError{
+				field:  "AfterResultCursor",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
