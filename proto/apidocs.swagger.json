@@ -902,6 +902,15 @@
       },
       "description": "ContextualizedCaveat represents a reference to a caveat to be used by caveated relationships.\nThe context consists of key-value pairs that will be injected at evaluation time.\nThe keys must match the arguments defined on the caveat in the schema."
     },
+    "v1Cursor": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      },
+      "description": "Cursor is used to provide resumption of listing between calls to APIs\nsuch as LookupResources."
+    },
     "v1DeleteRelationshipsRequest": {
       "type": "object",
       "properties": {
@@ -997,6 +1006,15 @@
         "context": {
           "type": "object",
           "title": "context consists of named values that are injected into the caveat evaluation context *"
+        },
+        "optionalLimit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "optional_limit, if non-zero, specifies the limit on the number of resources to return\nbefore the stream is closed on the server side. By default, the stream will continue\nresolving resources until exhausted or the stream is closed due to the client or a\nnetwork issue."
+        },
+        "optionalCursor": {
+          "$ref": "#/definitions/v1Cursor",
+          "description": "optional_cursor, if specified, indicates the cursor after which results should resume being returned.\nThe cursor can be found on the LookupResourcesResponse object."
         }
       },
       "description": "LookupResourcesRequest performs a lookup of all resources of a particular\nkind on which the subject has the specified permission or the relation in\nwhich the subject exists, streaming back the IDs of those resources."
@@ -1005,10 +1023,12 @@
       "type": "object",
       "properties": {
         "lookedUpAt": {
-          "$ref": "#/definitions/v1ZedToken"
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "looked_up_at is the ZedToken at which the resource was found."
         },
         "resourceObjectId": {
-          "type": "string"
+          "type": "string",
+          "description": "resource_object_id is the object ID of the found resource."
         },
         "permissionship": {
           "$ref": "#/definitions/v1LookupPermissionship",
@@ -1017,6 +1037,10 @@
         "partialCaveatInfo": {
           "$ref": "#/definitions/v1PartialCaveatInfo",
           "title": "partial_caveat_info holds information of a partially-evaluated caveated response"
+        },
+        "afterResultCursor": {
+          "$ref": "#/definitions/v1Cursor",
+          "description": "after_result_cursor holds a cursor that can be used to resume the LookupResources stream after this\nresult."
         }
       },
       "description": "LookupResourcesResponse contains a single matching resource object ID for the\nrequested object type, permission, and subject."

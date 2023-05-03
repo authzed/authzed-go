@@ -383,6 +383,8 @@ func (m *LookupResourcesRequest) CloneVT() *LookupResourcesRequest {
 		ResourceObjectType: m.ResourceObjectType,
 		Permission:         m.Permission,
 		Subject:            m.Subject.CloneVT(),
+		OptionalLimit:      m.OptionalLimit,
+		OptionalCursor:     m.OptionalCursor.CloneVT(),
 	}
 	if rhs := m.Context; rhs != nil {
 		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *structpb.Struct }); ok {
@@ -411,6 +413,7 @@ func (m *LookupResourcesResponse) CloneVT() *LookupResourcesResponse {
 		ResourceObjectId:  m.ResourceObjectId,
 		Permissionship:    m.Permissionship,
 		PartialCaveatInfo: m.PartialCaveatInfo.CloneVT(),
+		AfterResultCursor: m.AfterResultCursor.CloneVT(),
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -1426,6 +1429,21 @@ func (m *LookupResourcesRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.OptionalCursor != nil {
+		size, err := m.OptionalCursor.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x3a
+	}
+	if m.OptionalLimit != 0 {
+		i = encodeVarint(dAtA, i, uint64(m.OptionalLimit))
+		i--
+		dAtA[i] = 0x30
+	}
 	if m.Context != nil {
 		if vtmsg, ok := interface{}(m.Context).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
@@ -1514,6 +1532,16 @@ func (m *LookupResourcesResponse) MarshalToSizedBufferVT(dAtA []byte) (int, erro
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.AfterResultCursor != nil {
+		size, err := m.AfterResultCursor.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x2a
 	}
 	if m.PartialCaveatInfo != nil {
 		size, err := m.PartialCaveatInfo.MarshalToSizedBufferVT(dAtA[:i])
@@ -2166,6 +2194,13 @@ func (m *LookupResourcesRequest) SizeVT() (n int) {
 		}
 		n += 1 + l + sov(uint64(l))
 	}
+	if m.OptionalLimit != 0 {
+		n += 1 + sov(uint64(m.OptionalLimit))
+	}
+	if m.OptionalCursor != nil {
+		l = m.OptionalCursor.SizeVT()
+		n += 1 + l + sov(uint64(l))
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -2189,6 +2224,10 @@ func (m *LookupResourcesResponse) SizeVT() (n int) {
 	}
 	if m.PartialCaveatInfo != nil {
 		l = m.PartialCaveatInfo.SizeVT()
+		n += 1 + l + sov(uint64(l))
+	}
+	if m.AfterResultCursor != nil {
+		l = m.AfterResultCursor.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -4519,6 +4558,61 @@ func (m *LookupResourcesRequest) UnmarshalVT(dAtA []byte) error {
 				}
 			}
 			iNdEx = postIndex
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalLimit", wireType)
+			}
+			m.OptionalLimit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.OptionalLimit |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalCursor", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.OptionalCursor == nil {
+				m.OptionalCursor = &Cursor{}
+			}
+			if err := m.OptionalCursor.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skip(dAtA[iNdEx:])
@@ -4690,6 +4784,42 @@ func (m *LookupResourcesResponse) UnmarshalVT(dAtA []byte) error {
 				m.PartialCaveatInfo = &PartialCaveatInfo{}
 			}
 			if err := m.PartialCaveatInfo.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AfterResultCursor", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.AfterResultCursor == nil {
+				m.AfterResultCursor = &Cursor{}
+			}
+			if err := m.AfterResultCursor.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
