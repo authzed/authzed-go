@@ -1184,7 +1184,17 @@
           "$ref": "#/definitions/v1Consistency"
         },
         "relationshipFilter": {
-          "$ref": "#/definitions/v1RelationshipFilter"
+          "$ref": "#/definitions/v1RelationshipFilter",
+          "description": "relationship_filter defines the filter to be applied to the relationships\nto be returned."
+        },
+        "optionalLimit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "optional_limit, if non-zero, specifies the limit on the number of relationships to return\nbefore the stream is closed on the server side. By default, the stream will continue\nresolving relationships until exhausted or the stream is closed due to the client or a\nnetwork issue."
+        },
+        "optionalCursor": {
+          "$ref": "#/definitions/v1Cursor",
+          "description": "optional_cursor, if specified, indicates the cursor after which results should resume being returned.\nThe cursor can be found on the ReadRelationshipsResponse object."
         }
       },
       "description": "ReadRelationshipsRequest specifies one or more filters used to read matching\nrelationships within the system."
@@ -1193,10 +1203,16 @@
       "type": "object",
       "properties": {
         "readAt": {
-          "$ref": "#/definitions/v1ZedToken"
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the relationship was found."
         },
         "relationship": {
-          "$ref": "#/definitions/v1Relationship"
+          "$ref": "#/definitions/v1Relationship",
+          "description": "relationship is the found relationship."
+        },
+        "afterResultCursor": {
+          "$ref": "#/definitions/v1Cursor",
+          "description": "after_result_cursor holds a cursor that can be used to resume the ReadRelationships stream after this\nresult."
         }
       },
       "description": "ReadRelationshipsResponse contains a Relationship found that matches the\nspecified relationship filter(s). A instance of this response message will\nbe streamed to the client for each relationship found."

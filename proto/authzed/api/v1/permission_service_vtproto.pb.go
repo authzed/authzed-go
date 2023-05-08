@@ -146,6 +146,8 @@ func (m *ReadRelationshipsRequest) CloneVT() *ReadRelationshipsRequest {
 	r := &ReadRelationshipsRequest{
 		Consistency:        m.Consistency.CloneVT(),
 		RelationshipFilter: m.RelationshipFilter.CloneVT(),
+		OptionalLimit:      m.OptionalLimit,
+		OptionalCursor:     m.OptionalCursor.CloneVT(),
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -163,8 +165,9 @@ func (m *ReadRelationshipsResponse) CloneVT() *ReadRelationshipsResponse {
 		return (*ReadRelationshipsResponse)(nil)
 	}
 	r := &ReadRelationshipsResponse{
-		ReadAt:       m.ReadAt.CloneVT(),
-		Relationship: m.Relationship.CloneVT(),
+		ReadAt:            m.ReadAt.CloneVT(),
+		Relationship:      m.Relationship.CloneVT(),
+		AfterResultCursor: m.AfterResultCursor.CloneVT(),
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -814,6 +817,21 @@ func (m *ReadRelationshipsRequest) MarshalToSizedBufferVT(dAtA []byte) (int, err
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.OptionalCursor != nil {
+		size, err := m.OptionalCursor.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x22
+	}
+	if m.OptionalLimit != 0 {
+		i = encodeVarint(dAtA, i, uint64(m.OptionalLimit))
+		i--
+		dAtA[i] = 0x18
+	}
 	if m.RelationshipFilter != nil {
 		size, err := m.RelationshipFilter.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -866,6 +884,16 @@ func (m *ReadRelationshipsResponse) MarshalToSizedBufferVT(dAtA []byte) (int, er
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.AfterResultCursor != nil {
+		size, err := m.AfterResultCursor.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1a
 	}
 	if m.Relationship != nil {
 		size, err := m.Relationship.MarshalToSizedBufferVT(dAtA[:i])
@@ -1956,6 +1984,13 @@ func (m *ReadRelationshipsRequest) SizeVT() (n int) {
 		l = m.RelationshipFilter.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
+	if m.OptionalLimit != 0 {
+		n += 1 + sov(uint64(m.OptionalLimit))
+	}
+	if m.OptionalCursor != nil {
+		l = m.OptionalCursor.SizeVT()
+		n += 1 + l + sov(uint64(l))
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -1972,6 +2007,10 @@ func (m *ReadRelationshipsResponse) SizeVT() (n int) {
 	}
 	if m.Relationship != nil {
 		l = m.Relationship.SizeVT()
+		n += 1 + l + sov(uint64(l))
+	}
+	if m.AfterResultCursor != nil {
+		l = m.AfterResultCursor.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -3029,6 +3068,61 @@ func (m *ReadRelationshipsRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalLimit", wireType)
+			}
+			m.OptionalLimit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.OptionalLimit |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalCursor", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.OptionalCursor == nil {
+				m.OptionalCursor = &Cursor{}
+			}
+			if err := m.OptionalCursor.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skip(dAtA[iNdEx:])
@@ -3149,6 +3243,42 @@ func (m *ReadRelationshipsResponse) UnmarshalVT(dAtA []byte) error {
 				m.Relationship = &Relationship{}
 			}
 			if err := m.Relationship.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AfterResultCursor", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.AfterResultCursor == nil {
+				m.AfterResultCursor = &Cursor{}
+			}
+			if err := m.AfterResultCursor.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
