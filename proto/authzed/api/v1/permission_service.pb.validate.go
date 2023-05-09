@@ -1633,6 +1633,19 @@ func (m *DeleteRelationshipsRequest) validate(all bool) error {
 
 	}
 
+	if val := m.GetOptionalLimit(); val < 0 || val > 1000 {
+		err := DeleteRelationshipsRequestValidationError{
+			field:  "OptionalLimit",
+			reason: "value must be inside range [0, 1000]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for OptionalAllowPartialDeletions
+
 	if len(errors) > 0 {
 		return DeleteRelationshipsRequestMultiError(errors)
 	}
@@ -1763,6 +1776,8 @@ func (m *DeleteRelationshipsResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for DeletionProgress
 
 	if len(errors) > 0 {
 		return DeleteRelationshipsResponseMultiError(errors)
