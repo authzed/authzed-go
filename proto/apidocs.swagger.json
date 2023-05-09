@@ -466,6 +466,16 @@
     }
   },
   "definitions": {
+    "DeleteRelationshipsResponseDeletionProgress": {
+      "type": "string",
+      "enum": [
+        "DELETION_PROGRESS_UNSPECIFIED",
+        "DELETION_PROGRESS_COMPLETE",
+        "DELETION_PROGRESS_PARTIAL"
+      ],
+      "default": "DELETION_PROGRESS_UNSPECIFIED",
+      "description": " - DELETION_PROGRESS_COMPLETE: DELETION_PROGRESS_COMPLETE indicates that all remaining relationships matching the filter\nwere deleted. Will be returned even if no relationships were deleted.\n - DELETION_PROGRESS_PARTIAL: DELETION_PROGRESS_PARTIAL indicates that a subset of the relationships matching the filter\nwere deleted. Only returned if optional_allow_partial_deletions was true, an optional_limit was\nspecified, and there existed more relationships matching the filter than optional_limit would allow.\nOnce all remaining relationships have been deleted, DELETION_PROGRESS_COMPLETE will be returned."
+    },
     "DeveloperErrorErrorKind": {
       "type": "string",
       "enum": [
@@ -922,6 +932,15 @@
           "items": {
             "$ref": "#/definitions/v1Precondition"
           }
+        },
+        "optionalLimit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "optional_limit, if non-zero, specifies the limit on the number of relationships to be deleted.\nIf there are more matching relationships found to be deleted than the limit specified here,\nthe deletion call will fail with an error to prevent partial deletion. If partial deletion\nis needed, specify below that partial deletion is allowed. Partial deletions can be used\nin a loop to delete large amounts of relationships in a *non-transactional* manner."
+        },
+        "optionalAllowPartialDeletions": {
+          "type": "boolean",
+          "description": "optional_allow_partial_deletions, if true and a limit is specified, will delete matching found\nrelationships up to the count specified in optional_limit, and no more."
         }
       },
       "description": "DeleteRelationshipsRequest specifies which Relationships should be deleted,\nrequesting the delete of *ALL* relationships that match the specified\nfilters. If the optional_preconditions parameter is included, all of the\nspecified preconditions must also be satisfied before the delete will be\nexecuted."
@@ -930,7 +949,12 @@
       "type": "object",
       "properties": {
         "deletedAt": {
-          "$ref": "#/definitions/v1ZedToken"
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "deleted_at is the revision at which the relationships were deleted."
+        },
+        "deletionProgress": {
+          "$ref": "#/definitions/DeleteRelationshipsResponseDeletionProgress",
+          "description": "deletion_progress is an enumeration of the possible outcomes that occurred when attempting to delete the specified relationships."
         }
       }
     },

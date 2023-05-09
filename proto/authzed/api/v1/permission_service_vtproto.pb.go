@@ -252,7 +252,9 @@ func (m *DeleteRelationshipsRequest) CloneVT() *DeleteRelationshipsRequest {
 		return (*DeleteRelationshipsRequest)(nil)
 	}
 	r := &DeleteRelationshipsRequest{
-		RelationshipFilter: m.RelationshipFilter.CloneVT(),
+		RelationshipFilter:            m.RelationshipFilter.CloneVT(),
+		OptionalLimit:                 m.OptionalLimit,
+		OptionalAllowPartialDeletions: m.OptionalAllowPartialDeletions,
 	}
 	if rhs := m.OptionalPreconditions; rhs != nil {
 		tmpContainer := make([]*Precondition, len(rhs))
@@ -277,7 +279,8 @@ func (m *DeleteRelationshipsResponse) CloneVT() *DeleteRelationshipsResponse {
 		return (*DeleteRelationshipsResponse)(nil)
 	}
 	r := &DeleteRelationshipsResponse{
-		DeletedAt: m.DeletedAt.CloneVT(),
+		DeletedAt:        m.DeletedAt.CloneVT(),
+		DeletionProgress: m.DeletionProgress,
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -1096,6 +1099,21 @@ func (m *DeleteRelationshipsRequest) MarshalToSizedBufferVT(dAtA []byte) (int, e
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.OptionalAllowPartialDeletions {
+		i--
+		if m.OptionalAllowPartialDeletions {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.OptionalLimit != 0 {
+		i = encodeVarint(dAtA, i, uint64(m.OptionalLimit))
+		i--
+		dAtA[i] = 0x18
+	}
 	if len(m.OptionalPreconditions) > 0 {
 		for iNdEx := len(m.OptionalPreconditions) - 1; iNdEx >= 0; iNdEx-- {
 			size, err := m.OptionalPreconditions[iNdEx].MarshalToSizedBufferVT(dAtA[:i])
@@ -1150,6 +1168,11 @@ func (m *DeleteRelationshipsResponse) MarshalToSizedBufferVT(dAtA []byte) (int, 
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.DeletionProgress != 0 {
+		i = encodeVarint(dAtA, i, uint64(m.DeletionProgress))
+		i--
+		dAtA[i] = 0x10
 	}
 	if m.DeletedAt != nil {
 		size, err := m.DeletedAt.MarshalToSizedBufferVT(dAtA[:i])
@@ -2086,6 +2109,12 @@ func (m *DeleteRelationshipsRequest) SizeVT() (n int) {
 			n += 1 + l + sov(uint64(l))
 		}
 	}
+	if m.OptionalLimit != 0 {
+		n += 1 + sov(uint64(m.OptionalLimit))
+	}
+	if m.OptionalAllowPartialDeletions {
+		n += 2
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -2099,6 +2128,9 @@ func (m *DeleteRelationshipsResponse) SizeVT() (n int) {
 	if m.DeletedAt != nil {
 		l = m.DeletedAt.SizeVT()
 		n += 1 + l + sov(uint64(l))
+	}
+	if m.DeletionProgress != 0 {
+		n += 1 + sov(uint64(m.DeletionProgress))
 	}
 	n += len(m.unknownFields)
 	return n
@@ -3715,6 +3747,45 @@ func (m *DeleteRelationshipsRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalLimit", wireType)
+			}
+			m.OptionalLimit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.OptionalLimit |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalAllowPartialDeletions", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.OptionalAllowPartialDeletions = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skip(dAtA[iNdEx:])
@@ -3802,6 +3873,25 @@ func (m *DeleteRelationshipsResponse) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DeletionProgress", wireType)
+			}
+			m.DeletionProgress = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.DeletionProgress |= DeleteRelationshipsResponse_DeletionProgress(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skip(dAtA[iNdEx:])
