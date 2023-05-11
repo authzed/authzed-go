@@ -16,12 +16,19 @@ type Client struct {
 	v1.WatchServiceClient
 }
 
+// ClientWithExperimental represents and open connection to Authzed with
+// experimental services available.
+//
+// Clients are backed by a gRPC client and as such are thread-safe.
+type ClientWithExperimental struct {
+	Client
+
+	v1.ExperimentalServiceClient
+}
+
 // NewClient initializes a brand new client for interacting with Authzed.
 func NewClient(endpoint string, opts ...grpc.DialOption) (*Client, error) {
-	conn, err := grpc.Dial(
-		stringz.DefaultEmpty(endpoint, "grpc.authzed.com:443"),
-		opts...,
-	)
+	conn, err := newConn(endpoint, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -31,4 +38,29 @@ func NewClient(endpoint string, opts ...grpc.DialOption) (*Client, error) {
 		v1.NewPermissionsServiceClient(conn),
 		v1.NewWatchServiceClient(conn),
 	}, nil
+}
+
+// NewClientWithExperimentalAPIs initializes a brand new client for interacting
+// with Authzed.
+func NewClientWithExperimentalAPIs(endpoint string, opts ...grpc.DialOption) (*ClientWithExperimental, error) {
+	conn, err := newConn(endpoint, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ClientWithExperimental{
+		Client{
+			v1.NewSchemaServiceClient(conn),
+			v1.NewPermissionsServiceClient(conn),
+			v1.NewWatchServiceClient(conn),
+		},
+		v1.NewExperimentalServiceClient(conn),
+	}, nil
+}
+
+func newConn(endpoint string, opts ...grpc.DialOption) (*grpc.ClientConn, error) {
+	return grpc.Dial(
+		stringz.DefaultEmpty(endpoint, "grpc.authzed.com:443"),
+		opts...,
+	)
 }
