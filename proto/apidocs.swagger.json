@@ -18,6 +18,9 @@
       "name": "DeveloperService"
     },
     {
+      "name": "ExperimentalService"
+    },
+    {
       "name": "PermissionsService"
     },
     {
@@ -45,6 +48,41 @@
     "application/json"
   ],
   "paths": {
+    "/v1/experimental/relationships/bulkload": {
+      "post": {
+        "summary": "BulkLoadRelationships is a faster path to writing a large number of\nrelationships at once. It is both batched and streaming. For maximum\nperformance, the caller should attempt to write relationships in as close\nto relationship sort order as possible: (resource.object_type,\nresource.object_id, relation, subject.object.object_type,\nsubject.object.object_id, subject.optional_relation)",
+        "description": "EXPERIMENTAL\nhttps://github.com/authzed/spicedb/issues/1303",
+        "operationId": "ExperimentalService_BulkLoadRelationships",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BulkLoadRelationshipsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "BulkLoadRelationshipsRequest represents one batch of the streaming\nBulkLoadRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. (streaming inputs)",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1BulkLoadRelationshipsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ExperimentalService"
+        ]
+      }
+    },
     "/v1/permissions/check": {
       "post": {
         "summary": "CheckPermission determines for a given resource whether a subject computes\nto having a permission or is a direct member of a particular relation.",
@@ -825,6 +863,28 @@
       ],
       "default": "OPERATION_UNSPECIFIED"
     },
+    "v1BulkLoadRelationshipsRequest": {
+      "type": "object",
+      "properties": {
+        "relationships": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Relationship"
+          }
+        }
+      },
+      "description": "BulkLoadRelationshipsRequest represents one batch of the streaming\nBulkLoadRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally."
+    },
+    "v1BulkLoadRelationshipsResponse": {
+      "type": "object",
+      "properties": {
+        "numLoaded": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "BulkLoadRelationshipsResponse is returned on successful completion of the\nbulk load stream, and contains the total number of relationships loaded."
+    },
     "v1CheckPermissionRequest": {
       "type": "object",
       "properties": {
@@ -845,7 +905,7 @@
         },
         "context": {
           "type": "object",
-          "title": "context consists of named values that are injected into the caveat evaluation context *"
+          "title": "context consists of named values that are injected into the caveat evaluation context"
         }
       },
       "description": "CheckPermissionRequest issues a check on whether a subject has a permission\nor is a member of a relation, on a specific resource."
@@ -903,11 +963,11 @@
       "properties": {
         "caveatName": {
           "type": "string",
-          "title": "caveat_name is the name of the caveat expression to use, as defined in the schema *"
+          "title": "caveat_name is the name of the caveat expression to use, as defined in the schema"
         },
         "context": {
           "type": "object",
-          "title": "context consists of any named values that are defined at write time for the caveat expression *"
+          "title": "context consists of any named values that are defined at write time for the caveat expression"
         }
       },
       "description": "ContextualizedCaveat represents a reference to a caveat to be used by caveated relationships.\nThe context consists of key-value pairs that will be injected at evaluation time.\nThe keys must match the arguments defined on the caveat in the schema."
@@ -1029,7 +1089,7 @@
         },
         "context": {
           "type": "object",
-          "title": "context consists of named values that are injected into the caveat evaluation context *"
+          "title": "context consists of named values that are injected into the caveat evaluation context"
         },
         "optionalLimit": {
           "type": "integer",
@@ -1093,7 +1153,7 @@
         },
         "context": {
           "type": "object",
-          "title": "context consists of named values that are injected into the caveat evaluation context *"
+          "title": "context consists of named values that are injected into the caveat evaluation context"
         }
       },
       "description": "LookupSubjectsRequest performs a lookup of all subjects of a particular\nkind for which the subject has the specified permission or the relation in\nwhich the subject exists, streaming back the IDs of those subjects."

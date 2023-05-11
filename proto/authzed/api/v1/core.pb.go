@@ -212,9 +212,9 @@ type ContextualizedCaveat struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// caveat_name is the name of the caveat expression to use, as defined in the schema *
+	// caveat_name is the name of the caveat expression to use, as defined in the schema
 	CaveatName string `protobuf:"bytes,1,opt,name=caveat_name,json=caveatName,proto3" json:"caveat_name,omitempty"`
-	// context consists of any named values that are defined at write time for the caveat expression *
+	// context consists of any named values that are defined at write time for the caveat expression
 	Context *structpb.Struct `protobuf:"bytes,2,opt,name=context,proto3" json:"context,omitempty"`
 }
 
