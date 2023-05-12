@@ -978,7 +978,7 @@ func (m *RelationshipUpdate) validate(all bool) error {
 	if _, ok := _RelationshipUpdate_Operation_NotInLookup[m.GetOperation()]; ok {
 		err := RelationshipUpdateValidationError{
 			field:  "Operation",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [OPERATION_UNSPECIFIED]",
 		}
 		if !all {
 			return err
@@ -1174,9 +1174,20 @@ func (m *PermissionRelationshipTree) validate(all bool) error {
 
 	// no validation rules for ExpandedRelation
 
-	switch m.TreeType.(type) {
-
+	oneofTreeTypePresent := false
+	switch v := m.TreeType.(type) {
 	case *PermissionRelationshipTree_Intermediate:
+		if v == nil {
+			err := PermissionRelationshipTreeValidationError{
+				field:  "TreeType",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofTreeTypePresent = true
 
 		if all {
 			switch v := interface{}(m.GetIntermediate()).(type) {
@@ -1208,6 +1219,17 @@ func (m *PermissionRelationshipTree) validate(all bool) error {
 		}
 
 	case *PermissionRelationshipTree_Leaf:
+		if v == nil {
+			err := PermissionRelationshipTreeValidationError{
+				field:  "TreeType",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofTreeTypePresent = true
 
 		if all {
 			switch v := interface{}(m.GetLeaf()).(type) {
@@ -1239,6 +1261,9 @@ func (m *PermissionRelationshipTree) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofTreeTypePresent {
 		err := PermissionRelationshipTreeValidationError{
 			field:  "TreeType",
 			reason: "value is required",
@@ -1247,7 +1272,6 @@ func (m *PermissionRelationshipTree) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -1355,7 +1379,7 @@ func (m *AlgebraicSubjectSet) validate(all bool) error {
 	if _, ok := _AlgebraicSubjectSet_Operation_NotInLookup[m.GetOperation()]; ok {
 		err := AlgebraicSubjectSetValidationError{
 			field:  "Operation",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [OPERATION_UNSPECIFIED]",
 		}
 		if !all {
 			return err
