@@ -7,13 +7,16 @@ on:  # yamllint disable-line rule:truthy
       - "main"
   pull_request:
     branches: ["*"]
+  merge_group:
+    types:
+      - "checks_requested"
 jobs:
   go-lint:
     name: "Lint Go"
     runs-on: "ubuntu-latest"
     steps:
       - uses: "actions/checkout@v3"
-      - uses: "actions/setup-go@v3"
+      - uses: "actions/setup-go@v4"
         with:
           go-version: "~1.19"
       - uses: "authzed/actions/gofumpt@main"
