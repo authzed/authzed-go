@@ -57,20 +57,9 @@ func (m *Consistency) validate(all bool) error {
 
 	var errors []error
 
-	oneofRequirementPresent := false
-	switch v := m.Requirement.(type) {
+	switch m.Requirement.(type) {
+
 	case *Consistency_MinimizeLatency:
-		if v == nil {
-			err := ConsistencyValidationError{
-				field:  "Requirement",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-		oneofRequirementPresent = true
 
 		if m.GetMinimizeLatency() != true {
 			err := ConsistencyValidationError{
@@ -84,17 +73,6 @@ func (m *Consistency) validate(all bool) error {
 		}
 
 	case *Consistency_AtLeastAsFresh:
-		if v == nil {
-			err := ConsistencyValidationError{
-				field:  "Requirement",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-		oneofRequirementPresent = true
 
 		if all {
 			switch v := interface{}(m.GetAtLeastAsFresh()).(type) {
@@ -126,17 +104,6 @@ func (m *Consistency) validate(all bool) error {
 		}
 
 	case *Consistency_AtExactSnapshot:
-		if v == nil {
-			err := ConsistencyValidationError{
-				field:  "Requirement",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-		oneofRequirementPresent = true
 
 		if all {
 			switch v := interface{}(m.GetAtExactSnapshot()).(type) {
@@ -168,17 +135,6 @@ func (m *Consistency) validate(all bool) error {
 		}
 
 	case *Consistency_FullyConsistent:
-		if v == nil {
-			err := ConsistencyValidationError{
-				field:  "Requirement",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-		oneofRequirementPresent = true
 
 		if m.GetFullyConsistent() != true {
 			err := ConsistencyValidationError{
@@ -192,9 +148,6 @@ func (m *Consistency) validate(all bool) error {
 		}
 
 	default:
-		_ = v // ensures v is used
-	}
-	if !oneofRequirementPresent {
 		err := ConsistencyValidationError{
 			field:  "Requirement",
 			reason: "value is required",
@@ -203,6 +156,7 @@ func (m *Consistency) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
+
 	}
 
 	if len(errors) > 0 {
@@ -1109,7 +1063,7 @@ func (m *Precondition) validate(all bool) error {
 	if _, ok := _Precondition_Operation_NotInLookup[m.GetOperation()]; ok {
 		err := PreconditionValidationError{
 			field:  "Operation",
-			reason: "value must not be in list [OPERATION_UNSPECIFIED]",
+			reason: "value must not be in list [0]",
 		}
 		if !all {
 			return err
@@ -2224,7 +2178,7 @@ func (m *CheckPermissionResponse) validate(all bool) error {
 	if _, ok := _CheckPermissionResponse_Permissionship_NotInLookup[m.GetPermissionship()]; ok {
 		err := CheckPermissionResponseValidationError{
 			field:  "Permissionship",
-			reason: "value must not be in list [PERMISSIONSHIP_UNSPECIFIED]",
+			reason: "value must not be in list [0]",
 		}
 		if !all {
 			return err
@@ -3057,7 +3011,7 @@ func (m *LookupResourcesResponse) validate(all bool) error {
 	if _, ok := _LookupResourcesResponse_Permissionship_NotInLookup[m.GetPermissionship()]; ok {
 		err := LookupResourcesResponseValidationError{
 			field:  "Permissionship",
-			reason: "value must not be in list [LOOKUP_PERMISSIONSHIP_UNSPECIFIED]",
+			reason: "value must not be in list [0]",
 		}
 		if !all {
 			return err
@@ -3546,7 +3500,7 @@ func (m *LookupSubjectsResponse) validate(all bool) error {
 	if _, ok := _LookupSubjectsResponse_Permissionship_NotInLookup[m.GetPermissionship()]; ok {
 		err := LookupSubjectsResponseValidationError{
 			field:  "Permissionship",
-			reason: "value must not be in list [LOOKUP_PERMISSIONSHIP_UNSPECIFIED]",
+			reason: "value must not be in list [0]",
 		}
 		if !all {
 			return err
@@ -3768,7 +3722,7 @@ func (m *ResolvedSubject) validate(all bool) error {
 	if _, ok := _ResolvedSubject_Permissionship_NotInLookup[m.GetPermissionship()]; ok {
 		err := ResolvedSubjectValidationError{
 			field:  "Permissionship",
-			reason: "value must not be in list [LOOKUP_PERMISSIONSHIP_UNSPECIFIED]",
+			reason: "value must not be in list [0]",
 		}
 		if !all {
 			return err
