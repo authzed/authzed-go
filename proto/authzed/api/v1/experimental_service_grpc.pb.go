@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ExperimentalServiceClient interface {
-	// BulkLoadRelationships is a faster path to writing a large number of
+	// BulkImportRelationships is a faster path to writing a large number of
 	// relationships at once. It is both batched and streaming. For maximum
 	// performance, the caller should attempt to write relationships in as close
 	// to relationship sort order as possible: (resource.object_type,
@@ -31,7 +31,11 @@ type ExperimentalServiceClient interface {
 	//
 	// EXPERIMENTAL
 	// https://github.com/authzed/spicedb/issues/1303
-	BulkLoadRelationships(ctx context.Context, opts ...grpc.CallOption) (ExperimentalService_BulkLoadRelationshipsClient, error)
+	BulkImportRelationships(ctx context.Context, opts ...grpc.CallOption) (ExperimentalService_BulkImportRelationshipsClient, error)
+	// BulkExportRelationships is the fastest path available to exporting
+	// relationships from the server. It is resumable, and will return results
+	// in an order determined by the server.
+	BulkExportRelationships(ctx context.Context, in *BulkExportRelationshipsRequest, opts ...grpc.CallOption) (ExperimentalService_BulkExportRelationshipsClient, error)
 }
 
 type experimentalServiceClient struct {
@@ -42,34 +46,66 @@ func NewExperimentalServiceClient(cc grpc.ClientConnInterface) ExperimentalServi
 	return &experimentalServiceClient{cc}
 }
 
-func (c *experimentalServiceClient) BulkLoadRelationships(ctx context.Context, opts ...grpc.CallOption) (ExperimentalService_BulkLoadRelationshipsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &ExperimentalService_ServiceDesc.Streams[0], "/authzed.api.v1.ExperimentalService/BulkLoadRelationships", opts...)
+func (c *experimentalServiceClient) BulkImportRelationships(ctx context.Context, opts ...grpc.CallOption) (ExperimentalService_BulkImportRelationshipsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ExperimentalService_ServiceDesc.Streams[0], "/authzed.api.v1.ExperimentalService/BulkImportRelationships", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &experimentalServiceBulkLoadRelationshipsClient{stream}
+	x := &experimentalServiceBulkImportRelationshipsClient{stream}
 	return x, nil
 }
 
-type ExperimentalService_BulkLoadRelationshipsClient interface {
-	Send(*BulkLoadRelationshipsRequest) error
-	CloseAndRecv() (*BulkLoadRelationshipsResponse, error)
+type ExperimentalService_BulkImportRelationshipsClient interface {
+	Send(*BulkImportRelationshipsRequest) error
+	CloseAndRecv() (*BulkImportRelationshipsResponse, error)
 	grpc.ClientStream
 }
 
-type experimentalServiceBulkLoadRelationshipsClient struct {
+type experimentalServiceBulkImportRelationshipsClient struct {
 	grpc.ClientStream
 }
 
-func (x *experimentalServiceBulkLoadRelationshipsClient) Send(m *BulkLoadRelationshipsRequest) error {
+func (x *experimentalServiceBulkImportRelationshipsClient) Send(m *BulkImportRelationshipsRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *experimentalServiceBulkLoadRelationshipsClient) CloseAndRecv() (*BulkLoadRelationshipsResponse, error) {
+func (x *experimentalServiceBulkImportRelationshipsClient) CloseAndRecv() (*BulkImportRelationshipsResponse, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
-	m := new(BulkLoadRelationshipsResponse)
+	m := new(BulkImportRelationshipsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *experimentalServiceClient) BulkExportRelationships(ctx context.Context, in *BulkExportRelationshipsRequest, opts ...grpc.CallOption) (ExperimentalService_BulkExportRelationshipsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ExperimentalService_ServiceDesc.Streams[1], "/authzed.api.v1.ExperimentalService/BulkExportRelationships", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &experimentalServiceBulkExportRelationshipsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ExperimentalService_BulkExportRelationshipsClient interface {
+	Recv() (*BulkExportRelationshipsResponse, error)
+	grpc.ClientStream
+}
+
+type experimentalServiceBulkExportRelationshipsClient struct {
+	grpc.ClientStream
+}
+
+func (x *experimentalServiceBulkExportRelationshipsClient) Recv() (*BulkExportRelationshipsResponse, error) {
+	m := new(BulkExportRelationshipsResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -80,7 +116,7 @@ func (x *experimentalServiceBulkLoadRelationshipsClient) CloseAndRecv() (*BulkLo
 // All implementations must embed UnimplementedExperimentalServiceServer
 // for forward compatibility
 type ExperimentalServiceServer interface {
-	// BulkLoadRelationships is a faster path to writing a large number of
+	// BulkImportRelationships is a faster path to writing a large number of
 	// relationships at once. It is both batched and streaming. For maximum
 	// performance, the caller should attempt to write relationships in as close
 	// to relationship sort order as possible: (resource.object_type,
@@ -89,7 +125,11 @@ type ExperimentalServiceServer interface {
 	//
 	// EXPERIMENTAL
 	// https://github.com/authzed/spicedb/issues/1303
-	BulkLoadRelationships(ExperimentalService_BulkLoadRelationshipsServer) error
+	BulkImportRelationships(ExperimentalService_BulkImportRelationshipsServer) error
+	// BulkExportRelationships is the fastest path available to exporting
+	// relationships from the server. It is resumable, and will return results
+	// in an order determined by the server.
+	BulkExportRelationships(*BulkExportRelationshipsRequest, ExperimentalService_BulkExportRelationshipsServer) error
 	mustEmbedUnimplementedExperimentalServiceServer()
 }
 
@@ -97,8 +137,11 @@ type ExperimentalServiceServer interface {
 type UnimplementedExperimentalServiceServer struct {
 }
 
-func (UnimplementedExperimentalServiceServer) BulkLoadRelationships(ExperimentalService_BulkLoadRelationshipsServer) error {
-	return status.Errorf(codes.Unimplemented, "method BulkLoadRelationships not implemented")
+func (UnimplementedExperimentalServiceServer) BulkImportRelationships(ExperimentalService_BulkImportRelationshipsServer) error {
+	return status.Errorf(codes.Unimplemented, "method BulkImportRelationships not implemented")
+}
+func (UnimplementedExperimentalServiceServer) BulkExportRelationships(*BulkExportRelationshipsRequest, ExperimentalService_BulkExportRelationshipsServer) error {
+	return status.Errorf(codes.Unimplemented, "method BulkExportRelationships not implemented")
 }
 func (UnimplementedExperimentalServiceServer) mustEmbedUnimplementedExperimentalServiceServer() {}
 
@@ -113,30 +156,51 @@ func RegisterExperimentalServiceServer(s grpc.ServiceRegistrar, srv Experimental
 	s.RegisterService(&ExperimentalService_ServiceDesc, srv)
 }
 
-func _ExperimentalService_BulkLoadRelationships_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(ExperimentalServiceServer).BulkLoadRelationships(&experimentalServiceBulkLoadRelationshipsServer{stream})
+func _ExperimentalService_BulkImportRelationships_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(ExperimentalServiceServer).BulkImportRelationships(&experimentalServiceBulkImportRelationshipsServer{stream})
 }
 
-type ExperimentalService_BulkLoadRelationshipsServer interface {
-	SendAndClose(*BulkLoadRelationshipsResponse) error
-	Recv() (*BulkLoadRelationshipsRequest, error)
+type ExperimentalService_BulkImportRelationshipsServer interface {
+	SendAndClose(*BulkImportRelationshipsResponse) error
+	Recv() (*BulkImportRelationshipsRequest, error)
 	grpc.ServerStream
 }
 
-type experimentalServiceBulkLoadRelationshipsServer struct {
+type experimentalServiceBulkImportRelationshipsServer struct {
 	grpc.ServerStream
 }
 
-func (x *experimentalServiceBulkLoadRelationshipsServer) SendAndClose(m *BulkLoadRelationshipsResponse) error {
+func (x *experimentalServiceBulkImportRelationshipsServer) SendAndClose(m *BulkImportRelationshipsResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *experimentalServiceBulkLoadRelationshipsServer) Recv() (*BulkLoadRelationshipsRequest, error) {
-	m := new(BulkLoadRelationshipsRequest)
+func (x *experimentalServiceBulkImportRelationshipsServer) Recv() (*BulkImportRelationshipsRequest, error) {
+	m := new(BulkImportRelationshipsRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
+}
+
+func _ExperimentalService_BulkExportRelationships_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(BulkExportRelationshipsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ExperimentalServiceServer).BulkExportRelationships(m, &experimentalServiceBulkExportRelationshipsServer{stream})
+}
+
+type ExperimentalService_BulkExportRelationshipsServer interface {
+	Send(*BulkExportRelationshipsResponse) error
+	grpc.ServerStream
+}
+
+type experimentalServiceBulkExportRelationshipsServer struct {
+	grpc.ServerStream
+}
+
+func (x *experimentalServiceBulkExportRelationshipsServer) Send(m *BulkExportRelationshipsResponse) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 // ExperimentalService_ServiceDesc is the grpc.ServiceDesc for ExperimentalService service.
@@ -148,9 +212,14 @@ var ExperimentalService_ServiceDesc = grpc.ServiceDesc{
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "BulkLoadRelationships",
-			Handler:       _ExperimentalService_BulkLoadRelationships_Handler,
+			StreamName:    "BulkImportRelationships",
+			Handler:       _ExperimentalService_BulkImportRelationships_Handler,
 			ClientStreams: true,
+		},
+		{
+			StreamName:    "BulkExportRelationships",
+			Handler:       _ExperimentalService_BulkExportRelationships_Handler,
+			ServerStreams: true,
 		},
 	},
 	Metadata: "authzed/api/v1/experimental_service.proto",

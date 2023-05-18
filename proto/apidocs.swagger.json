@@ -18,10 +18,10 @@
       "name": "DeveloperService"
     },
     {
-      "name": "ExperimentalService"
+      "name": "PermissionsService"
     },
     {
-      "name": "PermissionsService"
+      "name": "ExperimentalService"
     },
     {
       "name": "SchemaService"
@@ -48,16 +48,24 @@
     "application/json"
   ],
   "paths": {
-    "/v1/experimental/relationships/bulkload": {
+    "/v1/experimental/relationships/bulkexport": {
       "post": {
-        "summary": "BulkLoadRelationships is a faster path to writing a large number of\nrelationships at once. It is both batched and streaming. For maximum\nperformance, the caller should attempt to write relationships in as close\nto relationship sort order as possible: (resource.object_type,\nresource.object_id, relation, subject.object.object_type,\nsubject.object.object_id, subject.optional_relation)",
-        "description": "EXPERIMENTAL\nhttps://github.com/authzed/spicedb/issues/1303",
-        "operationId": "ExperimentalService_BulkLoadRelationships",
+        "summary": "BulkExportRelationships is the fastest path available to exporting\nrelationships from the server. It is resumable, and will return results\nin an order determined by the server.",
+        "operationId": "ExperimentalService_BulkExportRelationships",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/definitions/v1BulkLoadRelationshipsResponse"
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v1BulkExportRelationshipsResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v1BulkExportRelationshipsResponse"
             }
           },
           "default": {
@@ -70,11 +78,46 @@
         "parameters": [
           {
             "name": "body",
-            "description": "BulkLoadRelationshipsRequest represents one batch of the streaming\nBulkLoadRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. (streaming inputs)",
+            "description": "BulkExportRelationshipsRequest represents a resumable request for\nall relationships from the server.",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1BulkLoadRelationshipsRequest"
+              "$ref": "#/definitions/v1BulkExportRelationshipsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ExperimentalService"
+        ]
+      }
+    },
+    "/v1/experimental/relationships/bulkimport": {
+      "post": {
+        "summary": "BulkImportRelationships is a faster path to writing a large number of\nrelationships at once. It is both batched and streaming. For maximum\nperformance, the caller should attempt to write relationships in as close\nto relationship sort order as possible: (resource.object_type,\nresource.object_id, relation, subject.object.object_type,\nsubject.object.object_id, subject.optional_relation)",
+        "description": "EXPERIMENTAL\nhttps://github.com/authzed/spicedb/issues/1303",
+        "operationId": "ExperimentalService_BulkImportRelationships",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BulkImportRelationshipsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "BulkImportRelationshipsRequest represents one batch of the streaming\nBulkImportRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. (streaming inputs)",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1BulkImportRelationshipsRequest"
             }
           }
         ],
@@ -863,7 +906,40 @@
       ],
       "default": "OPERATION_UNSPECIFIED"
     },
-    "v1BulkLoadRelationshipsRequest": {
+    "v1BulkExportRelationshipsRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency"
+        },
+        "optionalLimit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "optional_limit, if non-zero, specifies the limit on the number of\nrelationships the server can return in one page. By default, the server\nwill pick a page size, and the server is free to choose a smaller size\nat will."
+        },
+        "optionalCursor": {
+          "$ref": "#/definitions/v1Cursor",
+          "description": "optional_cursor, if specified, indicates the cursor after which results\nshould resume being returned. The cursor can be found on the\nBulkExportRelationshipsResponse object."
+        }
+      },
+      "description": "BulkExportRelationshipsRequest represents a resumable request for\nall relationships from the server."
+    },
+    "v1BulkExportRelationshipsResponse": {
+      "type": "object",
+      "properties": {
+        "afterResultCursor": {
+          "$ref": "#/definitions/v1Cursor"
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Relationship"
+          }
+        }
+      },
+      "description": "BulkExportRelationshipsResponse is one page in a stream of relationship\ngroups that meet the criteria specified by the originating request. The\nserver will continue to stream back relationship groups as quickly as it can\nuntil all relationships have been transmitted back."
+    },
+    "v1BulkImportRelationshipsRequest": {
       "type": "object",
       "properties": {
         "relationships": {
@@ -873,9 +949,9 @@
           }
         }
       },
-      "description": "BulkLoadRelationshipsRequest represents one batch of the streaming\nBulkLoadRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally."
+      "description": "BulkImportRelationshipsRequest represents one batch of the streaming\nBulkImportRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally."
     },
-    "v1BulkLoadRelationshipsResponse": {
+    "v1BulkImportRelationshipsResponse": {
       "type": "object",
       "properties": {
         "numLoaded": {
@@ -883,7 +959,7 @@
           "format": "uint64"
         }
       },
-      "description": "BulkLoadRelationshipsResponse is returned on successful completion of the\nbulk load stream, and contains the total number of relationships loaded."
+      "description": "BulkImportRelationshipsResponse is returned on successful completion of the\nbulk load stream, and contains the total number of relationships loaded."
     },
     "v1CheckPermissionRequest": {
       "type": "object",
