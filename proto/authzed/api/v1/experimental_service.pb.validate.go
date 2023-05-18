@@ -35,22 +35,22 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on BulkLoadRelationshipsRequest with the
+// Validate checks the field values on BulkImportRelationshipsRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *BulkLoadRelationshipsRequest) Validate() error {
+func (m *BulkImportRelationshipsRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on BulkLoadRelationshipsRequest with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// BulkLoadRelationshipsRequestMultiError, or nil if none found.
-func (m *BulkLoadRelationshipsRequest) ValidateAll() error {
+// ValidateAll checks the field values on BulkImportRelationshipsRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// BulkImportRelationshipsRequestMultiError, or nil if none found.
+func (m *BulkImportRelationshipsRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *BulkLoadRelationshipsRequest) validate(all bool) error {
+func (m *BulkImportRelationshipsRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -61,7 +61,7 @@ func (m *BulkLoadRelationshipsRequest) validate(all bool) error {
 		_, _ = idx, item
 
 		if item == nil {
-			err := BulkLoadRelationshipsRequestValidationError{
+			err := BulkImportRelationshipsRequestValidationError{
 				field:  fmt.Sprintf("Relationships[%v]", idx),
 				reason: "value is required",
 			}
@@ -75,7 +75,7 @@ func (m *BulkLoadRelationshipsRequest) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, BulkLoadRelationshipsRequestValidationError{
+					errors = append(errors, BulkImportRelationshipsRequestValidationError{
 						field:  fmt.Sprintf("Relationships[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -83,7 +83,7 @@ func (m *BulkLoadRelationshipsRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, BulkLoadRelationshipsRequestValidationError{
+					errors = append(errors, BulkImportRelationshipsRequestValidationError{
 						field:  fmt.Sprintf("Relationships[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -92,7 +92,7 @@ func (m *BulkLoadRelationshipsRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return BulkLoadRelationshipsRequestValidationError{
+				return BulkImportRelationshipsRequestValidationError{
 					field:  fmt.Sprintf("Relationships[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -103,19 +103,19 @@ func (m *BulkLoadRelationshipsRequest) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return BulkLoadRelationshipsRequestMultiError(errors)
+		return BulkImportRelationshipsRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// BulkLoadRelationshipsRequestMultiError is an error wrapping multiple
-// validation errors returned by BulkLoadRelationshipsRequest.ValidateAll() if
-// the designated constraints aren't met.
-type BulkLoadRelationshipsRequestMultiError []error
+// BulkImportRelationshipsRequestMultiError is an error wrapping multiple
+// validation errors returned by BulkImportRelationshipsRequest.ValidateAll()
+// if the designated constraints aren't met.
+type BulkImportRelationshipsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m BulkLoadRelationshipsRequestMultiError) Error() string {
+func (m BulkImportRelationshipsRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -124,12 +124,12 @@ func (m BulkLoadRelationshipsRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m BulkLoadRelationshipsRequestMultiError) AllErrors() []error { return m }
+func (m BulkImportRelationshipsRequestMultiError) AllErrors() []error { return m }
 
-// BulkLoadRelationshipsRequestValidationError is the validation error returned
-// by BulkLoadRelationshipsRequest.Validate if the designated constraints
-// aren't met.
-type BulkLoadRelationshipsRequestValidationError struct {
+// BulkImportRelationshipsRequestValidationError is the validation error
+// returned by BulkImportRelationshipsRequest.Validate if the designated
+// constraints aren't met.
+type BulkImportRelationshipsRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -137,24 +137,24 @@ type BulkLoadRelationshipsRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e BulkLoadRelationshipsRequestValidationError) Field() string { return e.field }
+func (e BulkImportRelationshipsRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e BulkLoadRelationshipsRequestValidationError) Reason() string { return e.reason }
+func (e BulkImportRelationshipsRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e BulkLoadRelationshipsRequestValidationError) Cause() error { return e.cause }
+func (e BulkImportRelationshipsRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e BulkLoadRelationshipsRequestValidationError) Key() bool { return e.key }
+func (e BulkImportRelationshipsRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e BulkLoadRelationshipsRequestValidationError) ErrorName() string {
-	return "BulkLoadRelationshipsRequestValidationError"
+func (e BulkImportRelationshipsRequestValidationError) ErrorName() string {
+	return "BulkImportRelationshipsRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e BulkLoadRelationshipsRequestValidationError) Error() string {
+func (e BulkImportRelationshipsRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -166,14 +166,14 @@ func (e BulkLoadRelationshipsRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sBulkLoadRelationshipsRequest.%s: %s%s",
+		"invalid %sBulkImportRelationshipsRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = BulkLoadRelationshipsRequestValidationError{}
+var _ error = BulkImportRelationshipsRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -181,24 +181,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = BulkLoadRelationshipsRequestValidationError{}
+} = BulkImportRelationshipsRequestValidationError{}
 
-// Validate checks the field values on BulkLoadRelationshipsResponse with the
+// Validate checks the field values on BulkImportRelationshipsResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *BulkLoadRelationshipsResponse) Validate() error {
+func (m *BulkImportRelationshipsResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on BulkLoadRelationshipsResponse with
+// ValidateAll checks the field values on BulkImportRelationshipsResponse with
 // the rules defined in the proto definition for this message. If any rules
 // are violated, the result is a list of violation errors wrapped in
-// BulkLoadRelationshipsResponseMultiError, or nil if none found.
-func (m *BulkLoadRelationshipsResponse) ValidateAll() error {
+// BulkImportRelationshipsResponseMultiError, or nil if none found.
+func (m *BulkImportRelationshipsResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *BulkLoadRelationshipsResponse) validate(all bool) error {
+func (m *BulkImportRelationshipsResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -208,19 +208,19 @@ func (m *BulkLoadRelationshipsResponse) validate(all bool) error {
 	// no validation rules for NumLoaded
 
 	if len(errors) > 0 {
-		return BulkLoadRelationshipsResponseMultiError(errors)
+		return BulkImportRelationshipsResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// BulkLoadRelationshipsResponseMultiError is an error wrapping multiple
-// validation errors returned by BulkLoadRelationshipsResponse.ValidateAll()
+// BulkImportRelationshipsResponseMultiError is an error wrapping multiple
+// validation errors returned by BulkImportRelationshipsResponse.ValidateAll()
 // if the designated constraints aren't met.
-type BulkLoadRelationshipsResponseMultiError []error
+type BulkImportRelationshipsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m BulkLoadRelationshipsResponseMultiError) Error() string {
+func (m BulkImportRelationshipsResponseMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -229,12 +229,12 @@ func (m BulkLoadRelationshipsResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m BulkLoadRelationshipsResponseMultiError) AllErrors() []error { return m }
+func (m BulkImportRelationshipsResponseMultiError) AllErrors() []error { return m }
 
-// BulkLoadRelationshipsResponseValidationError is the validation error
-// returned by BulkLoadRelationshipsResponse.Validate if the designated
+// BulkImportRelationshipsResponseValidationError is the validation error
+// returned by BulkImportRelationshipsResponse.Validate if the designated
 // constraints aren't met.
-type BulkLoadRelationshipsResponseValidationError struct {
+type BulkImportRelationshipsResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -242,24 +242,24 @@ type BulkLoadRelationshipsResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e BulkLoadRelationshipsResponseValidationError) Field() string { return e.field }
+func (e BulkImportRelationshipsResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e BulkLoadRelationshipsResponseValidationError) Reason() string { return e.reason }
+func (e BulkImportRelationshipsResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e BulkLoadRelationshipsResponseValidationError) Cause() error { return e.cause }
+func (e BulkImportRelationshipsResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e BulkLoadRelationshipsResponseValidationError) Key() bool { return e.key }
+func (e BulkImportRelationshipsResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e BulkLoadRelationshipsResponseValidationError) ErrorName() string {
-	return "BulkLoadRelationshipsResponseValidationError"
+func (e BulkImportRelationshipsResponseValidationError) ErrorName() string {
+	return "BulkImportRelationshipsResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e BulkLoadRelationshipsResponseValidationError) Error() string {
+func (e BulkImportRelationshipsResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -271,14 +271,14 @@ func (e BulkLoadRelationshipsResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sBulkLoadRelationshipsResponse.%s: %s%s",
+		"invalid %sBulkImportRelationshipsResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = BulkLoadRelationshipsResponseValidationError{}
+var _ error = BulkImportRelationshipsResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -286,4 +286,342 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = BulkLoadRelationshipsResponseValidationError{}
+} = BulkImportRelationshipsResponseValidationError{}
+
+// Validate checks the field values on BulkExportRelationshipsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *BulkExportRelationshipsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on BulkExportRelationshipsRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// BulkExportRelationshipsRequestMultiError, or nil if none found.
+func (m *BulkExportRelationshipsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *BulkExportRelationshipsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetConsistency()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, BulkExportRelationshipsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, BulkExportRelationshipsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetConsistency()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return BulkExportRelationshipsRequestValidationError{
+				field:  "Consistency",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if val := m.GetOptionalLimit(); val < 0 || val > 10000 {
+		err := BulkExportRelationshipsRequestValidationError{
+			field:  "OptionalLimit",
+			reason: "value must be inside range [0, 10000]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetOptionalCursor()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, BulkExportRelationshipsRequestValidationError{
+					field:  "OptionalCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, BulkExportRelationshipsRequestValidationError{
+					field:  "OptionalCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetOptionalCursor()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return BulkExportRelationshipsRequestValidationError{
+				field:  "OptionalCursor",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return BulkExportRelationshipsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// BulkExportRelationshipsRequestMultiError is an error wrapping multiple
+// validation errors returned by BulkExportRelationshipsRequest.ValidateAll()
+// if the designated constraints aren't met.
+type BulkExportRelationshipsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m BulkExportRelationshipsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m BulkExportRelationshipsRequestMultiError) AllErrors() []error { return m }
+
+// BulkExportRelationshipsRequestValidationError is the validation error
+// returned by BulkExportRelationshipsRequest.Validate if the designated
+// constraints aren't met.
+type BulkExportRelationshipsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e BulkExportRelationshipsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e BulkExportRelationshipsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e BulkExportRelationshipsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e BulkExportRelationshipsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e BulkExportRelationshipsRequestValidationError) ErrorName() string {
+	return "BulkExportRelationshipsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e BulkExportRelationshipsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sBulkExportRelationshipsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = BulkExportRelationshipsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = BulkExportRelationshipsRequestValidationError{}
+
+// Validate checks the field values on BulkExportRelationshipsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *BulkExportRelationshipsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on BulkExportRelationshipsResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// BulkExportRelationshipsResponseMultiError, or nil if none found.
+func (m *BulkExportRelationshipsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *BulkExportRelationshipsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetAfterResultCursor()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, BulkExportRelationshipsResponseValidationError{
+					field:  "AfterResultCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, BulkExportRelationshipsResponseValidationError{
+					field:  "AfterResultCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetAfterResultCursor()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return BulkExportRelationshipsResponseValidationError{
+				field:  "AfterResultCursor",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetRelationships() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, BulkExportRelationshipsResponseValidationError{
+						field:  fmt.Sprintf("Relationships[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, BulkExportRelationshipsResponseValidationError{
+						field:  fmt.Sprintf("Relationships[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return BulkExportRelationshipsResponseValidationError{
+					field:  fmt.Sprintf("Relationships[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return BulkExportRelationshipsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// BulkExportRelationshipsResponseMultiError is an error wrapping multiple
+// validation errors returned by BulkExportRelationshipsResponse.ValidateAll()
+// if the designated constraints aren't met.
+type BulkExportRelationshipsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m BulkExportRelationshipsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m BulkExportRelationshipsResponseMultiError) AllErrors() []error { return m }
+
+// BulkExportRelationshipsResponseValidationError is the validation error
+// returned by BulkExportRelationshipsResponse.Validate if the designated
+// constraints aren't met.
+type BulkExportRelationshipsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e BulkExportRelationshipsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e BulkExportRelationshipsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e BulkExportRelationshipsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e BulkExportRelationshipsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e BulkExportRelationshipsResponseValidationError) ErrorName() string {
+	return "BulkExportRelationshipsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e BulkExportRelationshipsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sBulkExportRelationshipsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = BulkExportRelationshipsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = BulkExportRelationshipsResponseValidationError{}
