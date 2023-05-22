@@ -1109,7 +1109,7 @@ func (m *Precondition) validate(all bool) error {
 	if _, ok := _Precondition_Operation_NotInLookup[m.GetOperation()]; ok {
 		err := PreconditionValidationError{
 			field:  "Operation",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [OPERATION_UNSPECIFIED]",
 		}
 		if !all {
 			return err
@@ -2224,7 +2224,7 @@ func (m *CheckPermissionResponse) validate(all bool) error {
 	if _, ok := _CheckPermissionResponse_Permissionship_NotInLookup[m.GetPermissionship()]; ok {
 		err := CheckPermissionResponseValidationError{
 			field:  "Permissionship",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [PERMISSIONSHIP_UNSPECIFIED]",
 		}
 		if !all {
 			return err
@@ -3057,7 +3057,7 @@ func (m *LookupResourcesResponse) validate(all bool) error {
 	if _, ok := _LookupResourcesResponse_Permissionship_NotInLookup[m.GetPermissionship()]; ok {
 		err := LookupResourcesResponseValidationError{
 			field:  "Permissionship",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [LOOKUP_PERMISSIONSHIP_UNSPECIFIED]",
 		}
 		if !all {
 			return err
@@ -3546,7 +3546,7 @@ func (m *LookupSubjectsResponse) validate(all bool) error {
 	if _, ok := _LookupSubjectsResponse_Permissionship_NotInLookup[m.GetPermissionship()]; ok {
 		err := LookupSubjectsResponseValidationError{
 			field:  "Permissionship",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [LOOKUP_PERMISSIONSHIP_UNSPECIFIED]",
 		}
 		if !all {
 			return err
@@ -3768,7 +3768,7 @@ func (m *ResolvedSubject) validate(all bool) error {
 	if _, ok := _ResolvedSubject_Permissionship_NotInLookup[m.GetPermissionship()]; ok {
 		err := ResolvedSubjectValidationError{
 			field:  "Permissionship",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [LOOKUP_PERMISSIONSHIP_UNSPECIFIED]",
 		}
 		if !all {
 			return err

@@ -978,7 +978,7 @@ func (m *RelationshipUpdate) validate(all bool) error {
 	if _, ok := _RelationshipUpdate_Operation_NotInLookup[m.GetOperation()]; ok {
 		err := RelationshipUpdateValidationError{
 			field:  "Operation",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [OPERATION_UNSPECIFIED]",
 		}
 		if !all {
 			return err
@@ -1379,7 +1379,7 @@ func (m *AlgebraicSubjectSet) validate(all bool) error {
 	if _, ok := _AlgebraicSubjectSet_Operation_NotInLookup[m.GetOperation()]; ok {
 		err := AlgebraicSubjectSetValidationError{
 			field:  "Operation",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [OPERATION_UNSPECIFIED]",
 		}
 		if !all {
 			return err
