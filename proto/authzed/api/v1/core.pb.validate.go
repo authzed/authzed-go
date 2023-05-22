@@ -1174,9 +1174,20 @@ func (m *PermissionRelationshipTree) validate(all bool) error {
 
 	// no validation rules for ExpandedRelation
 
-	switch m.TreeType.(type) {
-
+	oneofTreeTypePresent := false
+	switch v := m.TreeType.(type) {
 	case *PermissionRelationshipTree_Intermediate:
+		if v == nil {
+			err := PermissionRelationshipTreeValidationError{
+				field:  "TreeType",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofTreeTypePresent = true
 
 		if all {
 			switch v := interface{}(m.GetIntermediate()).(type) {
@@ -1208,6 +1219,17 @@ func (m *PermissionRelationshipTree) validate(all bool) error {
 		}
 
 	case *PermissionRelationshipTree_Leaf:
+		if v == nil {
+			err := PermissionRelationshipTreeValidationError{
+				field:  "TreeType",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofTreeTypePresent = true
 
 		if all {
 			switch v := interface{}(m.GetLeaf()).(type) {
@@ -1239,6 +1261,9 @@ func (m *PermissionRelationshipTree) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofTreeTypePresent {
 		err := PermissionRelationshipTreeValidationError{
 			field:  "TreeType",
 			reason: "value is required",
@@ -1247,7 +1272,6 @@ func (m *PermissionRelationshipTree) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {

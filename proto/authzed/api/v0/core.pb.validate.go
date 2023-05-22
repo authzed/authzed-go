@@ -560,9 +560,20 @@ func (m *User) validate(all bool) error {
 
 	var errors []error
 
-	switch m.UserOneof.(type) {
-
+	oneofUserOneofPresent := false
+	switch v := m.UserOneof.(type) {
 	case *User_Userset:
+		if v == nil {
+			err := UserValidationError{
+				field:  "UserOneof",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofUserOneofPresent = true
 
 		if m.GetUserset() == nil {
 			err := UserValidationError{
@@ -605,6 +616,9 @@ func (m *User) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofUserOneofPresent {
 		err := UserValidationError{
 			field:  "UserOneof",
 			reason: "value is required",
@@ -613,7 +627,6 @@ func (m *User) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
