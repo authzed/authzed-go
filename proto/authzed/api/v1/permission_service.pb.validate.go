@@ -57,9 +57,20 @@ func (m *Consistency) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Requirement.(type) {
-
+	oneofRequirementPresent := false
+	switch v := m.Requirement.(type) {
 	case *Consistency_MinimizeLatency:
+		if v == nil {
+			err := ConsistencyValidationError{
+				field:  "Requirement",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofRequirementPresent = true
 
 		if m.GetMinimizeLatency() != true {
 			err := ConsistencyValidationError{
@@ -73,6 +84,17 @@ func (m *Consistency) validate(all bool) error {
 		}
 
 	case *Consistency_AtLeastAsFresh:
+		if v == nil {
+			err := ConsistencyValidationError{
+				field:  "Requirement",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofRequirementPresent = true
 
 		if all {
 			switch v := interface{}(m.GetAtLeastAsFresh()).(type) {
@@ -104,6 +126,17 @@ func (m *Consistency) validate(all bool) error {
 		}
 
 	case *Consistency_AtExactSnapshot:
+		if v == nil {
+			err := ConsistencyValidationError{
+				field:  "Requirement",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofRequirementPresent = true
 
 		if all {
 			switch v := interface{}(m.GetAtExactSnapshot()).(type) {
@@ -135,6 +168,17 @@ func (m *Consistency) validate(all bool) error {
 		}
 
 	case *Consistency_FullyConsistent:
+		if v == nil {
+			err := ConsistencyValidationError{
+				field:  "Requirement",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofRequirementPresent = true
 
 		if m.GetFullyConsistent() != true {
 			err := ConsistencyValidationError{
@@ -148,6 +192,9 @@ func (m *Consistency) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofRequirementPresent {
 		err := ConsistencyValidationError{
 			field:  "Requirement",
 			reason: "value is required",
@@ -156,7 +203,6 @@ func (m *Consistency) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {

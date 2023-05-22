@@ -1,23 +1,29 @@
-#!/usr/bin/env -S buf generate buf.build/authzed/api:125e39e67bf60b2d19c4de15aaa69cb1bcbda28c --template
+#!/usr/bin/env -S go run github.com/bufbuild/buf/cmd/buf generate buf.build/authzed/api:125e39e67bf60b2d19c4de15aaa69cb1bcbda28c --template
 ---
 version: "v1"
 plugins:
-  - name: "go"
-    out: "proto"
-    opt: "paths=source_relative"
-  - name: "go-grpc"
-    out: "proto"
-    opt: "paths=source_relative"
-  - name: "go-vtproto"
-    out: "proto"
-    opt: "paths=source_relative,features=marshal+unmarshal+size+clone"
-  - name: "validate"
-    out: "proto"
-    opt: "paths=source_relative,lang=go"
+  - name: 'go'
+    path: ["go", "run", "google.golang.org/protobuf/cmd/protoc-gen-go"]
+    out: 'proto'
+    opt: 'paths=source_relative'
+  - name: 'go-grpc'
+    out: 'proto'
+    path: ["go", "run", "google.golang.org/grpc/cmd/protoc-gen-go-grpc"]
+    opt: 'paths=source_relative'
+  - name: 'go-vtproto'
+    path: ["go", "run", "github.com/planetscale/vtprotobuf/cmd/protoc-gen-go-vtproto"]
+    out: 'proto'
+    opt: 'paths=source_relative,features=marshal+unmarshal+size+clone'
+  - name: 'validate'
+    path: ["go", "run", "github.com/envoyproxy/protoc-gen-validate"]
+    out: 'proto'
+    opt: 'paths=source_relative,lang=go'
   - name: "grpc-gateway"
+    path: ["go", "run", "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway"]
     out: "proto"
     opt: "paths=source_relative"
   - name: "openapiv2"
     out: "proto"
+    path: ["go", "run", "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2"]
     strategy: "all"
     opt: "allow_merge=true"

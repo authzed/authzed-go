@@ -343,12 +343,33 @@ func (m *CheckDebugTrace) validate(all bool) error {
 		}
 	}
 
-	switch m.Resolution.(type) {
-
+	oneofResolutionPresent := false
+	switch v := m.Resolution.(type) {
 	case *CheckDebugTrace_WasCachedResult:
+		if v == nil {
+			err := CheckDebugTraceValidationError{
+				field:  "Resolution",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofResolutionPresent = true
 		// no validation rules for WasCachedResult
-
 	case *CheckDebugTrace_SubProblems_:
+		if v == nil {
+			err := CheckDebugTraceValidationError{
+				field:  "Resolution",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofResolutionPresent = true
 
 		if all {
 			switch v := interface{}(m.GetSubProblems()).(type) {
@@ -380,6 +401,9 @@ func (m *CheckDebugTrace) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofResolutionPresent {
 		err := CheckDebugTraceValidationError{
 			field:  "Resolution",
 			reason: "value is required",
@@ -388,7 +412,6 @@ func (m *CheckDebugTrace) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
