@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/authzed/grpcutil v0.0.0-20210913124023-cad23ae5a9e8
 	github.com/bufbuild/buf v1.19.0
-	github.com/envoyproxy/protoc-gen-validate v0.9.1
+	github.com/envoyproxy/protoc-gen-validate v1.0.1
 	github.com/golangci/golangci-lint v1.52.2
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
 	github.com/jzelinskie/stringz v0.0.0-20210414224931-d6a8ce844a70
@@ -131,7 +131,7 @@ require (
 	github.com/ldez/tagliatelle v0.4.0 // indirect
 	github.com/leonklingele/grouper v1.1.1 // indirect
 	github.com/lufeee/execinquery v1.2.1 // indirect
-	github.com/lyft/protoc-gen-star v0.6.1 // indirect
+	github.com/lyft/protoc-gen-star/v2 v2.0.3 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
 	github.com/maratori/testableexamples v1.0.0 // indirect
 	github.com/maratori/testpackage v1.1.1 // indirect
