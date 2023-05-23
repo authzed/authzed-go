@@ -233,7 +233,7 @@ func (m *CheckDebugTrace) validate(all bool) error {
 	if _, ok := _CheckDebugTrace_PermissionType_NotInLookup[m.GetPermissionType()]; ok {
 		err := CheckDebugTraceValidationError{
 			field:  "PermissionType",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [PERMISSION_TYPE_UNSPECIFIED]",
 		}
 		if !all {
 			return err
@@ -295,7 +295,7 @@ func (m *CheckDebugTrace) validate(all bool) error {
 	if _, ok := _CheckDebugTrace_Result_NotInLookup[m.GetResult()]; ok {
 		err := CheckDebugTraceValidationError{
 			field:  "Result",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [PERMISSIONSHIP_UNSPECIFIED]",
 		}
 		if !all {
 			return err

@@ -622,7 +622,7 @@
       "properties": {
         "schema": {
           "type": "string",
-          "description": "The Schema containing one or more Object Definitions that will be written\nto the Permissions System."
+          "description": "The Schema containing one or more Object Definitions that will be written\nto the Permissions System.\n\n256KiB"
         }
       },
       "description": "WriteSchemaRequest is the required data used to \"upsert\" the Schema of a\nPermissions System."
@@ -695,6 +695,7 @@
         "details": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/protobufAny"
           }
         }
@@ -738,12 +739,14 @@
         "requestErrors": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v0DeveloperError"
           }
         },
         "checkResults": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v0EditCheckResult"
           }
         }
@@ -829,6 +832,7 @@
         "relationships": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v0RelationTuple"
           }
         }
@@ -867,12 +871,14 @@
         "requestErrors": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v0DeveloperError"
           }
         },
         "validationErrors": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v0DeveloperError"
           }
         },
@@ -890,6 +896,7 @@
         "children": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v1PermissionRelationshipTree"
           }
         }
@@ -933,6 +940,7 @@
         "relationships": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v1Relationship"
           }
         }
@@ -945,6 +953,7 @@
         "relationships": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v1Relationship"
           }
         }
@@ -1066,8 +1075,10 @@
         "optionalPreconditions": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v1Precondition"
-          }
+          },
+          "title": "To be bounded by configuration"
         },
         "optionalLimit": {
           "type": "integer",
@@ -1100,6 +1111,7 @@
         "subjects": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v1SubjectReference"
           }
         }
@@ -1266,6 +1278,7 @@
         "excludedSubjects": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v1ResolvedSubject"
           },
           "description": "excluded_subjects are the subjects excluded. This list\nwill only contain subjects if `subject.subject_object_id` is a wildcard (`*`) and\nwill only be populated if exclusions exist from the wildcard."
@@ -1506,6 +1519,7 @@
         "updates": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v1RelationshipUpdate"
           }
         },
@@ -1521,14 +1535,17 @@
         "updates": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v1RelationshipUpdate"
           }
         },
         "optionalPreconditions": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v1Precondition"
-          }
+          },
+          "title": "To be bounded by configuration"
         }
       },
       "description": "WriteRelationshipsRequest contains a list of Relationship mutations that\nshould be applied to the service. If the optional_preconditions parameter\nis included, all of the specified preconditions must also be satisfied before\nthe write will be committed."
@@ -1611,6 +1628,7 @@
         "updates": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v1alpha1PermissionUpdate"
           }
         },

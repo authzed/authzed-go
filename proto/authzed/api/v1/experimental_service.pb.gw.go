@@ -126,7 +126,7 @@ func RegisterExperimentalServiceHandlerServer(ctx context.Context, mux *runtime.
 // RegisterExperimentalServiceHandlerFromEndpoint is same as RegisterExperimentalServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
 func RegisterExperimentalServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
-	conn, err := grpc.Dial(endpoint, opts...)
+	conn, err := grpc.DialContext(ctx, endpoint, opts...)
 	if err != nil {
 		return err
 	}
