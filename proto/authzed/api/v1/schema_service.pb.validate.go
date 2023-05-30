@@ -161,6 +161,46 @@ func (m *ReadSchemaResponse) validate(all bool) error {
 
 	// no validation rules for SchemaText
 
+	if m.GetReadAt() == nil {
+		err := ReadSchemaResponseValidationError{
+			field:  "ReadAt",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetReadAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReadSchemaResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReadSchemaResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReadAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReadSchemaResponseValidationError{
+				field:  "ReadAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return ReadSchemaResponseMultiError(errors)
 	}
@@ -375,6 +415,46 @@ func (m *WriteSchemaResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	if m.GetWrittenAt() == nil {
+		err := WriteSchemaResponseValidationError{
+			field:  "WrittenAt",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetWrittenAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, WriteSchemaResponseValidationError{
+					field:  "WrittenAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, WriteSchemaResponseValidationError{
+					field:  "WrittenAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetWrittenAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return WriteSchemaResponseValidationError{
+				field:  "WrittenAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if len(errors) > 0 {
 		return WriteSchemaResponseMultiError(errors)
