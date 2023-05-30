@@ -40,6 +40,7 @@ func (m *ReadSchemaResponse) CloneVT() *ReadSchemaResponse {
 	}
 	r := &ReadSchemaResponse{
 		SchemaText: m.SchemaText,
+		ReadAt:     m.ReadAt.CloneVT(),
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -74,7 +75,9 @@ func (m *WriteSchemaResponse) CloneVT() *WriteSchemaResponse {
 	if m == nil {
 		return (*WriteSchemaResponse)(nil)
 	}
-	r := &WriteSchemaResponse{}
+	r := &WriteSchemaResponse{
+		WrittenAt: m.WrittenAt.CloneVT(),
+	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -148,6 +151,16 @@ func (m *ReadSchemaResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.ReadAt != nil {
+		size, err := m.ReadAt.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
 	}
 	if len(m.SchemaText) > 0 {
 		i -= len(m.SchemaText)
@@ -229,6 +242,16 @@ func (m *WriteSchemaResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.WrittenAt != nil {
+		size, err := m.WrittenAt.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xa
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -250,6 +273,10 @@ func (m *ReadSchemaResponse) SizeVT() (n int) {
 	_ = l
 	l = len(m.SchemaText)
 	if l > 0 {
+		n += 1 + l + sov(uint64(l))
+	}
+	if m.ReadAt != nil {
+		l = m.ReadAt.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -276,6 +303,10 @@ func (m *WriteSchemaResponse) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
+	if m.WrittenAt != nil {
+		l = m.WrittenAt.SizeVT()
+		n += 1 + l + sov(uint64(l))
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -391,6 +422,42 @@ func (m *ReadSchemaResponse) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.SchemaText = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReadAt", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.ReadAt == nil {
+				m.ReadAt = &ZedToken{}
+			}
+			if err := m.ReadAt.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -526,6 +593,42 @@ func (m *WriteSchemaResponse) UnmarshalVT(dAtA []byte) error {
 			return fmt.Errorf("proto: WriteSchemaResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WrittenAt", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.WrittenAt == nil {
+				m.WrittenAt = &ZedToken{}
+			}
+			if err := m.WrittenAt.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skip(dAtA[iNdEx:])

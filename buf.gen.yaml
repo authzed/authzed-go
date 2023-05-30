@@ -1,4 +1,4 @@
-#!/usr/bin/env -S go run github.com/bufbuild/buf/cmd/buf generate buf.build/authzed/api:125e39e67bf60b2d19c4de15aaa69cb1bcbda28c --template
+#!/usr/bin/env -S go run github.com/bufbuild/buf/cmd/buf generate buf.build/authzed/api:31edb63e45c55d5e6759732b7cf9453e664fb36f --template
 ---
 version: "v1"
 plugins:

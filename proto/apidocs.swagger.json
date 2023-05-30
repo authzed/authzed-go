@@ -613,6 +613,10 @@
         "schemaText": {
           "type": "string",
           "title": "schema_text is the textual form of the current schema in the system"
+        },
+        "readAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the schema was read."
         }
       },
       "description": "ReadSchemaResponse is the resulting data after having read the Object\nDefinitions from a Schema."
@@ -629,6 +633,12 @@
     },
     "apiv1WriteSchemaResponse": {
       "type": "object",
+      "properties": {
+        "writtenAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "written_at is the ZedToken at which the schema was written."
+        }
+      },
       "description": "WriteSchemaResponse is the resulting data after having written a Schema to\na Permissions System."
     },
     "apiv1alpha1ReadSchemaResponse": {
