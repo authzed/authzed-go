@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"github.com/magefile/mage/mg"
-	"github.com/magefile/mage/sh"
 )
 
 type Gen mg.Namespace
@@ -20,5 +19,5 @@ func (g Gen) All() error {
 // Proto runs proto codegen
 func (Gen) Proto() error {
 	fmt.Println("generating buf")
-	return sh.RunV("./buf.gen.yaml")
+	return runDirV("magefiles", "./buf.gen.yaml")
 }
