@@ -1,29 +1,44 @@
-#!/usr/bin/env -S go run github.com/bufbuild/buf/cmd/buf generate buf.build/authzed/api:7c5628f6630f4d85bd72abc4554ee945 --template
+#!/usr/bin/env -S go run github.com/bufbuild/buf/cmd/buf generate buf.build/authzed/api:15dad37df4a6aa52f08da1d10874214ca6c815ef --template
 ---
 version: "v1"
 plugins:
-  - name: 'go'
+  - name: "go"
     path: ["go", "run", "google.golang.org/protobuf/cmd/protoc-gen-go"]
-    out: '../proto'
-    opt: 'paths=source_relative'
-  - name: 'go-grpc'
-    out: '../proto'
+    out: "../proto"
+    opt: "paths=source_relative"
+  - name: "go-grpc"
+    out: "../proto"
     path: ["go", "run", "google.golang.org/grpc/cmd/protoc-gen-go-grpc"]
-    opt: 'paths=source_relative'
-  - name: 'go-vtproto'
-    path: ["go", "run", "github.com/planetscale/vtprotobuf/cmd/protoc-gen-go-vtproto"]
-    out: '../proto'
-    opt: 'paths=source_relative,features=marshal+unmarshal+size+clone'
-  - name: 'validate'
+    opt: "paths=source_relative"
+  - name: "go-vtproto"
+    path:
+      [
+        "go",
+        "run",
+        "github.com/planetscale/vtprotobuf/cmd/protoc-gen-go-vtproto",
+      ]
+    out: "../proto"
+    opt: "paths=source_relative,features=marshal+unmarshal+size+clone"
+  - name: "validate"
     path: ["go", "run", "github.com/envoyproxy/protoc-gen-validate"]
-    out: '../proto'
-    opt: 'paths=source_relative,lang=go'
+    out: "../proto"
+    opt: "paths=source_relative,lang=go"
   - name: "grpc-gateway"
-    path: ["go", "run", "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway"]
+    path:
+      [
+        "go",
+        "run",
+        "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway",
+      ]
     out: "../proto"
     opt: "paths=source_relative"
   - name: "openapiv2"
     out: "../proto"
-    path: ["go", "run", "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2"]
+    path:
+      [
+        "go",
+        "run",
+        "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2",
+      ]
     strategy: "all"
     opt: "allow_merge=true"
