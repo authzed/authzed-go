@@ -1,7 +1,7 @@
 //go:build tools
 // +build tools
 
-package tools
+package magefiles
 
 import (
 	_ "github.com/bufbuild/buf/cmd/buf"

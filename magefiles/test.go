@@ -12,7 +12,7 @@ type Test mg.Namespace
 
 // All runs all test suites
 func (t Test) All() error {
-	mg.Deps(t.Integration())
+	mg.Deps(t.Integration)
 	return nil
 }
 

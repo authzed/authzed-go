@@ -45,17 +45,17 @@ func (l Lint) Go() error {
 // Gofumpt runs gofumpt
 func (Lint) Gofumpt() error {
 	fmt.Println("formatting go")
-	return sh.RunV("go", "run", "mvdan.cc/gofumpt", "-l", "-w", ".")
+	return runDirV("magefiles", "go", "run", "mvdan.cc/gofumpt", "-l", "-w", "..")
 }
 
 // Golangcilint runs golangci-lint
 func (Lint) Golangcilint() error {
 	fmt.Println("running golangci-lint")
-	return sh.RunV("go", "run", "github.com/golangci/golangci-lint/cmd/golangci-lint", "run", "--fix")
+	return runDirV("magefiles", "go", "run", "github.com/golangci/golangci-lint/cmd/golangci-lint", "run", "--fix", "..")
 }
 
 // Vulncheck runs vulncheck
 func (Lint) Vulncheck() error {
 	fmt.Println("running vulncheck")
-	return sh.RunV("go", "run", "golang.org/x/vuln/cmd/govulncheck", "./...")
+	return runDirV("magefiles", "go", "run", "golang.org/x/vuln/cmd/govulncheck", "../...")
 }
