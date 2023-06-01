@@ -4,14 +4,14 @@ go 1.18
 
 require (
 	github.com/authzed/grpcutil v0.0.0-20230509155820-7a6fedb71dbc
-	github.com/bufbuild/buf v1.19.0
+	github.com/bufbuild/buf v1.20.0
 	github.com/envoyproxy/protoc-gen-validate v1.0.1
 	github.com/golangci/golangci-lint v1.52.2
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2
 	github.com/jzelinskie/stringz v0.0.1
 	github.com/magefile/mage v1.14.0
 	github.com/planetscale/vtprotobuf v0.4.0
-	github.com/stretchr/testify v1.8.3
+	github.com/stretchr/testify v1.8.4
 	golang.org/x/sync v0.2.0
 	golang.org/x/vuln v0.1.0
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1
@@ -57,9 +57,9 @@ require (
 	github.com/daixiang0/gci v0.10.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/denis-tingaikin/go-header v0.4.3 // indirect
-	github.com/docker/cli v24.0.1+incompatible // indirect
+	github.com/docker/cli v24.0.2+incompatible // indirect
 	github.com/docker/distribution v2.8.2+incompatible // indirect
-	github.com/docker/docker v24.0.1+incompatible // indirect
+	github.com/docker/docker v24.0.2+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.7.0 // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
@@ -211,9 +211,10 @@ require (
 	github.com/yagipy/maintidx v1.0.0 // indirect
 	github.com/yeya24/promlinter v0.2.0 // indirect
 	gitlab.com/bosi/decorder v0.2.3 // indirect
-	go.opentelemetry.io/otel v1.15.1 // indirect
-	go.opentelemetry.io/otel/sdk v1.15.1 // indirect
-	go.opentelemetry.io/otel/trace v1.15.1 // indirect
+	go.opentelemetry.io/otel v1.16.0 // indirect
+	go.opentelemetry.io/otel/metric v1.16.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.16.0 // indirect
+	go.opentelemetry.io/otel/trace v1.16.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.24.0 // indirect
