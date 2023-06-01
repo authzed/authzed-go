@@ -9,7 +9,7 @@ import (
 // RequestMetadataHeaderKey defines a key in the request metadata header.
 type RequestMetadataHeaderKey string
 
-// BoolRequestMetadataHeaderKey defines a key for a boolean vlaue in the request metadata header.
+// BoolRequestMetadataHeaderKey defines a key for a boolean value in the request metadata header.
 type BoolRequestMetadataHeaderKey RequestMetadataHeaderKey
 
 const (
@@ -22,6 +22,12 @@ const (
 	// for the API call (if applicable and supported).
 	// Value: `1`
 	RequestDebugInformation BoolRequestMetadataHeaderKey = "io.spicedb.requestdebuginfo"
+
+	// RequestOverlapKey, if specified in a request header, indicates to SpiceDB
+	// that all requests with the same overlap value should be protected from
+	// the New Enemy Problem. This is only used with the CockroachDB datastore,
+	// and only if user-provided request overlap is enabled.
+	RequestOverlapKey RequestMetadataHeaderKey = "io.spicedb.requestoverlapkey"
 )
 
 // AddRequestHeaders returns a new context with the given values as request headers.
@@ -41,4 +47,9 @@ func SetRequestHeaders(ctx context.Context, values map[RequestMetadataHeaderKey]
 		pairs = append(pairs, value)
 	}
 	return metadata.AppendToOutgoingContext(ctx, pairs...)
+}
+
+// WithOverlapKey returns a new context with the overlap key set.
+func WithOverlapKey(ctx context.Context, key string) context.Context {
+	return metadata.AppendToOutgoingContext(ctx, string(RequestOverlapKey), key)
 }
