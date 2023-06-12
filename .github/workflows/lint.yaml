@@ -10,6 +10,8 @@ on:  # yamllint disable-line rule:truthy
   merge_group:
     types:
       - "checks_requested"
+env:
+  GO_VERSION: "~1.20.5"
 jobs:
   go-lint:
     name: "Lint Go"
@@ -78,4 +80,4 @@ jobs:
       - name: "Upload Trivy scan results to GitHub Security tab"
         uses: "github/codeql-action/upload-sarif@v2"
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: "trivy-results.sarif"
