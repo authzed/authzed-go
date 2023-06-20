@@ -8,6 +8,7 @@ import (
 	fmt "fmt"
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 	io "io"
 )
@@ -72,6 +73,13 @@ func (m *CheckDebugTrace) CloneVT() *CheckDebugTrace {
 		Subject:              m.Subject.CloneVT(),
 		Result:               m.Result,
 		CaveatEvaluationInfo: m.CaveatEvaluationInfo.CloneVT(),
+	}
+	if rhs := m.Duration; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *durationpb.Duration }); ok {
+			r.Duration = vtpb.CloneVT()
+		} else {
+			r.Duration = proto.Clone(rhs).(*durationpb.Duration)
+		}
 	}
 	if m.Resolution != nil {
 		r.Resolution = m.Resolution.(interface {
@@ -270,6 +278,28 @@ func (m *CheckDebugTrace) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			return 0, err
 		}
 		i -= size
+	}
+	if m.Duration != nil {
+		if vtmsg, ok := interface{}(m.Duration).(interface {
+			MarshalToSizedBufferVT([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.Duration)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		}
+		i--
+		dAtA[i] = 0x4a
 	}
 	if m.CaveatEvaluationInfo != nil {
 		size, err := m.CaveatEvaluationInfo.MarshalToSizedBufferVT(dAtA[:i])
@@ -504,6 +534,16 @@ func (m *CheckDebugTrace) SizeVT() (n int) {
 	}
 	if m.CaveatEvaluationInfo != nil {
 		l = m.CaveatEvaluationInfo.SizeVT()
+		n += 1 + l + sov(uint64(l))
+	}
+	if m.Duration != nil {
+		if size, ok := interface{}(m.Duration).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.Duration)
+		}
 		n += 1 + l + sov(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -1037,6 +1077,50 @@ func (m *CheckDebugTrace) UnmarshalVT(dAtA []byte) error {
 			}
 			if err := m.CaveatEvaluationInfo.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
+			}
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Duration", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Duration == nil {
+				m.Duration = &durationpb.Duration{}
+			}
+			if unmarshal, ok := interface{}(m.Duration).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Duration); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		default:
