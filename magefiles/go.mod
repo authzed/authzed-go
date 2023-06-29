@@ -3,7 +3,6 @@ module github.com/authzed/authzed-go/magefiles
 go 1.20
 
 require (
-	github.com/authzed/authzed-go v0.8.0
 	github.com/bufbuild/buf v1.20.0
 	github.com/envoyproxy/protoc-gen-validate v1.0.1
 	github.com/golangci/golangci-lint v1.52.2
@@ -11,8 +10,6 @@ require (
 	github.com/magefile/mage v1.15.0
 	github.com/planetscale/vtprotobuf v0.4.0
 	golang.org/x/vuln v0.1.0
-	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923
-	google.golang.org/grpc v1.53.0
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.3.0
 	google.golang.org/protobuf v1.30.0
 	mvdan.cc/gofumpt v0.5.0
@@ -225,6 +222,7 @@ require (
 	golang.org/x/term v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/tools v0.9.1 // indirect
+	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

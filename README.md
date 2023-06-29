@@ -1,41 +1,46 @@
-# Authzed Go Client
+# Official SpiceDB Go Client
 
 [![GoDoc](https://godoc.org/github.com/authzed/authzed-go?status.svg)](https://godoc.org/github.com/authzed/authzed-go)
-[![Docs](https://img.shields.io/badge/docs-authzed.com-%234B4B6C "Authzed Documentation")](https://docs.authzed.com)
-[![Build Status](https://github.com/authzed/authzed-go/workflows/build/badge.svg)](https://github.com/authzed/authzed-go/actions)
-[![Discord Server](https://img.shields.io/discord/844600078504951838?color=7289da&logo=discord "Discord Server")](https://discord.gg/jTysUaxXzM)
-[![Twitter](https://img.shields.io/twitter/follow/authzed?color=%23179CF0&logo=twitter&style=flat-square)](https://twitter.com/authzed)
+[![Docs](https://img.shields.io/badge/docs-authzed.com-%234B4B6C "Authzed Documentation")](https://authzed.com/docs)
+[![YouTube](https://img.shields.io/youtube/channel/views/UCFeSgZf0rPqQteiTQNGgTPg?color=%23F40203&logo=youtube&style=flat-square&label=YouTube "Authzed YouTube Channel")](https://www.youtube.com/channel/UCFeSgZf0rPqQteiTQNGgTPg)
+[![Discord Server](https://img.shields.io/discord/844600078504951838?color=7289da&logo=discord "Discord Server")](https://authzed.com/discord)
+[![Twitter](https://img.shields.io/badge/twitter-%40authzed-1D8EEE?logo=twitter "@authzed on Twitter")](https://twitter.com/authzed)
 
-This repository houses the official Go client library for Authzed and SpiceDB.
+This repository houses the official Go client library for SpiceDB and Authzed services.
 
-[SpiceDB] is a database system for managing security-critical permissions checking.
+[SpiceDB] is an open source, [Google Zanzibar]-inspired, database system for creating and managing security-critical application permissions.
 
-SpiceDB acts as a centralized service that stores authorization data.
-Once stored, data can be performantly queried to answer questions such as "Does this user have access to this resource?" and "What are all the resources this user has access to?".
+Developers create a schema that models their permissions requirements and use any of the official or community maintained [client libraries] to apply the schema to the database, insert data into the database, and query the data to efficiently check permissions in their applications.
 
-[Authzed] operates the globally available, serverless database platform for SpiceDB.
+[SpiceDB]: https://github.com/authzed/spicedb
+[Google Zanzibar]: https://authzed.com/blog/what-is-zanzibar/
+[client libraries]: https://github.com/authzed/awesome-spicedb#clients
 
 Supported client API versions:
 - [v1](https://buf.build/authzed/api/docs/main/authzed.api.v1)
 - [v1alpha1](https://buf.build/authzed/api/docs/main/authzed.api.v1alpha1)
 
-You can find more info about the API in the [Authzed Documentation API Reference] or the [Authzed API Buf Registry repository].
+Have questions? Ask in our [Discord].
 
-See [CONTRIBUTING.md] for instructions on how to contribute and perform common tasks like building the project and running tests.
+Looking to contribute? See [CONTRIBUTING.md].
 
-[SpiceDB]: https://github.com/authzed/spicedb
-[Authzed]: https://authzed.com
-[Authzed Documentation API Reference]: https://docs.authzed.com/reference/api
-[Authzed API Buf Registry repository]: https://buf.build/authzed/api
-[CONTRIBUTING.md]: CONTRIBUTING.md
+You can find issues by priority: [Urgent], [High], [Medium], [Low], [Maybe].
+There are also [good first issues].
+
+[Discord]: https://authzed.com/discord
+[CONTRIBUTING.md]: https://github.com/authzed/authzed-go/blob/main/CONTRIBUTING.md
+[Urgent]: https://github.com/authzed/authzed-go/labels/priority%2F0%20urgent
+[High]: https://github.com/authzed/authzed-go/labels/priority%2F1%20high
+[Medium]: https://github.com/authzed/authzed-go/labels/priority%2F2%20medium
+[Low]: https://github.com/authzed/authzed-go/labels/priority%2F3%20low
+[Maybe]: https://github.com/authzed/authzed-go/labels/priority%2F4%20maybe
+[good first issues]: https://github.com/authzed/authzed-go/labels/hint%2Fgood%20first%20issue
 
 ## Getting Started
 
 We highly recommend following the **[Protecting Your First App]** guide to learn the latest best practice to integrate an application with Authzed.
 
 [Protecting Your First App]: https://docs.authzed.com/guides/first-app
-
-## Basic Usage
 
 ### Installation
 
