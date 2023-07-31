@@ -41,7 +41,7 @@ var namespaces = []struct {
 	{"foo/bar", true},
 	{"foo/b", false},
 	{"Foo/bar", false},
-	{"foo/bar/baz", false},
+	{"foo/bar/baz", true},
 	{strings.Repeat("f", minNamespaceLength-1), false},
 	{strings.Repeat("f", minNamespaceLength), true},
 	{strings.Repeat("\u0394", minNamespaceLength), false},

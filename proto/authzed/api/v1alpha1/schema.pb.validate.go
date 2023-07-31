@@ -74,7 +74,7 @@ func (m *ReadSchemaRequest) validate(all bool) error {
 		if !_ReadSchemaRequest_ObjectDefinitionsNames_Pattern.MatchString(item) {
 			err := ReadSchemaRequestValidationError{
 				field:  fmt.Sprintf("ObjectDefinitionsNames[%v]", idx),
-				reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
+				reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 			}
 			if !all {
 				return err
@@ -164,7 +164,7 @@ var _ interface {
 	ErrorName() string
 } = ReadSchemaRequestValidationError{}
 
-var _ReadSchemaRequest_ObjectDefinitionsNames_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
+var _ReadSchemaRequest_ObjectDefinitionsNames_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 // Validate checks the field values on ReadSchemaResponse with the rules
 // defined in the proto definition for this message. If any rules are

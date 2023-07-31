@@ -71,7 +71,7 @@ func (m *WatchResourcesRequest) validate(all bool) error {
 	if !_WatchResourcesRequest_ResourceObjectType_Pattern.MatchString(m.GetResourceObjectType()) {
 		err := WatchResourcesRequestValidationError{
 			field:  "ResourceObjectType",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 		if !all {
 			return err
@@ -214,7 +214,7 @@ var _ interface {
 	ErrorName() string
 } = WatchResourcesRequestValidationError{}
 
-var _WatchResourcesRequest_ResourceObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
+var _WatchResourcesRequest_ResourceObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 var _WatchResourcesRequest_Permission_Pattern = regexp.MustCompile("^[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
