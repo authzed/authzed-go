@@ -622,7 +622,7 @@ func (m *ObjectReference) validate(all bool) error {
 	if !_ObjectReference_ObjectType_Pattern.MatchString(m.GetObjectType()) {
 		err := ObjectReferenceValidationError{
 			field:  "ObjectType",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 		if !all {
 			return err
@@ -730,7 +730,7 @@ var _ interface {
 	ErrorName() string
 } = ObjectReferenceValidationError{}
 
-var _ObjectReference_ObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
+var _ObjectReference_ObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 var _ObjectReference_ObjectId_Pattern = regexp.MustCompile("^(([a-zA-Z0-9/_|\\-=+]{1,})|\\*)$")
 

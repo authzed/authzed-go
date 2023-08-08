@@ -318,7 +318,7 @@ func (m *RelationshipFilter) validate(all bool) error {
 	if !_RelationshipFilter_ResourceType_Pattern.MatchString(m.GetResourceType()) {
 		err := RelationshipFilterValidationError{
 			field:  "ResourceType",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 		if !all {
 			return err
@@ -479,7 +479,7 @@ var _ interface {
 	ErrorName() string
 } = RelationshipFilterValidationError{}
 
-var _RelationshipFilter_ResourceType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
+var _RelationshipFilter_ResourceType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 var _RelationshipFilter_OptionalResourceId_Pattern = regexp.MustCompile("^([a-zA-Z0-9/_|\\-=+]{1,})?$")
 
@@ -521,7 +521,7 @@ func (m *SubjectFilter) validate(all bool) error {
 	if !_SubjectFilter_SubjectType_Pattern.MatchString(m.GetSubjectType()) {
 		err := SubjectFilterValidationError{
 			field:  "SubjectType",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 		if !all {
 			return err
@@ -658,7 +658,7 @@ var _ interface {
 	ErrorName() string
 } = SubjectFilterValidationError{}
 
-var _SubjectFilter_SubjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
+var _SubjectFilter_SubjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 var _SubjectFilter_OptionalSubjectId_Pattern = regexp.MustCompile("^(([a-zA-Z0-9/_|\\-=+]{1,})|\\*)?$")
 
@@ -2778,7 +2778,7 @@ func (m *LookupResourcesRequest) validate(all bool) error {
 	if !_LookupResourcesRequest_ResourceObjectType_Pattern.MatchString(m.GetResourceObjectType()) {
 		err := LookupResourcesRequestValidationError{
 			field:  "ResourceObjectType",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 		if !all {
 			return err
@@ -2997,7 +2997,7 @@ var _ interface {
 	ErrorName() string
 } = LookupResourcesRequestValidationError{}
 
-var _LookupResourcesRequest_ResourceObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
+var _LookupResourcesRequest_ResourceObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 var _LookupResourcesRequest_Permission_Pattern = regexp.MustCompile("^[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
@@ -3345,7 +3345,7 @@ func (m *LookupSubjectsRequest) validate(all bool) error {
 	if !_LookupSubjectsRequest_SubjectObjectType_Pattern.MatchString(m.GetSubjectObjectType()) {
 		err := LookupSubjectsRequestValidationError{
 			field:  "SubjectObjectType",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
 		}
 		if !all {
 			return err
@@ -3528,7 +3528,7 @@ var _ interface {
 
 var _LookupSubjectsRequest_Permission_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
 
-var _LookupSubjectsRequest_SubjectObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)?[a-z][a-z0-9_]{1,62}[a-z0-9]$")
+var _LookupSubjectsRequest_SubjectObjectType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 var _LookupSubjectsRequest_OptionalSubjectRelation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
 
