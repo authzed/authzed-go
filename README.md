@@ -77,10 +77,14 @@ import (
 )
 
 ...
+systemCerts, err := grpcutil.WithSystemCerts(grpcutil.VerifyCA)
+if err != nil {
+	log.Fatalf("unable to load system CA certificates: %s", err)
+}
 
 client, err := authzed.NewClient(
 	"grpc.authzed.com:443",
-	grpcutil.WithSystemCerts(grpcutil.VerifyCA),
+	systemCerts,
 	grpcutil.WithBearerToken("t_your_token_here_1234567deadbeef"),
 )
 if err != nil {
