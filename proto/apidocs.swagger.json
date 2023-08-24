@@ -708,7 +708,7 @@
       "properties": {
         "schema": {
           "type": "string",
-          "description": "The Schema containing one or more Object Definitions that will be written\nto the Permissions System.\n\n256KiB"
+          "description": "The Schema containing one or more Object Definitions that will be written\nto the Permissions System.\n\n4MiB"
         }
       },
       "description": "WriteSchemaRequest is the required data used to \"upsert\" the Schema of a\nPermissions System."

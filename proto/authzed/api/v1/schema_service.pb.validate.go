@@ -303,10 +303,10 @@ func (m *WriteSchemaRequest) validate(all bool) error {
 
 	var errors []error
 
-	if len(m.GetSchema()) > 262144 {
+	if len(m.GetSchema()) > 4194304 {
 		err := WriteSchemaRequestValidationError{
 			field:  "Schema",
-			reason: "value length must be at most 262144 bytes",
+			reason: "value length must be at most 4194304 bytes",
 		}
 		if !all {
 			return err
