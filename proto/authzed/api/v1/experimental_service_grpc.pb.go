@@ -19,10 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ExperimentalService_BulkImportRelationships_FullMethodName      = "/authzed.api.v1.ExperimentalService/BulkImportRelationships"
-	ExperimentalService_BulkExportRelationships_FullMethodName      = "/authzed.api.v1.ExperimentalService/BulkExportRelationships"
-	ExperimentalService_StreamingBulkCheckPermission_FullMethodName = "/authzed.api.v1.ExperimentalService/StreamingBulkCheckPermission"
-	ExperimentalService_BulkCheckPermission_FullMethodName          = "/authzed.api.v1.ExperimentalService/BulkCheckPermission"
+	ExperimentalService_BulkImportRelationships_FullMethodName = "/authzed.api.v1.ExperimentalService/BulkImportRelationships"
+	ExperimentalService_BulkExportRelationships_FullMethodName = "/authzed.api.v1.ExperimentalService/BulkExportRelationships"
+	ExperimentalService_BulkCheckPermission_FullMethodName     = "/authzed.api.v1.ExperimentalService/BulkCheckPermission"
 )
 
 // ExperimentalServiceClient is the client API for ExperimentalService service.
@@ -43,7 +42,6 @@ type ExperimentalServiceClient interface {
 	// relationships from the server. It is resumable, and will return results
 	// in an order determined by the server.
 	BulkExportRelationships(ctx context.Context, in *BulkExportRelationshipsRequest, opts ...grpc.CallOption) (ExperimentalService_BulkExportRelationshipsClient, error)
-	StreamingBulkCheckPermission(ctx context.Context, in *StreamingBulkCheckPermissionRequest, opts ...grpc.CallOption) (ExperimentalService_StreamingBulkCheckPermissionClient, error)
 	BulkCheckPermission(ctx context.Context, in *BulkCheckPermissionRequest, opts ...grpc.CallOption) (*BulkCheckPermissionResponse, error)
 }
 
@@ -121,38 +119,6 @@ func (x *experimentalServiceBulkExportRelationshipsClient) Recv() (*BulkExportRe
 	return m, nil
 }
 
-func (c *experimentalServiceClient) StreamingBulkCheckPermission(ctx context.Context, in *StreamingBulkCheckPermissionRequest, opts ...grpc.CallOption) (ExperimentalService_StreamingBulkCheckPermissionClient, error) {
-	stream, err := c.cc.NewStream(ctx, &ExperimentalService_ServiceDesc.Streams[2], ExperimentalService_StreamingBulkCheckPermission_FullMethodName, opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &experimentalServiceStreamingBulkCheckPermissionClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type ExperimentalService_StreamingBulkCheckPermissionClient interface {
-	Recv() (*StreamingBulkCheckPermissionResponse, error)
-	grpc.ClientStream
-}
-
-type experimentalServiceStreamingBulkCheckPermissionClient struct {
-	grpc.ClientStream
-}
-
-func (x *experimentalServiceStreamingBulkCheckPermissionClient) Recv() (*StreamingBulkCheckPermissionResponse, error) {
-	m := new(StreamingBulkCheckPermissionResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 func (c *experimentalServiceClient) BulkCheckPermission(ctx context.Context, in *BulkCheckPermissionRequest, opts ...grpc.CallOption) (*BulkCheckPermissionResponse, error) {
 	out := new(BulkCheckPermissionResponse)
 	err := c.cc.Invoke(ctx, ExperimentalService_BulkCheckPermission_FullMethodName, in, out, opts...)
@@ -180,7 +146,6 @@ type ExperimentalServiceServer interface {
 	// relationships from the server. It is resumable, and will return results
 	// in an order determined by the server.
 	BulkExportRelationships(*BulkExportRelationshipsRequest, ExperimentalService_BulkExportRelationshipsServer) error
-	StreamingBulkCheckPermission(*StreamingBulkCheckPermissionRequest, ExperimentalService_StreamingBulkCheckPermissionServer) error
 	BulkCheckPermission(context.Context, *BulkCheckPermissionRequest) (*BulkCheckPermissionResponse, error)
 	mustEmbedUnimplementedExperimentalServiceServer()
 }
@@ -194,9 +159,6 @@ func (UnimplementedExperimentalServiceServer) BulkImportRelationships(Experiment
 }
 func (UnimplementedExperimentalServiceServer) BulkExportRelationships(*BulkExportRelationshipsRequest, ExperimentalService_BulkExportRelationshipsServer) error {
 	return status.Errorf(codes.Unimplemented, "method BulkExportRelationships not implemented")
-}
-func (UnimplementedExperimentalServiceServer) StreamingBulkCheckPermission(*StreamingBulkCheckPermissionRequest, ExperimentalService_StreamingBulkCheckPermissionServer) error {
-	return status.Errorf(codes.Unimplemented, "method StreamingBulkCheckPermission not implemented")
 }
 func (UnimplementedExperimentalServiceServer) BulkCheckPermission(context.Context, *BulkCheckPermissionRequest) (*BulkCheckPermissionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BulkCheckPermission not implemented")
@@ -261,27 +223,6 @@ func (x *experimentalServiceBulkExportRelationshipsServer) Send(m *BulkExportRel
 	return x.ServerStream.SendMsg(m)
 }
 
-func _ExperimentalService_StreamingBulkCheckPermission_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(StreamingBulkCheckPermissionRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(ExperimentalServiceServer).StreamingBulkCheckPermission(m, &experimentalServiceStreamingBulkCheckPermissionServer{stream})
-}
-
-type ExperimentalService_StreamingBulkCheckPermissionServer interface {
-	Send(*StreamingBulkCheckPermissionResponse) error
-	grpc.ServerStream
-}
-
-type experimentalServiceStreamingBulkCheckPermissionServer struct {
-	grpc.ServerStream
-}
-
-func (x *experimentalServiceStreamingBulkCheckPermissionServer) Send(m *StreamingBulkCheckPermissionResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
 func _ExperimentalService_BulkCheckPermission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(BulkCheckPermissionRequest)
 	if err := dec(in); err != nil {
@@ -321,11 +262,6 @@ var ExperimentalService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "BulkExportRelationships",
 			Handler:       _ExperimentalService_BulkExportRelationships_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "StreamingBulkCheckPermission",
-			Handler:       _ExperimentalService_StreamingBulkCheckPermission_Handler,
 			ServerStreams: true,
 		},
 	},
