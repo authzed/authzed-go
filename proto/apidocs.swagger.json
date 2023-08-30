@@ -80,47 +80,6 @@
         ]
       }
     },
-    "/v1/experimental/permissions/streamingbulkcheckpermission": {
-      "post": {
-        "operationId": "ExperimentalService_StreamingBulkCheckPermission",
-        "responses": {
-          "200": {
-            "description": "A successful response.(streaming responses)",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "$ref": "#/definitions/v1StreamingBulkCheckPermissionResponse"
-                },
-                "error": {
-                  "$ref": "#/definitions/rpcStatus"
-                }
-              },
-              "title": "Stream result of v1StreamingBulkCheckPermissionResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1StreamingBulkCheckPermissionRequest"
-            }
-          }
-        ],
-        "tags": [
-          "ExperimentalService"
-        ]
-      }
-    },
     "/v1/experimental/relationships/bulkexport": {
       "post": {
         "summary": "BulkExportRelationships is the fastest path available to exporting\nrelationships from the server. It is resumable, and will return results\nin an order determined by the server.",
@@ -1656,36 +1615,6 @@
         }
       },
       "description": "ResolvedSubject is a single subject resolved within LookupSubjects."
-    },
-    "v1StreamingBulkCheckPermissionRequest": {
-      "type": "object",
-      "properties": {
-        "consistency": {
-          "$ref": "#/definitions/v1Consistency"
-        },
-        "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1BulkCheckPermissionRequestItem"
-          }
-        }
-      }
-    },
-    "v1StreamingBulkCheckPermissionResponse": {
-      "type": "object",
-      "properties": {
-        "checkedAt": {
-          "$ref": "#/definitions/v1ZedToken"
-        },
-        "pairs": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1BulkCheckPermissionPair"
-          }
-        }
-      }
     },
     "v1SubjectFilter": {
       "type": "object",
