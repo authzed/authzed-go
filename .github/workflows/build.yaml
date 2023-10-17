@@ -10,7 +10,7 @@ on:  # yamllint disable-line rule:truthy
     types:
       - "checks_requested"
 env:
-  GO_VERSION: "~1.20.5"
+  GO_VERSION: "~1.21.3"
 jobs:
   test:
     name: "Run Integration Tests"
