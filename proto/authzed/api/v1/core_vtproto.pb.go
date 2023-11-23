@@ -272,6 +272,342 @@ func (m *PartialCaveatInfo) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (this *Relationship) EqualVT(that *Relationship) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Resource.EqualVT(that.Resource) {
+		return false
+	}
+	if this.Relation != that.Relation {
+		return false
+	}
+	if !this.Subject.EqualVT(that.Subject) {
+		return false
+	}
+	if !this.OptionalCaveat.EqualVT(that.OptionalCaveat) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *Relationship) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Relationship)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ContextualizedCaveat) EqualVT(that *ContextualizedCaveat) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.CaveatName != that.CaveatName {
+		return false
+	}
+	if equal, ok := interface{}(this.Context).(interface{ EqualVT(*structpb.Struct) bool }); ok {
+		if !equal.EqualVT(that.Context) {
+			return false
+		}
+	} else if !proto.Equal(this.Context, that.Context) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ContextualizedCaveat) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ContextualizedCaveat)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *SubjectReference) EqualVT(that *SubjectReference) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Object.EqualVT(that.Object) {
+		return false
+	}
+	if this.OptionalRelation != that.OptionalRelation {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *SubjectReference) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*SubjectReference)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ObjectReference) EqualVT(that *ObjectReference) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.ObjectType != that.ObjectType {
+		return false
+	}
+	if this.ObjectId != that.ObjectId {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ObjectReference) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ObjectReference)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ZedToken) EqualVT(that *ZedToken) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Token != that.Token {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ZedToken) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ZedToken)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *Cursor) EqualVT(that *Cursor) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Token != that.Token {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *Cursor) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Cursor)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *RelationshipUpdate) EqualVT(that *RelationshipUpdate) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Operation != that.Operation {
+		return false
+	}
+	if !this.Relationship.EqualVT(that.Relationship) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *RelationshipUpdate) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*RelationshipUpdate)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *PermissionRelationshipTree) EqualVT(that *PermissionRelationshipTree) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.TreeType == nil && that.TreeType != nil {
+		return false
+	} else if this.TreeType != nil {
+		if that.TreeType == nil {
+			return false
+		}
+		if !this.TreeType.(interface {
+			EqualVT(isPermissionRelationshipTree_TreeType) bool
+		}).EqualVT(that.TreeType) {
+			return false
+		}
+	}
+	if !this.ExpandedObject.EqualVT(that.ExpandedObject) {
+		return false
+	}
+	if this.ExpandedRelation != that.ExpandedRelation {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *PermissionRelationshipTree) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*PermissionRelationshipTree)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *PermissionRelationshipTree_Intermediate) EqualVT(thatIface isPermissionRelationshipTree_TreeType) bool {
+	that, ok := thatIface.(*PermissionRelationshipTree_Intermediate)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if p, q := this.Intermediate, that.Intermediate; p != q {
+		if p == nil {
+			p = &AlgebraicSubjectSet{}
+		}
+		if q == nil {
+			q = &AlgebraicSubjectSet{}
+		}
+		if !p.EqualVT(q) {
+			return false
+		}
+	}
+	return true
+}
+
+func (this *PermissionRelationshipTree_Leaf) EqualVT(thatIface isPermissionRelationshipTree_TreeType) bool {
+	that, ok := thatIface.(*PermissionRelationshipTree_Leaf)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if p, q := this.Leaf, that.Leaf; p != q {
+		if p == nil {
+			p = &DirectSubjectSet{}
+		}
+		if q == nil {
+			q = &DirectSubjectSet{}
+		}
+		if !p.EqualVT(q) {
+			return false
+		}
+	}
+	return true
+}
+
+func (this *AlgebraicSubjectSet) EqualVT(that *AlgebraicSubjectSet) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Operation != that.Operation {
+		return false
+	}
+	if len(this.Children) != len(that.Children) {
+		return false
+	}
+	for i, vx := range this.Children {
+		vy := that.Children[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &PermissionRelationshipTree{}
+			}
+			if q == nil {
+				q = &PermissionRelationshipTree{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *AlgebraicSubjectSet) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*AlgebraicSubjectSet)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *DirectSubjectSet) EqualVT(that *DirectSubjectSet) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.Subjects) != len(that.Subjects) {
+		return false
+	}
+	for i, vx := range this.Subjects {
+		vy := that.Subjects[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &SubjectReference{}
+			}
+			if q == nil {
+				q = &SubjectReference{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *DirectSubjectSet) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*DirectSubjectSet)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *PartialCaveatInfo) EqualVT(that *PartialCaveatInfo) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.MissingRequiredContext) != len(that.MissingRequiredContext) {
+		return false
+	}
+	for i, vx := range this.MissingRequiredContext {
+		vy := that.MissingRequiredContext[i]
+		if vx != vy {
+			return false
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *PartialCaveatInfo) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*PartialCaveatInfo)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *Relationship) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil

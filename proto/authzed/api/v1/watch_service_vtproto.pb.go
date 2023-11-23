@@ -66,6 +66,70 @@ func (m *WatchResponse) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (this *WatchRequest) EqualVT(that *WatchRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.OptionalObjectTypes) != len(that.OptionalObjectTypes) {
+		return false
+	}
+	for i, vx := range this.OptionalObjectTypes {
+		vy := that.OptionalObjectTypes[i]
+		if vx != vy {
+			return false
+		}
+	}
+	if !this.OptionalStartCursor.EqualVT(that.OptionalStartCursor) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *WatchRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*WatchRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *WatchResponse) EqualVT(that *WatchResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.Updates) != len(that.Updates) {
+		return false
+	}
+	for i, vx := range this.Updates {
+		vy := that.Updates[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &RelationshipUpdate{}
+			}
+			if q == nil {
+				q = &RelationshipUpdate{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	if !this.ChangesThrough.EqualVT(that.ChangesThrough) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *WatchResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*WatchResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *WatchRequest) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil

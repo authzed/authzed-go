@@ -110,6 +110,121 @@ func (m *WatchResourcesResponse) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (this *WatchResourcesRequest) EqualVT(that *WatchResourcesRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.ResourceObjectType != that.ResourceObjectType {
+		return false
+	}
+	if this.Permission != that.Permission {
+		return false
+	}
+	if this.SubjectObjectType != that.SubjectObjectType {
+		return false
+	}
+	if this.OptionalSubjectRelation != that.OptionalSubjectRelation {
+		return false
+	}
+	if equal, ok := interface{}(this.OptionalStartCursor).(interface{ EqualVT(*v1.ZedToken) bool }); ok {
+		if !equal.EqualVT(that.OptionalStartCursor) {
+			return false
+		}
+	} else if !proto.Equal(this.OptionalStartCursor, that.OptionalStartCursor) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *WatchResourcesRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*WatchResourcesRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *PermissionUpdate) EqualVT(that *PermissionUpdate) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if equal, ok := interface{}(this.Subject).(interface {
+		EqualVT(*v1.SubjectReference) bool
+	}); ok {
+		if !equal.EqualVT(that.Subject) {
+			return false
+		}
+	} else if !proto.Equal(this.Subject, that.Subject) {
+		return false
+	}
+	if equal, ok := interface{}(this.Resource).(interface {
+		EqualVT(*v1.ObjectReference) bool
+	}); ok {
+		if !equal.EqualVT(that.Resource) {
+			return false
+		}
+	} else if !proto.Equal(this.Resource, that.Resource) {
+		return false
+	}
+	if this.Relation != that.Relation {
+		return false
+	}
+	if this.UpdatedPermission != that.UpdatedPermission {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *PermissionUpdate) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*PermissionUpdate)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *WatchResourcesResponse) EqualVT(that *WatchResourcesResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.Updates) != len(that.Updates) {
+		return false
+	}
+	for i, vx := range this.Updates {
+		vy := that.Updates[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &PermissionUpdate{}
+			}
+			if q == nil {
+				q = &PermissionUpdate{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	if equal, ok := interface{}(this.ChangesThrough).(interface{ EqualVT(*v1.ZedToken) bool }); ok {
+		if !equal.EqualVT(that.ChangesThrough) {
+			return false
+		}
+	} else if !proto.Equal(this.ChangesThrough, that.ChangesThrough) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *WatchResourcesResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*WatchResourcesResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *WatchResourcesRequest) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil

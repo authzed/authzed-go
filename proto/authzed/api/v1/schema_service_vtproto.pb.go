@@ -89,6 +89,82 @@ func (m *WriteSchemaResponse) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (this *ReadSchemaRequest) EqualVT(that *ReadSchemaRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ReadSchemaRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ReadSchemaRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ReadSchemaResponse) EqualVT(that *ReadSchemaResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.SchemaText != that.SchemaText {
+		return false
+	}
+	if !this.ReadAt.EqualVT(that.ReadAt) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ReadSchemaResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ReadSchemaResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *WriteSchemaRequest) EqualVT(that *WriteSchemaRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Schema != that.Schema {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *WriteSchemaRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*WriteSchemaRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *WriteSchemaResponse) EqualVT(that *WriteSchemaResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.WrittenAt.EqualVT(that.WrittenAt) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *WriteSchemaResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*WriteSchemaResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *ReadSchemaRequest) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil

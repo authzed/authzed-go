@@ -355,6 +355,462 @@ func (m *DeveloperError) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (this *FormatSchemaRequest) EqualVT(that *FormatSchemaRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Schema != that.Schema {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *FormatSchemaRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*FormatSchemaRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *FormatSchemaResponse) EqualVT(that *FormatSchemaResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Error.EqualVT(that.Error) {
+		return false
+	}
+	if this.FormattedSchema != that.FormattedSchema {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *FormatSchemaResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*FormatSchemaResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *UpgradeSchemaRequest) EqualVT(that *UpgradeSchemaRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.NamespaceConfigs) != len(that.NamespaceConfigs) {
+		return false
+	}
+	for i, vx := range this.NamespaceConfigs {
+		vy := that.NamespaceConfigs[i]
+		if vx != vy {
+			return false
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *UpgradeSchemaRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*UpgradeSchemaRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *UpgradeSchemaResponse) EqualVT(that *UpgradeSchemaResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Error.EqualVT(that.Error) {
+		return false
+	}
+	if this.UpgradedSchema != that.UpgradedSchema {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *UpgradeSchemaResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*UpgradeSchemaResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ShareRequest) EqualVT(that *ShareRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Schema != that.Schema {
+		return false
+	}
+	if this.RelationshipsYaml != that.RelationshipsYaml {
+		return false
+	}
+	if this.ValidationYaml != that.ValidationYaml {
+		return false
+	}
+	if this.AssertionsYaml != that.AssertionsYaml {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ShareRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ShareRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ShareResponse) EqualVT(that *ShareResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.ShareReference != that.ShareReference {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ShareResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ShareResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *LookupShareRequest) EqualVT(that *LookupShareRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.ShareReference != that.ShareReference {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *LookupShareRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*LookupShareRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *LookupShareResponse) EqualVT(that *LookupShareResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Status != that.Status {
+		return false
+	}
+	if this.Schema != that.Schema {
+		return false
+	}
+	if this.RelationshipsYaml != that.RelationshipsYaml {
+		return false
+	}
+	if this.ValidationYaml != that.ValidationYaml {
+		return false
+	}
+	if this.AssertionsYaml != that.AssertionsYaml {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *LookupShareResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*LookupShareResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *RequestContext) EqualVT(that *RequestContext) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Schema != that.Schema {
+		return false
+	}
+	if len(this.Relationships) != len(that.Relationships) {
+		return false
+	}
+	for i, vx := range this.Relationships {
+		vy := that.Relationships[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &RelationTuple{}
+			}
+			if q == nil {
+				q = &RelationTuple{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *RequestContext) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*RequestContext)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *EditCheckRequest) EqualVT(that *EditCheckRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Context.EqualVT(that.Context) {
+		return false
+	}
+	if len(this.CheckRelationships) != len(that.CheckRelationships) {
+		return false
+	}
+	for i, vx := range this.CheckRelationships {
+		vy := that.CheckRelationships[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &RelationTuple{}
+			}
+			if q == nil {
+				q = &RelationTuple{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *EditCheckRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*EditCheckRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *EditCheckResult) EqualVT(that *EditCheckResult) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Relationship.EqualVT(that.Relationship) {
+		return false
+	}
+	if this.IsMember != that.IsMember {
+		return false
+	}
+	if !this.Error.EqualVT(that.Error) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *EditCheckResult) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*EditCheckResult)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *EditCheckResponse) EqualVT(that *EditCheckResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.RequestErrors) != len(that.RequestErrors) {
+		return false
+	}
+	for i, vx := range this.RequestErrors {
+		vy := that.RequestErrors[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &DeveloperError{}
+			}
+			if q == nil {
+				q = &DeveloperError{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	if len(this.CheckResults) != len(that.CheckResults) {
+		return false
+	}
+	for i, vx := range this.CheckResults {
+		vy := that.CheckResults[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &EditCheckResult{}
+			}
+			if q == nil {
+				q = &EditCheckResult{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *EditCheckResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*EditCheckResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ValidateRequest) EqualVT(that *ValidateRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Context.EqualVT(that.Context) {
+		return false
+	}
+	if this.ValidationYaml != that.ValidationYaml {
+		return false
+	}
+	if this.UpdateValidationYaml != that.UpdateValidationYaml {
+		return false
+	}
+	if this.AssertionsYaml != that.AssertionsYaml {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ValidateRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ValidateRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ValidateResponse) EqualVT(that *ValidateResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.RequestErrors) != len(that.RequestErrors) {
+		return false
+	}
+	for i, vx := range this.RequestErrors {
+		vy := that.RequestErrors[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &DeveloperError{}
+			}
+			if q == nil {
+				q = &DeveloperError{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	if len(this.ValidationErrors) != len(that.ValidationErrors) {
+		return false
+	}
+	for i, vx := range this.ValidationErrors {
+		vy := that.ValidationErrors[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &DeveloperError{}
+			}
+			if q == nil {
+				q = &DeveloperError{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	if this.UpdatedValidationYaml != that.UpdatedValidationYaml {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ValidateResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ValidateResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *DeveloperError) EqualVT(that *DeveloperError) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Message != that.Message {
+		return false
+	}
+	if this.Line != that.Line {
+		return false
+	}
+	if this.Column != that.Column {
+		return false
+	}
+	if this.Source != that.Source {
+		return false
+	}
+	if this.Kind != that.Kind {
+		return false
+	}
+	if len(this.Path) != len(that.Path) {
+		return false
+	}
+	for i, vx := range this.Path {
+		vy := that.Path[i]
+		if vx != vy {
+			return false
+		}
+	}
+	if this.Context != that.Context {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *DeveloperError) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*DeveloperError)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *FormatSchemaRequest) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil

@@ -250,6 +250,330 @@ func (m *BulkExportRelationshipsResponse) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (this *BulkCheckPermissionRequest) EqualVT(that *BulkCheckPermissionRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Consistency.EqualVT(that.Consistency) {
+		return false
+	}
+	if len(this.Items) != len(that.Items) {
+		return false
+	}
+	for i, vx := range this.Items {
+		vy := that.Items[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &BulkCheckPermissionRequestItem{}
+			}
+			if q == nil {
+				q = &BulkCheckPermissionRequestItem{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *BulkCheckPermissionRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*BulkCheckPermissionRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *BulkCheckPermissionRequestItem) EqualVT(that *BulkCheckPermissionRequestItem) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Resource.EqualVT(that.Resource) {
+		return false
+	}
+	if this.Permission != that.Permission {
+		return false
+	}
+	if !this.Subject.EqualVT(that.Subject) {
+		return false
+	}
+	if equal, ok := interface{}(this.Context).(interface{ EqualVT(*structpb.Struct) bool }); ok {
+		if !equal.EqualVT(that.Context) {
+			return false
+		}
+	} else if !proto.Equal(this.Context, that.Context) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *BulkCheckPermissionRequestItem) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*BulkCheckPermissionRequestItem)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *BulkCheckPermissionResponse) EqualVT(that *BulkCheckPermissionResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.CheckedAt.EqualVT(that.CheckedAt) {
+		return false
+	}
+	if len(this.Pairs) != len(that.Pairs) {
+		return false
+	}
+	for i, vx := range this.Pairs {
+		vy := that.Pairs[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &BulkCheckPermissionPair{}
+			}
+			if q == nil {
+				q = &BulkCheckPermissionPair{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *BulkCheckPermissionResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*BulkCheckPermissionResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *BulkCheckPermissionPair) EqualVT(that *BulkCheckPermissionPair) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Response == nil && that.Response != nil {
+		return false
+	} else if this.Response != nil {
+		if that.Response == nil {
+			return false
+		}
+		if !this.Response.(interface {
+			EqualVT(isBulkCheckPermissionPair_Response) bool
+		}).EqualVT(that.Response) {
+			return false
+		}
+	}
+	if !this.Request.EqualVT(that.Request) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *BulkCheckPermissionPair) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*BulkCheckPermissionPair)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *BulkCheckPermissionPair_Item) EqualVT(thatIface isBulkCheckPermissionPair_Response) bool {
+	that, ok := thatIface.(*BulkCheckPermissionPair_Item)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if p, q := this.Item, that.Item; p != q {
+		if p == nil {
+			p = &BulkCheckPermissionResponseItem{}
+		}
+		if q == nil {
+			q = &BulkCheckPermissionResponseItem{}
+		}
+		if !p.EqualVT(q) {
+			return false
+		}
+	}
+	return true
+}
+
+func (this *BulkCheckPermissionPair_Error) EqualVT(thatIface isBulkCheckPermissionPair_Response) bool {
+	that, ok := thatIface.(*BulkCheckPermissionPair_Error)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if p, q := this.Error, that.Error; p != q {
+		if p == nil {
+			p = &status.Status{}
+		}
+		if q == nil {
+			q = &status.Status{}
+		}
+		if equal, ok := interface{}(p).(interface{ EqualVT(*status.Status) bool }); ok {
+			if !equal.EqualVT(q) {
+				return false
+			}
+		} else if !proto.Equal(p, q) {
+			return false
+		}
+	}
+	return true
+}
+
+func (this *BulkCheckPermissionResponseItem) EqualVT(that *BulkCheckPermissionResponseItem) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Permissionship != that.Permissionship {
+		return false
+	}
+	if !this.PartialCaveatInfo.EqualVT(that.PartialCaveatInfo) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *BulkCheckPermissionResponseItem) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*BulkCheckPermissionResponseItem)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *BulkImportRelationshipsRequest) EqualVT(that *BulkImportRelationshipsRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.Relationships) != len(that.Relationships) {
+		return false
+	}
+	for i, vx := range this.Relationships {
+		vy := that.Relationships[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &Relationship{}
+			}
+			if q == nil {
+				q = &Relationship{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *BulkImportRelationshipsRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*BulkImportRelationshipsRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *BulkImportRelationshipsResponse) EqualVT(that *BulkImportRelationshipsResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.NumLoaded != that.NumLoaded {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *BulkImportRelationshipsResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*BulkImportRelationshipsResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *BulkExportRelationshipsRequest) EqualVT(that *BulkExportRelationshipsRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Consistency.EqualVT(that.Consistency) {
+		return false
+	}
+	if this.OptionalLimit != that.OptionalLimit {
+		return false
+	}
+	if !this.OptionalCursor.EqualVT(that.OptionalCursor) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *BulkExportRelationshipsRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*BulkExportRelationshipsRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *BulkExportRelationshipsResponse) EqualVT(that *BulkExportRelationshipsResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.AfterResultCursor.EqualVT(that.AfterResultCursor) {
+		return false
+	}
+	if len(this.Relationships) != len(that.Relationships) {
+		return false
+	}
+	for i, vx := range this.Relationships {
+		vy := that.Relationships[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &Relationship{}
+			}
+			if q == nil {
+				q = &Relationship{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *BulkExportRelationshipsResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*BulkExportRelationshipsResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *BulkCheckPermissionRequest) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
