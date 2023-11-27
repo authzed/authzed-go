@@ -106,6 +106,126 @@ func (m *User_Userset) CloneVT() isUser_UserOneof {
 	return r
 }
 
+func (this *RelationTuple) EqualVT(that *RelationTuple) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.ObjectAndRelation.EqualVT(that.ObjectAndRelation) {
+		return false
+	}
+	if !this.User.EqualVT(that.User) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *RelationTuple) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*RelationTuple)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ObjectAndRelation) EqualVT(that *ObjectAndRelation) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Namespace != that.Namespace {
+		return false
+	}
+	if this.ObjectId != that.ObjectId {
+		return false
+	}
+	if this.Relation != that.Relation {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ObjectAndRelation) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ObjectAndRelation)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *RelationReference) EqualVT(that *RelationReference) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Namespace != that.Namespace {
+		return false
+	}
+	if this.Relation != that.Relation {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *RelationReference) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*RelationReference)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *User) EqualVT(that *User) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.UserOneof == nil && that.UserOneof != nil {
+		return false
+	} else if this.UserOneof != nil {
+		if that.UserOneof == nil {
+			return false
+		}
+		if !this.UserOneof.(interface{ EqualVT(isUser_UserOneof) bool }).EqualVT(that.UserOneof) {
+			return false
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *User) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*User)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *User_Userset) EqualVT(thatIface isUser_UserOneof) bool {
+	that, ok := thatIface.(*User_Userset)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if p, q := this.Userset, that.Userset; p != q {
+		if p == nil {
+			p = &ObjectAndRelation{}
+		}
+		if q == nil {
+			q = &ObjectAndRelation{}
+		}
+		if !p.EqualVT(q) {
+			return false
+		}
+	}
+	return true
+}
+
 func (m *RelationTuple) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil

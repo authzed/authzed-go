@@ -17,7 +17,7 @@ plugins:
         "github.com/planetscale/vtprotobuf/cmd/protoc-gen-go-vtproto",
       ]
     out: "../proto"
-    opt: "paths=source_relative,features=marshal+unmarshal+size+clone"
+    opt: "paths=source_relative,features=marshal+unmarshal+size+clone+equal"
   - name: "validate"
     path: ["go", "run", "github.com/envoyproxy/protoc-gen-validate"]
     out: "../proto"

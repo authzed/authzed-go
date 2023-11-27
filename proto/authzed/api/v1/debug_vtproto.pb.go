@@ -145,6 +145,193 @@ func (m *CaveatEvalInfo) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (this *DebugInformation) EqualVT(that *DebugInformation) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Check.EqualVT(that.Check) {
+		return false
+	}
+	if this.SchemaUsed != that.SchemaUsed {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *DebugInformation) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*DebugInformation)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *CheckDebugTrace_SubProblems) EqualVT(that *CheckDebugTrace_SubProblems) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.Traces) != len(that.Traces) {
+		return false
+	}
+	for i, vx := range this.Traces {
+		vy := that.Traces[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &CheckDebugTrace{}
+			}
+			if q == nil {
+				q = &CheckDebugTrace{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *CheckDebugTrace_SubProblems) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*CheckDebugTrace_SubProblems)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *CheckDebugTrace) EqualVT(that *CheckDebugTrace) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Resolution == nil && that.Resolution != nil {
+		return false
+	} else if this.Resolution != nil {
+		if that.Resolution == nil {
+			return false
+		}
+		if !this.Resolution.(interface {
+			EqualVT(isCheckDebugTrace_Resolution) bool
+		}).EqualVT(that.Resolution) {
+			return false
+		}
+	}
+	if !this.Resource.EqualVT(that.Resource) {
+		return false
+	}
+	if this.Permission != that.Permission {
+		return false
+	}
+	if this.PermissionType != that.PermissionType {
+		return false
+	}
+	if !this.Subject.EqualVT(that.Subject) {
+		return false
+	}
+	if this.Result != that.Result {
+		return false
+	}
+	if !this.CaveatEvaluationInfo.EqualVT(that.CaveatEvaluationInfo) {
+		return false
+	}
+	if equal, ok := interface{}(this.Duration).(interface {
+		EqualVT(*durationpb.Duration) bool
+	}); ok {
+		if !equal.EqualVT(that.Duration) {
+			return false
+		}
+	} else if !proto.Equal(this.Duration, that.Duration) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *CheckDebugTrace) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*CheckDebugTrace)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *CheckDebugTrace_WasCachedResult) EqualVT(thatIface isCheckDebugTrace_Resolution) bool {
+	that, ok := thatIface.(*CheckDebugTrace_WasCachedResult)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.WasCachedResult != that.WasCachedResult {
+		return false
+	}
+	return true
+}
+
+func (this *CheckDebugTrace_SubProblems_) EqualVT(thatIface isCheckDebugTrace_Resolution) bool {
+	that, ok := thatIface.(*CheckDebugTrace_SubProblems_)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if p, q := this.SubProblems, that.SubProblems; p != q {
+		if p == nil {
+			p = &CheckDebugTrace_SubProblems{}
+		}
+		if q == nil {
+			q = &CheckDebugTrace_SubProblems{}
+		}
+		if !p.EqualVT(q) {
+			return false
+		}
+	}
+	return true
+}
+
+func (this *CaveatEvalInfo) EqualVT(that *CaveatEvalInfo) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Expression != that.Expression {
+		return false
+	}
+	if this.Result != that.Result {
+		return false
+	}
+	if equal, ok := interface{}(this.Context).(interface{ EqualVT(*structpb.Struct) bool }); ok {
+		if !equal.EqualVT(that.Context) {
+			return false
+		}
+	} else if !proto.Equal(this.Context, that.Context) {
+		return false
+	}
+	if !this.PartialCaveatInfo.EqualVT(that.PartialCaveatInfo) {
+		return false
+	}
+	if this.CaveatName != that.CaveatName {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *CaveatEvalInfo) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*CaveatEvalInfo)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *DebugInformation) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil

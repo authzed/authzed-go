@@ -105,6 +105,109 @@ func (m *WriteSchemaResponse) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (this *ReadSchemaRequest) EqualVT(that *ReadSchemaRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.ObjectDefinitionsNames) != len(that.ObjectDefinitionsNames) {
+		return false
+	}
+	for i, vx := range this.ObjectDefinitionsNames {
+		vy := that.ObjectDefinitionsNames[i]
+		if vx != vy {
+			return false
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ReadSchemaRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ReadSchemaRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ReadSchemaResponse) EqualVT(that *ReadSchemaResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.ObjectDefinitions) != len(that.ObjectDefinitions) {
+		return false
+	}
+	for i, vx := range this.ObjectDefinitions {
+		vy := that.ObjectDefinitions[i]
+		if vx != vy {
+			return false
+		}
+	}
+	if this.ComputedDefinitionsRevision != that.ComputedDefinitionsRevision {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ReadSchemaResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ReadSchemaResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *WriteSchemaRequest) EqualVT(that *WriteSchemaRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Schema != that.Schema {
+		return false
+	}
+	if this.OptionalDefinitionsRevisionPrecondition != that.OptionalDefinitionsRevisionPrecondition {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *WriteSchemaRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*WriteSchemaRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *WriteSchemaResponse) EqualVT(that *WriteSchemaResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if len(this.ObjectDefinitionsNames) != len(that.ObjectDefinitionsNames) {
+		return false
+	}
+	for i, vx := range this.ObjectDefinitionsNames {
+		vy := that.ObjectDefinitionsNames[i]
+		if vx != vy {
+			return false
+		}
+	}
+	if this.ComputedDefinitionsRevision != that.ComputedDefinitionsRevision {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *WriteSchemaResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*WriteSchemaResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *ReadSchemaRequest) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
