@@ -193,39 +193,11 @@ func TestV1PreconditionValidity(t *testing.T) {
 			true,
 		},
 		{
-			"invalid must match",
-			v1.Precondition_OPERATION_MUST_MATCH,
-			&v1.RelationshipFilter{
-				ResourceType: "",
-			},
-			false,
-		},
-		{
-			"invalid must not match",
-			v1.Precondition_OPERATION_MUST_NOT_MATCH,
-			&v1.RelationshipFilter{
-				ResourceType: "",
-			},
-			false,
-		},
-		{
 			"invalid operation",
 			v1.Precondition_OPERATION_UNSPECIFIED,
 			&v1.RelationshipFilter{
 				ResourceType: "document",
 			},
-			false,
-		},
-		{
-			"empty must not match",
-			v1.Precondition_OPERATION_MUST_NOT_MATCH,
-			&v1.RelationshipFilter{},
-			false,
-		},
-		{
-			"empty must match",
-			v1.Precondition_OPERATION_MUST_MATCH,
-			&v1.RelationshipFilter{},
 			false,
 		},
 	}

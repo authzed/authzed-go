@@ -224,7 +224,7 @@ func TestV1CoreObjectValidity(t *testing.T) {
 						justNS := &v1.RelationshipFilter{
 							ResourceType: ns.name,
 						}
-						filterValid := ns.valid
+						filterValid := (ns.valid || ns.name == "")
 						err = justNS.Validate()
 						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
@@ -232,7 +232,7 @@ func TestV1CoreObjectValidity(t *testing.T) {
 							ResourceType:       ns.name,
 							OptionalResourceId: objectID.name,
 						}
-						filterValid = ns.valid && (objectID.valid || objectID.name == "")
+						filterValid = (ns.valid || ns.name == "") && (objectID.valid || objectID.name == "")
 						err = objectIDFilter.Validate()
 						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
@@ -240,7 +240,7 @@ func TestV1CoreObjectValidity(t *testing.T) {
 							ResourceType:     ns.name,
 							OptionalRelation: relation.name,
 						}
-						filterValid = ns.valid && (relation.validity == alwaysValid || relation.name == "")
+						filterValid = (ns.valid || ns.name == "") && (relation.validity == alwaysValid || relation.name == "")
 						err = objectRelationFilter.Validate()
 						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
 
@@ -249,7 +249,7 @@ func TestV1CoreObjectValidity(t *testing.T) {
 							OptionalResourceId: objectID.name,
 							OptionalRelation:   relation.name,
 						}
-						filterValid = ns.valid && (objectID.valid || objectID.name == "") &&
+						filterValid = (ns.valid || ns.name == "") && (objectID.valid || objectID.name == "") &&
 							(relation.validity == alwaysValid || relation.name == "")
 						err = fullObjectFilter.Validate()
 						require.Equal(filterValid, err == nil, "should be valid: %v %s", filterValid, err)
