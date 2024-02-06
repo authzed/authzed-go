@@ -30,6 +30,13 @@ func (m *WatchRequest) CloneVT() *WatchRequest {
 		copy(tmpContainer, rhs)
 		r.OptionalObjectTypes = tmpContainer
 	}
+	if rhs := m.OptionalRelationshipFilters; rhs != nil {
+		tmpContainer := make([]*RelationshipFilter, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v.CloneVT()
+		}
+		r.OptionalRelationshipFilters = tmpContainer
+	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -83,6 +90,23 @@ func (this *WatchRequest) EqualVT(that *WatchRequest) bool {
 	}
 	if !this.OptionalStartCursor.EqualVT(that.OptionalStartCursor) {
 		return false
+	}
+	if len(this.OptionalRelationshipFilters) != len(that.OptionalRelationshipFilters) {
+		return false
+	}
+	for i, vx := range this.OptionalRelationshipFilters {
+		vy := that.OptionalRelationshipFilters[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &RelationshipFilter{}
+			}
+			if q == nil {
+				q = &RelationshipFilter{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
@@ -159,6 +183,18 @@ func (m *WatchRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.OptionalRelationshipFilters) > 0 {
+		for iNdEx := len(m.OptionalRelationshipFilters) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.OptionalRelationshipFilters[iNdEx].MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x1a
+		}
 	}
 	if m.OptionalStartCursor != nil {
 		size, err := m.OptionalStartCursor.MarshalToSizedBufferVT(dAtA[:i])
@@ -252,6 +288,12 @@ func (m *WatchRequest) SizeVT() (n int) {
 	if m.OptionalStartCursor != nil {
 		l = m.OptionalStartCursor.SizeVT()
 		n += 1 + l + sov(uint64(l))
+	}
+	if len(m.OptionalRelationshipFilters) > 0 {
+		for _, e := range m.OptionalRelationshipFilters {
+			l = e.SizeVT()
+			n += 1 + l + sov(uint64(l))
+		}
 	}
 	n += len(m.unknownFields)
 	return n
@@ -371,6 +413,40 @@ func (m *WatchRequest) UnmarshalVT(dAtA []byte) error {
 				m.OptionalStartCursor = &ZedToken{}
 			}
 			if err := m.OptionalStartCursor.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalRelationshipFilters", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.OptionalRelationshipFilters = append(m.OptionalRelationshipFilters, &RelationshipFilter{})
+			if err := m.OptionalRelationshipFilters[len(m.OptionalRelationshipFilters)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
