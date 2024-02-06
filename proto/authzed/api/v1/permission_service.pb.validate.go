@@ -348,6 +348,28 @@ func (m *RelationshipFilter) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if len(m.GetOptionalResourceIdPrefix()) > 1024 {
+		err := RelationshipFilterValidationError{
+			field:  "OptionalResourceIdPrefix",
+			reason: "value length must be at most 1024 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_RelationshipFilter_OptionalResourceIdPrefix_Pattern.MatchString(m.GetOptionalResourceIdPrefix()) {
+		err := RelationshipFilterValidationError{
+			field:  "OptionalResourceIdPrefix",
+			reason: "value does not match regex pattern \"^([a-zA-Z0-9/_|\\\\-=+]{1,})?$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if len(m.GetOptionalRelation()) > 64 {
 		err := RelationshipFilterValidationError{
 			field:  "OptionalRelation",
@@ -482,6 +504,8 @@ var _ interface {
 var _RelationshipFilter_ResourceType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 
 var _RelationshipFilter_OptionalResourceId_Pattern = regexp.MustCompile("^([a-zA-Z0-9/_|\\-=+]{1,})?$")
+
+var _RelationshipFilter_OptionalResourceIdPrefix_Pattern = regexp.MustCompile("^([a-zA-Z0-9/_|\\-=+]{1,})?$")
 
 var _RelationshipFilter_OptionalRelation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
 

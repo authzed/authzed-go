@@ -210,9 +210,10 @@ func (m *BulkExportRelationshipsRequest) CloneVT() *BulkExportRelationshipsReque
 		return (*BulkExportRelationshipsRequest)(nil)
 	}
 	r := &BulkExportRelationshipsRequest{
-		Consistency:    m.Consistency.CloneVT(),
-		OptionalLimit:  m.OptionalLimit,
-		OptionalCursor: m.OptionalCursor.CloneVT(),
+		Consistency:                m.Consistency.CloneVT(),
+		OptionalLimit:              m.OptionalLimit,
+		OptionalCursor:             m.OptionalCursor.CloneVT(),
+		OptionalRelationshipFilter: m.OptionalRelationshipFilter.CloneVT(),
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -526,6 +527,9 @@ func (this *BulkExportRelationshipsRequest) EqualVT(that *BulkExportRelationship
 		return false
 	}
 	if !this.OptionalCursor.EqualVT(that.OptionalCursor) {
+		return false
+	}
+	if !this.OptionalRelationshipFilter.EqualVT(that.OptionalRelationshipFilter) {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -1029,6 +1033,16 @@ func (m *BulkExportRelationshipsRequest) MarshalToSizedBufferVT(dAtA []byte) (in
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.OptionalRelationshipFilter != nil {
+		size, err := m.OptionalRelationshipFilter.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x22
+	}
 	if m.OptionalCursor != nil {
 		size, err := m.OptionalCursor.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -1292,6 +1306,10 @@ func (m *BulkExportRelationshipsRequest) SizeVT() (n int) {
 	}
 	if m.OptionalCursor != nil {
 		l = m.OptionalCursor.SizeVT()
+		n += 1 + l + sov(uint64(l))
+	}
+	if m.OptionalRelationshipFilter != nil {
+		l = m.OptionalRelationshipFilter.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -2322,6 +2340,42 @@ func (m *BulkExportRelationshipsRequest) UnmarshalVT(dAtA []byte) error {
 				m.OptionalCursor = &Cursor{}
 			}
 			if err := m.OptionalCursor.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalRelationshipFilter", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.OptionalRelationshipFilter == nil {
+				m.OptionalRelationshipFilter = &RelationshipFilter{}
+			}
+			if err := m.OptionalRelationshipFilter.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

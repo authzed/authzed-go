@@ -1344,6 +1344,35 @@ func (m *BulkExportRelationshipsRequest) validate(all bool) error {
 		}
 	}
 
+	if all {
+		switch v := interface{}(m.GetOptionalRelationshipFilter()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, BulkExportRelationshipsRequestValidationError{
+					field:  "OptionalRelationshipFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, BulkExportRelationshipsRequestValidationError{
+					field:  "OptionalRelationshipFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetOptionalRelationshipFilter()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return BulkExportRelationshipsRequestValidationError{
+				field:  "OptionalRelationshipFilter",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return BulkExportRelationshipsRequestMultiError(errors)
 	}
