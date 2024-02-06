@@ -318,7 +318,7 @@ func (m *RelationshipFilter) validate(all bool) error {
 	if !_RelationshipFilter_ResourceType_Pattern.MatchString(m.GetResourceType()) {
 		err := RelationshipFilterValidationError{
 			field:  "ResourceType",
-			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$\"",
+			reason: "value does not match regex pattern \"^(([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9])?$\"",
 		}
 		if !all {
 			return err
@@ -501,7 +501,7 @@ var _ interface {
 	ErrorName() string
 } = RelationshipFilterValidationError{}
 
-var _RelationshipFilter_ResourceType_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$")
+var _RelationshipFilter_ResourceType_Pattern = regexp.MustCompile("^(([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9])?$")
 
 var _RelationshipFilter_OptionalResourceId_Pattern = regexp.MustCompile("^([a-zA-Z0-9/_|\\-=+]{1,})?$")
 
