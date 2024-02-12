@@ -54,7 +54,7 @@ type RetryableClient struct {
 }
 
 // NewRetryableClient initializes a brand new client for interacting
-// with Authzed.
+// with SpiceDB.
 func NewRetryableClient(endpoint string, opts ...grpc.DialOption) (*RetryableClient, error) {
 	conn, err := newConn(endpoint, opts...)
 	if err != nil {
