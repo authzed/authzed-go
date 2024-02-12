@@ -14,6 +14,12 @@ import (
 	"time"
 )
 
+// ConflictStrategy is an enumeration type that represents the strategy to be used
+// when a conflict occurs during a bulk import of relationships in Authzed.
+// The strategies are as follows:
+// - Fail: The operation will fail if any duplicate relationships are found.
+// - Skip: The operation will ignore duplicates and continue with the import.
+// - Touch: The operation will retry the import with TOUCH semantics in case of duplicates.
 type ConflictStrategy int
 
 const (
