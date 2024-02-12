@@ -4,27 +4,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
+	"time"
+
 	v1 "github.com/authzed/authzed-go/proto/authzed/api/v1"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/samber/lo"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"strings"
-	"time"
 )
 
 // ConflictStrategy is an enumeration type that represents the strategy to be used
-// when a conflict occurs during a bulk import of relationships in Authzed.
-// The strategies are as follows:
-// - Fail: The operation will fail if any duplicate relationships are found.
-// - Skip: The operation will ignore duplicates and continue with the import.
-// - Touch: The operation will retry the import with TOUCH semantics in case of duplicates.
+// when a conflict occurs during a bulk import of relationships into SpiceDB.
 type ConflictStrategy int
 
 const (
+	// Fail - The operation will fail if any duplicate relationships are found.
 	Fail ConflictStrategy = iota
+	// Skip - The operation will ignore duplicates and continue with the import.
 	Skip
+	// Touch - The operation will retry the import with TOUCH semantics in case of duplicates.
 	Touch
 
 	defaultBackoff    = 50 * time.Millisecond
@@ -44,7 +44,7 @@ var (
 	}
 )
 
-// RetryableClient represents an open connection to Authzed with
+// RetryableClient represents an open connection to SpiceDB with
 // experimental services available. It also adds a new method for
 // retrying bulk imports with different conflict strategies.
 //
@@ -124,6 +124,7 @@ func (rc *RetryableClient) RetryableBulkImportRelationships(ctx context.Context,
 
 	return nil
 }
+
 func (rc *RetryableClient) writeBatchesWithRetry(ctx context.Context, relationships []*v1.Relationship) error {
 	backoffInterval := backoff.NewExponentialBackOff()
 	backoffInterval.InitialInterval = defaultBackoff
