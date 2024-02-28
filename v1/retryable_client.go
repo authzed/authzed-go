@@ -101,13 +101,10 @@ func (rc *RetryableClient) RetryableBulkImportRelationships(ctx context.Context,
 	retryable := isRetryableError(err)
 	conflict := isAlreadyExistsError(err)
 	canceled, cancelErr := isCanceledError(ctx.Err(), err)
-	unknown := !retryable && !conflict && !canceled
 
 	switch {
 	case canceled:
 		return cancelErr
-	case unknown:
-		return fmt.Errorf("error finalizing write of %d relationships: %w", len(relationships), err)
 	case retryable || (conflict && conflictStrategy == Touch):
 		err = rc.writeBatchesWithRetry(ctx, relationships)
 		if err != nil {
