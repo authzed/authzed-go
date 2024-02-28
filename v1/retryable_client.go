@@ -100,26 +100,27 @@ func (rc *RetryableClient) RetryableBulkImportRelationships(ctx context.Context,
 	canceled, cancelErr := isCanceledError(ctx.Err(), err)
 	unknown := !retryable && !conflict && !canceled && err != nil
 
-	switch {
-	case canceled:
+	if err != nil {
+		switch {
+		case canceled:
 
-		return cancelErr
-	case unknown:
+			return cancelErr
+		case unknown:
 
-		return fmt.Errorf("error finalizing write of %d relationships: %w", len(relationships), err)
-	case conflict && conflictStrategy == Skip:
+			return fmt.Errorf("error finalizing write of %d relationships: %w", len(relationships), err)
+		case conflict && conflictStrategy == Skip:
 
-	case retryable || (conflict && conflictStrategy == Touch):
-		err = rc.writeBatchesWithRetry(ctx, relationships)
-		if err != nil {
-			return fmt.Errorf("failed to write relationships after retry: %w", err)
+		case retryable || (conflict && conflictStrategy == Touch):
+			err = rc.writeBatchesWithRetry(ctx, relationships)
+			if err != nil {
+				return fmt.Errorf("failed to write relationships after retry: %w", err)
+			}
+		case conflict && conflictStrategy == Fail:
+			return fmt.Errorf("duplicate relationships found")
+
+		default:
+			return fmt.Errorf("error finalizing write of %d relationships: %w", len(relationships), err)
 		}
-	case conflict && conflictStrategy == Fail:
-		return fmt.Errorf("duplicate relationships found")
-
-	default:
-
-		return fmt.Errorf("error finalizing write of %d relationships: %w", len(relationships), err)
 	}
 
 	return nil
