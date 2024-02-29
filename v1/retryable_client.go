@@ -105,6 +105,8 @@ func (rc *RetryableClient) RetryableBulkImportRelationships(ctx context.Context,
 	switch {
 	case canceled:
 		return cancelErr
+	case conflict && conflictStrategy == Skip:
+		return nil
 	case retryable || (conflict && conflictStrategy == Touch):
 		err = rc.writeBatchesWithRetry(ctx, relationships)
 		if err != nil {
