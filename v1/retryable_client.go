@@ -91,6 +91,9 @@ func (rc *RetryableClient) RetryableBulkImportRelationships(ctx context.Context,
 	})
 
 	_, err = bulkImportClient.CloseAndRecv() // transaction commit happens here
+	if err == nil {
+		return nil
+	}
 
 	// Failure to commit transaction means the stream is closed, so it can't be reused any further
 	// The retry will be done using WriteRelationships instead of BulkImportRelationships
@@ -98,31 +101,23 @@ func (rc *RetryableClient) RetryableBulkImportRelationships(ctx context.Context,
 	retryable := isRetryableError(err)
 	conflict := isAlreadyExistsError(err)
 	canceled, cancelErr := isCanceledError(ctx.Err(), err)
-	unknown := !retryable && !conflict && !canceled && err != nil
 
 	switch {
 	case canceled:
-
 		return cancelErr
-	case unknown:
-
-		return fmt.Errorf("error finalizing write of %d relationships: %w", len(relationships), err)
 	case conflict && conflictStrategy == Skip:
-
+		return nil
 	case retryable || (conflict && conflictStrategy == Touch):
 		err = rc.writeBatchesWithRetry(ctx, relationships)
 		if err != nil {
 			return fmt.Errorf("failed to write relationships after retry: %w", err)
 		}
+		return nil
 	case conflict && conflictStrategy == Fail:
 		return fmt.Errorf("duplicate relationships found")
-
 	default:
-
 		return fmt.Errorf("error finalizing write of %d relationships: %w", len(relationships), err)
 	}
-
-	return nil
 }
 
 func (rc *RetryableClient) writeBatchesWithRetry(ctx context.Context, relationships []*v1.Relationship) error {
