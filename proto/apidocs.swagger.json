@@ -30,9 +30,6 @@
       "name": "WatchService"
     },
     {
-      "name": "SchemaService"
-    },
-    {
       "name": "WatchResourcesService"
     }
   ],
@@ -184,6 +181,40 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/v1CheckPermissionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PermissionsService"
+        ]
+      }
+    },
+    "/v1/permissions/checkbulk": {
+      "post": {
+        "summary": "CheckBulkPermissions evaluates the given list of permission checks\nand returns the list of results.",
+        "operationId": "PermissionsService_CheckBulkPermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CheckBulkPermissionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "CheckBulkPermissionsRequest issues a check on whether a subject has permission \nor is a member of a relation on a specific resource for each item in the list.\n\nThe ordering of the items in the response is maintained in the response.\nChecks with the same subject/permission will automatically be batched for performance optimization.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CheckBulkPermissionsRequest"
             }
           }
         ],
@@ -1102,6 +1133,79 @@
         }
       },
       "description": "BulkImportRelationshipsResponse is returned on successful completion of the\nbulk load stream, and contains the total number of relationships loaded."
+    },
+    "v1CheckBulkPermissionsPair": {
+      "type": "object",
+      "properties": {
+        "request": {
+          "$ref": "#/definitions/v1CheckBulkPermissionsRequestItem"
+        },
+        "item": {
+          "$ref": "#/definitions/v1CheckBulkPermissionsResponseItem"
+        },
+        "error": {
+          "$ref": "#/definitions/rpcStatus"
+        }
+      }
+    },
+    "v1CheckBulkPermissionsRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1CheckBulkPermissionsRequestItem"
+          }
+        }
+      },
+      "description": "CheckBulkPermissionsRequest issues a check on whether a subject has permission \nor is a member of a relation on a specific resource for each item in the list.\n\nThe ordering of the items in the response is maintained in the response.\nChecks with the same subject/permission will automatically be batched for performance optimization."
+    },
+    "v1CheckBulkPermissionsRequestItem": {
+      "type": "object",
+      "properties": {
+        "resource": {
+          "$ref": "#/definitions/v1ObjectReference"
+        },
+        "permission": {
+          "type": "string"
+        },
+        "subject": {
+          "$ref": "#/definitions/v1SubjectReference"
+        },
+        "context": {
+          "type": "object"
+        }
+      }
+    },
+    "v1CheckBulkPermissionsResponse": {
+      "type": "object",
+      "properties": {
+        "checkedAt": {
+          "$ref": "#/definitions/v1ZedToken"
+        },
+        "pairs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1CheckBulkPermissionsPair"
+          }
+        }
+      }
+    },
+    "v1CheckBulkPermissionsResponseItem": {
+      "type": "object",
+      "properties": {
+        "permissionship": {
+          "$ref": "#/definitions/v1CheckPermissionResponsePermissionship"
+        },
+        "partialCaveatInfo": {
+          "$ref": "#/definitions/v1PartialCaveatInfo"
+        }
+      }
     },
     "v1CheckPermissionRequest": {
       "type": "object",

@@ -2380,6 +2380,974 @@ var _CheckPermissionResponse_Permissionship_NotInLookup = map[CheckPermissionRes
 	0: {},
 }
 
+// Validate checks the field values on CheckBulkPermissionsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CheckBulkPermissionsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CheckBulkPermissionsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CheckBulkPermissionsRequestMultiError, or nil if none found.
+func (m *CheckBulkPermissionsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CheckBulkPermissionsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetConsistency()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CheckBulkPermissionsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CheckBulkPermissionsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetConsistency()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CheckBulkPermissionsRequestValidationError{
+				field:  "Consistency",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetItems() {
+		_, _ = idx, item
+
+		if item == nil {
+			err := CheckBulkPermissionsRequestValidationError{
+				field:  fmt.Sprintf("Items[%v]", idx),
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CheckBulkPermissionsRequestValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CheckBulkPermissionsRequestValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CheckBulkPermissionsRequestValidationError{
+					field:  fmt.Sprintf("Items[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return CheckBulkPermissionsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CheckBulkPermissionsRequestMultiError is an error wrapping multiple
+// validation errors returned by CheckBulkPermissionsRequest.ValidateAll() if
+// the designated constraints aren't met.
+type CheckBulkPermissionsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CheckBulkPermissionsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CheckBulkPermissionsRequestMultiError) AllErrors() []error { return m }
+
+// CheckBulkPermissionsRequestValidationError is the validation error returned
+// by CheckBulkPermissionsRequest.Validate if the designated constraints
+// aren't met.
+type CheckBulkPermissionsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CheckBulkPermissionsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CheckBulkPermissionsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CheckBulkPermissionsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CheckBulkPermissionsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CheckBulkPermissionsRequestValidationError) ErrorName() string {
+	return "CheckBulkPermissionsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CheckBulkPermissionsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCheckBulkPermissionsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CheckBulkPermissionsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CheckBulkPermissionsRequestValidationError{}
+
+// Validate checks the field values on CheckBulkPermissionsRequestItem with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CheckBulkPermissionsRequestItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CheckBulkPermissionsRequestItem with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// CheckBulkPermissionsRequestItemMultiError, or nil if none found.
+func (m *CheckBulkPermissionsRequestItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CheckBulkPermissionsRequestItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetResource() == nil {
+		err := CheckBulkPermissionsRequestItemValidationError{
+			field:  "Resource",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetResource()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CheckBulkPermissionsRequestItemValidationError{
+					field:  "Resource",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CheckBulkPermissionsRequestItemValidationError{
+					field:  "Resource",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetResource()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CheckBulkPermissionsRequestItemValidationError{
+				field:  "Resource",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(m.GetPermission()) > 64 {
+		err := CheckBulkPermissionsRequestItemValidationError{
+			field:  "Permission",
+			reason: "value length must be at most 64 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_CheckBulkPermissionsRequestItem_Permission_Pattern.MatchString(m.GetPermission()) {
+		err := CheckBulkPermissionsRequestItemValidationError{
+			field:  "Permission",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetSubject() == nil {
+		err := CheckBulkPermissionsRequestItemValidationError{
+			field:  "Subject",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetSubject()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CheckBulkPermissionsRequestItemValidationError{
+					field:  "Subject",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CheckBulkPermissionsRequestItemValidationError{
+					field:  "Subject",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSubject()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CheckBulkPermissionsRequestItemValidationError{
+				field:  "Subject",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CheckBulkPermissionsRequestItemValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CheckBulkPermissionsRequestItemValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CheckBulkPermissionsRequestItemValidationError{
+				field:  "Context",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return CheckBulkPermissionsRequestItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// CheckBulkPermissionsRequestItemMultiError is an error wrapping multiple
+// validation errors returned by CheckBulkPermissionsRequestItem.ValidateAll()
+// if the designated constraints aren't met.
+type CheckBulkPermissionsRequestItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CheckBulkPermissionsRequestItemMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CheckBulkPermissionsRequestItemMultiError) AllErrors() []error { return m }
+
+// CheckBulkPermissionsRequestItemValidationError is the validation error
+// returned by CheckBulkPermissionsRequestItem.Validate if the designated
+// constraints aren't met.
+type CheckBulkPermissionsRequestItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CheckBulkPermissionsRequestItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CheckBulkPermissionsRequestItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CheckBulkPermissionsRequestItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CheckBulkPermissionsRequestItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CheckBulkPermissionsRequestItemValidationError) ErrorName() string {
+	return "CheckBulkPermissionsRequestItemValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CheckBulkPermissionsRequestItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCheckBulkPermissionsRequestItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CheckBulkPermissionsRequestItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CheckBulkPermissionsRequestItemValidationError{}
+
+var _CheckBulkPermissionsRequestItem_Permission_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
+
+// Validate checks the field values on CheckBulkPermissionsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CheckBulkPermissionsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CheckBulkPermissionsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CheckBulkPermissionsResponseMultiError, or nil if none found.
+func (m *CheckBulkPermissionsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CheckBulkPermissionsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetCheckedAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CheckBulkPermissionsResponseValidationError{
+					field:  "CheckedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CheckBulkPermissionsResponseValidationError{
+					field:  "CheckedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCheckedAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CheckBulkPermissionsResponseValidationError{
+				field:  "CheckedAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetPairs() {
+		_, _ = idx, item
+
+		if item == nil {
+			err := CheckBulkPermissionsResponseValidationError{
+				field:  fmt.Sprintf("Pairs[%v]", idx),
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CheckBulkPermissionsResponseValidationError{
+						field:  fmt.Sprintf("Pairs[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CheckBulkPermissionsResponseValidationError{
+						field:  fmt.Sprintf("Pairs[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CheckBulkPermissionsResponseValidationError{
+					field:  fmt.Sprintf("Pairs[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return CheckBulkPermissionsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// CheckBulkPermissionsResponseMultiError is an error wrapping multiple
+// validation errors returned by CheckBulkPermissionsResponse.ValidateAll() if
+// the designated constraints aren't met.
+type CheckBulkPermissionsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CheckBulkPermissionsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CheckBulkPermissionsResponseMultiError) AllErrors() []error { return m }
+
+// CheckBulkPermissionsResponseValidationError is the validation error returned
+// by CheckBulkPermissionsResponse.Validate if the designated constraints
+// aren't met.
+type CheckBulkPermissionsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CheckBulkPermissionsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CheckBulkPermissionsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CheckBulkPermissionsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CheckBulkPermissionsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CheckBulkPermissionsResponseValidationError) ErrorName() string {
+	return "CheckBulkPermissionsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CheckBulkPermissionsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCheckBulkPermissionsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CheckBulkPermissionsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CheckBulkPermissionsResponseValidationError{}
+
+// Validate checks the field values on CheckBulkPermissionsPair with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CheckBulkPermissionsPair) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CheckBulkPermissionsPair with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CheckBulkPermissionsPairMultiError, or nil if none found.
+func (m *CheckBulkPermissionsPair) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CheckBulkPermissionsPair) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetRequest()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CheckBulkPermissionsPairValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CheckBulkPermissionsPairValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRequest()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CheckBulkPermissionsPairValidationError{
+				field:  "Request",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	switch v := m.Response.(type) {
+	case *CheckBulkPermissionsPair_Item:
+		if v == nil {
+			err := CheckBulkPermissionsPairValidationError{
+				field:  "Response",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetItem()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CheckBulkPermissionsPairValidationError{
+						field:  "Item",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CheckBulkPermissionsPairValidationError{
+						field:  "Item",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetItem()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CheckBulkPermissionsPairValidationError{
+					field:  "Item",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *CheckBulkPermissionsPair_Error:
+		if v == nil {
+			err := CheckBulkPermissionsPairValidationError{
+				field:  "Response",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetError()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CheckBulkPermissionsPairValidationError{
+						field:  "Error",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CheckBulkPermissionsPairValidationError{
+						field:  "Error",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetError()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CheckBulkPermissionsPairValidationError{
+					field:  "Error",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+
+	if len(errors) > 0 {
+		return CheckBulkPermissionsPairMultiError(errors)
+	}
+
+	return nil
+}
+
+// CheckBulkPermissionsPairMultiError is an error wrapping multiple validation
+// errors returned by CheckBulkPermissionsPair.ValidateAll() if the designated
+// constraints aren't met.
+type CheckBulkPermissionsPairMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CheckBulkPermissionsPairMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CheckBulkPermissionsPairMultiError) AllErrors() []error { return m }
+
+// CheckBulkPermissionsPairValidationError is the validation error returned by
+// CheckBulkPermissionsPair.Validate if the designated constraints aren't met.
+type CheckBulkPermissionsPairValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CheckBulkPermissionsPairValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CheckBulkPermissionsPairValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CheckBulkPermissionsPairValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CheckBulkPermissionsPairValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CheckBulkPermissionsPairValidationError) ErrorName() string {
+	return "CheckBulkPermissionsPairValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CheckBulkPermissionsPairValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCheckBulkPermissionsPair.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CheckBulkPermissionsPairValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CheckBulkPermissionsPairValidationError{}
+
+// Validate checks the field values on CheckBulkPermissionsResponseItem with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *CheckBulkPermissionsResponseItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CheckBulkPermissionsResponseItem with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// CheckBulkPermissionsResponseItemMultiError, or nil if none found.
+func (m *CheckBulkPermissionsResponseItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CheckBulkPermissionsResponseItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if _, ok := _CheckBulkPermissionsResponseItem_Permissionship_NotInLookup[m.GetPermissionship()]; ok {
+		err := CheckBulkPermissionsResponseItemValidationError{
+			field:  "Permissionship",
+			reason: "value must not be in list [PERMISSIONSHIP_UNSPECIFIED]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := CheckPermissionResponse_Permissionship_name[int32(m.GetPermissionship())]; !ok {
+		err := CheckBulkPermissionsResponseItemValidationError{
+			field:  "Permissionship",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetPartialCaveatInfo()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CheckBulkPermissionsResponseItemValidationError{
+					field:  "PartialCaveatInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CheckBulkPermissionsResponseItemValidationError{
+					field:  "PartialCaveatInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPartialCaveatInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CheckBulkPermissionsResponseItemValidationError{
+				field:  "PartialCaveatInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return CheckBulkPermissionsResponseItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// CheckBulkPermissionsResponseItemMultiError is an error wrapping multiple
+// validation errors returned by
+// CheckBulkPermissionsResponseItem.ValidateAll() if the designated
+// constraints aren't met.
+type CheckBulkPermissionsResponseItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CheckBulkPermissionsResponseItemMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CheckBulkPermissionsResponseItemMultiError) AllErrors() []error { return m }
+
+// CheckBulkPermissionsResponseItemValidationError is the validation error
+// returned by CheckBulkPermissionsResponseItem.Validate if the designated
+// constraints aren't met.
+type CheckBulkPermissionsResponseItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CheckBulkPermissionsResponseItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CheckBulkPermissionsResponseItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CheckBulkPermissionsResponseItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CheckBulkPermissionsResponseItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CheckBulkPermissionsResponseItemValidationError) ErrorName() string {
+	return "CheckBulkPermissionsResponseItemValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CheckBulkPermissionsResponseItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCheckBulkPermissionsResponseItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CheckBulkPermissionsResponseItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CheckBulkPermissionsResponseItemValidationError{}
+
+var _CheckBulkPermissionsResponseItem_Permissionship_NotInLookup = map[CheckPermissionResponse_Permissionship]struct{}{
+	0: {},
+}
+
 // Validate checks the field values on ExpandPermissionTreeRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
