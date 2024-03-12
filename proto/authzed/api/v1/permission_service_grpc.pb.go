@@ -23,6 +23,7 @@ const (
 	PermissionsService_WriteRelationships_FullMethodName   = "/authzed.api.v1.PermissionsService/WriteRelationships"
 	PermissionsService_DeleteRelationships_FullMethodName  = "/authzed.api.v1.PermissionsService/DeleteRelationships"
 	PermissionsService_CheckPermission_FullMethodName      = "/authzed.api.v1.PermissionsService/CheckPermission"
+	PermissionsService_CheckBulkPermissions_FullMethodName = "/authzed.api.v1.PermissionsService/CheckBulkPermissions"
 	PermissionsService_ExpandPermissionTree_FullMethodName = "/authzed.api.v1.PermissionsService/ExpandPermissionTree"
 	PermissionsService_LookupResources_FullMethodName      = "/authzed.api.v1.PermissionsService/LookupResources"
 	PermissionsService_LookupSubjects_FullMethodName       = "/authzed.api.v1.PermissionsService/LookupSubjects"
@@ -47,6 +48,9 @@ type PermissionsServiceClient interface {
 	// CheckPermission determines for a given resource whether a subject computes
 	// to having a permission or is a direct member of a particular relation.
 	CheckPermission(ctx context.Context, in *CheckPermissionRequest, opts ...grpc.CallOption) (*CheckPermissionResponse, error)
+	// CheckBulkPermissions evaluates the given list of permission checks
+	// and returns the list of results.
+	CheckBulkPermissions(ctx context.Context, in *CheckBulkPermissionsRequest, opts ...grpc.CallOption) (*CheckBulkPermissionsResponse, error)
 	// ExpandPermissionTree reveals the graph structure for a resource's
 	// permission or relation. This RPC does not recurse infinitely deep and may
 	// require multiple calls to fully unnest a deeply nested graph.
@@ -120,6 +124,15 @@ func (c *permissionsServiceClient) DeleteRelationships(ctx context.Context, in *
 func (c *permissionsServiceClient) CheckPermission(ctx context.Context, in *CheckPermissionRequest, opts ...grpc.CallOption) (*CheckPermissionResponse, error) {
 	out := new(CheckPermissionResponse)
 	err := c.cc.Invoke(ctx, PermissionsService_CheckPermission_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *permissionsServiceClient) CheckBulkPermissions(ctx context.Context, in *CheckBulkPermissionsRequest, opts ...grpc.CallOption) (*CheckBulkPermissionsResponse, error) {
+	out := new(CheckBulkPermissionsResponse)
+	err := c.cc.Invoke(ctx, PermissionsService_CheckBulkPermissions_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -218,6 +231,9 @@ type PermissionsServiceServer interface {
 	// CheckPermission determines for a given resource whether a subject computes
 	// to having a permission or is a direct member of a particular relation.
 	CheckPermission(context.Context, *CheckPermissionRequest) (*CheckPermissionResponse, error)
+	// CheckBulkPermissions evaluates the given list of permission checks
+	// and returns the list of results.
+	CheckBulkPermissions(context.Context, *CheckBulkPermissionsRequest) (*CheckBulkPermissionsResponse, error)
 	// ExpandPermissionTree reveals the graph structure for a resource's
 	// permission or relation. This RPC does not recurse infinitely deep and may
 	// require multiple calls to fully unnest a deeply nested graph.
@@ -246,6 +262,9 @@ func (UnimplementedPermissionsServiceServer) DeleteRelationships(context.Context
 }
 func (UnimplementedPermissionsServiceServer) CheckPermission(context.Context, *CheckPermissionRequest) (*CheckPermissionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckPermission not implemented")
+}
+func (UnimplementedPermissionsServiceServer) CheckBulkPermissions(context.Context, *CheckBulkPermissionsRequest) (*CheckBulkPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckBulkPermissions not implemented")
 }
 func (UnimplementedPermissionsServiceServer) ExpandPermissionTree(context.Context, *ExpandPermissionTreeRequest) (*ExpandPermissionTreeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExpandPermissionTree not implemented")
@@ -344,6 +363,24 @@ func _PermissionsService_CheckPermission_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PermissionsService_CheckBulkPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckBulkPermissionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PermissionsServiceServer).CheckBulkPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PermissionsService_CheckBulkPermissions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PermissionsServiceServer).CheckBulkPermissions(ctx, req.(*CheckBulkPermissionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PermissionsService_ExpandPermissionTree_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ExpandPermissionTreeRequest)
 	if err := dec(in); err != nil {
@@ -422,6 +459,10 @@ var PermissionsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckPermission",
 			Handler:    _PermissionsService_CheckPermission_Handler,
+		},
+		{
+			MethodName: "CheckBulkPermissions",
+			Handler:    _PermissionsService_CheckBulkPermissions_Handler,
 		},
 		{
 			MethodName: "ExpandPermissionTree",
