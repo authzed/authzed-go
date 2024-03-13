@@ -610,6 +610,38 @@
     }
   },
   "definitions": {
+    "CaveatEvalInfoResult": {
+      "type": "string",
+      "enum": [
+        "RESULT_UNSPECIFIED",
+        "RESULT_UNEVALUATED",
+        "RESULT_FALSE",
+        "RESULT_TRUE",
+        "RESULT_MISSING_SOME_CONTEXT"
+      ],
+      "default": "RESULT_UNSPECIFIED"
+    },
+    "CheckDebugTracePermissionType": {
+      "type": "string",
+      "enum": [
+        "PERMISSION_TYPE_UNSPECIFIED",
+        "PERMISSION_TYPE_RELATION",
+        "PERMISSION_TYPE_PERMISSION"
+      ],
+      "default": "PERMISSION_TYPE_UNSPECIFIED"
+    },
+    "CheckDebugTraceSubProblems": {
+      "type": "object",
+      "properties": {
+        "traces": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1CheckDebugTrace"
+          }
+        }
+      }
+    },
     "DeleteRelationshipsResponseDeletionProgress": {
       "type": "string",
       "enum": [
@@ -1134,6 +1166,32 @@
       },
       "description": "BulkImportRelationshipsResponse is returned on successful completion of the\nbulk load stream, and contains the total number of relationships loaded."
     },
+    "v1CaveatEvalInfo": {
+      "type": "object",
+      "properties": {
+        "expression": {
+          "type": "string",
+          "description": "expression is the expression that was evaluated."
+        },
+        "result": {
+          "$ref": "#/definitions/CaveatEvalInfoResult",
+          "description": "result is the result of the evaluation."
+        },
+        "context": {
+          "type": "object",
+          "description": "context consists of any named values that were used for evaluating the caveat expression."
+        },
+        "partialCaveatInfo": {
+          "$ref": "#/definitions/v1PartialCaveatInfo",
+          "description": "partial_caveat_info holds information of a partially-evaluated caveated response, if applicable."
+        },
+        "caveatName": {
+          "type": "string",
+          "description": "caveat_name is the name of the caveat that was executed, if applicable."
+        }
+      },
+      "description": "CaveatEvalInfo holds information about a caveat expression that was evaluated."
+    },
     "v1CheckBulkPermissionsPair": {
       "type": "object",
       "properties": {
@@ -1207,6 +1265,58 @@
         }
       }
     },
+    "v1CheckDebugTrace": {
+      "type": "object",
+      "properties": {
+        "resource": {
+          "$ref": "#/definitions/v1ObjectReference",
+          "description": "resource holds the resource on which the Check was performed."
+        },
+        "permission": {
+          "type": "string",
+          "description": "permission holds the name of the permission or relation on which the Check was performed."
+        },
+        "permissionType": {
+          "$ref": "#/definitions/CheckDebugTracePermissionType",
+          "description": "permission_type holds information indicating whether it was a permission or relation."
+        },
+        "subject": {
+          "$ref": "#/definitions/v1SubjectReference",
+          "description": "subject holds the subject on which the Check was performed. This will be static across all calls within\nthe same Check tree."
+        },
+        "result": {
+          "$ref": "#/definitions/v1CheckDebugTracePermissionship",
+          "description": "result holds the result of the Check call."
+        },
+        "caveatEvaluationInfo": {
+          "$ref": "#/definitions/v1CaveatEvalInfo",
+          "description": "caveat_evaluation_info holds information about the caveat evaluated for this step of the trace."
+        },
+        "duration": {
+          "type": "string",
+          "description": "duration holds the time spent executing this Check operation."
+        },
+        "wasCachedResult": {
+          "type": "boolean",
+          "description": "was_cached_result, if true, indicates that the result was found in the cache and returned directly."
+        },
+        "subProblems": {
+          "$ref": "#/definitions/CheckDebugTraceSubProblems",
+          "description": "sub_problems holds the sub problems that were executed to resolve the answer to this Check. An empty list\nand a permissionship of PERMISSIONSHIP_HAS_PERMISSION indicates the subject was found within this relation."
+        }
+      },
+      "description": "CheckDebugTrace is a recursive trace of the requests made for resolving a CheckPermission\nAPI call."
+    },
+    "v1CheckDebugTracePermissionship": {
+      "type": "string",
+      "enum": [
+        "PERMISSIONSHIP_UNSPECIFIED",
+        "PERMISSIONSHIP_NO_PERMISSION",
+        "PERMISSIONSHIP_HAS_PERMISSION",
+        "PERMISSIONSHIP_CONDITIONAL_PERMISSION"
+      ],
+      "default": "PERMISSIONSHIP_UNSPECIFIED"
+    },
     "v1CheckPermissionRequest": {
       "type": "object",
       "properties": {
@@ -1228,6 +1338,10 @@
         "context": {
           "type": "object",
           "title": "context consists of named values that are injected into the caveat evaluation context"
+        },
+        "withTracing": {
+          "type": "boolean",
+          "description": "with_tracing, if true, indicates that the response should include a debug trace.\nThis can be useful for debugging and performance analysis, but adds a small amount\nof compute overhead to the request."
         }
       },
       "description": "CheckPermissionRequest issues a check on whether a subject has a permission\nor is a member of a relation, on a specific resource."
@@ -1245,6 +1359,10 @@
         "partialCaveatInfo": {
           "$ref": "#/definitions/v1PartialCaveatInfo",
           "title": "partial_caveat_info holds information of a partially-evaluated caveated response"
+        },
+        "debugTrace": {
+          "$ref": "#/definitions/v1DebugInformation",
+          "description": "debug_trace is the debugging trace of this check, if requested."
         }
       }
     },
@@ -1302,6 +1420,20 @@
         }
       },
       "description": "Cursor is used to provide resumption of listing between calls to APIs\nsuch as LookupResources."
+    },
+    "v1DebugInformation": {
+      "type": "object",
+      "properties": {
+        "check": {
+          "$ref": "#/definitions/v1CheckDebugTrace",
+          "description": "check holds debug information about a check request."
+        },
+        "schemaUsed": {
+          "type": "string",
+          "description": "schema_used holds the schema used for the request."
+        }
+      },
+      "description": "DebugInformation defines debug information returned by an API call in a footer when\nrequested with a specific debugging header.\n\nThe specific debug information returned will depend on the type of the API call made.\n\nSee the github.com/authzed/authzed-go project for the specific header and footer names."
     },
     "v1DeleteRelationshipsRequest": {
       "type": "object",
@@ -1779,7 +1911,7 @@
             "type": "object",
             "$ref": "#/definitions/v1RelationshipFilter"
           },
-          "description": "optional_relationship_filters, if specified, indicates the\nfilter(s) to apply to each relationship to be returned by watch.\nIf specified, optional_object_types cannot be used."
+          "description": "optional_relationship_filters, if specified, indicates the\nfilter(s) to apply to each relationship to be returned by watch.\nThe relationship will be returned as long as at least one filter matches,\nthis allows clients to match relationships on multiple filters on a single watch call.\nIf specified, optional_object_types cannot be used."
         }
       },
       "description": "WatchRequest specifies the object definitions for which we want to start\nwatching mutations, and an optional start snapshot for when to start\nwatching."

@@ -20,6 +20,7 @@ const (
 
 	// RequestDebugInformation, if specified in a request header, asks SpiceDB to return debug information
 	// for the API call (if applicable and supported).
+	// NOTE: deprecated in favor of setting with_tracing on Check requests.
 	// Value: `1`
 	RequestDebugInformation BoolRequestMetadataHeaderKey = "io.spicedb.requestdebuginfo"
 
