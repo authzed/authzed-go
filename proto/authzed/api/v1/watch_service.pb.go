@@ -44,6 +44,8 @@ type WatchRequest struct {
 	OptionalStartCursor *ZedToken `protobuf:"bytes,2,opt,name=optional_start_cursor,json=optionalStartCursor,proto3" json:"optional_start_cursor,omitempty"`
 	// optional_relationship_filters, if specified, indicates the
 	// filter(s) to apply to each relationship to be returned by watch.
+	// The relationship will be returned as long as at least one filter matches,
+	// this allows clients to match relationships on multiple filters on a single watch call.
 	// If specified, optional_object_types cannot be used.
 	OptionalRelationshipFilters []*RelationshipFilter `protobuf:"bytes,3,rep,name=optional_relationship_filters,json=optionalRelationshipFilters,proto3" json:"optional_relationship_filters,omitempty"`
 }

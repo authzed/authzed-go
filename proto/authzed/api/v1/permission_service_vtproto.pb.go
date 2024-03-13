@@ -304,6 +304,7 @@ func (m *CheckPermissionRequest) CloneVT() *CheckPermissionRequest {
 		Resource:    m.Resource.CloneVT(),
 		Permission:  m.Permission,
 		Subject:     m.Subject.CloneVT(),
+		WithTracing: m.WithTracing,
 	}
 	if rhs := m.Context; rhs != nil {
 		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *structpb.Struct }); ok {
@@ -331,6 +332,7 @@ func (m *CheckPermissionResponse) CloneVT() *CheckPermissionResponse {
 		CheckedAt:         m.CheckedAt.CloneVT(),
 		Permissionship:    m.Permissionship,
 		PartialCaveatInfo: m.PartialCaveatInfo.CloneVT(),
+		DebugTrace:        m.DebugTrace.CloneVT(),
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -1085,6 +1087,9 @@ func (this *CheckPermissionRequest) EqualVT(that *CheckPermissionRequest) bool {
 	} else if !proto.Equal(this.Context, that.Context) {
 		return false
 	}
+	if this.WithTracing != that.WithTracing {
+		return false
+	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
@@ -1108,6 +1113,9 @@ func (this *CheckPermissionResponse) EqualVT(that *CheckPermissionResponse) bool
 		return false
 	}
 	if !this.PartialCaveatInfo.EqualVT(that.PartialCaveatInfo) {
+		return false
+	}
+	if !this.DebugTrace.EqualVT(that.DebugTrace) {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -2291,6 +2299,16 @@ func (m *CheckPermissionRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.WithTracing {
+		i--
+		if m.WithTracing {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x30
+	}
 	if m.Context != nil {
 		if vtmsg, ok := interface{}(m.Context).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
@@ -2382,6 +2400,16 @@ func (m *CheckPermissionResponse) MarshalToSizedBufferVT(dAtA []byte) (int, erro
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.DebugTrace != nil {
+		size, err := m.DebugTrace.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x22
 	}
 	if m.PartialCaveatInfo != nil {
 		size, err := m.PartialCaveatInfo.MarshalToSizedBufferVT(dAtA[:i])
@@ -3618,6 +3646,9 @@ func (m *CheckPermissionRequest) SizeVT() (n int) {
 		}
 		n += 1 + l + sov(uint64(l))
 	}
+	if m.WithTracing {
+		n += 2
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -3637,6 +3668,10 @@ func (m *CheckPermissionResponse) SizeVT() (n int) {
 	}
 	if m.PartialCaveatInfo != nil {
 		l = m.PartialCaveatInfo.SizeVT()
+		n += 1 + l + sov(uint64(l))
+	}
+	if m.DebugTrace != nil {
+		l = m.DebugTrace.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -5759,6 +5794,26 @@ func (m *CheckPermissionRequest) UnmarshalVT(dAtA []byte) error {
 				}
 			}
 			iNdEx = postIndex
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WithTracing", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.WithTracing = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skip(dAtA[iNdEx:])
@@ -5898,6 +5953,42 @@ func (m *CheckPermissionResponse) UnmarshalVT(dAtA []byte) error {
 				m.PartialCaveatInfo = &PartialCaveatInfo{}
 			}
 			if err := m.PartialCaveatInfo.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DebugTrace", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.DebugTrace == nil {
+				m.DebugTrace = &DebugInformation{}
+			}
+			if err := m.DebugTrace.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

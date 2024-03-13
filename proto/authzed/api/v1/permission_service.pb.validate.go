@@ -2112,6 +2112,8 @@ func (m *CheckPermissionRequest) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for WithTracing
+
 	if len(errors) > 0 {
 		return CheckPermissionRequestMultiError(errors)
 	}
@@ -2290,6 +2292,35 @@ func (m *CheckPermissionResponse) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return CheckPermissionResponseValidationError{
 				field:  "PartialCaveatInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetDebugTrace()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CheckPermissionResponseValidationError{
+					field:  "DebugTrace",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CheckPermissionResponseValidationError{
+					field:  "DebugTrace",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetDebugTrace()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CheckPermissionResponseValidationError{
+				field:  "DebugTrace",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}

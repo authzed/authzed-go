@@ -37,6 +37,9 @@ const (
 
 	// DebugInformation contains the JSON-encoded form of the debug information for the API call,
 	// if requested and supported.
+	//
+	// NOTE: deprecated in favor of the Check response containing the trace. The JSON will now
+	// contain a note indicating to look on the response object itself.
 	DebugInformation ResponseMetadataTrailerKey = "io.spicedb.respmeta.debuginfo"
 )
 
