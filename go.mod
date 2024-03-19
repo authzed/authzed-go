@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/authzed/grpcutil v0.0.0-20230908193239-4286bb1d6403
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/envoyproxy/protoc-gen-validate v1.0.2
+	github.com/envoyproxy/protoc-gen-validate v1.0.4
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.0
 	github.com/jzelinskie/stringz v0.0.3
 	github.com/magefile/mage v1.15.0
