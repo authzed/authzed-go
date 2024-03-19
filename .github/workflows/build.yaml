@@ -14,7 +14,7 @@ jobs:
     name: "Run Integration Tests"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v3"
+      - uses: "actions/checkout@v4"
       - uses: "authzed/actions/setup-go@main"
       - uses: "authzed/action-spicedb@v1"
       - name: "Unit tests"
