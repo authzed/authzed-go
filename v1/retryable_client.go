@@ -7,12 +7,13 @@ import (
 	"strings"
 	"time"
 
-	v1 "github.com/authzed/authzed-go/proto/authzed/api/v1"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/samber/lo"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	v1 "github.com/authzed/authzed-go/proto/authzed/api/v1"
 )
 
 // ConflictStrategy is an enumeration type that represents the strategy to be used
@@ -129,7 +130,7 @@ func (rc *RetryableClient) writeBatchesWithRetry(ctx context.Context, relationsh
 
 	currentRetries := 0
 
-	updates := lo.Map[*v1.Relationship, *v1.RelationshipUpdate](relationships, func(item *v1.Relationship, index int) *v1.RelationshipUpdate {
+	updates := lo.Map[*v1.Relationship, *v1.RelationshipUpdate](relationships, func(item *v1.Relationship, _ int) *v1.RelationshipUpdate {
 		return &v1.RelationshipUpdate{
 			Relationship: item,
 			Operation:    v1.RelationshipUpdate_OPERATION_TOUCH,
