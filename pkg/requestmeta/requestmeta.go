@@ -33,8 +33,6 @@ const (
 	// RequestIDKey, if specified in a request header, will propagate the given string value
 	// through SpiceDB for the lifetime of the request. This can be used to correlate logs
 	// and traces with a specific request.
-	//
-	// TODO(alecmerdler): This is duplicated in SpiceDB source; we should be importing it from here.
 	RequestIDKey RequestMetadataHeaderKey = "x-request-id"
 )
 
