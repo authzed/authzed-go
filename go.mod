@@ -6,7 +6,7 @@ toolchain go1.22.1
 
 require (
 	github.com/authzed/grpcutil v0.0.0-20230908193239-4286bb1d6403
-	github.com/cenkalti/backoff/v4 v4.2.1
+	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/ecordell/optgen v0.0.9
 	github.com/envoyproxy/protoc-gen-validate v1.0.4
 	github.com/golangci/golangci-lint v1.57.1
