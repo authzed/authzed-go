@@ -59,7 +59,7 @@ func NewClientWithExperimentalAPIs(endpoint string, opts ...grpc.DialOption) (*C
 }
 
 func newConn(endpoint string, opts ...grpc.DialOption) (*grpc.ClientConn, error) {
-	return grpc.Dial(
+	return grpc.NewClient(
 		stringz.DefaultEmpty(endpoint, "grpc.authzed.com:443"),
 		opts...,
 	)
