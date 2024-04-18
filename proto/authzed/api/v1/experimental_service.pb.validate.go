@@ -1304,10 +1304,10 @@ func (m *BulkExportRelationshipsRequest) validate(all bool) error {
 		}
 	}
 
-	if val := m.GetOptionalLimit(); val < 0 || val > 10000 {
+	if m.GetOptionalLimit() < 0 {
 		err := BulkExportRelationshipsRequestValidationError{
 			field:  "OptionalLimit",
-			reason: "value must be inside range [0, 10000]",
+			reason: "value must be greater than or equal to 0",
 		}
 		if !all {
 			return err

@@ -777,10 +777,10 @@ func (m *ReadRelationshipsRequest) validate(all bool) error {
 		}
 	}
 
-	if val := m.GetOptionalLimit(); val < 0 || val > 1000 {
+	if m.GetOptionalLimit() < 0 {
 		err := ReadRelationshipsRequestValidationError{
 			field:  "OptionalLimit",
-			reason: "value must be inside range [0, 1000]",
+			reason: "value must be greater than or equal to 0",
 		}
 		if !all {
 			return err
@@ -1703,10 +1703,10 @@ func (m *DeleteRelationshipsRequest) validate(all bool) error {
 
 	}
 
-	if val := m.GetOptionalLimit(); val < 0 || val > 1000 {
+	if m.GetOptionalLimit() < 0 {
 		err := DeleteRelationshipsRequestValidationError{
 			field:  "OptionalLimit",
-			reason: "value must be inside range [0, 1000]",
+			reason: "value must be greater than or equal to 0",
 		}
 		if !all {
 			return err
@@ -3900,10 +3900,10 @@ func (m *LookupResourcesRequest) validate(all bool) error {
 		}
 	}
 
-	if val := m.GetOptionalLimit(); val < 0 || val > 1000 {
+	if m.GetOptionalLimit() < 0 {
 		err := LookupResourcesRequestValidationError{
 			field:  "OptionalLimit",
-			reason: "value must be inside range [0, 1000]",
+			reason: "value must be greater than or equal to 0",
 		}
 		if !all {
 			return err
@@ -4427,10 +4427,10 @@ func (m *LookupSubjectsRequest) validate(all bool) error {
 		}
 	}
 
-	if val := m.GetOptionalConcreteLimit(); val < 0 || val > 1000 {
+	if m.GetOptionalConcreteLimit() < 0 {
 		err := LookupSubjectsRequestValidationError{
 			field:  "OptionalConcreteLimit",
-			reason: "value must be inside range [0, 1000]",
+			reason: "value must be greater than or equal to 0",
 		}
 		if !all {
 			return err
