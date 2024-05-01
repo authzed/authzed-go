@@ -4087,6 +4087,301 @@ var _ interface {
 	ErrorName() string
 } = ExperimentalSchemaDiffResponseValidationError{}
 
+// Validate checks the field values on ExpRelationSubjectTypeChange with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExpRelationSubjectTypeChange) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpRelationSubjectTypeChange with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ExpRelationSubjectTypeChangeMultiError, or nil if none found.
+func (m *ExpRelationSubjectTypeChange) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpRelationSubjectTypeChange) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetRelation()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExpRelationSubjectTypeChangeValidationError{
+					field:  "Relation",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExpRelationSubjectTypeChangeValidationError{
+					field:  "Relation",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRelation()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExpRelationSubjectTypeChangeValidationError{
+				field:  "Relation",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetChangedSubjectType()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExpRelationSubjectTypeChangeValidationError{
+					field:  "ChangedSubjectType",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExpRelationSubjectTypeChangeValidationError{
+					field:  "ChangedSubjectType",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetChangedSubjectType()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExpRelationSubjectTypeChangeValidationError{
+				field:  "ChangedSubjectType",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ExpRelationSubjectTypeChangeMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpRelationSubjectTypeChangeMultiError is an error wrapping multiple
+// validation errors returned by ExpRelationSubjectTypeChange.ValidateAll() if
+// the designated constraints aren't met.
+type ExpRelationSubjectTypeChangeMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpRelationSubjectTypeChangeMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpRelationSubjectTypeChangeMultiError) AllErrors() []error { return m }
+
+// ExpRelationSubjectTypeChangeValidationError is the validation error returned
+// by ExpRelationSubjectTypeChange.Validate if the designated constraints
+// aren't met.
+type ExpRelationSubjectTypeChangeValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpRelationSubjectTypeChangeValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpRelationSubjectTypeChangeValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpRelationSubjectTypeChangeValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpRelationSubjectTypeChangeValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpRelationSubjectTypeChangeValidationError) ErrorName() string {
+	return "ExpRelationSubjectTypeChangeValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExpRelationSubjectTypeChangeValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpRelationSubjectTypeChange.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpRelationSubjectTypeChangeValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpRelationSubjectTypeChangeValidationError{}
+
+// Validate checks the field values on ExpCaveatParameterTypeChange with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExpCaveatParameterTypeChange) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpCaveatParameterTypeChange with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ExpCaveatParameterTypeChangeMultiError, or nil if none found.
+func (m *ExpCaveatParameterTypeChange) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpCaveatParameterTypeChange) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetParameter()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExpCaveatParameterTypeChangeValidationError{
+					field:  "Parameter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExpCaveatParameterTypeChangeValidationError{
+					field:  "Parameter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetParameter()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExpCaveatParameterTypeChangeValidationError{
+				field:  "Parameter",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for PreviousType
+
+	if len(errors) > 0 {
+		return ExpCaveatParameterTypeChangeMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpCaveatParameterTypeChangeMultiError is an error wrapping multiple
+// validation errors returned by ExpCaveatParameterTypeChange.ValidateAll() if
+// the designated constraints aren't met.
+type ExpCaveatParameterTypeChangeMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpCaveatParameterTypeChangeMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpCaveatParameterTypeChangeMultiError) AllErrors() []error { return m }
+
+// ExpCaveatParameterTypeChangeValidationError is the validation error returned
+// by ExpCaveatParameterTypeChange.Validate if the designated constraints
+// aren't met.
+type ExpCaveatParameterTypeChangeValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpCaveatParameterTypeChangeValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpCaveatParameterTypeChangeValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpCaveatParameterTypeChangeValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpCaveatParameterTypeChangeValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpCaveatParameterTypeChangeValidationError) ErrorName() string {
+	return "ExpCaveatParameterTypeChangeValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExpCaveatParameterTypeChangeValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpCaveatParameterTypeChange.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpCaveatParameterTypeChangeValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpCaveatParameterTypeChangeValidationError{}
+
 // Validate checks the field values on ExpSchemaDiff with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -4356,7 +4651,7 @@ func (m *ExpSchemaDiff) validate(all bool) error {
 			}
 		}
 
-	case *ExpSchemaDiff_RelationTypeChanged:
+	case *ExpSchemaDiff_RelationSubjectTypeAdded:
 		if v == nil {
 			err := ExpSchemaDiffValidationError{
 				field:  "Diff",
@@ -4369,11 +4664,11 @@ func (m *ExpSchemaDiff) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetRelationTypeChanged()).(type) {
+			switch v := interface{}(m.GetRelationSubjectTypeAdded()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, ExpSchemaDiffValidationError{
-						field:  "RelationTypeChanged",
+						field:  "RelationSubjectTypeAdded",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -4381,16 +4676,57 @@ func (m *ExpSchemaDiff) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, ExpSchemaDiffValidationError{
-						field:  "RelationTypeChanged",
+						field:  "RelationSubjectTypeAdded",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetRelationTypeChanged()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetRelationSubjectTypeAdded()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return ExpSchemaDiffValidationError{
-					field:  "RelationTypeChanged",
+					field:  "RelationSubjectTypeAdded",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_RelationSubjectTypeRemoved:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetRelationSubjectTypeRemoved()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "RelationSubjectTypeRemoved",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "RelationSubjectTypeRemoved",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetRelationSubjectTypeRemoved()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "RelationSubjectTypeRemoved",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
