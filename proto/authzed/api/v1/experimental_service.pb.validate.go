@@ -1619,3 +1619,3313 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = BulkExportRelationshipsResponseValidationError{}
+
+// Validate checks the field values on ExperimentalReflectSchemaRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *ExperimentalReflectSchemaRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExperimentalReflectSchemaRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ExperimentalReflectSchemaRequestMultiError, or nil if none found.
+func (m *ExperimentalReflectSchemaRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalReflectSchemaRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetConsistency()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalReflectSchemaRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalReflectSchemaRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetConsistency()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalReflectSchemaRequestValidationError{
+				field:  "Consistency",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetOptionalFilters() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExperimentalReflectSchemaRequestValidationError{
+						field:  fmt.Sprintf("OptionalFilters[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExperimentalReflectSchemaRequestValidationError{
+						field:  fmt.Sprintf("OptionalFilters[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExperimentalReflectSchemaRequestValidationError{
+					field:  fmt.Sprintf("OptionalFilters[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ExperimentalReflectSchemaRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalReflectSchemaRequestMultiError is an error wrapping multiple
+// validation errors returned by
+// ExperimentalReflectSchemaRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ExperimentalReflectSchemaRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalReflectSchemaRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalReflectSchemaRequestMultiError) AllErrors() []error { return m }
+
+// ExperimentalReflectSchemaRequestValidationError is the validation error
+// returned by ExperimentalReflectSchemaRequest.Validate if the designated
+// constraints aren't met.
+type ExperimentalReflectSchemaRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalReflectSchemaRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExperimentalReflectSchemaRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExperimentalReflectSchemaRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExperimentalReflectSchemaRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalReflectSchemaRequestValidationError) ErrorName() string {
+	return "ExperimentalReflectSchemaRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalReflectSchemaRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalReflectSchemaRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalReflectSchemaRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalReflectSchemaRequestValidationError{}
+
+// Validate checks the field values on ExperimentalReflectSchemaResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *ExperimentalReflectSchemaResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExperimentalReflectSchemaResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// ExperimentalReflectSchemaResponseMultiError, or nil if none found.
+func (m *ExperimentalReflectSchemaResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalReflectSchemaResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetDefinitions() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExperimentalReflectSchemaResponseValidationError{
+						field:  fmt.Sprintf("Definitions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExperimentalReflectSchemaResponseValidationError{
+						field:  fmt.Sprintf("Definitions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExperimentalReflectSchemaResponseValidationError{
+					field:  fmt.Sprintf("Definitions[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetCaveats() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExperimentalReflectSchemaResponseValidationError{
+						field:  fmt.Sprintf("Caveats[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExperimentalReflectSchemaResponseValidationError{
+						field:  fmt.Sprintf("Caveats[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExperimentalReflectSchemaResponseValidationError{
+					field:  fmt.Sprintf("Caveats[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetReadAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalReflectSchemaResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalReflectSchemaResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReadAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalReflectSchemaResponseValidationError{
+				field:  "ReadAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ExperimentalReflectSchemaResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalReflectSchemaResponseMultiError is an error wrapping multiple
+// validation errors returned by
+// ExperimentalReflectSchemaResponse.ValidateAll() if the designated
+// constraints aren't met.
+type ExperimentalReflectSchemaResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalReflectSchemaResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalReflectSchemaResponseMultiError) AllErrors() []error { return m }
+
+// ExperimentalReflectSchemaResponseValidationError is the validation error
+// returned by ExperimentalReflectSchemaResponse.Validate if the designated
+// constraints aren't met.
+type ExperimentalReflectSchemaResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalReflectSchemaResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExperimentalReflectSchemaResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExperimentalReflectSchemaResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExperimentalReflectSchemaResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalReflectSchemaResponseValidationError) ErrorName() string {
+	return "ExperimentalReflectSchemaResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalReflectSchemaResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalReflectSchemaResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalReflectSchemaResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalReflectSchemaResponseValidationError{}
+
+// Validate checks the field values on ExpSchemaFilter with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ExpSchemaFilter) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpSchemaFilter with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ExpSchemaFilterMultiError, or nil if none found.
+func (m *ExpSchemaFilter) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpSchemaFilter) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for OptionalDefinitionNameMatch
+
+	// no validation rules for OptionalRelationOrPermissionNameMatch
+
+	if len(errors) > 0 {
+		return ExpSchemaFilterMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpSchemaFilterMultiError is an error wrapping multiple validation errors
+// returned by ExpSchemaFilter.ValidateAll() if the designated constraints
+// aren't met.
+type ExpSchemaFilterMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpSchemaFilterMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpSchemaFilterMultiError) AllErrors() []error { return m }
+
+// ExpSchemaFilterValidationError is the validation error returned by
+// ExpSchemaFilter.Validate if the designated constraints aren't met.
+type ExpSchemaFilterValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpSchemaFilterValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpSchemaFilterValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpSchemaFilterValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpSchemaFilterValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpSchemaFilterValidationError) ErrorName() string { return "ExpSchemaFilterValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ExpSchemaFilterValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpSchemaFilter.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpSchemaFilterValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpSchemaFilterValidationError{}
+
+// Validate checks the field values on ExpDefinition with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ExpDefinition) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpDefinition with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ExpDefinitionMultiError, or
+// nil if none found.
+func (m *ExpDefinition) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpDefinition) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Name
+
+	// no validation rules for Comment
+
+	for idx, item := range m.GetRelations() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpDefinitionValidationError{
+						field:  fmt.Sprintf("Relations[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpDefinitionValidationError{
+						field:  fmt.Sprintf("Relations[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpDefinitionValidationError{
+					field:  fmt.Sprintf("Relations[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetPermissions() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpDefinitionValidationError{
+						field:  fmt.Sprintf("Permissions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpDefinitionValidationError{
+						field:  fmt.Sprintf("Permissions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpDefinitionValidationError{
+					field:  fmt.Sprintf("Permissions[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ExpDefinitionMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpDefinitionMultiError is an error wrapping multiple validation errors
+// returned by ExpDefinition.ValidateAll() if the designated constraints
+// aren't met.
+type ExpDefinitionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpDefinitionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpDefinitionMultiError) AllErrors() []error { return m }
+
+// ExpDefinitionValidationError is the validation error returned by
+// ExpDefinition.Validate if the designated constraints aren't met.
+type ExpDefinitionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpDefinitionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpDefinitionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpDefinitionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpDefinitionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpDefinitionValidationError) ErrorName() string { return "ExpDefinitionValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ExpDefinitionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpDefinition.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpDefinitionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpDefinitionValidationError{}
+
+// Validate checks the field values on ExpCaveat with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ExpCaveat) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpCaveat with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ExpCaveatMultiError, or nil
+// if none found.
+func (m *ExpCaveat) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpCaveat) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Name
+
+	// no validation rules for Comment
+
+	for idx, item := range m.GetParameters() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpCaveatValidationError{
+						field:  fmt.Sprintf("Parameters[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpCaveatValidationError{
+						field:  fmt.Sprintf("Parameters[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpCaveatValidationError{
+					field:  fmt.Sprintf("Parameters[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for Expression
+
+	if len(errors) > 0 {
+		return ExpCaveatMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpCaveatMultiError is an error wrapping multiple validation errors returned
+// by ExpCaveat.ValidateAll() if the designated constraints aren't met.
+type ExpCaveatMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpCaveatMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpCaveatMultiError) AllErrors() []error { return m }
+
+// ExpCaveatValidationError is the validation error returned by
+// ExpCaveat.Validate if the designated constraints aren't met.
+type ExpCaveatValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpCaveatValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpCaveatValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpCaveatValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpCaveatValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpCaveatValidationError) ErrorName() string { return "ExpCaveatValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ExpCaveatValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpCaveat.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpCaveatValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpCaveatValidationError{}
+
+// Validate checks the field values on ExpCaveatParameter with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExpCaveatParameter) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpCaveatParameter with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ExpCaveatParameterMultiError, or nil if none found.
+func (m *ExpCaveatParameter) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpCaveatParameter) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Name
+
+	// no validation rules for Type
+
+	// no validation rules for ParentCaveatName
+
+	if len(errors) > 0 {
+		return ExpCaveatParameterMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpCaveatParameterMultiError is an error wrapping multiple validation errors
+// returned by ExpCaveatParameter.ValidateAll() if the designated constraints
+// aren't met.
+type ExpCaveatParameterMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpCaveatParameterMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpCaveatParameterMultiError) AllErrors() []error { return m }
+
+// ExpCaveatParameterValidationError is the validation error returned by
+// ExpCaveatParameter.Validate if the designated constraints aren't met.
+type ExpCaveatParameterValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpCaveatParameterValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpCaveatParameterValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpCaveatParameterValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpCaveatParameterValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpCaveatParameterValidationError) ErrorName() string {
+	return "ExpCaveatParameterValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExpCaveatParameterValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpCaveatParameter.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpCaveatParameterValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpCaveatParameterValidationError{}
+
+// Validate checks the field values on ExpRelation with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ExpRelation) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpRelation with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ExpRelationMultiError, or
+// nil if none found.
+func (m *ExpRelation) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpRelation) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Name
+
+	// no validation rules for Comment
+
+	// no validation rules for ParentDefinitionName
+
+	for idx, item := range m.GetSubjectTypes() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpRelationValidationError{
+						field:  fmt.Sprintf("SubjectTypes[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpRelationValidationError{
+						field:  fmt.Sprintf("SubjectTypes[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpRelationValidationError{
+					field:  fmt.Sprintf("SubjectTypes[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ExpRelationMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpRelationMultiError is an error wrapping multiple validation errors
+// returned by ExpRelation.ValidateAll() if the designated constraints aren't met.
+type ExpRelationMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpRelationMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpRelationMultiError) AllErrors() []error { return m }
+
+// ExpRelationValidationError is the validation error returned by
+// ExpRelation.Validate if the designated constraints aren't met.
+type ExpRelationValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpRelationValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpRelationValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpRelationValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpRelationValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpRelationValidationError) ErrorName() string { return "ExpRelationValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ExpRelationValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpRelation.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpRelationValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpRelationValidationError{}
+
+// Validate checks the field values on ExpTypeReference with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ExpTypeReference) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpTypeReference with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ExpTypeReferenceMultiError, or nil if none found.
+func (m *ExpTypeReference) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpTypeReference) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for SubjectDefinitionName
+
+	// no validation rules for OptionalCaveatName
+
+	switch v := m.Typeref.(type) {
+	case *ExpTypeReference_IsTerminalSubject:
+		if v == nil {
+			err := ExpTypeReferenceValidationError{
+				field:  "Typeref",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		// no validation rules for IsTerminalSubject
+	case *ExpTypeReference_OptionalRelationName:
+		if v == nil {
+			err := ExpTypeReferenceValidationError{
+				field:  "Typeref",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		// no validation rules for OptionalRelationName
+	case *ExpTypeReference_IsPublicWildcard:
+		if v == nil {
+			err := ExpTypeReferenceValidationError{
+				field:  "Typeref",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		// no validation rules for IsPublicWildcard
+	default:
+		_ = v // ensures v is used
+	}
+
+	if len(errors) > 0 {
+		return ExpTypeReferenceMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpTypeReferenceMultiError is an error wrapping multiple validation errors
+// returned by ExpTypeReference.ValidateAll() if the designated constraints
+// aren't met.
+type ExpTypeReferenceMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpTypeReferenceMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpTypeReferenceMultiError) AllErrors() []error { return m }
+
+// ExpTypeReferenceValidationError is the validation error returned by
+// ExpTypeReference.Validate if the designated constraints aren't met.
+type ExpTypeReferenceValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpTypeReferenceValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpTypeReferenceValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpTypeReferenceValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpTypeReferenceValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpTypeReferenceValidationError) ErrorName() string { return "ExpTypeReferenceValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ExpTypeReferenceValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpTypeReference.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpTypeReferenceValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpTypeReferenceValidationError{}
+
+// Validate checks the field values on ExpPermission with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ExpPermission) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpPermission with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ExpPermissionMultiError, or
+// nil if none found.
+func (m *ExpPermission) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpPermission) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Name
+
+	// no validation rules for Comment
+
+	// no validation rules for ParentDefinitionName
+
+	if len(errors) > 0 {
+		return ExpPermissionMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpPermissionMultiError is an error wrapping multiple validation errors
+// returned by ExpPermission.ValidateAll() if the designated constraints
+// aren't met.
+type ExpPermissionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpPermissionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpPermissionMultiError) AllErrors() []error { return m }
+
+// ExpPermissionValidationError is the validation error returned by
+// ExpPermission.Validate if the designated constraints aren't met.
+type ExpPermissionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpPermissionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpPermissionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpPermissionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpPermissionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpPermissionValidationError) ErrorName() string { return "ExpPermissionValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ExpPermissionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpPermission.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpPermissionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpPermissionValidationError{}
+
+// Validate checks the field values on ExperimentalComputablePermissionsRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *ExperimentalComputablePermissionsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ExperimentalComputablePermissionsRequest with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// ExperimentalComputablePermissionsRequestMultiError, or nil if none found.
+func (m *ExperimentalComputablePermissionsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalComputablePermissionsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetConsistency()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalComputablePermissionsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalComputablePermissionsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetConsistency()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalComputablePermissionsRequestValidationError{
+				field:  "Consistency",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetRelations() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExperimentalComputablePermissionsRequestValidationError{
+						field:  fmt.Sprintf("Relations[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExperimentalComputablePermissionsRequestValidationError{
+						field:  fmt.Sprintf("Relations[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExperimentalComputablePermissionsRequestValidationError{
+					field:  fmt.Sprintf("Relations[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for OptionalDefinitionNameMatch
+
+	if len(errors) > 0 {
+		return ExperimentalComputablePermissionsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalComputablePermissionsRequestMultiError is an error wrapping
+// multiple validation errors returned by
+// ExperimentalComputablePermissionsRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ExperimentalComputablePermissionsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalComputablePermissionsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalComputablePermissionsRequestMultiError) AllErrors() []error { return m }
+
+// ExperimentalComputablePermissionsRequestValidationError is the validation
+// error returned by ExperimentalComputablePermissionsRequest.Validate if the
+// designated constraints aren't met.
+type ExperimentalComputablePermissionsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalComputablePermissionsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExperimentalComputablePermissionsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExperimentalComputablePermissionsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExperimentalComputablePermissionsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalComputablePermissionsRequestValidationError) ErrorName() string {
+	return "ExperimentalComputablePermissionsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalComputablePermissionsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalComputablePermissionsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalComputablePermissionsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalComputablePermissionsRequestValidationError{}
+
+// Validate checks the field values on ExpRelationReference with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExpRelationReference) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpRelationReference with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ExpRelationReferenceMultiError, or nil if none found.
+func (m *ExpRelationReference) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpRelationReference) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for DefinitionName
+
+	// no validation rules for RelationName
+
+	if len(errors) > 0 {
+		return ExpRelationReferenceMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpRelationReferenceMultiError is an error wrapping multiple validation
+// errors returned by ExpRelationReference.ValidateAll() if the designated
+// constraints aren't met.
+type ExpRelationReferenceMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpRelationReferenceMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpRelationReferenceMultiError) AllErrors() []error { return m }
+
+// ExpRelationReferenceValidationError is the validation error returned by
+// ExpRelationReference.Validate if the designated constraints aren't met.
+type ExpRelationReferenceValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpRelationReferenceValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpRelationReferenceValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpRelationReferenceValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpRelationReferenceValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpRelationReferenceValidationError) ErrorName() string {
+	return "ExpRelationReferenceValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExpRelationReferenceValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpRelationReference.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpRelationReferenceValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpRelationReferenceValidationError{}
+
+// Validate checks the field values on ExpPermissionReference with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExpPermissionReference) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpPermissionReference with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ExpPermissionReferenceMultiError, or nil if none found.
+func (m *ExpPermissionReference) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpPermissionReference) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for DefinitionName
+
+	// no validation rules for RelationName
+
+	if len(errors) > 0 {
+		return ExpPermissionReferenceMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpPermissionReferenceMultiError is an error wrapping multiple validation
+// errors returned by ExpPermissionReference.ValidateAll() if the designated
+// constraints aren't met.
+type ExpPermissionReferenceMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpPermissionReferenceMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpPermissionReferenceMultiError) AllErrors() []error { return m }
+
+// ExpPermissionReferenceValidationError is the validation error returned by
+// ExpPermissionReference.Validate if the designated constraints aren't met.
+type ExpPermissionReferenceValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpPermissionReferenceValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpPermissionReferenceValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpPermissionReferenceValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpPermissionReferenceValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpPermissionReferenceValidationError) ErrorName() string {
+	return "ExpPermissionReferenceValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExpPermissionReferenceValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpPermissionReference.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpPermissionReferenceValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpPermissionReferenceValidationError{}
+
+// Validate checks the field values on
+// ExperimentalComputablePermissionsResponse with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ExperimentalComputablePermissionsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ExperimentalComputablePermissionsResponse with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// ExperimentalComputablePermissionsResponseMultiError, or nil if none found.
+func (m *ExperimentalComputablePermissionsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalComputablePermissionsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetPermissions() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExperimentalComputablePermissionsResponseValidationError{
+						field:  fmt.Sprintf("Permissions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExperimentalComputablePermissionsResponseValidationError{
+						field:  fmt.Sprintf("Permissions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExperimentalComputablePermissionsResponseValidationError{
+					field:  fmt.Sprintf("Permissions[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetReadAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalComputablePermissionsResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalComputablePermissionsResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReadAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalComputablePermissionsResponseValidationError{
+				field:  "ReadAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ExperimentalComputablePermissionsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalComputablePermissionsResponseMultiError is an error wrapping
+// multiple validation errors returned by
+// ExperimentalComputablePermissionsResponse.ValidateAll() if the designated
+// constraints aren't met.
+type ExperimentalComputablePermissionsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalComputablePermissionsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalComputablePermissionsResponseMultiError) AllErrors() []error { return m }
+
+// ExperimentalComputablePermissionsResponseValidationError is the validation
+// error returned by ExperimentalComputablePermissionsResponse.Validate if the
+// designated constraints aren't met.
+type ExperimentalComputablePermissionsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalComputablePermissionsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExperimentalComputablePermissionsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExperimentalComputablePermissionsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExperimentalComputablePermissionsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalComputablePermissionsResponseValidationError) ErrorName() string {
+	return "ExperimentalComputablePermissionsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalComputablePermissionsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalComputablePermissionsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalComputablePermissionsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalComputablePermissionsResponseValidationError{}
+
+// Validate checks the field values on ExperimentalDependentRelationsRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *ExperimentalDependentRelationsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExperimentalDependentRelationsRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// ExperimentalDependentRelationsRequestMultiError, or nil if none found.
+func (m *ExperimentalDependentRelationsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalDependentRelationsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetConsistency()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalDependentRelationsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalDependentRelationsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetConsistency()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalDependentRelationsRequestValidationError{
+				field:  "Consistency",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetPermission()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalDependentRelationsRequestValidationError{
+					field:  "Permission",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalDependentRelationsRequestValidationError{
+					field:  "Permission",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPermission()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalDependentRelationsRequestValidationError{
+				field:  "Permission",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ExperimentalDependentRelationsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalDependentRelationsRequestMultiError is an error wrapping
+// multiple validation errors returned by
+// ExperimentalDependentRelationsRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ExperimentalDependentRelationsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalDependentRelationsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalDependentRelationsRequestMultiError) AllErrors() []error { return m }
+
+// ExperimentalDependentRelationsRequestValidationError is the validation error
+// returned by ExperimentalDependentRelationsRequest.Validate if the
+// designated constraints aren't met.
+type ExperimentalDependentRelationsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalDependentRelationsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExperimentalDependentRelationsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExperimentalDependentRelationsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExperimentalDependentRelationsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalDependentRelationsRequestValidationError) ErrorName() string {
+	return "ExperimentalDependentRelationsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalDependentRelationsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalDependentRelationsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalDependentRelationsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalDependentRelationsRequestValidationError{}
+
+// Validate checks the field values on ExperimentalDependentRelationsResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *ExperimentalDependentRelationsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ExperimentalDependentRelationsResponse with the rules defined in the proto
+// definition for this message. If any rules are violated, the result is a
+// list of violation errors wrapped in
+// ExperimentalDependentRelationsResponseMultiError, or nil if none found.
+func (m *ExperimentalDependentRelationsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalDependentRelationsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetRelations() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExperimentalDependentRelationsResponseValidationError{
+						field:  fmt.Sprintf("Relations[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExperimentalDependentRelationsResponseValidationError{
+						field:  fmt.Sprintf("Relations[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExperimentalDependentRelationsResponseValidationError{
+					field:  fmt.Sprintf("Relations[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetReadAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalDependentRelationsResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalDependentRelationsResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReadAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalDependentRelationsResponseValidationError{
+				field:  "ReadAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ExperimentalDependentRelationsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalDependentRelationsResponseMultiError is an error wrapping
+// multiple validation errors returned by
+// ExperimentalDependentRelationsResponse.ValidateAll() if the designated
+// constraints aren't met.
+type ExperimentalDependentRelationsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalDependentRelationsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalDependentRelationsResponseMultiError) AllErrors() []error { return m }
+
+// ExperimentalDependentRelationsResponseValidationError is the validation
+// error returned by ExperimentalDependentRelationsResponse.Validate if the
+// designated constraints aren't met.
+type ExperimentalDependentRelationsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalDependentRelationsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExperimentalDependentRelationsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExperimentalDependentRelationsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExperimentalDependentRelationsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalDependentRelationsResponseValidationError) ErrorName() string {
+	return "ExperimentalDependentRelationsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalDependentRelationsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalDependentRelationsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalDependentRelationsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalDependentRelationsResponseValidationError{}
+
+// Validate checks the field values on ExperimentalSchemaDiffRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExperimentalSchemaDiffRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExperimentalSchemaDiffRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ExperimentalSchemaDiffRequestMultiError, or nil if none found.
+func (m *ExperimentalSchemaDiffRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalSchemaDiffRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetConsistency()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalSchemaDiffRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalSchemaDiffRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetConsistency()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalSchemaDiffRequestValidationError{
+				field:  "Consistency",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for ComparisonSchema
+
+	if len(errors) > 0 {
+		return ExperimentalSchemaDiffRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalSchemaDiffRequestMultiError is an error wrapping multiple
+// validation errors returned by ExperimentalSchemaDiffRequest.ValidateAll()
+// if the designated constraints aren't met.
+type ExperimentalSchemaDiffRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalSchemaDiffRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalSchemaDiffRequestMultiError) AllErrors() []error { return m }
+
+// ExperimentalSchemaDiffRequestValidationError is the validation error
+// returned by ExperimentalSchemaDiffRequest.Validate if the designated
+// constraints aren't met.
+type ExperimentalSchemaDiffRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalSchemaDiffRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExperimentalSchemaDiffRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExperimentalSchemaDiffRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExperimentalSchemaDiffRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalSchemaDiffRequestValidationError) ErrorName() string {
+	return "ExperimentalSchemaDiffRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalSchemaDiffRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalSchemaDiffRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalSchemaDiffRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalSchemaDiffRequestValidationError{}
+
+// Validate checks the field values on ExperimentalSchemaDiffResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExperimentalSchemaDiffResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExperimentalSchemaDiffResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ExperimentalSchemaDiffResponseMultiError, or nil if none found.
+func (m *ExperimentalSchemaDiffResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalSchemaDiffResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetDiffs() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExperimentalSchemaDiffResponseValidationError{
+						field:  fmt.Sprintf("Diffs[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExperimentalSchemaDiffResponseValidationError{
+						field:  fmt.Sprintf("Diffs[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExperimentalSchemaDiffResponseValidationError{
+					field:  fmt.Sprintf("Diffs[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetReadAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalSchemaDiffResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalSchemaDiffResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReadAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalSchemaDiffResponseValidationError{
+				field:  "ReadAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ExperimentalSchemaDiffResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalSchemaDiffResponseMultiError is an error wrapping multiple
+// validation errors returned by ExperimentalSchemaDiffResponse.ValidateAll()
+// if the designated constraints aren't met.
+type ExperimentalSchemaDiffResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalSchemaDiffResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalSchemaDiffResponseMultiError) AllErrors() []error { return m }
+
+// ExperimentalSchemaDiffResponseValidationError is the validation error
+// returned by ExperimentalSchemaDiffResponse.Validate if the designated
+// constraints aren't met.
+type ExperimentalSchemaDiffResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalSchemaDiffResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExperimentalSchemaDiffResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExperimentalSchemaDiffResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExperimentalSchemaDiffResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalSchemaDiffResponseValidationError) ErrorName() string {
+	return "ExperimentalSchemaDiffResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalSchemaDiffResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalSchemaDiffResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalSchemaDiffResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalSchemaDiffResponseValidationError{}
+
+// Validate checks the field values on ExpSchemaDiff with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ExpSchemaDiff) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpSchemaDiff with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ExpSchemaDiffMultiError, or
+// nil if none found.
+func (m *ExpSchemaDiff) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpSchemaDiff) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	switch v := m.Diff.(type) {
+	case *ExpSchemaDiff_DefinitionAdded:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetDefinitionAdded()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "DefinitionAdded",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "DefinitionAdded",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetDefinitionAdded()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "DefinitionAdded",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_DefinitionRemoved:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetDefinitionRemoved()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "DefinitionRemoved",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "DefinitionRemoved",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetDefinitionRemoved()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "DefinitionRemoved",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_DefinitionDocCommentChanged:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetDefinitionDocCommentChanged()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "DefinitionDocCommentChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "DefinitionDocCommentChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetDefinitionDocCommentChanged()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "DefinitionDocCommentChanged",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_RelationAdded:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetRelationAdded()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "RelationAdded",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "RelationAdded",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetRelationAdded()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "RelationAdded",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_RelationRemoved:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetRelationRemoved()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "RelationRemoved",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "RelationRemoved",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetRelationRemoved()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "RelationRemoved",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_RelationDocCommentChanged:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetRelationDocCommentChanged()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "RelationDocCommentChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "RelationDocCommentChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetRelationDocCommentChanged()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "RelationDocCommentChanged",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_RelationTypeChanged:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetRelationTypeChanged()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "RelationTypeChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "RelationTypeChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetRelationTypeChanged()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "RelationTypeChanged",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_PermissionAdded:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetPermissionAdded()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "PermissionAdded",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "PermissionAdded",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetPermissionAdded()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "PermissionAdded",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_PermissionRemoved:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetPermissionRemoved()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "PermissionRemoved",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "PermissionRemoved",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetPermissionRemoved()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "PermissionRemoved",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_PermissionDocCommentChanged:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetPermissionDocCommentChanged()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "PermissionDocCommentChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "PermissionDocCommentChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetPermissionDocCommentChanged()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "PermissionDocCommentChanged",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_PermissionExprChanged:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetPermissionExprChanged()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "PermissionExprChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "PermissionExprChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetPermissionExprChanged()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "PermissionExprChanged",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_CaveatAdded:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetCaveatAdded()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatAdded",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatAdded",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetCaveatAdded()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "CaveatAdded",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_CaveatRemoved:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetCaveatRemoved()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatRemoved",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatRemoved",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetCaveatRemoved()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "CaveatRemoved",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_CaveatDocCommentChanged:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetCaveatDocCommentChanged()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatDocCommentChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatDocCommentChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetCaveatDocCommentChanged()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "CaveatDocCommentChanged",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_CaveatExprChanged:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetCaveatExprChanged()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatExprChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatExprChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetCaveatExprChanged()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "CaveatExprChanged",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_CaveatParameterAdded:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetCaveatParameterAdded()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatParameterAdded",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatParameterAdded",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetCaveatParameterAdded()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "CaveatParameterAdded",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_CaveatParameterRemoved:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetCaveatParameterRemoved()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatParameterRemoved",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatParameterRemoved",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetCaveatParameterRemoved()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "CaveatParameterRemoved",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ExpSchemaDiff_CaveatParameterTypeChanged:
+		if v == nil {
+			err := ExpSchemaDiffValidationError{
+				field:  "Diff",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetCaveatParameterTypeChanged()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatParameterTypeChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExpSchemaDiffValidationError{
+						field:  "CaveatParameterTypeChanged",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetCaveatParameterTypeChanged()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExpSchemaDiffValidationError{
+					field:  "CaveatParameterTypeChanged",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+
+	if len(errors) > 0 {
+		return ExpSchemaDiffMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpSchemaDiffMultiError is an error wrapping multiple validation errors
+// returned by ExpSchemaDiff.ValidateAll() if the designated constraints
+// aren't met.
+type ExpSchemaDiffMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpSchemaDiffMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpSchemaDiffMultiError) AllErrors() []error { return m }
+
+// ExpSchemaDiffValidationError is the validation error returned by
+// ExpSchemaDiff.Validate if the designated constraints aren't met.
+type ExpSchemaDiffValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpSchemaDiffValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpSchemaDiffValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpSchemaDiffValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpSchemaDiffValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpSchemaDiffValidationError) ErrorName() string { return "ExpSchemaDiffValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ExpSchemaDiffValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpSchemaDiff.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpSchemaDiffValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpSchemaDiffValidationError{}

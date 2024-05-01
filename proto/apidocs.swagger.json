@@ -47,6 +47,7 @@
   "paths": {
     "/v1/experimental/permissions/bulkcheckpermission": {
       "post": {
+        "summary": "NOTE: BulkCheckPermission has been promoted to the stable API as \"CheckBulkPermission\" and the\nAPI will be removed from experimental in a future release.",
         "operationId": "ExperimentalService_BulkCheckPermission",
         "responses": {
           "200": {
@@ -65,10 +66,110 @@
         "parameters": [
           {
             "name": "body",
+            "description": "NOTE: Deprecated now that BulkCheckPermission has been promoted to the stable API as \"CheckBulkPermission\".",
             "in": "body",
             "required": true,
             "schema": {
               "$ref": "#/definitions/v1BulkCheckPermissionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ExperimentalService"
+        ]
+      }
+    },
+    "/v1/experimental/permissions/computable": {
+      "post": {
+        "summary": "EXPERIMENTAL: ComputablePermissions is an API that allows clients to request the set of\npermissions that compute based off a set of relations. For example, if a schema has a relation\n`viewer` and a permission `view` defined as `permission view = viewer + editor`, then the\ncomputable permissions for the relation `viewer` will include `view`.",
+        "operationId": "ExperimentalService_ExperimentalComputablePermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalComputablePermissionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalComputablePermissionsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ExperimentalService"
+        ]
+      }
+    },
+    "/v1/experimental/permissions/dependent": {
+      "post": {
+        "summary": "EXPERIMENTAL: DependentRelations is an API that allows clients to request the set of\nrelations that used to compute a permission, recursively. It is the inverse of the\nComputablePermissions API.",
+        "operationId": "ExperimentalService_ExperimentalDependentRelations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalDependentRelationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalDependentRelationsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ExperimentalService"
+        ]
+      }
+    },
+    "/v1/experimental/reflectschema": {
+      "post": {
+        "summary": "EXPERIMENTAL: ReflectSchema is an API that allows clients to reflect the schema stored in\nSpiceDB. This is useful for clients that need to introspect the schema of a SpiceDB instance.",
+        "operationId": "ExperimentalService_ExperimentalReflectSchema",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalReflectSchemaResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalReflectSchemaRequest"
             }
           }
         ],
@@ -147,6 +248,39 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/v1BulkImportRelationshipsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ExperimentalService"
+        ]
+      }
+    },
+    "/v1/experimental/schemadiff": {
+      "post": {
+        "summary": "EXPERIMENTAL: DiffSchema is an API that allows clients to request the difference between the\nspecified schema and the schema stored in SpiceDB. This is useful for clients that need to\nintrospect the schema of a SpiceDB instance.",
+        "operationId": "ExperimentalService_ExperimentalSchemaDiff",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalSchemaDiffResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalSchemaDiffRequest"
             }
           }
         ],
@@ -680,6 +814,17 @@
       ],
       "default": "UNKNOWN_SOURCE"
     },
+    "ExpSchemaFilterKindFilter": {
+      "type": "string",
+      "enum": [
+        "KIND_FILTER_UNSPECIFIED",
+        "KIND_FILTER_DEFINITION",
+        "KIND_FILTER_CAVEAT",
+        "KIND_FILTER_RELATION",
+        "KIND_FILTER_PERMISSION"
+      ],
+      "default": "KIND_FILTER_UNSPECIFIED"
+    },
     "LookupShareResponseLookupStatus": {
       "type": "string",
       "enum": [
@@ -1060,7 +1205,8 @@
             "$ref": "#/definitions/v1BulkCheckPermissionRequestItem"
           }
         }
-      }
+      },
+      "description": "NOTE: Deprecated now that BulkCheckPermission has been promoted to the stable API as \"CheckBulkPermission\"."
     },
     "v1BulkCheckPermissionRequestItem": {
       "type": "object",
@@ -1487,6 +1633,227 @@
       },
       "description": "DirectSubjectSet is a subject set which is simply a collection of subjects."
     },
+    "v1ExpCaveat": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ExpCaveatParameter"
+          }
+        },
+        "expression": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ExpCaveatParameter": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "parentCaveatName": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ExpDefinition": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ExpRelation"
+          }
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ExpPermission"
+          }
+        }
+      }
+    },
+    "v1ExpPermission": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "parentDefinitionName": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ExpPermissionReference": {
+      "type": "object",
+      "properties": {
+        "definitionName": {
+          "type": "string"
+        },
+        "relationName": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ExpRelation": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "parentDefinitionName": {
+          "type": "string"
+        },
+        "subjectTypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ExpTypeReference"
+          }
+        }
+      }
+    },
+    "v1ExpRelationReference": {
+      "type": "object",
+      "properties": {
+        "definitionName": {
+          "type": "string"
+        },
+        "relationName": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ExpSchemaDiff": {
+      "type": "object",
+      "properties": {
+        "definitionAdded": {
+          "$ref": "#/definitions/v1ExpDefinition"
+        },
+        "definitionRemoved": {
+          "$ref": "#/definitions/v1ExpDefinition"
+        },
+        "definitionDocCommentChanged": {
+          "$ref": "#/definitions/v1ExpDefinition"
+        },
+        "relationAdded": {
+          "$ref": "#/definitions/v1ExpRelation"
+        },
+        "relationRemoved": {
+          "$ref": "#/definitions/v1ExpRelation"
+        },
+        "relationDocCommentChanged": {
+          "$ref": "#/definitions/v1ExpRelation"
+        },
+        "relationTypeChanged": {
+          "$ref": "#/definitions/v1ExpRelation"
+        },
+        "permissionAdded": {
+          "$ref": "#/definitions/v1ExpPermission"
+        },
+        "permissionRemoved": {
+          "$ref": "#/definitions/v1ExpPermission"
+        },
+        "permissionDocCommentChanged": {
+          "$ref": "#/definitions/v1ExpPermission"
+        },
+        "permissionExprChanged": {
+          "$ref": "#/definitions/v1ExpPermission"
+        },
+        "caveatAdded": {
+          "$ref": "#/definitions/v1ExpCaveat"
+        },
+        "caveatRemoved": {
+          "$ref": "#/definitions/v1ExpCaveat"
+        },
+        "caveatDocCommentChanged": {
+          "$ref": "#/definitions/v1ExpCaveat"
+        },
+        "caveatExprChanged": {
+          "$ref": "#/definitions/v1ExpCaveat"
+        },
+        "caveatParameterAdded": {
+          "$ref": "#/definitions/v1ExpCaveatParameter"
+        },
+        "caveatParameterRemoved": {
+          "$ref": "#/definitions/v1ExpCaveatParameter"
+        },
+        "caveatParameterTypeChanged": {
+          "$ref": "#/definitions/v1ExpCaveatParameter"
+        }
+      }
+    },
+    "v1ExpSchemaFilter": {
+      "type": "object",
+      "properties": {
+        "optionalDefinitionNameMatch": {
+          "type": "string",
+          "description": "optional_definition_name_match is a regex that is matched against the definition or caveat name.\nIf not specified, will be ignored."
+        },
+        "optionalRelationOrPermissionNameMatch": {
+          "type": "string",
+          "description": "optional_relation_or_permission_name_match is a regex that is matched against the relation or permission name.\nIf not specified, will be ignored."
+        },
+        "kindFilters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExpSchemaFilterKindFilter"
+          },
+          "description": "kind_filters is a list of kinds to filter on. If not specified, will be ignored. If multiple are specified,\nthe filter will be applied in an OR fashion."
+        }
+      }
+    },
+    "v1ExpTypeReference": {
+      "type": "object",
+      "properties": {
+        "subjectDefinitionName": {
+          "type": "string",
+          "description": "subject_definition_name is the name of the subject's definition."
+        },
+        "optionalCaveatName": {
+          "type": "string",
+          "description": "optional_caveat_name is the name of the caveat that is applied to the subject, if any."
+        },
+        "isTerminalSubject": {
+          "type": "boolean",
+          "description": "is_terminal_subject is true if the subject is terminal, meaning it is referenced directly vs a sub-relation."
+        },
+        "optionalRelationName": {
+          "type": "string",
+          "description": "optional_relation_name is the name of the relation that is applied to the subject, if any."
+        },
+        "isPublicWildcard": {
+          "type": "boolean",
+          "description": "is_public_wildcard is true if the subject is a public wildcard."
+        }
+      }
+    },
     "v1ExpandPermissionTreeRequest": {
       "type": "object",
       "properties": {
@@ -1513,6 +1880,136 @@
         "treeRoot": {
           "$ref": "#/definitions/v1PermissionRelationshipTree",
           "description": "tree_root is a tree structure whose leaf nodes are subjects, and\nintermediate nodes represent the various operations (union, intersection,\nexclusion) to reach those subjects."
+        }
+      }
+    },
+    "v1ExperimentalComputablePermissionsRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency"
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ExpRelationReference"
+          }
+        },
+        "optionalDefinitionNameMatch": {
+          "type": "string",
+          "description": "optional_definition_name_match is a regex that is matched against the definition name(s)\nfor the permissions returned.\nIf not specified, will be ignored."
+        }
+      }
+    },
+    "v1ExperimentalComputablePermissionsResponse": {
+      "type": "object",
+      "properties": {
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ExpPermissionReference"
+          }
+        },
+        "readAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the schema was read."
+        }
+      }
+    },
+    "v1ExperimentalDependentRelationsRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency"
+        },
+        "permission": {
+          "$ref": "#/definitions/v1ExpPermissionReference"
+        }
+      }
+    },
+    "v1ExperimentalDependentRelationsResponse": {
+      "type": "object",
+      "properties": {
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ExpRelationReference"
+          }
+        },
+        "readAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the schema was read."
+        }
+      }
+    },
+    "v1ExperimentalReflectSchemaRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency"
+        },
+        "optionalFilters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ExpSchemaFilter"
+          },
+          "title": "optional_filters defines optional filters that are applied in\nan OR fashion to the schema, before being returned"
+        }
+      }
+    },
+    "v1ExperimentalReflectSchemaResponse": {
+      "type": "object",
+      "properties": {
+        "definitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ExpDefinition"
+          },
+          "description": "definitions are the definitions defined in the schema."
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ExpCaveat"
+          },
+          "description": "caveats are the caveats defined in the schema."
+        },
+        "readAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the schema was read."
+        }
+      }
+    },
+    "v1ExperimentalSchemaDiffRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency"
+        },
+        "comparisonSchema": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ExperimentalSchemaDiffResponse": {
+      "type": "object",
+      "properties": {
+        "diffs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ExpSchemaDiff"
+          }
+        },
+        "readAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the schema was read."
         }
       }
     },
