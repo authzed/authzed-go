@@ -690,6 +690,44 @@ func (m *ExperimentalSchemaDiffResponse) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (m *ExpRelationSubjectTypeChange) CloneVT() *ExpRelationSubjectTypeChange {
+	if m == nil {
+		return (*ExpRelationSubjectTypeChange)(nil)
+	}
+	r := &ExpRelationSubjectTypeChange{
+		Relation:           m.Relation.CloneVT(),
+		ChangedSubjectType: m.ChangedSubjectType.CloneVT(),
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
+	return r
+}
+
+func (m *ExpRelationSubjectTypeChange) CloneMessageVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *ExpCaveatParameterTypeChange) CloneVT() *ExpCaveatParameterTypeChange {
+	if m == nil {
+		return (*ExpCaveatParameterTypeChange)(nil)
+	}
+	r := &ExpCaveatParameterTypeChange{
+		Parameter:    m.Parameter.CloneVT(),
+		PreviousType: m.PreviousType,
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
+	return r
+}
+
+func (m *ExpCaveatParameterTypeChange) CloneMessageVT() proto.Message {
+	return m.CloneVT()
+}
+
 func (m *ExpSchemaDiff) CloneVT() *ExpSchemaDiff {
 	if m == nil {
 		return (*ExpSchemaDiff)(nil)
@@ -769,12 +807,22 @@ func (m *ExpSchemaDiff_RelationDocCommentChanged) CloneVT() isExpSchemaDiff_Diff
 	return r
 }
 
-func (m *ExpSchemaDiff_RelationTypeChanged) CloneVT() isExpSchemaDiff_Diff {
+func (m *ExpSchemaDiff_RelationSubjectTypeAdded) CloneVT() isExpSchemaDiff_Diff {
 	if m == nil {
-		return (*ExpSchemaDiff_RelationTypeChanged)(nil)
+		return (*ExpSchemaDiff_RelationSubjectTypeAdded)(nil)
 	}
-	r := &ExpSchemaDiff_RelationTypeChanged{
-		RelationTypeChanged: m.RelationTypeChanged.CloneVT(),
+	r := &ExpSchemaDiff_RelationSubjectTypeAdded{
+		RelationSubjectTypeAdded: m.RelationSubjectTypeAdded.CloneVT(),
+	}
+	return r
+}
+
+func (m *ExpSchemaDiff_RelationSubjectTypeRemoved) CloneVT() isExpSchemaDiff_Diff {
+	if m == nil {
+		return (*ExpSchemaDiff_RelationSubjectTypeRemoved)(nil)
+	}
+	r := &ExpSchemaDiff_RelationSubjectTypeRemoved{
+		RelationSubjectTypeRemoved: m.RelationSubjectTypeRemoved.CloneVT(),
 	}
 	return r
 }
@@ -1846,6 +1894,50 @@ func (this *ExperimentalSchemaDiffResponse) EqualMessageVT(thatMsg proto.Message
 	}
 	return this.EqualVT(that)
 }
+func (this *ExpRelationSubjectTypeChange) EqualVT(that *ExpRelationSubjectTypeChange) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Relation.EqualVT(that.Relation) {
+		return false
+	}
+	if !this.ChangedSubjectType.EqualVT(that.ChangedSubjectType) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ExpRelationSubjectTypeChange) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ExpRelationSubjectTypeChange)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ExpCaveatParameterTypeChange) EqualVT(that *ExpCaveatParameterTypeChange) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if !this.Parameter.EqualVT(that.Parameter) {
+		return false
+	}
+	if this.PreviousType != that.PreviousType {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ExpCaveatParameterTypeChange) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ExpCaveatParameterTypeChange)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *ExpSchemaDiff) EqualVT(that *ExpSchemaDiff) bool {
 	if this == that {
 		return true
@@ -2024,8 +2116,8 @@ func (this *ExpSchemaDiff_RelationDocCommentChanged) EqualVT(thatIface isExpSche
 	return true
 }
 
-func (this *ExpSchemaDiff_RelationTypeChanged) EqualVT(thatIface isExpSchemaDiff_Diff) bool {
-	that, ok := thatIface.(*ExpSchemaDiff_RelationTypeChanged)
+func (this *ExpSchemaDiff_RelationSubjectTypeAdded) EqualVT(thatIface isExpSchemaDiff_Diff) bool {
+	that, ok := thatIface.(*ExpSchemaDiff_RelationSubjectTypeAdded)
 	if !ok {
 		return false
 	}
@@ -2035,12 +2127,37 @@ func (this *ExpSchemaDiff_RelationTypeChanged) EqualVT(thatIface isExpSchemaDiff
 	if this == nil && that != nil || this != nil && that == nil {
 		return false
 	}
-	if p, q := this.RelationTypeChanged, that.RelationTypeChanged; p != q {
+	if p, q := this.RelationSubjectTypeAdded, that.RelationSubjectTypeAdded; p != q {
 		if p == nil {
-			p = &ExpRelation{}
+			p = &ExpRelationSubjectTypeChange{}
 		}
 		if q == nil {
-			q = &ExpRelation{}
+			q = &ExpRelationSubjectTypeChange{}
+		}
+		if !p.EqualVT(q) {
+			return false
+		}
+	}
+	return true
+}
+
+func (this *ExpSchemaDiff_RelationSubjectTypeRemoved) EqualVT(thatIface isExpSchemaDiff_Diff) bool {
+	that, ok := thatIface.(*ExpSchemaDiff_RelationSubjectTypeRemoved)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if p, q := this.RelationSubjectTypeRemoved, that.RelationSubjectTypeRemoved; p != q {
+		if p == nil {
+			p = &ExpRelationSubjectTypeChange{}
+		}
+		if q == nil {
+			q = &ExpRelationSubjectTypeChange{}
 		}
 		if !p.EqualVT(q) {
 			return false
@@ -2312,10 +2429,10 @@ func (this *ExpSchemaDiff_CaveatParameterTypeChanged) EqualVT(thatIface isExpSch
 	}
 	if p, q := this.CaveatParameterTypeChanged, that.CaveatParameterTypeChanged; p != q {
 		if p == nil {
-			p = &ExpCaveatParameter{}
+			p = &ExpCaveatParameterTypeChange{}
 		}
 		if q == nil {
-			q = &ExpCaveatParameter{}
+			q = &ExpCaveatParameterTypeChange{}
 		}
 		if !p.EqualVT(q) {
 			return false
@@ -3901,6 +4018,109 @@ func (m *ExperimentalSchemaDiffResponse) MarshalToSizedBufferVT(dAtA []byte) (in
 	return len(dAtA) - i, nil
 }
 
+func (m *ExpRelationSubjectTypeChange) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ExpRelationSubjectTypeChange) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *ExpRelationSubjectTypeChange) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.ChangedSubjectType != nil {
+		size, err := m.ChangedSubjectType.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Relation != nil {
+		size, err := m.Relation.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ExpCaveatParameterTypeChange) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ExpCaveatParameterTypeChange) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *ExpCaveatParameterTypeChange) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PreviousType) > 0 {
+		i -= len(m.PreviousType)
+		copy(dAtA[i:], m.PreviousType)
+		i = encodeVarint(dAtA, i, uint64(len(m.PreviousType)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Parameter != nil {
+		size, err := m.Parameter.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *ExpSchemaDiff) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -4057,15 +4277,15 @@ func (m *ExpSchemaDiff_RelationDocCommentChanged) MarshalToSizedBufferVT(dAtA []
 	}
 	return len(dAtA) - i, nil
 }
-func (m *ExpSchemaDiff_RelationTypeChanged) MarshalToVT(dAtA []byte) (int, error) {
+func (m *ExpSchemaDiff_RelationSubjectTypeAdded) MarshalToVT(dAtA []byte) (int, error) {
 	size := m.SizeVT()
 	return m.MarshalToSizedBufferVT(dAtA[:size])
 }
 
-func (m *ExpSchemaDiff_RelationTypeChanged) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+func (m *ExpSchemaDiff_RelationSubjectTypeAdded) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	i := len(dAtA)
-	if m.RelationTypeChanged != nil {
-		size, err := m.RelationTypeChanged.MarshalToSizedBufferVT(dAtA[:i])
+	if m.RelationSubjectTypeAdded != nil {
+		size, err := m.RelationSubjectTypeAdded.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -4073,6 +4293,25 @@ func (m *ExpSchemaDiff_RelationTypeChanged) MarshalToSizedBufferVT(dAtA []byte) 
 		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x3a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ExpSchemaDiff_RelationSubjectTypeRemoved) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *ExpSchemaDiff_RelationSubjectTypeRemoved) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.RelationSubjectTypeRemoved != nil {
+		size, err := m.RelationSubjectTypeRemoved.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x42
 	}
 	return len(dAtA) - i, nil
 }
@@ -4091,7 +4330,7 @@ func (m *ExpSchemaDiff_PermissionAdded) MarshalToSizedBufferVT(dAtA []byte) (int
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
 		i--
-		dAtA[i] = 0x42
+		dAtA[i] = 0x4a
 	}
 	return len(dAtA) - i, nil
 }
@@ -4110,7 +4349,7 @@ func (m *ExpSchemaDiff_PermissionRemoved) MarshalToSizedBufferVT(dAtA []byte) (i
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
 		i--
-		dAtA[i] = 0x4a
+		dAtA[i] = 0x52
 	}
 	return len(dAtA) - i, nil
 }
@@ -4129,7 +4368,7 @@ func (m *ExpSchemaDiff_PermissionDocCommentChanged) MarshalToSizedBufferVT(dAtA 
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
 		i--
-		dAtA[i] = 0x52
+		dAtA[i] = 0x5a
 	}
 	return len(dAtA) - i, nil
 }
@@ -4148,7 +4387,7 @@ func (m *ExpSchemaDiff_PermissionExprChanged) MarshalToSizedBufferVT(dAtA []byte
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
 		i--
-		dAtA[i] = 0x5a
+		dAtA[i] = 0x62
 	}
 	return len(dAtA) - i, nil
 }
@@ -4167,7 +4406,7 @@ func (m *ExpSchemaDiff_CaveatAdded) MarshalToSizedBufferVT(dAtA []byte) (int, er
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
 		i--
-		dAtA[i] = 0x62
+		dAtA[i] = 0x6a
 	}
 	return len(dAtA) - i, nil
 }
@@ -4186,7 +4425,7 @@ func (m *ExpSchemaDiff_CaveatRemoved) MarshalToSizedBufferVT(dAtA []byte) (int, 
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
 		i--
-		dAtA[i] = 0x6a
+		dAtA[i] = 0x72
 	}
 	return len(dAtA) - i, nil
 }
@@ -4205,7 +4444,7 @@ func (m *ExpSchemaDiff_CaveatDocCommentChanged) MarshalToSizedBufferVT(dAtA []by
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
 		i--
-		dAtA[i] = 0x72
+		dAtA[i] = 0x7a
 	}
 	return len(dAtA) - i, nil
 }
@@ -4224,7 +4463,9 @@ func (m *ExpSchemaDiff_CaveatExprChanged) MarshalToSizedBufferVT(dAtA []byte) (i
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
 		i--
-		dAtA[i] = 0x7a
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x82
 	}
 	return len(dAtA) - i, nil
 }
@@ -4245,7 +4486,7 @@ func (m *ExpSchemaDiff_CaveatParameterAdded) MarshalToSizedBufferVT(dAtA []byte)
 		i--
 		dAtA[i] = 0x1
 		i--
-		dAtA[i] = 0x82
+		dAtA[i] = 0x8a
 	}
 	return len(dAtA) - i, nil
 }
@@ -4266,7 +4507,7 @@ func (m *ExpSchemaDiff_CaveatParameterRemoved) MarshalToSizedBufferVT(dAtA []byt
 		i--
 		dAtA[i] = 0x1
 		i--
-		dAtA[i] = 0x8a
+		dAtA[i] = 0x92
 	}
 	return len(dAtA) - i, nil
 }
@@ -4287,7 +4528,7 @@ func (m *ExpSchemaDiff_CaveatParameterTypeChanged) MarshalToSizedBufferVT(dAtA [
 		i--
 		dAtA[i] = 0x1
 		i--
-		dAtA[i] = 0x92
+		dAtA[i] = 0x9a
 	}
 	return len(dAtA) - i, nil
 }
@@ -4907,6 +5148,42 @@ func (m *ExperimentalSchemaDiffResponse) SizeVT() (n int) {
 	return n
 }
 
+func (m *ExpRelationSubjectTypeChange) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Relation != nil {
+		l = m.Relation.SizeVT()
+		n += 1 + l + sov(uint64(l))
+	}
+	if m.ChangedSubjectType != nil {
+		l = m.ChangedSubjectType.SizeVT()
+		n += 1 + l + sov(uint64(l))
+	}
+	n += len(m.unknownFields)
+	return n
+}
+
+func (m *ExpCaveatParameterTypeChange) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Parameter != nil {
+		l = m.Parameter.SizeVT()
+		n += 1 + l + sov(uint64(l))
+	}
+	l = len(m.PreviousType)
+	if l > 0 {
+		n += 1 + l + sov(uint64(l))
+	}
+	n += len(m.unknownFields)
+	return n
+}
+
 func (m *ExpSchemaDiff) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -4992,14 +5269,26 @@ func (m *ExpSchemaDiff_RelationDocCommentChanged) SizeVT() (n int) {
 	}
 	return n
 }
-func (m *ExpSchemaDiff_RelationTypeChanged) SizeVT() (n int) {
+func (m *ExpSchemaDiff_RelationSubjectTypeAdded) SizeVT() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.RelationTypeChanged != nil {
-		l = m.RelationTypeChanged.SizeVT()
+	if m.RelationSubjectTypeAdded != nil {
+		l = m.RelationSubjectTypeAdded.SizeVT()
+		n += 1 + l + sov(uint64(l))
+	}
+	return n
+}
+func (m *ExpSchemaDiff_RelationSubjectTypeRemoved) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.RelationSubjectTypeRemoved != nil {
+		l = m.RelationSubjectTypeRemoved.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	return n
@@ -5096,7 +5385,7 @@ func (m *ExpSchemaDiff_CaveatExprChanged) SizeVT() (n int) {
 	_ = l
 	if m.CaveatExprChanged != nil {
 		l = m.CaveatExprChanged.SizeVT()
-		n += 1 + l + sov(uint64(l))
+		n += 2 + l + sov(uint64(l))
 	}
 	return n
 }
@@ -8798,6 +9087,248 @@ func (m *ExperimentalSchemaDiffResponse) UnmarshalVT(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *ExpRelationSubjectTypeChange) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ExpRelationSubjectTypeChange: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ExpRelationSubjectTypeChange: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Relation", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Relation == nil {
+				m.Relation = &ExpRelation{}
+			}
+			if err := m.Relation.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChangedSubjectType", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.ChangedSubjectType == nil {
+				m.ChangedSubjectType = &ExpTypeReference{}
+			}
+			if err := m.ChangedSubjectType.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ExpCaveatParameterTypeChange) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ExpCaveatParameterTypeChange: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ExpCaveatParameterTypeChange: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Parameter", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Parameter == nil {
+				m.Parameter = &ExpCaveatParameter{}
+			}
+			if err := m.Parameter.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PreviousType", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PreviousType = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -9075,7 +9606,7 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RelationTypeChanged", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RelationSubjectTypeAdded", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -9102,19 +9633,60 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if oneof, ok := m.Diff.(*ExpSchemaDiff_RelationTypeChanged); ok {
-				if err := oneof.RelationTypeChanged.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if oneof, ok := m.Diff.(*ExpSchemaDiff_RelationSubjectTypeAdded); ok {
+				if err := oneof.RelationSubjectTypeAdded.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 			} else {
-				v := &ExpRelation{}
+				v := &ExpRelationSubjectTypeChange{}
 				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
-				m.Diff = &ExpSchemaDiff_RelationTypeChanged{RelationTypeChanged: v}
+				m.Diff = &ExpSchemaDiff_RelationSubjectTypeAdded{RelationSubjectTypeAdded: v}
 			}
 			iNdEx = postIndex
 		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RelationSubjectTypeRemoved", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if oneof, ok := m.Diff.(*ExpSchemaDiff_RelationSubjectTypeRemoved); ok {
+				if err := oneof.RelationSubjectTypeRemoved.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				v := &ExpRelationSubjectTypeChange{}
+				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+				m.Diff = &ExpSchemaDiff_RelationSubjectTypeRemoved{RelationSubjectTypeRemoved: v}
+			}
+			iNdEx = postIndex
+		case 9:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field PermissionAdded", wireType)
 			}
@@ -9155,7 +9727,7 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 				m.Diff = &ExpSchemaDiff_PermissionAdded{PermissionAdded: v}
 			}
 			iNdEx = postIndex
-		case 9:
+		case 10:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field PermissionRemoved", wireType)
 			}
@@ -9196,7 +9768,7 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 				m.Diff = &ExpSchemaDiff_PermissionRemoved{PermissionRemoved: v}
 			}
 			iNdEx = postIndex
-		case 10:
+		case 11:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field PermissionDocCommentChanged", wireType)
 			}
@@ -9237,7 +9809,7 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 				m.Diff = &ExpSchemaDiff_PermissionDocCommentChanged{PermissionDocCommentChanged: v}
 			}
 			iNdEx = postIndex
-		case 11:
+		case 12:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field PermissionExprChanged", wireType)
 			}
@@ -9278,7 +9850,7 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 				m.Diff = &ExpSchemaDiff_PermissionExprChanged{PermissionExprChanged: v}
 			}
 			iNdEx = postIndex
-		case 12:
+		case 13:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CaveatAdded", wireType)
 			}
@@ -9319,7 +9891,7 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 				m.Diff = &ExpSchemaDiff_CaveatAdded{CaveatAdded: v}
 			}
 			iNdEx = postIndex
-		case 13:
+		case 14:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CaveatRemoved", wireType)
 			}
@@ -9360,7 +9932,7 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 				m.Diff = &ExpSchemaDiff_CaveatRemoved{CaveatRemoved: v}
 			}
 			iNdEx = postIndex
-		case 14:
+		case 15:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CaveatDocCommentChanged", wireType)
 			}
@@ -9401,7 +9973,7 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 				m.Diff = &ExpSchemaDiff_CaveatDocCommentChanged{CaveatDocCommentChanged: v}
 			}
 			iNdEx = postIndex
-		case 15:
+		case 16:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CaveatExprChanged", wireType)
 			}
@@ -9442,7 +10014,7 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 				m.Diff = &ExpSchemaDiff_CaveatExprChanged{CaveatExprChanged: v}
 			}
 			iNdEx = postIndex
-		case 16:
+		case 17:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CaveatParameterAdded", wireType)
 			}
@@ -9483,7 +10055,7 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 				m.Diff = &ExpSchemaDiff_CaveatParameterAdded{CaveatParameterAdded: v}
 			}
 			iNdEx = postIndex
-		case 17:
+		case 18:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CaveatParameterRemoved", wireType)
 			}
@@ -9524,7 +10096,7 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 				m.Diff = &ExpSchemaDiff_CaveatParameterRemoved{CaveatParameterRemoved: v}
 			}
 			iNdEx = postIndex
-		case 18:
+		case 19:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CaveatParameterTypeChanged", wireType)
 			}
@@ -9558,7 +10130,7 @@ func (m *ExpSchemaDiff) UnmarshalVT(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &ExpCaveatParameter{}
+				v := &ExpCaveatParameterTypeChange{}
 				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}

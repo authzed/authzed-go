@@ -1668,6 +1668,17 @@
         }
       }
     },
+    "v1ExpCaveatParameterTypeChange": {
+      "type": "object",
+      "properties": {
+        "parameter": {
+          "$ref": "#/definitions/v1ExpCaveatParameter"
+        },
+        "previousType": {
+          "type": "string"
+        }
+      }
+    },
     "v1ExpDefinition": {
       "type": "object",
       "properties": {
@@ -1750,6 +1761,17 @@
         }
       }
     },
+    "v1ExpRelationSubjectTypeChange": {
+      "type": "object",
+      "properties": {
+        "relation": {
+          "$ref": "#/definitions/v1ExpRelation"
+        },
+        "changedSubjectType": {
+          "$ref": "#/definitions/v1ExpTypeReference"
+        }
+      }
+    },
     "v1ExpSchemaDiff": {
       "type": "object",
       "properties": {
@@ -1771,8 +1793,11 @@
         "relationDocCommentChanged": {
           "$ref": "#/definitions/v1ExpRelation"
         },
-        "relationTypeChanged": {
-          "$ref": "#/definitions/v1ExpRelation"
+        "relationSubjectTypeAdded": {
+          "$ref": "#/definitions/v1ExpRelationSubjectTypeChange"
+        },
+        "relationSubjectTypeRemoved": {
+          "$ref": "#/definitions/v1ExpRelationSubjectTypeChange"
         },
         "permissionAdded": {
           "$ref": "#/definitions/v1ExpPermission"
@@ -1805,7 +1830,7 @@
           "$ref": "#/definitions/v1ExpCaveatParameter"
         },
         "caveatParameterTypeChanged": {
-          "$ref": "#/definitions/v1ExpCaveatParameter"
+          "$ref": "#/definitions/v1ExpCaveatParameterTypeChange"
         }
       }
     },
