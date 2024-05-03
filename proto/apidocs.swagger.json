@@ -814,17 +814,6 @@
       ],
       "default": "UNKNOWN_SOURCE"
     },
-    "ExpSchemaFilterKindFilter": {
-      "type": "string",
-      "enum": [
-        "KIND_FILTER_UNSPECIFIED",
-        "KIND_FILTER_DEFINITION",
-        "KIND_FILTER_CAVEAT",
-        "KIND_FILTER_RELATION",
-        "KIND_FILTER_PERMISSION"
-      ],
-      "default": "KIND_FILTER_UNSPECIFIED"
-    },
     "LookupShareResponseLookupStatus": {
       "type": "string",
       "enum": [
@@ -1640,7 +1629,8 @@
           "type": "string"
         },
         "comment": {
-          "type": "string"
+          "type": "string",
+          "description": "comment is a human-readable comments on the caveat. Will include\ndelimiter characters."
         },
         "parameters": {
           "type": "array",
@@ -1652,7 +1642,8 @@
         "expression": {
           "type": "string"
         }
-      }
+      },
+      "description": "ExpCaveat is the representation of a caveat in the schema."
     },
     "v1ExpCaveatParameter": {
       "type": "object",
@@ -1661,12 +1652,14 @@
           "type": "string"
         },
         "type": {
-          "type": "string"
+          "type": "string",
+          "title": "type is the type of the parameter. Will be a string representing the\ntype, e.g. `int` or `list\u003cstring\u003e`"
         },
         "parentCaveatName": {
           "type": "string"
         }
-      }
+      },
+      "description": "ExpCaveatParameter is the representation of a parameter in a caveat."
     },
     "v1ExpCaveatParameterTypeChange": {
       "type": "object",
@@ -1686,7 +1679,8 @@
           "type": "string"
         },
         "comment": {
-          "type": "string"
+          "type": "string",
+          "description": "comment is a human-readable comments on the definition. Will include\ndelimiter characters."
         },
         "relations": {
           "type": "array",
@@ -1702,7 +1696,8 @@
             "$ref": "#/definitions/v1ExpPermission"
           }
         }
-      }
+      },
+      "description": "ExpDefinition is the representation of a definition in the schema."
     },
     "v1ExpPermission": {
       "type": "object",
@@ -1711,12 +1706,14 @@
           "type": "string"
         },
         "comment": {
-          "type": "string"
+          "type": "string",
+          "description": "comment is a human-readable comments on the permission. Will include\ndelimiter characters."
         },
         "parentDefinitionName": {
           "type": "string"
         }
-      }
+      },
+      "description": "ExpPermission is the representation of a permission in the schema."
     },
     "v1ExpPermissionReference": {
       "type": "object",
@@ -1724,10 +1721,11 @@
         "definitionName": {
           "type": "string"
         },
-        "relationName": {
+        "permissionName": {
           "type": "string"
         }
-      }
+      },
+      "description": "ExpPermissionReference is a reference to a permission in the schema."
     },
     "v1ExpRelation": {
       "type": "object",
@@ -1748,7 +1746,8 @@
             "$ref": "#/definitions/v1ExpTypeReference"
           }
         }
-      }
+      },
+      "description": "ExpRelation is the representation of a relation in the schema."
     },
     "v1ExpRelationReference": {
       "type": "object",
@@ -1759,7 +1758,8 @@
         "relationName": {
           "type": "string"
         }
-      }
+      },
+      "description": "ExpRelationReference is a reference to a relation in the schema."
     },
     "v1ExpRelationSubjectTypeChange": {
       "type": "object",
@@ -1832,27 +1832,30 @@
         "caveatParameterTypeChanged": {
           "$ref": "#/definitions/v1ExpCaveatParameterTypeChange"
         }
-      }
+      },
+      "description": "ExpSchemaDiff is the representation of a diff between two schemas."
     },
     "v1ExpSchemaFilter": {
       "type": "object",
       "properties": {
         "optionalDefinitionNameMatch": {
           "type": "string",
-          "description": "optional_definition_name_match is a regex that is matched against the definition or caveat name.\nIf not specified, will be ignored."
+          "description": "optional_definition_name_match is a regex that is matched against the definition name."
         },
-        "optionalRelationOrPermissionNameMatch": {
+        "optionalCaveatNameMatch": {
           "type": "string",
-          "description": "optional_relation_or_permission_name_match is a regex that is matched against the relation or permission name.\nIf not specified, will be ignored."
+          "description": "optional_caveat_name_match is a regex that is matched against the caveat name."
         },
-        "kindFilters": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ExpSchemaFilterKindFilter"
-          },
-          "description": "kind_filters is a list of kinds to filter on. If not specified, will be ignored. If multiple are specified,\nthe filter will be applied in an OR fashion."
+        "optionalRelationNameMatch": {
+          "type": "string",
+          "description": "optional_relation_name_match is a regex that is matched against the relation name."
+        },
+        "optionalPermissionNameMatch": {
+          "type": "string",
+          "description": "optional_permission_name_match is a regex that is matched against the permission name."
         }
-      }
+      },
+      "description": "ExpSchemaFilter is a filter that can be applied to the schema on reflection."
     },
     "v1ExpTypeReference": {
       "type": "object",
@@ -1877,7 +1880,8 @@
           "type": "boolean",
           "description": "is_public_wildcard is true if the subject is a public wildcard."
         }
-      }
+      },
+      "description": "ExpTypeReference is the representation of a type reference in the schema."
     },
     "v1ExpandPermissionTreeRequest": {
       "type": "object",

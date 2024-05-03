@@ -2014,7 +2014,11 @@ func (m *ExpSchemaFilter) validate(all bool) error {
 
 	// no validation rules for OptionalDefinitionNameMatch
 
-	// no validation rules for OptionalRelationOrPermissionNameMatch
+	// no validation rules for OptionalCaveatNameMatch
+
+	// no validation rules for OptionalRelationNameMatch
+
+	// no validation rules for OptionalPermissionNameMatch
 
 	if len(errors) > 0 {
 		return ExpSchemaFilterMultiError(errors)
@@ -3204,7 +3208,7 @@ func (m *ExpPermissionReference) validate(all bool) error {
 
 	// no validation rules for DefinitionName
 
-	// no validation rules for RelationName
+	// no validation rules for PermissionName
 
 	if len(errors) > 0 {
 		return ExpPermissionReferenceMultiError(errors)
