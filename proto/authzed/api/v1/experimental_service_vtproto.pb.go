@@ -313,13 +313,10 @@ func (m *ExpSchemaFilter) CloneVT() *ExpSchemaFilter {
 		return (*ExpSchemaFilter)(nil)
 	}
 	r := &ExpSchemaFilter{
-		OptionalDefinitionNameMatch:           m.OptionalDefinitionNameMatch,
-		OptionalRelationOrPermissionNameMatch: m.OptionalRelationOrPermissionNameMatch,
-	}
-	if rhs := m.KindFilters; rhs != nil {
-		tmpContainer := make([]ExpSchemaFilter_KindFilter, len(rhs))
-		copy(tmpContainer, rhs)
-		r.KindFilters = tmpContainer
+		OptionalDefinitionNameMatch: m.OptionalDefinitionNameMatch,
+		OptionalCaveatNameMatch:     m.OptionalCaveatNameMatch,
+		OptionalRelationNameMatch:   m.OptionalRelationNameMatch,
+		OptionalPermissionNameMatch: m.OptionalPermissionNameMatch,
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -564,7 +561,7 @@ func (m *ExpPermissionReference) CloneVT() *ExpPermissionReference {
 	}
 	r := &ExpPermissionReference{
 		DefinitionName: m.DefinitionName,
-		RelationName:   m.RelationName,
+		PermissionName: m.PermissionName,
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -1362,17 +1359,14 @@ func (this *ExpSchemaFilter) EqualVT(that *ExpSchemaFilter) bool {
 	if this.OptionalDefinitionNameMatch != that.OptionalDefinitionNameMatch {
 		return false
 	}
-	if this.OptionalRelationOrPermissionNameMatch != that.OptionalRelationOrPermissionNameMatch {
+	if this.OptionalCaveatNameMatch != that.OptionalCaveatNameMatch {
 		return false
 	}
-	if len(this.KindFilters) != len(that.KindFilters) {
+	if this.OptionalRelationNameMatch != that.OptionalRelationNameMatch {
 		return false
 	}
-	for i, vx := range this.KindFilters {
-		vy := that.KindFilters[i]
-		if vx != vy {
-			return false
-		}
+	if this.OptionalPermissionNameMatch != that.OptionalPermissionNameMatch {
+		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
@@ -1729,7 +1723,7 @@ func (this *ExpPermissionReference) EqualVT(that *ExpPermissionReference) bool {
 	if this.DefinitionName != that.DefinitionName {
 		return false
 	}
-	if this.RelationName != that.RelationName {
+	if this.PermissionName != that.PermissionName {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -3141,31 +3135,24 @@ func (m *ExpSchemaFilter) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if len(m.KindFilters) > 0 {
-		var pksize2 int
-		for _, num := range m.KindFilters {
-			pksize2 += sov(uint64(num))
-		}
-		i -= pksize2
-		j1 := i
-		for _, num1 := range m.KindFilters {
-			num := uint64(num1)
-			for num >= 1<<7 {
-				dAtA[j1] = uint8(uint64(num)&0x7f | 0x80)
-				num >>= 7
-				j1++
-			}
-			dAtA[j1] = uint8(num)
-			j1++
-		}
-		i = encodeVarint(dAtA, i, uint64(pksize2))
+	if len(m.OptionalPermissionNameMatch) > 0 {
+		i -= len(m.OptionalPermissionNameMatch)
+		copy(dAtA[i:], m.OptionalPermissionNameMatch)
+		i = encodeVarint(dAtA, i, uint64(len(m.OptionalPermissionNameMatch)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.OptionalRelationNameMatch) > 0 {
+		i -= len(m.OptionalRelationNameMatch)
+		copy(dAtA[i:], m.OptionalRelationNameMatch)
+		i = encodeVarint(dAtA, i, uint64(len(m.OptionalRelationNameMatch)))
 		i--
 		dAtA[i] = 0x1a
 	}
-	if len(m.OptionalRelationOrPermissionNameMatch) > 0 {
-		i -= len(m.OptionalRelationOrPermissionNameMatch)
-		copy(dAtA[i:], m.OptionalRelationOrPermissionNameMatch)
-		i = encodeVarint(dAtA, i, uint64(len(m.OptionalRelationOrPermissionNameMatch)))
+	if len(m.OptionalCaveatNameMatch) > 0 {
+		i -= len(m.OptionalCaveatNameMatch)
+		copy(dAtA[i:], m.OptionalCaveatNameMatch)
+		i = encodeVarint(dAtA, i, uint64(len(m.OptionalCaveatNameMatch)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -3733,10 +3720,10 @@ func (m *ExpPermissionReference) MarshalToSizedBufferVT(dAtA []byte) (int, error
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if len(m.RelationName) > 0 {
-		i -= len(m.RelationName)
-		copy(dAtA[i:], m.RelationName)
-		i = encodeVarint(dAtA, i, uint64(len(m.RelationName)))
+	if len(m.PermissionName) > 0 {
+		i -= len(m.PermissionName)
+		copy(dAtA[i:], m.PermissionName)
+		i = encodeVarint(dAtA, i, uint64(len(m.PermissionName)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -4798,16 +4785,17 @@ func (m *ExpSchemaFilter) SizeVT() (n int) {
 	if l > 0 {
 		n += 1 + l + sov(uint64(l))
 	}
-	l = len(m.OptionalRelationOrPermissionNameMatch)
+	l = len(m.OptionalCaveatNameMatch)
 	if l > 0 {
 		n += 1 + l + sov(uint64(l))
 	}
-	if len(m.KindFilters) > 0 {
-		l = 0
-		for _, e := range m.KindFilters {
-			l += sov(uint64(e))
-		}
-		n += 1 + sov(uint64(l)) + l
+	l = len(m.OptionalRelationNameMatch)
+	if l > 0 {
+		n += 1 + l + sov(uint64(l))
+	}
+	l = len(m.OptionalPermissionNameMatch)
+	if l > 0 {
+		n += 1 + l + sov(uint64(l))
 	}
 	n += len(m.unknownFields)
 	return n
@@ -5044,7 +5032,7 @@ func (m *ExpPermissionReference) SizeVT() (n int) {
 	if l > 0 {
 		n += 1 + l + sov(uint64(l))
 	}
-	l = len(m.RelationName)
+	l = len(m.PermissionName)
 	if l > 0 {
 		n += 1 + l + sov(uint64(l))
 	}
@@ -6950,7 +6938,7 @@ func (m *ExpSchemaFilter) UnmarshalVT(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field OptionalRelationOrPermissionNameMatch", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalCaveatNameMatch", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -6978,77 +6966,72 @@ func (m *ExpSchemaFilter) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.OptionalRelationOrPermissionNameMatch = string(dAtA[iNdEx:postIndex])
+			m.OptionalCaveatNameMatch = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
-			if wireType == 0 {
-				var v ExpSchemaFilter_KindFilter
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					v |= ExpSchemaFilter_KindFilter(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalRelationNameMatch", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
 				}
-				m.KindFilters = append(m.KindFilters, v)
-			} else if wireType == 2 {
-				var packedLen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					packedLen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if packedLen < 0 {
-					return ErrInvalidLength
-				}
-				postIndex := iNdEx + packedLen
-				if postIndex < 0 {
-					return ErrInvalidLength
-				}
-				if postIndex > l {
+				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				var elementCount int
-				if elementCount != 0 && len(m.KindFilters) == 0 {
-					m.KindFilters = make([]ExpSchemaFilter_KindFilter, 0, elementCount)
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
 				}
-				for iNdEx < postIndex {
-					var v ExpSchemaFilter_KindFilter
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflow
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						v |= ExpSchemaFilter_KindFilter(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					m.KindFilters = append(m.KindFilters, v)
-				}
-			} else {
-				return fmt.Errorf("proto: wrong wireType = %d for field KindFilters", wireType)
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.OptionalRelationNameMatch = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalPermissionNameMatch", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.OptionalPermissionNameMatch = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skip(dAtA[iNdEx:])
@@ -8430,7 +8413,7 @@ func (m *ExpPermissionReference) UnmarshalVT(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RelationName", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PermissionName", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -8458,7 +8441,7 @@ func (m *ExpPermissionReference) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RelationName = string(dAtA[iNdEx:postIndex])
+			m.PermissionName = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
