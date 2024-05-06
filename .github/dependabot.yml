@@ -10,6 +10,15 @@ updates:
     groups:
       go-mod:
         patterns: ["*"]
+  - package-ecosystem: "gomod"
+    directory: "/magefiles"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "area/dependencies"
+    groups:
+      go-mod-magefiles:
+        patterns: ["*"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
