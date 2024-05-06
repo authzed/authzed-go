@@ -2012,13 +2012,13 @@ func (m *ExpSchemaFilter) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for OptionalDefinitionNameMatch
+	// no validation rules for OptionalDefinitionNameFilter
 
-	// no validation rules for OptionalCaveatNameMatch
+	// no validation rules for OptionalCaveatNameFilter
 
-	// no validation rules for OptionalRelationNameMatch
+	// no validation rules for OptionalRelationNameFilter
 
-	// no validation rules for OptionalPermissionNameMatch
+	// no validation rules for OptionalPermissionNameFilter
 
 	if len(errors) > 0 {
 		return ExpSchemaFilterMultiError(errors)
@@ -2994,7 +2994,7 @@ func (m *ExperimentalComputablePermissionsRequest) validate(all bool) error {
 
 	}
 
-	// no validation rules for OptionalDefinitionNameMatch
+	// no validation rules for OptionalDefinitionNameFilter
 
 	if len(errors) > 0 {
 		return ExperimentalComputablePermissionsRequestMultiError(errors)
@@ -3791,22 +3791,22 @@ var _ interface {
 	ErrorName() string
 } = ExperimentalDependentRelationsResponseValidationError{}
 
-// Validate checks the field values on ExperimentalSchemaDiffRequest with the
+// Validate checks the field values on ExperimentalDiffSchemaRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ExperimentalSchemaDiffRequest) Validate() error {
+func (m *ExperimentalDiffSchemaRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ExperimentalSchemaDiffRequest with
+// ValidateAll checks the field values on ExperimentalDiffSchemaRequest with
 // the rules defined in the proto definition for this message. If any rules
 // are violated, the result is a list of violation errors wrapped in
-// ExperimentalSchemaDiffRequestMultiError, or nil if none found.
-func (m *ExperimentalSchemaDiffRequest) ValidateAll() error {
+// ExperimentalDiffSchemaRequestMultiError, or nil if none found.
+func (m *ExperimentalDiffSchemaRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ExperimentalSchemaDiffRequest) validate(all bool) error {
+func (m *ExperimentalDiffSchemaRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -3817,7 +3817,7 @@ func (m *ExperimentalSchemaDiffRequest) validate(all bool) error {
 		switch v := interface{}(m.GetConsistency()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ExperimentalSchemaDiffRequestValidationError{
+				errors = append(errors, ExperimentalDiffSchemaRequestValidationError{
 					field:  "Consistency",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -3825,7 +3825,7 @@ func (m *ExperimentalSchemaDiffRequest) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, ExperimentalSchemaDiffRequestValidationError{
+				errors = append(errors, ExperimentalDiffSchemaRequestValidationError{
 					field:  "Consistency",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -3834,7 +3834,7 @@ func (m *ExperimentalSchemaDiffRequest) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetConsistency()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return ExperimentalSchemaDiffRequestValidationError{
+			return ExperimentalDiffSchemaRequestValidationError{
 				field:  "Consistency",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -3845,19 +3845,19 @@ func (m *ExperimentalSchemaDiffRequest) validate(all bool) error {
 	// no validation rules for ComparisonSchema
 
 	if len(errors) > 0 {
-		return ExperimentalSchemaDiffRequestMultiError(errors)
+		return ExperimentalDiffSchemaRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// ExperimentalSchemaDiffRequestMultiError is an error wrapping multiple
-// validation errors returned by ExperimentalSchemaDiffRequest.ValidateAll()
+// ExperimentalDiffSchemaRequestMultiError is an error wrapping multiple
+// validation errors returned by ExperimentalDiffSchemaRequest.ValidateAll()
 // if the designated constraints aren't met.
-type ExperimentalSchemaDiffRequestMultiError []error
+type ExperimentalDiffSchemaRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ExperimentalSchemaDiffRequestMultiError) Error() string {
+func (m ExperimentalDiffSchemaRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -3866,12 +3866,12 @@ func (m ExperimentalSchemaDiffRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ExperimentalSchemaDiffRequestMultiError) AllErrors() []error { return m }
+func (m ExperimentalDiffSchemaRequestMultiError) AllErrors() []error { return m }
 
-// ExperimentalSchemaDiffRequestValidationError is the validation error
-// returned by ExperimentalSchemaDiffRequest.Validate if the designated
+// ExperimentalDiffSchemaRequestValidationError is the validation error
+// returned by ExperimentalDiffSchemaRequest.Validate if the designated
 // constraints aren't met.
-type ExperimentalSchemaDiffRequestValidationError struct {
+type ExperimentalDiffSchemaRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -3879,24 +3879,24 @@ type ExperimentalSchemaDiffRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e ExperimentalSchemaDiffRequestValidationError) Field() string { return e.field }
+func (e ExperimentalDiffSchemaRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ExperimentalSchemaDiffRequestValidationError) Reason() string { return e.reason }
+func (e ExperimentalDiffSchemaRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ExperimentalSchemaDiffRequestValidationError) Cause() error { return e.cause }
+func (e ExperimentalDiffSchemaRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ExperimentalSchemaDiffRequestValidationError) Key() bool { return e.key }
+func (e ExperimentalDiffSchemaRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ExperimentalSchemaDiffRequestValidationError) ErrorName() string {
-	return "ExperimentalSchemaDiffRequestValidationError"
+func (e ExperimentalDiffSchemaRequestValidationError) ErrorName() string {
+	return "ExperimentalDiffSchemaRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ExperimentalSchemaDiffRequestValidationError) Error() string {
+func (e ExperimentalDiffSchemaRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -3908,14 +3908,14 @@ func (e ExperimentalSchemaDiffRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sExperimentalSchemaDiffRequest.%s: %s%s",
+		"invalid %sExperimentalDiffSchemaRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ExperimentalSchemaDiffRequestValidationError{}
+var _ error = ExperimentalDiffSchemaRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -3923,24 +3923,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ExperimentalSchemaDiffRequestValidationError{}
+} = ExperimentalDiffSchemaRequestValidationError{}
 
-// Validate checks the field values on ExperimentalSchemaDiffResponse with the
+// Validate checks the field values on ExperimentalDiffSchemaResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ExperimentalSchemaDiffResponse) Validate() error {
+func (m *ExperimentalDiffSchemaResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ExperimentalSchemaDiffResponse with
+// ValidateAll checks the field values on ExperimentalDiffSchemaResponse with
 // the rules defined in the proto definition for this message. If any rules
 // are violated, the result is a list of violation errors wrapped in
-// ExperimentalSchemaDiffResponseMultiError, or nil if none found.
-func (m *ExperimentalSchemaDiffResponse) ValidateAll() error {
+// ExperimentalDiffSchemaResponseMultiError, or nil if none found.
+func (m *ExperimentalDiffSchemaResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ExperimentalSchemaDiffResponse) validate(all bool) error {
+func (m *ExperimentalDiffSchemaResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -3954,7 +3954,7 @@ func (m *ExperimentalSchemaDiffResponse) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ExperimentalSchemaDiffResponseValidationError{
+					errors = append(errors, ExperimentalDiffSchemaResponseValidationError{
 						field:  fmt.Sprintf("Diffs[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -3962,7 +3962,7 @@ func (m *ExperimentalSchemaDiffResponse) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ExperimentalSchemaDiffResponseValidationError{
+					errors = append(errors, ExperimentalDiffSchemaResponseValidationError{
 						field:  fmt.Sprintf("Diffs[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -3971,7 +3971,7 @@ func (m *ExperimentalSchemaDiffResponse) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ExperimentalSchemaDiffResponseValidationError{
+				return ExperimentalDiffSchemaResponseValidationError{
 					field:  fmt.Sprintf("Diffs[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -3985,7 +3985,7 @@ func (m *ExperimentalSchemaDiffResponse) validate(all bool) error {
 		switch v := interface{}(m.GetReadAt()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ExperimentalSchemaDiffResponseValidationError{
+				errors = append(errors, ExperimentalDiffSchemaResponseValidationError{
 					field:  "ReadAt",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -3993,7 +3993,7 @@ func (m *ExperimentalSchemaDiffResponse) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, ExperimentalSchemaDiffResponseValidationError{
+				errors = append(errors, ExperimentalDiffSchemaResponseValidationError{
 					field:  "ReadAt",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -4002,7 +4002,7 @@ func (m *ExperimentalSchemaDiffResponse) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetReadAt()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return ExperimentalSchemaDiffResponseValidationError{
+			return ExperimentalDiffSchemaResponseValidationError{
 				field:  "ReadAt",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -4011,19 +4011,19 @@ func (m *ExperimentalSchemaDiffResponse) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return ExperimentalSchemaDiffResponseMultiError(errors)
+		return ExperimentalDiffSchemaResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// ExperimentalSchemaDiffResponseMultiError is an error wrapping multiple
-// validation errors returned by ExperimentalSchemaDiffResponse.ValidateAll()
+// ExperimentalDiffSchemaResponseMultiError is an error wrapping multiple
+// validation errors returned by ExperimentalDiffSchemaResponse.ValidateAll()
 // if the designated constraints aren't met.
-type ExperimentalSchemaDiffResponseMultiError []error
+type ExperimentalDiffSchemaResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ExperimentalSchemaDiffResponseMultiError) Error() string {
+func (m ExperimentalDiffSchemaResponseMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -4032,12 +4032,12 @@ func (m ExperimentalSchemaDiffResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ExperimentalSchemaDiffResponseMultiError) AllErrors() []error { return m }
+func (m ExperimentalDiffSchemaResponseMultiError) AllErrors() []error { return m }
 
-// ExperimentalSchemaDiffResponseValidationError is the validation error
-// returned by ExperimentalSchemaDiffResponse.Validate if the designated
+// ExperimentalDiffSchemaResponseValidationError is the validation error
+// returned by ExperimentalDiffSchemaResponse.Validate if the designated
 // constraints aren't met.
-type ExperimentalSchemaDiffResponseValidationError struct {
+type ExperimentalDiffSchemaResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -4045,24 +4045,24 @@ type ExperimentalSchemaDiffResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e ExperimentalSchemaDiffResponseValidationError) Field() string { return e.field }
+func (e ExperimentalDiffSchemaResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ExperimentalSchemaDiffResponseValidationError) Reason() string { return e.reason }
+func (e ExperimentalDiffSchemaResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ExperimentalSchemaDiffResponseValidationError) Cause() error { return e.cause }
+func (e ExperimentalDiffSchemaResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ExperimentalSchemaDiffResponseValidationError) Key() bool { return e.key }
+func (e ExperimentalDiffSchemaResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ExperimentalSchemaDiffResponseValidationError) ErrorName() string {
-	return "ExperimentalSchemaDiffResponseValidationError"
+func (e ExperimentalDiffSchemaResponseValidationError) ErrorName() string {
+	return "ExperimentalDiffSchemaResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ExperimentalSchemaDiffResponseValidationError) Error() string {
+func (e ExperimentalDiffSchemaResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -4074,14 +4074,14 @@ func (e ExperimentalSchemaDiffResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sExperimentalSchemaDiffResponse.%s: %s%s",
+		"invalid %sExperimentalDiffSchemaResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ExperimentalSchemaDiffResponseValidationError{}
+var _ error = ExperimentalDiffSchemaResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -4089,7 +4089,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ExperimentalSchemaDiffResponseValidationError{}
+} = ExperimentalDiffSchemaResponseValidationError{}
 
 // Validate checks the field values on ExpRelationSubjectTypeChange with the
 // rules defined in the proto definition for this message. If any rules are

@@ -298,10 +298,10 @@ func (m *ExpSchemaFilter) CloneVT() *ExpSchemaFilter {
 		return (*ExpSchemaFilter)(nil)
 	}
 	r := new(ExpSchemaFilter)
-	r.OptionalDefinitionNameMatch = m.OptionalDefinitionNameMatch
-	r.OptionalCaveatNameMatch = m.OptionalCaveatNameMatch
-	r.OptionalRelationNameMatch = m.OptionalRelationNameMatch
-	r.OptionalPermissionNameMatch = m.OptionalPermissionNameMatch
+	r.OptionalDefinitionNameFilter = m.OptionalDefinitionNameFilter
+	r.OptionalCaveatNameFilter = m.OptionalCaveatNameFilter
+	r.OptionalRelationNameFilter = m.OptionalRelationNameFilter
+	r.OptionalPermissionNameFilter = m.OptionalPermissionNameFilter
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -491,7 +491,7 @@ func (m *ExperimentalComputablePermissionsRequest) CloneVT() *ExperimentalComput
 	}
 	r := new(ExperimentalComputablePermissionsRequest)
 	r.Consistency = m.Consistency.CloneVT()
-	r.OptionalDefinitionNameMatch = m.OptionalDefinitionNameMatch
+	r.OptionalDefinitionNameFilter = m.OptionalDefinitionNameFilter
 	if rhs := m.Relations; rhs != nil {
 		tmpContainer := make([]*ExpRelationReference, len(rhs))
 		for k, v := range rhs {
@@ -612,11 +612,11 @@ func (m *ExperimentalDependentRelationsResponse) CloneMessageVT() proto.Message 
 	return m.CloneVT()
 }
 
-func (m *ExperimentalSchemaDiffRequest) CloneVT() *ExperimentalSchemaDiffRequest {
+func (m *ExperimentalDiffSchemaRequest) CloneVT() *ExperimentalDiffSchemaRequest {
 	if m == nil {
-		return (*ExperimentalSchemaDiffRequest)(nil)
+		return (*ExperimentalDiffSchemaRequest)(nil)
 	}
-	r := new(ExperimentalSchemaDiffRequest)
+	r := new(ExperimentalDiffSchemaRequest)
 	r.Consistency = m.Consistency.CloneVT()
 	r.ComparisonSchema = m.ComparisonSchema
 	if len(m.unknownFields) > 0 {
@@ -626,15 +626,15 @@ func (m *ExperimentalSchemaDiffRequest) CloneVT() *ExperimentalSchemaDiffRequest
 	return r
 }
 
-func (m *ExperimentalSchemaDiffRequest) CloneMessageVT() proto.Message {
+func (m *ExperimentalDiffSchemaRequest) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-func (m *ExperimentalSchemaDiffResponse) CloneVT() *ExperimentalSchemaDiffResponse {
+func (m *ExperimentalDiffSchemaResponse) CloneVT() *ExperimentalDiffSchemaResponse {
 	if m == nil {
-		return (*ExperimentalSchemaDiffResponse)(nil)
+		return (*ExperimentalDiffSchemaResponse)(nil)
 	}
-	r := new(ExperimentalSchemaDiffResponse)
+	r := new(ExperimentalDiffSchemaResponse)
 	r.ReadAt = m.ReadAt.CloneVT()
 	if rhs := m.Diffs; rhs != nil {
 		tmpContainer := make([]*ExpSchemaDiff, len(rhs))
@@ -650,7 +650,7 @@ func (m *ExperimentalSchemaDiffResponse) CloneVT() *ExperimentalSchemaDiffRespon
 	return r
 }
 
-func (m *ExperimentalSchemaDiffResponse) CloneMessageVT() proto.Message {
+func (m *ExperimentalDiffSchemaResponse) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
@@ -1298,16 +1298,16 @@ func (this *ExpSchemaFilter) EqualVT(that *ExpSchemaFilter) bool {
 	} else if this == nil || that == nil {
 		return false
 	}
-	if this.OptionalDefinitionNameMatch != that.OptionalDefinitionNameMatch {
+	if this.OptionalDefinitionNameFilter != that.OptionalDefinitionNameFilter {
 		return false
 	}
-	if this.OptionalCaveatNameMatch != that.OptionalCaveatNameMatch {
+	if this.OptionalCaveatNameFilter != that.OptionalCaveatNameFilter {
 		return false
 	}
-	if this.OptionalRelationNameMatch != that.OptionalRelationNameMatch {
+	if this.OptionalRelationNameFilter != that.OptionalRelationNameFilter {
 		return false
 	}
-	if this.OptionalPermissionNameMatch != that.OptionalPermissionNameMatch {
+	if this.OptionalPermissionNameFilter != that.OptionalPermissionNameFilter {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -1621,7 +1621,7 @@ func (this *ExperimentalComputablePermissionsRequest) EqualVT(that *Experimental
 			}
 		}
 	}
-	if this.OptionalDefinitionNameMatch != that.OptionalDefinitionNameMatch {
+	if this.OptionalDefinitionNameFilter != that.OptionalDefinitionNameFilter {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -1772,7 +1772,7 @@ func (this *ExperimentalDependentRelationsResponse) EqualMessageVT(thatMsg proto
 	}
 	return this.EqualVT(that)
 }
-func (this *ExperimentalSchemaDiffRequest) EqualVT(that *ExperimentalSchemaDiffRequest) bool {
+func (this *ExperimentalDiffSchemaRequest) EqualVT(that *ExperimentalDiffSchemaRequest) bool {
 	if this == that {
 		return true
 	} else if this == nil || that == nil {
@@ -1787,14 +1787,14 @@ func (this *ExperimentalSchemaDiffRequest) EqualVT(that *ExperimentalSchemaDiffR
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
-func (this *ExperimentalSchemaDiffRequest) EqualMessageVT(thatMsg proto.Message) bool {
-	that, ok := thatMsg.(*ExperimentalSchemaDiffRequest)
+func (this *ExperimentalDiffSchemaRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ExperimentalDiffSchemaRequest)
 	if !ok {
 		return false
 	}
 	return this.EqualVT(that)
 }
-func (this *ExperimentalSchemaDiffResponse) EqualVT(that *ExperimentalSchemaDiffResponse) bool {
+func (this *ExperimentalDiffSchemaResponse) EqualVT(that *ExperimentalDiffSchemaResponse) bool {
 	if this == that {
 		return true
 	} else if this == nil || that == nil {
@@ -1823,8 +1823,8 @@ func (this *ExperimentalSchemaDiffResponse) EqualVT(that *ExperimentalSchemaDiff
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
-func (this *ExperimentalSchemaDiffResponse) EqualMessageVT(thatMsg proto.Message) bool {
-	that, ok := thatMsg.(*ExperimentalSchemaDiffResponse)
+func (this *ExperimentalDiffSchemaResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ExperimentalDiffSchemaResponse)
 	if !ok {
 		return false
 	}
@@ -3065,31 +3065,31 @@ func (m *ExpSchemaFilter) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if len(m.OptionalPermissionNameMatch) > 0 {
-		i -= len(m.OptionalPermissionNameMatch)
-		copy(dAtA[i:], m.OptionalPermissionNameMatch)
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalPermissionNameMatch)))
+	if len(m.OptionalPermissionNameFilter) > 0 {
+		i -= len(m.OptionalPermissionNameFilter)
+		copy(dAtA[i:], m.OptionalPermissionNameFilter)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalPermissionNameFilter)))
 		i--
 		dAtA[i] = 0x22
 	}
-	if len(m.OptionalRelationNameMatch) > 0 {
-		i -= len(m.OptionalRelationNameMatch)
-		copy(dAtA[i:], m.OptionalRelationNameMatch)
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalRelationNameMatch)))
+	if len(m.OptionalRelationNameFilter) > 0 {
+		i -= len(m.OptionalRelationNameFilter)
+		copy(dAtA[i:], m.OptionalRelationNameFilter)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalRelationNameFilter)))
 		i--
 		dAtA[i] = 0x1a
 	}
-	if len(m.OptionalCaveatNameMatch) > 0 {
-		i -= len(m.OptionalCaveatNameMatch)
-		copy(dAtA[i:], m.OptionalCaveatNameMatch)
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalCaveatNameMatch)))
+	if len(m.OptionalCaveatNameFilter) > 0 {
+		i -= len(m.OptionalCaveatNameFilter)
+		copy(dAtA[i:], m.OptionalCaveatNameFilter)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalCaveatNameFilter)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.OptionalDefinitionNameMatch) > 0 {
-		i -= len(m.OptionalDefinitionNameMatch)
-		copy(dAtA[i:], m.OptionalDefinitionNameMatch)
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalDefinitionNameMatch)))
+	if len(m.OptionalDefinitionNameFilter) > 0 {
+		i -= len(m.OptionalDefinitionNameFilter)
+		copy(dAtA[i:], m.OptionalDefinitionNameFilter)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalDefinitionNameFilter)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -3541,10 +3541,10 @@ func (m *ExperimentalComputablePermissionsRequest) MarshalToSizedBufferVT(dAtA [
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if len(m.OptionalDefinitionNameMatch) > 0 {
-		i -= len(m.OptionalDefinitionNameMatch)
-		copy(dAtA[i:], m.OptionalDefinitionNameMatch)
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalDefinitionNameMatch)))
+	if len(m.OptionalDefinitionNameFilter) > 0 {
+		i -= len(m.OptionalDefinitionNameFilter)
+		copy(dAtA[i:], m.OptionalDefinitionNameFilter)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalDefinitionNameFilter)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -3830,7 +3830,7 @@ func (m *ExperimentalDependentRelationsResponse) MarshalToSizedBufferVT(dAtA []b
 	return len(dAtA) - i, nil
 }
 
-func (m *ExperimentalSchemaDiffRequest) MarshalVT() (dAtA []byte, err error) {
+func (m *ExperimentalDiffSchemaRequest) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -3843,12 +3843,12 @@ func (m *ExperimentalSchemaDiffRequest) MarshalVT() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ExperimentalSchemaDiffRequest) MarshalToVT(dAtA []byte) (int, error) {
+func (m *ExperimentalDiffSchemaRequest) MarshalToVT(dAtA []byte) (int, error) {
 	size := m.SizeVT()
 	return m.MarshalToSizedBufferVT(dAtA[:size])
 }
 
-func (m *ExperimentalSchemaDiffRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+func (m *ExperimentalDiffSchemaRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if m == nil {
 		return 0, nil
 	}
@@ -3880,7 +3880,7 @@ func (m *ExperimentalSchemaDiffRequest) MarshalToSizedBufferVT(dAtA []byte) (int
 	return len(dAtA) - i, nil
 }
 
-func (m *ExperimentalSchemaDiffResponse) MarshalVT() (dAtA []byte, err error) {
+func (m *ExperimentalDiffSchemaResponse) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -3893,12 +3893,12 @@ func (m *ExperimentalSchemaDiffResponse) MarshalVT() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ExperimentalSchemaDiffResponse) MarshalToVT(dAtA []byte) (int, error) {
+func (m *ExperimentalDiffSchemaResponse) MarshalToVT(dAtA []byte) (int, error) {
 	size := m.SizeVT()
 	return m.MarshalToSizedBufferVT(dAtA[:size])
 }
 
-func (m *ExperimentalSchemaDiffResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+func (m *ExperimentalDiffSchemaResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if m == nil {
 		return 0, nil
 	}
@@ -4705,19 +4705,19 @@ func (m *ExpSchemaFilter) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.OptionalDefinitionNameMatch)
+	l = len(m.OptionalDefinitionNameFilter)
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
-	l = len(m.OptionalCaveatNameMatch)
+	l = len(m.OptionalCaveatNameFilter)
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
-	l = len(m.OptionalRelationNameMatch)
+	l = len(m.OptionalRelationNameFilter)
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
-	l = len(m.OptionalPermissionNameMatch)
+	l = len(m.OptionalPermissionNameFilter)
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
@@ -4920,7 +4920,7 @@ func (m *ExperimentalComputablePermissionsRequest) SizeVT() (n int) {
 			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 		}
 	}
-	l = len(m.OptionalDefinitionNameMatch)
+	l = len(m.OptionalDefinitionNameFilter)
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
@@ -5022,7 +5022,7 @@ func (m *ExperimentalDependentRelationsResponse) SizeVT() (n int) {
 	return n
 }
 
-func (m *ExperimentalSchemaDiffRequest) SizeVT() (n int) {
+func (m *ExperimentalDiffSchemaRequest) SizeVT() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -5040,7 +5040,7 @@ func (m *ExperimentalSchemaDiffRequest) SizeVT() (n int) {
 	return n
 }
 
-func (m *ExperimentalSchemaDiffResponse) SizeVT() (n int) {
+func (m *ExperimentalDiffSchemaResponse) SizeVT() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -6822,7 +6822,7 @@ func (m *ExpSchemaFilter) UnmarshalVT(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field OptionalDefinitionNameMatch", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalDefinitionNameFilter", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -6850,11 +6850,11 @@ func (m *ExpSchemaFilter) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.OptionalDefinitionNameMatch = string(dAtA[iNdEx:postIndex])
+			m.OptionalDefinitionNameFilter = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field OptionalCaveatNameMatch", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalCaveatNameFilter", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -6882,11 +6882,11 @@ func (m *ExpSchemaFilter) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.OptionalCaveatNameMatch = string(dAtA[iNdEx:postIndex])
+			m.OptionalCaveatNameFilter = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field OptionalRelationNameMatch", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalRelationNameFilter", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -6914,11 +6914,11 @@ func (m *ExpSchemaFilter) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.OptionalRelationNameMatch = string(dAtA[iNdEx:postIndex])
+			m.OptionalRelationNameFilter = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field OptionalPermissionNameMatch", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalPermissionNameFilter", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -6946,7 +6946,7 @@ func (m *ExpSchemaFilter) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.OptionalPermissionNameMatch = string(dAtA[iNdEx:postIndex])
+			m.OptionalPermissionNameFilter = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -8099,7 +8099,7 @@ func (m *ExperimentalComputablePermissionsRequest) UnmarshalVT(dAtA []byte) erro
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field OptionalDefinitionNameMatch", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalDefinitionNameFilter", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -8127,7 +8127,7 @@ func (m *ExperimentalComputablePermissionsRequest) UnmarshalVT(dAtA []byte) erro
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.OptionalDefinitionNameMatch = string(dAtA[iNdEx:postIndex])
+			m.OptionalDefinitionNameFilter = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -8746,7 +8746,7 @@ func (m *ExperimentalDependentRelationsResponse) UnmarshalVT(dAtA []byte) error 
 	}
 	return nil
 }
-func (m *ExperimentalSchemaDiffRequest) UnmarshalVT(dAtA []byte) error {
+func (m *ExperimentalDiffSchemaRequest) UnmarshalVT(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -8769,10 +8769,10 @@ func (m *ExperimentalSchemaDiffRequest) UnmarshalVT(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ExperimentalSchemaDiffRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: ExperimentalDiffSchemaRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ExperimentalSchemaDiffRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ExperimentalDiffSchemaRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -8865,7 +8865,7 @@ func (m *ExperimentalSchemaDiffRequest) UnmarshalVT(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ExperimentalSchemaDiffResponse) UnmarshalVT(dAtA []byte) error {
+func (m *ExperimentalDiffSchemaResponse) UnmarshalVT(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -8888,10 +8888,10 @@ func (m *ExperimentalSchemaDiffResponse) UnmarshalVT(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ExperimentalSchemaDiffResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: ExperimentalDiffSchemaResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ExperimentalSchemaDiffResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ExperimentalDiffSchemaResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

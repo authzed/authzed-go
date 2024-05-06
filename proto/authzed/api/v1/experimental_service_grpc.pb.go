@@ -25,7 +25,7 @@ const (
 	ExperimentalService_ExperimentalReflectSchema_FullMethodName         = "/authzed.api.v1.ExperimentalService/ExperimentalReflectSchema"
 	ExperimentalService_ExperimentalComputablePermissions_FullMethodName = "/authzed.api.v1.ExperimentalService/ExperimentalComputablePermissions"
 	ExperimentalService_ExperimentalDependentRelations_FullMethodName    = "/authzed.api.v1.ExperimentalService/ExperimentalDependentRelations"
-	ExperimentalService_ExperimentalSchemaDiff_FullMethodName            = "/authzed.api.v1.ExperimentalService/ExperimentalSchemaDiff"
+	ExperimentalService_ExperimentalDiffSchema_FullMethodName            = "/authzed.api.v1.ExperimentalService/ExperimentalDiffSchema"
 )
 
 // ExperimentalServiceClient is the client API for ExperimentalService service.
@@ -65,7 +65,7 @@ type ExperimentalServiceClient interface {
 	// EXPERIMENTAL: DiffSchema is an API that allows clients to request the difference between the
 	// specified schema and the schema stored in SpiceDB. This is useful for clients that need to
 	// introspect the schema of a SpiceDB instance.
-	ExperimentalSchemaDiff(ctx context.Context, in *ExperimentalSchemaDiffRequest, opts ...grpc.CallOption) (*ExperimentalSchemaDiffResponse, error)
+	ExperimentalDiffSchema(ctx context.Context, in *ExperimentalDiffSchemaRequest, opts ...grpc.CallOption) (*ExperimentalDiffSchemaResponse, error)
 }
 
 type experimentalServiceClient struct {
@@ -179,9 +179,9 @@ func (c *experimentalServiceClient) ExperimentalDependentRelations(ctx context.C
 	return out, nil
 }
 
-func (c *experimentalServiceClient) ExperimentalSchemaDiff(ctx context.Context, in *ExperimentalSchemaDiffRequest, opts ...grpc.CallOption) (*ExperimentalSchemaDiffResponse, error) {
-	out := new(ExperimentalSchemaDiffResponse)
-	err := c.cc.Invoke(ctx, ExperimentalService_ExperimentalSchemaDiff_FullMethodName, in, out, opts...)
+func (c *experimentalServiceClient) ExperimentalDiffSchema(ctx context.Context, in *ExperimentalDiffSchemaRequest, opts ...grpc.CallOption) (*ExperimentalDiffSchemaResponse, error) {
+	out := new(ExperimentalDiffSchemaResponse)
+	err := c.cc.Invoke(ctx, ExperimentalService_ExperimentalDiffSchema_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -225,7 +225,7 @@ type ExperimentalServiceServer interface {
 	// EXPERIMENTAL: DiffSchema is an API that allows clients to request the difference between the
 	// specified schema and the schema stored in SpiceDB. This is useful for clients that need to
 	// introspect the schema of a SpiceDB instance.
-	ExperimentalSchemaDiff(context.Context, *ExperimentalSchemaDiffRequest) (*ExperimentalSchemaDiffResponse, error)
+	ExperimentalDiffSchema(context.Context, *ExperimentalDiffSchemaRequest) (*ExperimentalDiffSchemaResponse, error)
 	mustEmbedUnimplementedExperimentalServiceServer()
 }
 
@@ -251,8 +251,8 @@ func (UnimplementedExperimentalServiceServer) ExperimentalComputablePermissions(
 func (UnimplementedExperimentalServiceServer) ExperimentalDependentRelations(context.Context, *ExperimentalDependentRelationsRequest) (*ExperimentalDependentRelationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExperimentalDependentRelations not implemented")
 }
-func (UnimplementedExperimentalServiceServer) ExperimentalSchemaDiff(context.Context, *ExperimentalSchemaDiffRequest) (*ExperimentalSchemaDiffResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ExperimentalSchemaDiff not implemented")
+func (UnimplementedExperimentalServiceServer) ExperimentalDiffSchema(context.Context, *ExperimentalDiffSchemaRequest) (*ExperimentalDiffSchemaResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExperimentalDiffSchema not implemented")
 }
 func (UnimplementedExperimentalServiceServer) mustEmbedUnimplementedExperimentalServiceServer() {}
 
@@ -386,20 +386,20 @@ func _ExperimentalService_ExperimentalDependentRelations_Handler(srv interface{}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ExperimentalService_ExperimentalSchemaDiff_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ExperimentalSchemaDiffRequest)
+func _ExperimentalService_ExperimentalDiffSchema_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExperimentalDiffSchemaRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ExperimentalServiceServer).ExperimentalSchemaDiff(ctx, in)
+		return srv.(ExperimentalServiceServer).ExperimentalDiffSchema(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ExperimentalService_ExperimentalSchemaDiff_FullMethodName,
+		FullMethod: ExperimentalService_ExperimentalDiffSchema_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ExperimentalServiceServer).ExperimentalSchemaDiff(ctx, req.(*ExperimentalSchemaDiffRequest))
+		return srv.(ExperimentalServiceServer).ExperimentalDiffSchema(ctx, req.(*ExperimentalDiffSchemaRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -428,8 +428,8 @@ var ExperimentalService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ExperimentalService_ExperimentalDependentRelations_Handler,
 		},
 		{
-			MethodName: "ExperimentalSchemaDiff",
-			Handler:    _ExperimentalService_ExperimentalSchemaDiff_Handler,
+			MethodName: "ExperimentalDiffSchema",
+			Handler:    _ExperimentalService_ExperimentalDiffSchema_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
