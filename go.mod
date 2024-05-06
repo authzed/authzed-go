@@ -13,6 +13,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.1
 	github.com/jzelinskie/stringz v0.0.3
 	github.com/magefile/mage v1.15.0
+	github.com/planetscale/vtprotobuf v0.6.0
 	github.com/samber/lo v1.39.0
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/sync v0.7.0
