@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/structpb"
 
-	v0 "github.com/authzed/authzed-go/proto/authzed/api/v0"
 	v1 "github.com/authzed/authzed-go/proto/authzed/api/v1"
 )
 
@@ -119,12 +118,6 @@ const (
 type relationEntry struct {
 	name     string
 	validity relationValidity
-}
-
-var knownGoodONR = &v0.ObjectAndRelation{
-	Namespace: "user",
-	ObjectId:  "testuser",
-	Relation:  "member",
 }
 
 var knownGoodObjectRef = &v1.ObjectReference{
