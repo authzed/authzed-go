@@ -491,14 +491,9 @@ func (m *ExperimentalComputablePermissionsRequest) CloneVT() *ExperimentalComput
 	}
 	r := new(ExperimentalComputablePermissionsRequest)
 	r.Consistency = m.Consistency.CloneVT()
+	r.DefinitionName = m.DefinitionName
+	r.RelationName = m.RelationName
 	r.OptionalDefinitionNameFilter = m.OptionalDefinitionNameFilter
-	if rhs := m.Relations; rhs != nil {
-		tmpContainer := make([]*ExpRelationReference, len(rhs))
-		for k, v := range rhs {
-			tmpContainer[k] = v.CloneVT()
-		}
-		r.Relations = tmpContainer
-	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -517,6 +512,7 @@ func (m *ExpRelationReference) CloneVT() *ExpRelationReference {
 	r := new(ExpRelationReference)
 	r.DefinitionName = m.DefinitionName
 	r.RelationName = m.RelationName
+	r.IsPermission = m.IsPermission
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -528,24 +524,6 @@ func (m *ExpRelationReference) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-func (m *ExpPermissionReference) CloneVT() *ExpPermissionReference {
-	if m == nil {
-		return (*ExpPermissionReference)(nil)
-	}
-	r := new(ExpPermissionReference)
-	r.DefinitionName = m.DefinitionName
-	r.PermissionName = m.PermissionName
-	if len(m.unknownFields) > 0 {
-		r.unknownFields = make([]byte, len(m.unknownFields))
-		copy(r.unknownFields, m.unknownFields)
-	}
-	return r
-}
-
-func (m *ExpPermissionReference) CloneMessageVT() proto.Message {
-	return m.CloneVT()
-}
-
 func (m *ExperimentalComputablePermissionsResponse) CloneVT() *ExperimentalComputablePermissionsResponse {
 	if m == nil {
 		return (*ExperimentalComputablePermissionsResponse)(nil)
@@ -553,7 +531,7 @@ func (m *ExperimentalComputablePermissionsResponse) CloneVT() *ExperimentalCompu
 	r := new(ExperimentalComputablePermissionsResponse)
 	r.ReadAt = m.ReadAt.CloneVT()
 	if rhs := m.Permissions; rhs != nil {
-		tmpContainer := make([]*ExpPermissionReference, len(rhs))
+		tmpContainer := make([]*ExpRelationReference, len(rhs))
 		for k, v := range rhs {
 			tmpContainer[k] = v.CloneVT()
 		}
@@ -576,7 +554,8 @@ func (m *ExperimentalDependentRelationsRequest) CloneVT() *ExperimentalDependent
 	}
 	r := new(ExperimentalDependentRelationsRequest)
 	r.Consistency = m.Consistency.CloneVT()
-	r.Permission = m.Permission.CloneVT()
+	r.DefinitionName = m.DefinitionName
+	r.PermissionName = m.PermissionName
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -1604,22 +1583,11 @@ func (this *ExperimentalComputablePermissionsRequest) EqualVT(that *Experimental
 	if !this.Consistency.EqualVT(that.Consistency) {
 		return false
 	}
-	if len(this.Relations) != len(that.Relations) {
+	if this.DefinitionName != that.DefinitionName {
 		return false
 	}
-	for i, vx := range this.Relations {
-		vy := that.Relations[i]
-		if p, q := vx, vy; p != q {
-			if p == nil {
-				p = &ExpRelationReference{}
-			}
-			if q == nil {
-				q = &ExpRelationReference{}
-			}
-			if !p.EqualVT(q) {
-				return false
-			}
-		}
+	if this.RelationName != that.RelationName {
+		return false
 	}
 	if this.OptionalDefinitionNameFilter != that.OptionalDefinitionNameFilter {
 		return false
@@ -1646,33 +1614,14 @@ func (this *ExpRelationReference) EqualVT(that *ExpRelationReference) bool {
 	if this.RelationName != that.RelationName {
 		return false
 	}
+	if this.IsPermission != that.IsPermission {
+		return false
+	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
 func (this *ExpRelationReference) EqualMessageVT(thatMsg proto.Message) bool {
 	that, ok := thatMsg.(*ExpRelationReference)
-	if !ok {
-		return false
-	}
-	return this.EqualVT(that)
-}
-func (this *ExpPermissionReference) EqualVT(that *ExpPermissionReference) bool {
-	if this == that {
-		return true
-	} else if this == nil || that == nil {
-		return false
-	}
-	if this.DefinitionName != that.DefinitionName {
-		return false
-	}
-	if this.PermissionName != that.PermissionName {
-		return false
-	}
-	return string(this.unknownFields) == string(that.unknownFields)
-}
-
-func (this *ExpPermissionReference) EqualMessageVT(thatMsg proto.Message) bool {
-	that, ok := thatMsg.(*ExpPermissionReference)
 	if !ok {
 		return false
 	}
@@ -1691,10 +1640,10 @@ func (this *ExperimentalComputablePermissionsResponse) EqualVT(that *Experimenta
 		vy := that.Permissions[i]
 		if p, q := vx, vy; p != q {
 			if p == nil {
-				p = &ExpPermissionReference{}
+				p = &ExpRelationReference{}
 			}
 			if q == nil {
-				q = &ExpPermissionReference{}
+				q = &ExpRelationReference{}
 			}
 			if !p.EqualVT(q) {
 				return false
@@ -1723,7 +1672,10 @@ func (this *ExperimentalDependentRelationsRequest) EqualVT(that *ExperimentalDep
 	if !this.Consistency.EqualVT(that.Consistency) {
 		return false
 	}
-	if !this.Permission.EqualVT(that.Permission) {
+	if this.DefinitionName != that.DefinitionName {
+		return false
+	}
+	if this.PermissionName != that.PermissionName {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -3546,19 +3498,21 @@ func (m *ExperimentalComputablePermissionsRequest) MarshalToSizedBufferVT(dAtA [
 		copy(dAtA[i:], m.OptionalDefinitionNameFilter)
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalDefinitionNameFilter)))
 		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RelationName) > 0 {
+		i -= len(m.RelationName)
+		copy(dAtA[i:], m.RelationName)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RelationName)))
+		i--
 		dAtA[i] = 0x1a
 	}
-	if len(m.Relations) > 0 {
-		for iNdEx := len(m.Relations) - 1; iNdEx >= 0; iNdEx-- {
-			size, err := m.Relations[iNdEx].MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
-			i--
-			dAtA[i] = 0x12
-		}
+	if len(m.DefinitionName) > 0 {
+		i -= len(m.DefinitionName)
+		copy(dAtA[i:], m.DefinitionName)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.DefinitionName)))
+		i--
+		dAtA[i] = 0x12
 	}
 	if m.Consistency != nil {
 		size, err := m.Consistency.MarshalToSizedBufferVT(dAtA[:i])
@@ -3603,57 +3557,20 @@ func (m *ExpRelationReference) MarshalToSizedBufferVT(dAtA []byte) (int, error) 
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.IsPermission {
+		i--
+		if m.IsPermission {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x18
+	}
 	if len(m.RelationName) > 0 {
 		i -= len(m.RelationName)
 		copy(dAtA[i:], m.RelationName)
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RelationName)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.DefinitionName) > 0 {
-		i -= len(m.DefinitionName)
-		copy(dAtA[i:], m.DefinitionName)
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.DefinitionName)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *ExpPermissionReference) MarshalVT() (dAtA []byte, err error) {
-	if m == nil {
-		return nil, nil
-	}
-	size := m.SizeVT()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *ExpPermissionReference) MarshalToVT(dAtA []byte) (int, error) {
-	size := m.SizeVT()
-	return m.MarshalToSizedBufferVT(dAtA[:size])
-}
-
-func (m *ExpPermissionReference) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
-	if m == nil {
-		return 0, nil
-	}
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.unknownFields != nil {
-		i -= len(m.unknownFields)
-		copy(dAtA[i:], m.unknownFields)
-	}
-	if len(m.PermissionName) > 0 {
-		i -= len(m.PermissionName)
-		copy(dAtA[i:], m.PermissionName)
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PermissionName)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -3752,13 +3669,17 @@ func (m *ExperimentalDependentRelationsRequest) MarshalToSizedBufferVT(dAtA []by
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if m.Permission != nil {
-		size, err := m.Permission.MarshalToSizedBufferVT(dAtA[:i])
-		if err != nil {
-			return 0, err
-		}
-		i -= size
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+	if len(m.PermissionName) > 0 {
+		i -= len(m.PermissionName)
+		copy(dAtA[i:], m.PermissionName)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PermissionName)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.DefinitionName) > 0 {
+		i -= len(m.DefinitionName)
+		copy(dAtA[i:], m.DefinitionName)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.DefinitionName)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -4914,11 +4835,13 @@ func (m *ExperimentalComputablePermissionsRequest) SizeVT() (n int) {
 		l = m.Consistency.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
-	if len(m.Relations) > 0 {
-		for _, e := range m.Relations {
-			l = e.SizeVT()
-			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
-		}
+	l = len(m.DefinitionName)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	l = len(m.RelationName)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	l = len(m.OptionalDefinitionNameFilter)
 	if l > 0 {
@@ -4942,23 +4865,8 @@ func (m *ExpRelationReference) SizeVT() (n int) {
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
-	n += len(m.unknownFields)
-	return n
-}
-
-func (m *ExpPermissionReference) SizeVT() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.DefinitionName)
-	if l > 0 {
-		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
-	}
-	l = len(m.PermissionName)
-	if l > 0 {
-		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	if m.IsPermission {
+		n += 2
 	}
 	n += len(m.unknownFields)
 	return n
@@ -4994,8 +4902,12 @@ func (m *ExperimentalDependentRelationsRequest) SizeVT() (n int) {
 		l = m.Consistency.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
-	if m.Permission != nil {
-		l = m.Permission.SizeVT()
+	l = len(m.DefinitionName)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	l = len(m.PermissionName)
+	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -8065,9 +7977,9 @@ func (m *ExperimentalComputablePermissionsRequest) UnmarshalVT(dAtA []byte) erro
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Relations", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field DefinitionName", wireType)
 			}
-			var msglen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return protohelpers.ErrIntOverflow
@@ -8077,27 +7989,57 @@ func (m *ExperimentalComputablePermissionsRequest) UnmarshalVT(dAtA []byte) erro
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return protohelpers.ErrInvalidLength
 			}
-			postIndex := iNdEx + msglen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Relations = append(m.Relations, &ExpRelationReference{})
-			if err := m.Relations[len(m.Relations)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
+			m.DefinitionName = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RelationName", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RelationName = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OptionalDefinitionNameFilter", wireType)
 			}
@@ -8244,62 +8186,11 @@ func (m *ExpRelationReference) UnmarshalVT(dAtA []byte) error {
 			}
 			m.RelationName = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
-			if err != nil {
-				return err
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsPermission", wireType)
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *ExpPermissionReference) UnmarshalVT(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return protohelpers.ErrIntOverflow
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: ExpPermissionReference: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ExpPermissionReference: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field DefinitionName", wireType)
-			}
-			var stringLen uint64
+			var v int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return protohelpers.ErrIntOverflow
@@ -8309,56 +8200,12 @@ func (m *ExpPermissionReference) UnmarshalVT(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				v |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.DefinitionName = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field PermissionName", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.PermissionName = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
+			m.IsPermission = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -8439,7 +8286,7 @@ func (m *ExperimentalComputablePermissionsResponse) UnmarshalVT(dAtA []byte) err
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Permissions = append(m.Permissions, &ExpPermissionReference{})
+			m.Permissions = append(m.Permissions, &ExpRelationReference{})
 			if err := m.Permissions[len(m.Permissions)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8569,9 +8416,9 @@ func (m *ExperimentalDependentRelationsRequest) UnmarshalVT(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Permission", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field DefinitionName", wireType)
 			}
-			var msglen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return protohelpers.ErrIntOverflow
@@ -8581,27 +8428,55 @@ func (m *ExperimentalDependentRelationsRequest) UnmarshalVT(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return protohelpers.ErrInvalidLength
 			}
-			postIndex := iNdEx + msglen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Permission == nil {
-				m.Permission = &ExpPermissionReference{}
+			m.DefinitionName = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PermissionName", wireType)
 			}
-			if err := m.Permission.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-				return err
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PermissionName = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

@@ -2960,39 +2960,9 @@ func (m *ExperimentalComputablePermissionsRequest) validate(all bool) error {
 		}
 	}
 
-	for idx, item := range m.GetRelations() {
-		_, _ = idx, item
+	// no validation rules for DefinitionName
 
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ExperimentalComputablePermissionsRequestValidationError{
-						field:  fmt.Sprintf("Relations[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, ExperimentalComputablePermissionsRequestValidationError{
-						field:  fmt.Sprintf("Relations[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return ExperimentalComputablePermissionsRequestValidationError{
-					field:  fmt.Sprintf("Relations[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
+	// no validation rules for RelationName
 
 	// no validation rules for OptionalDefinitionNameFilter
 
@@ -3104,6 +3074,8 @@ func (m *ExpRelationReference) validate(all bool) error {
 
 	// no validation rules for RelationName
 
+	// no validation rules for IsPermission
+
 	if len(errors) > 0 {
 		return ExpRelationReferenceMultiError(errors)
 	}
@@ -3183,112 +3155,6 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ExpRelationReferenceValidationError{}
-
-// Validate checks the field values on ExpPermissionReference with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ExpPermissionReference) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on ExpPermissionReference with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// ExpPermissionReferenceMultiError, or nil if none found.
-func (m *ExpPermissionReference) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *ExpPermissionReference) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for DefinitionName
-
-	// no validation rules for PermissionName
-
-	if len(errors) > 0 {
-		return ExpPermissionReferenceMultiError(errors)
-	}
-
-	return nil
-}
-
-// ExpPermissionReferenceMultiError is an error wrapping multiple validation
-// errors returned by ExpPermissionReference.ValidateAll() if the designated
-// constraints aren't met.
-type ExpPermissionReferenceMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m ExpPermissionReferenceMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m ExpPermissionReferenceMultiError) AllErrors() []error { return m }
-
-// ExpPermissionReferenceValidationError is the validation error returned by
-// ExpPermissionReference.Validate if the designated constraints aren't met.
-type ExpPermissionReferenceValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ExpPermissionReferenceValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ExpPermissionReferenceValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ExpPermissionReferenceValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ExpPermissionReferenceValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ExpPermissionReferenceValidationError) ErrorName() string {
-	return "ExpPermissionReferenceValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e ExpPermissionReferenceValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sExpPermissionReference.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ExpPermissionReferenceValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ExpPermissionReferenceValidationError{}
 
 // Validate checks the field values on
 // ExperimentalComputablePermissionsResponse with the rules defined in the
@@ -3511,34 +3377,9 @@ func (m *ExperimentalDependentRelationsRequest) validate(all bool) error {
 		}
 	}
 
-	if all {
-		switch v := interface{}(m.GetPermission()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ExperimentalDependentRelationsRequestValidationError{
-					field:  "Permission",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, ExperimentalDependentRelationsRequestValidationError{
-					field:  "Permission",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetPermission()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return ExperimentalDependentRelationsRequestValidationError{
-				field:  "Permission",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
+	// no validation rules for DefinitionName
+
+	// no validation rules for PermissionName
 
 	if len(errors) > 0 {
 		return ExperimentalDependentRelationsRequestMultiError(errors)
