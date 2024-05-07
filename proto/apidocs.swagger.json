@@ -114,7 +114,7 @@
     },
     "/v1/experimental/permissions/computable": {
       "post": {
-        "summary": "EXPERIMENTAL: ComputablePermissions is an API that allows clients to request the set of\npermissions that compute based off a set of relations. For example, if a schema has a relation\n`viewer` and a permission `view` defined as `permission view = viewer + editor`, then the\ncomputable permissions for the relation `viewer` will include `view`.",
+        "summary": "EXPERIMENTAL: ComputablePermissions is an API that allows clients to request the set of\npermissions that compute based off a relation. For example, if a schema has a relation\n`viewer` and a permission `view` defined as `permission view = viewer + editor`, then the\ncomputable permissions for the relation `viewer` will include `view`.",
         "operationId": "ExperimentalService_ExperimentalComputablePermissions",
         "responses": {
           "200": {
@@ -147,7 +147,7 @@
     },
     "/v1/experimental/permissions/dependent": {
       "post": {
-        "summary": "EXPERIMENTAL: DependentRelations is an API that allows clients to request the set of\nrelations that used to compute a permission, recursively. It is the inverse of the\nComputablePermissions API.",
+        "summary": "EXPERIMENTAL: DependentRelations is an API that allows clients to request the set of\nrelations and permissions that used to compute a permission, recursively. It is the\ninverse of the ComputablePermissions API.",
         "operationId": "ExperimentalService_ExperimentalDependentRelations",
         "responses": {
           "200": {
@@ -1715,18 +1715,6 @@
       },
       "description": "ExpPermission is the representation of a permission in the schema."
     },
-    "v1ExpPermissionReference": {
-      "type": "object",
-      "properties": {
-        "definitionName": {
-          "type": "string"
-        },
-        "permissionName": {
-          "type": "string"
-        }
-      },
-      "description": "ExpPermissionReference is a reference to a permission in the schema."
-    },
     "v1ExpRelation": {
       "type": "object",
       "properties": {
@@ -1757,9 +1745,12 @@
         },
         "relationName": {
           "type": "string"
+        },
+        "isPermission": {
+          "type": "boolean"
         }
       },
-      "description": "ExpRelationReference is a reference to a relation in the schema."
+      "description": "ExpRelationReference is a reference to a relation or permission in the schema."
     },
     "v1ExpRelationSubjectTypeChange": {
       "type": "object",
@@ -1918,12 +1909,11 @@
         "consistency": {
           "$ref": "#/definitions/v1Consistency"
         },
-        "relations": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1ExpRelationReference"
-          }
+        "definitionName": {
+          "type": "string"
+        },
+        "relationName": {
+          "type": "string"
         },
         "optionalDefinitionNameFilter": {
           "type": "string",
@@ -1938,7 +1928,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/v1ExpPermissionReference"
+            "$ref": "#/definitions/v1ExpRelationReference"
           }
         },
         "readAt": {
@@ -1953,8 +1943,11 @@
         "consistency": {
           "$ref": "#/definitions/v1Consistency"
         },
-        "permission": {
-          "$ref": "#/definitions/v1ExpPermissionReference"
+        "definitionName": {
+          "type": "string"
+        },
+        "permissionName": {
+          "type": "string"
         }
       }
     },

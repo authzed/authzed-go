@@ -54,13 +54,13 @@ type ExperimentalServiceClient interface {
 	// SpiceDB. This is useful for clients that need to introspect the schema of a SpiceDB instance.
 	ExperimentalReflectSchema(ctx context.Context, in *ExperimentalReflectSchemaRequest, opts ...grpc.CallOption) (*ExperimentalReflectSchemaResponse, error)
 	// EXPERIMENTAL: ComputablePermissions is an API that allows clients to request the set of
-	// permissions that compute based off a set of relations. For example, if a schema has a relation
+	// permissions that compute based off a relation. For example, if a schema has a relation
 	// `viewer` and a permission `view` defined as `permission view = viewer + editor`, then the
 	// computable permissions for the relation `viewer` will include `view`.
 	ExperimentalComputablePermissions(ctx context.Context, in *ExperimentalComputablePermissionsRequest, opts ...grpc.CallOption) (*ExperimentalComputablePermissionsResponse, error)
 	// EXPERIMENTAL: DependentRelations is an API that allows clients to request the set of
-	// relations that used to compute a permission, recursively. It is the inverse of the
-	// ComputablePermissions API.
+	// relations and permissions that used to compute a permission, recursively. It is the
+	// inverse of the ComputablePermissions API.
 	ExperimentalDependentRelations(ctx context.Context, in *ExperimentalDependentRelationsRequest, opts ...grpc.CallOption) (*ExperimentalDependentRelationsResponse, error)
 	// EXPERIMENTAL: DiffSchema is an API that allows clients to request the difference between the
 	// specified schema and the schema stored in SpiceDB. This is useful for clients that need to
@@ -214,13 +214,13 @@ type ExperimentalServiceServer interface {
 	// SpiceDB. This is useful for clients that need to introspect the schema of a SpiceDB instance.
 	ExperimentalReflectSchema(context.Context, *ExperimentalReflectSchemaRequest) (*ExperimentalReflectSchemaResponse, error)
 	// EXPERIMENTAL: ComputablePermissions is an API that allows clients to request the set of
-	// permissions that compute based off a set of relations. For example, if a schema has a relation
+	// permissions that compute based off a relation. For example, if a schema has a relation
 	// `viewer` and a permission `view` defined as `permission view = viewer + editor`, then the
 	// computable permissions for the relation `viewer` will include `view`.
 	ExperimentalComputablePermissions(context.Context, *ExperimentalComputablePermissionsRequest) (*ExperimentalComputablePermissionsResponse, error)
 	// EXPERIMENTAL: DependentRelations is an API that allows clients to request the set of
-	// relations that used to compute a permission, recursively. It is the inverse of the
-	// ComputablePermissions API.
+	// relations and permissions that used to compute a permission, recursively. It is the
+	// inverse of the ComputablePermissions API.
 	ExperimentalDependentRelations(context.Context, *ExperimentalDependentRelationsRequest) (*ExperimentalDependentRelationsResponse, error)
 	// EXPERIMENTAL: DiffSchema is an API that allows clients to request the difference between the
 	// specified schema and the schema stored in SpiceDB. This is useful for clients that need to
