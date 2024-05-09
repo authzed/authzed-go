@@ -45,6 +45,39 @@
     "application/json"
   ],
   "paths": {
+    "/v1/experimental/countrelationships": {
+      "post": {
+        "summary": "EXPERIMENTAL: CountRelationships returns the count of relationships for *pre-registered* filter.",
+        "operationId": "ExperimentalService_ExperimentalCountRelationships",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalCountRelationshipsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalCountRelationshipsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ExperimentalService"
+        ]
+      }
+    },
     "/v1/experimental/diffschema": {
       "post": {
         "summary": "EXPERIMENTAL: DiffSchema is an API that allows clients to request the difference between the\nspecified schema and the schema stored in SpiceDB. This is useful for clients that need to\nintrospect the schema of a SpiceDB instance.",
@@ -211,6 +244,39 @@
         ]
       }
     },
+    "/v1/experimental/registerrelationshipcounter": {
+      "post": {
+        "summary": "EXPERIMENTAL: RegisterRelationshipCounter registers a new filter for counting relationships. A filter must be registered before\na count can be requested.",
+        "operationId": "ExperimentalService_ExperimentalRegisterRelationshipCounter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalRegisterRelationshipCounterResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalRegisterRelationshipCounterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ExperimentalService"
+        ]
+      }
+    },
     "/v1/experimental/relationships/bulkexport": {
       "post": {
         "summary": "BulkExportRelationships is the fastest path available to exporting\nrelationships from the server. It is resumable, and will return results\nin an order determined by the server.",
@@ -281,6 +347,39 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/v1BulkImportRelationshipsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ExperimentalService"
+        ]
+      }
+    },
+    "/v1/experimental/unregisterrelationshipcounter": {
+      "post": {
+        "summary": "EXPERIMENTAL: UnregisterRelationshipCounter unregisters an existing filter for counting relationships.",
+        "operationId": "ExperimentalService_ExperimentalUnregisterRelationshipCounter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalUnregisterRelationshipCounterResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ExperimentalUnregisterRelationshipCounterRequest"
             }
           }
         ],
@@ -1937,6 +2036,32 @@
         }
       }
     },
+    "v1ExperimentalCountRelationshipsRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency",
+          "description": "consistency defines the consistency level for the count operation. If the\nrequested consistency is fully consistent or represents a zedtoken that is\nnot stored in the system, the count will be performed synchronously, which\ncan be *quite slow* for large datasets."
+        },
+        "relationshipFilter": {
+          "$ref": "#/definitions/v1RelationshipFilter",
+          "description": "relationship_filter defines the filter to be applied to the relationships\nto be counted."
+        }
+      }
+    },
+    "v1ExperimentalCountRelationshipsResponse": {
+      "type": "object",
+      "properties": {
+        "readAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "title": "read_at is the ZedToken at which the relationship count was performed"
+        },
+        "relationshipCount": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
     "v1ExperimentalDependentRelationsRequest": {
       "type": "object",
       "properties": {
@@ -2034,6 +2159,29 @@
           "description": "read_at is the ZedToken at which the schema was read."
         }
       }
+    },
+    "v1ExperimentalRegisterRelationshipCounterRequest": {
+      "type": "object",
+      "properties": {
+        "relationshipFilter": {
+          "$ref": "#/definitions/v1RelationshipFilter",
+          "description": "relationship_filter defines the filter to be applied to the relationships\nto be counted."
+        }
+      }
+    },
+    "v1ExperimentalRegisterRelationshipCounterResponse": {
+      "type": "object"
+    },
+    "v1ExperimentalUnregisterRelationshipCounterRequest": {
+      "type": "object",
+      "properties": {
+        "relationshipFilter": {
+          "$ref": "#/definitions/v1RelationshipFilter"
+        }
+      }
+    },
+    "v1ExperimentalUnregisterRelationshipCounterResponse": {
+      "type": "object"
     },
     "v1LookupPermissionship": {
       "type": "string",

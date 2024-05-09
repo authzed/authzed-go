@@ -35,6 +35,854 @@ var (
 	_ = sort.Sort
 )
 
+// Validate checks the field values on
+// ExperimentalRegisterRelationshipCounterRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ExperimentalRegisterRelationshipCounterRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ExperimentalRegisterRelationshipCounterRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in
+// ExperimentalRegisterRelationshipCounterRequestMultiError, or nil if none found.
+func (m *ExperimentalRegisterRelationshipCounterRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalRegisterRelationshipCounterRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetRelationshipFilter() == nil {
+		err := ExperimentalRegisterRelationshipCounterRequestValidationError{
+			field:  "RelationshipFilter",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetRelationshipFilter()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalRegisterRelationshipCounterRequestValidationError{
+					field:  "RelationshipFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalRegisterRelationshipCounterRequestValidationError{
+					field:  "RelationshipFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRelationshipFilter()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalRegisterRelationshipCounterRequestValidationError{
+				field:  "RelationshipFilter",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ExperimentalRegisterRelationshipCounterRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalRegisterRelationshipCounterRequestMultiError is an error
+// wrapping multiple validation errors returned by
+// ExperimentalRegisterRelationshipCounterRequest.ValidateAll() if the
+// designated constraints aren't met.
+type ExperimentalRegisterRelationshipCounterRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalRegisterRelationshipCounterRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalRegisterRelationshipCounterRequestMultiError) AllErrors() []error { return m }
+
+// ExperimentalRegisterRelationshipCounterRequestValidationError is the
+// validation error returned by
+// ExperimentalRegisterRelationshipCounterRequest.Validate if the designated
+// constraints aren't met.
+type ExperimentalRegisterRelationshipCounterRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalRegisterRelationshipCounterRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExperimentalRegisterRelationshipCounterRequestValidationError) Reason() string {
+	return e.reason
+}
+
+// Cause function returns cause value.
+func (e ExperimentalRegisterRelationshipCounterRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExperimentalRegisterRelationshipCounterRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalRegisterRelationshipCounterRequestValidationError) ErrorName() string {
+	return "ExperimentalRegisterRelationshipCounterRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalRegisterRelationshipCounterRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalRegisterRelationshipCounterRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalRegisterRelationshipCounterRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalRegisterRelationshipCounterRequestValidationError{}
+
+// Validate checks the field values on
+// ExperimentalRegisterRelationshipCounterResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ExperimentalRegisterRelationshipCounterResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ExperimentalRegisterRelationshipCounterResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in
+// ExperimentalRegisterRelationshipCounterResponseMultiError, or nil if none found.
+func (m *ExperimentalRegisterRelationshipCounterResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalRegisterRelationshipCounterResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ExperimentalRegisterRelationshipCounterResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalRegisterRelationshipCounterResponseMultiError is an error
+// wrapping multiple validation errors returned by
+// ExperimentalRegisterRelationshipCounterResponse.ValidateAll() if the
+// designated constraints aren't met.
+type ExperimentalRegisterRelationshipCounterResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalRegisterRelationshipCounterResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalRegisterRelationshipCounterResponseMultiError) AllErrors() []error { return m }
+
+// ExperimentalRegisterRelationshipCounterResponseValidationError is the
+// validation error returned by
+// ExperimentalRegisterRelationshipCounterResponse.Validate if the designated
+// constraints aren't met.
+type ExperimentalRegisterRelationshipCounterResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalRegisterRelationshipCounterResponseValidationError) Field() string {
+	return e.field
+}
+
+// Reason function returns reason value.
+func (e ExperimentalRegisterRelationshipCounterResponseValidationError) Reason() string {
+	return e.reason
+}
+
+// Cause function returns cause value.
+func (e ExperimentalRegisterRelationshipCounterResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExperimentalRegisterRelationshipCounterResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalRegisterRelationshipCounterResponseValidationError) ErrorName() string {
+	return "ExperimentalRegisterRelationshipCounterResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalRegisterRelationshipCounterResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalRegisterRelationshipCounterResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalRegisterRelationshipCounterResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalRegisterRelationshipCounterResponseValidationError{}
+
+// Validate checks the field values on ExperimentalCountRelationshipsRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *ExperimentalCountRelationshipsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExperimentalCountRelationshipsRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// ExperimentalCountRelationshipsRequestMultiError, or nil if none found.
+func (m *ExperimentalCountRelationshipsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalCountRelationshipsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetConsistency()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalCountRelationshipsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalCountRelationshipsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetConsistency()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalCountRelationshipsRequestValidationError{
+				field:  "Consistency",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if m.GetRelationshipFilter() == nil {
+		err := ExperimentalCountRelationshipsRequestValidationError{
+			field:  "RelationshipFilter",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetRelationshipFilter()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalCountRelationshipsRequestValidationError{
+					field:  "RelationshipFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalCountRelationshipsRequestValidationError{
+					field:  "RelationshipFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRelationshipFilter()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalCountRelationshipsRequestValidationError{
+				field:  "RelationshipFilter",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ExperimentalCountRelationshipsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalCountRelationshipsRequestMultiError is an error wrapping
+// multiple validation errors returned by
+// ExperimentalCountRelationshipsRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ExperimentalCountRelationshipsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalCountRelationshipsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalCountRelationshipsRequestMultiError) AllErrors() []error { return m }
+
+// ExperimentalCountRelationshipsRequestValidationError is the validation error
+// returned by ExperimentalCountRelationshipsRequest.Validate if the
+// designated constraints aren't met.
+type ExperimentalCountRelationshipsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalCountRelationshipsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExperimentalCountRelationshipsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExperimentalCountRelationshipsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExperimentalCountRelationshipsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalCountRelationshipsRequestValidationError) ErrorName() string {
+	return "ExperimentalCountRelationshipsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalCountRelationshipsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalCountRelationshipsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalCountRelationshipsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalCountRelationshipsRequestValidationError{}
+
+// Validate checks the field values on ExperimentalCountRelationshipsResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *ExperimentalCountRelationshipsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ExperimentalCountRelationshipsResponse with the rules defined in the proto
+// definition for this message. If any rules are violated, the result is a
+// list of violation errors wrapped in
+// ExperimentalCountRelationshipsResponseMultiError, or nil if none found.
+func (m *ExperimentalCountRelationshipsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalCountRelationshipsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetReadAt() == nil {
+		err := ExperimentalCountRelationshipsResponseValidationError{
+			field:  "ReadAt",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetReadAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalCountRelationshipsResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalCountRelationshipsResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReadAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalCountRelationshipsResponseValidationError{
+				field:  "ReadAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for RelationshipCount
+
+	if len(errors) > 0 {
+		return ExperimentalCountRelationshipsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalCountRelationshipsResponseMultiError is an error wrapping
+// multiple validation errors returned by
+// ExperimentalCountRelationshipsResponse.ValidateAll() if the designated
+// constraints aren't met.
+type ExperimentalCountRelationshipsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalCountRelationshipsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalCountRelationshipsResponseMultiError) AllErrors() []error { return m }
+
+// ExperimentalCountRelationshipsResponseValidationError is the validation
+// error returned by ExperimentalCountRelationshipsResponse.Validate if the
+// designated constraints aren't met.
+type ExperimentalCountRelationshipsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalCountRelationshipsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExperimentalCountRelationshipsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExperimentalCountRelationshipsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExperimentalCountRelationshipsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalCountRelationshipsResponseValidationError) ErrorName() string {
+	return "ExperimentalCountRelationshipsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalCountRelationshipsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalCountRelationshipsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalCountRelationshipsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalCountRelationshipsResponseValidationError{}
+
+// Validate checks the field values on
+// ExperimentalUnregisterRelationshipCounterRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ExperimentalUnregisterRelationshipCounterRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ExperimentalUnregisterRelationshipCounterRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in
+// ExperimentalUnregisterRelationshipCounterRequestMultiError, or nil if none found.
+func (m *ExperimentalUnregisterRelationshipCounterRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalUnregisterRelationshipCounterRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetRelationshipFilter() == nil {
+		err := ExperimentalUnregisterRelationshipCounterRequestValidationError{
+			field:  "RelationshipFilter",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetRelationshipFilter()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExperimentalUnregisterRelationshipCounterRequestValidationError{
+					field:  "RelationshipFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExperimentalUnregisterRelationshipCounterRequestValidationError{
+					field:  "RelationshipFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRelationshipFilter()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExperimentalUnregisterRelationshipCounterRequestValidationError{
+				field:  "RelationshipFilter",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ExperimentalUnregisterRelationshipCounterRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalUnregisterRelationshipCounterRequestMultiError is an error
+// wrapping multiple validation errors returned by
+// ExperimentalUnregisterRelationshipCounterRequest.ValidateAll() if the
+// designated constraints aren't met.
+type ExperimentalUnregisterRelationshipCounterRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalUnregisterRelationshipCounterRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalUnregisterRelationshipCounterRequestMultiError) AllErrors() []error { return m }
+
+// ExperimentalUnregisterRelationshipCounterRequestValidationError is the
+// validation error returned by
+// ExperimentalUnregisterRelationshipCounterRequest.Validate if the designated
+// constraints aren't met.
+type ExperimentalUnregisterRelationshipCounterRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalUnregisterRelationshipCounterRequestValidationError) Field() string {
+	return e.field
+}
+
+// Reason function returns reason value.
+func (e ExperimentalUnregisterRelationshipCounterRequestValidationError) Reason() string {
+	return e.reason
+}
+
+// Cause function returns cause value.
+func (e ExperimentalUnregisterRelationshipCounterRequestValidationError) Cause() error {
+	return e.cause
+}
+
+// Key function returns key value.
+func (e ExperimentalUnregisterRelationshipCounterRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalUnregisterRelationshipCounterRequestValidationError) ErrorName() string {
+	return "ExperimentalUnregisterRelationshipCounterRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalUnregisterRelationshipCounterRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalUnregisterRelationshipCounterRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalUnregisterRelationshipCounterRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalUnregisterRelationshipCounterRequestValidationError{}
+
+// Validate checks the field values on
+// ExperimentalUnregisterRelationshipCounterResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ExperimentalUnregisterRelationshipCounterResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ExperimentalUnregisterRelationshipCounterResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in
+// ExperimentalUnregisterRelationshipCounterResponseMultiError, or nil if none found.
+func (m *ExperimentalUnregisterRelationshipCounterResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExperimentalUnregisterRelationshipCounterResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ExperimentalUnregisterRelationshipCounterResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExperimentalUnregisterRelationshipCounterResponseMultiError is an error
+// wrapping multiple validation errors returned by
+// ExperimentalUnregisterRelationshipCounterResponse.ValidateAll() if the
+// designated constraints aren't met.
+type ExperimentalUnregisterRelationshipCounterResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExperimentalUnregisterRelationshipCounterResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExperimentalUnregisterRelationshipCounterResponseMultiError) AllErrors() []error { return m }
+
+// ExperimentalUnregisterRelationshipCounterResponseValidationError is the
+// validation error returned by
+// ExperimentalUnregisterRelationshipCounterResponse.Validate if the
+// designated constraints aren't met.
+type ExperimentalUnregisterRelationshipCounterResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExperimentalUnregisterRelationshipCounterResponseValidationError) Field() string {
+	return e.field
+}
+
+// Reason function returns reason value.
+func (e ExperimentalUnregisterRelationshipCounterResponseValidationError) Reason() string {
+	return e.reason
+}
+
+// Cause function returns cause value.
+func (e ExperimentalUnregisterRelationshipCounterResponseValidationError) Cause() error {
+	return e.cause
+}
+
+// Key function returns key value.
+func (e ExperimentalUnregisterRelationshipCounterResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExperimentalUnregisterRelationshipCounterResponseValidationError) ErrorName() string {
+	return "ExperimentalUnregisterRelationshipCounterResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExperimentalUnregisterRelationshipCounterResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExperimentalUnregisterRelationshipCounterResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExperimentalUnregisterRelationshipCounterResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExperimentalUnregisterRelationshipCounterResponseValidationError{}
+
 // Validate checks the field values on BulkCheckPermissionRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.

@@ -19,13 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ExperimentalService_BulkImportRelationships_FullMethodName           = "/authzed.api.v1.ExperimentalService/BulkImportRelationships"
-	ExperimentalService_BulkExportRelationships_FullMethodName           = "/authzed.api.v1.ExperimentalService/BulkExportRelationships"
-	ExperimentalService_BulkCheckPermission_FullMethodName               = "/authzed.api.v1.ExperimentalService/BulkCheckPermission"
-	ExperimentalService_ExperimentalReflectSchema_FullMethodName         = "/authzed.api.v1.ExperimentalService/ExperimentalReflectSchema"
-	ExperimentalService_ExperimentalComputablePermissions_FullMethodName = "/authzed.api.v1.ExperimentalService/ExperimentalComputablePermissions"
-	ExperimentalService_ExperimentalDependentRelations_FullMethodName    = "/authzed.api.v1.ExperimentalService/ExperimentalDependentRelations"
-	ExperimentalService_ExperimentalDiffSchema_FullMethodName            = "/authzed.api.v1.ExperimentalService/ExperimentalDiffSchema"
+	ExperimentalService_BulkImportRelationships_FullMethodName                   = "/authzed.api.v1.ExperimentalService/BulkImportRelationships"
+	ExperimentalService_BulkExportRelationships_FullMethodName                   = "/authzed.api.v1.ExperimentalService/BulkExportRelationships"
+	ExperimentalService_BulkCheckPermission_FullMethodName                       = "/authzed.api.v1.ExperimentalService/BulkCheckPermission"
+	ExperimentalService_ExperimentalReflectSchema_FullMethodName                 = "/authzed.api.v1.ExperimentalService/ExperimentalReflectSchema"
+	ExperimentalService_ExperimentalComputablePermissions_FullMethodName         = "/authzed.api.v1.ExperimentalService/ExperimentalComputablePermissions"
+	ExperimentalService_ExperimentalDependentRelations_FullMethodName            = "/authzed.api.v1.ExperimentalService/ExperimentalDependentRelations"
+	ExperimentalService_ExperimentalDiffSchema_FullMethodName                    = "/authzed.api.v1.ExperimentalService/ExperimentalDiffSchema"
+	ExperimentalService_ExperimentalRegisterRelationshipCounter_FullMethodName   = "/authzed.api.v1.ExperimentalService/ExperimentalRegisterRelationshipCounter"
+	ExperimentalService_ExperimentalCountRelationships_FullMethodName            = "/authzed.api.v1.ExperimentalService/ExperimentalCountRelationships"
+	ExperimentalService_ExperimentalUnregisterRelationshipCounter_FullMethodName = "/authzed.api.v1.ExperimentalService/ExperimentalUnregisterRelationshipCounter"
 )
 
 // ExperimentalServiceClient is the client API for ExperimentalService service.
@@ -66,6 +69,13 @@ type ExperimentalServiceClient interface {
 	// specified schema and the schema stored in SpiceDB. This is useful for clients that need to
 	// introspect the schema of a SpiceDB instance.
 	ExperimentalDiffSchema(ctx context.Context, in *ExperimentalDiffSchemaRequest, opts ...grpc.CallOption) (*ExperimentalDiffSchemaResponse, error)
+	// EXPERIMENTAL: RegisterRelationshipCounter registers a new filter for counting relationships. A filter must be registered before
+	// a count can be requested.
+	ExperimentalRegisterRelationshipCounter(ctx context.Context, in *ExperimentalRegisterRelationshipCounterRequest, opts ...grpc.CallOption) (*ExperimentalRegisterRelationshipCounterResponse, error)
+	// EXPERIMENTAL: CountRelationships returns the count of relationships for *pre-registered* filter.
+	ExperimentalCountRelationships(ctx context.Context, in *ExperimentalCountRelationshipsRequest, opts ...grpc.CallOption) (*ExperimentalCountRelationshipsResponse, error)
+	// EXPERIMENTAL: UnregisterRelationshipCounter unregisters an existing filter for counting relationships.
+	ExperimentalUnregisterRelationshipCounter(ctx context.Context, in *ExperimentalUnregisterRelationshipCounterRequest, opts ...grpc.CallOption) (*ExperimentalUnregisterRelationshipCounterResponse, error)
 }
 
 type experimentalServiceClient struct {
@@ -188,6 +198,33 @@ func (c *experimentalServiceClient) ExperimentalDiffSchema(ctx context.Context, 
 	return out, nil
 }
 
+func (c *experimentalServiceClient) ExperimentalRegisterRelationshipCounter(ctx context.Context, in *ExperimentalRegisterRelationshipCounterRequest, opts ...grpc.CallOption) (*ExperimentalRegisterRelationshipCounterResponse, error) {
+	out := new(ExperimentalRegisterRelationshipCounterResponse)
+	err := c.cc.Invoke(ctx, ExperimentalService_ExperimentalRegisterRelationshipCounter_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *experimentalServiceClient) ExperimentalCountRelationships(ctx context.Context, in *ExperimentalCountRelationshipsRequest, opts ...grpc.CallOption) (*ExperimentalCountRelationshipsResponse, error) {
+	out := new(ExperimentalCountRelationshipsResponse)
+	err := c.cc.Invoke(ctx, ExperimentalService_ExperimentalCountRelationships_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *experimentalServiceClient) ExperimentalUnregisterRelationshipCounter(ctx context.Context, in *ExperimentalUnregisterRelationshipCounterRequest, opts ...grpc.CallOption) (*ExperimentalUnregisterRelationshipCounterResponse, error) {
+	out := new(ExperimentalUnregisterRelationshipCounterResponse)
+	err := c.cc.Invoke(ctx, ExperimentalService_ExperimentalUnregisterRelationshipCounter_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ExperimentalServiceServer is the server API for ExperimentalService service.
 // All implementations must embed UnimplementedExperimentalServiceServer
 // for forward compatibility
@@ -226,6 +263,13 @@ type ExperimentalServiceServer interface {
 	// specified schema and the schema stored in SpiceDB. This is useful for clients that need to
 	// introspect the schema of a SpiceDB instance.
 	ExperimentalDiffSchema(context.Context, *ExperimentalDiffSchemaRequest) (*ExperimentalDiffSchemaResponse, error)
+	// EXPERIMENTAL: RegisterRelationshipCounter registers a new filter for counting relationships. A filter must be registered before
+	// a count can be requested.
+	ExperimentalRegisterRelationshipCounter(context.Context, *ExperimentalRegisterRelationshipCounterRequest) (*ExperimentalRegisterRelationshipCounterResponse, error)
+	// EXPERIMENTAL: CountRelationships returns the count of relationships for *pre-registered* filter.
+	ExperimentalCountRelationships(context.Context, *ExperimentalCountRelationshipsRequest) (*ExperimentalCountRelationshipsResponse, error)
+	// EXPERIMENTAL: UnregisterRelationshipCounter unregisters an existing filter for counting relationships.
+	ExperimentalUnregisterRelationshipCounter(context.Context, *ExperimentalUnregisterRelationshipCounterRequest) (*ExperimentalUnregisterRelationshipCounterResponse, error)
 	mustEmbedUnimplementedExperimentalServiceServer()
 }
 
@@ -253,6 +297,15 @@ func (UnimplementedExperimentalServiceServer) ExperimentalDependentRelations(con
 }
 func (UnimplementedExperimentalServiceServer) ExperimentalDiffSchema(context.Context, *ExperimentalDiffSchemaRequest) (*ExperimentalDiffSchemaResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExperimentalDiffSchema not implemented")
+}
+func (UnimplementedExperimentalServiceServer) ExperimentalRegisterRelationshipCounter(context.Context, *ExperimentalRegisterRelationshipCounterRequest) (*ExperimentalRegisterRelationshipCounterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExperimentalRegisterRelationshipCounter not implemented")
+}
+func (UnimplementedExperimentalServiceServer) ExperimentalCountRelationships(context.Context, *ExperimentalCountRelationshipsRequest) (*ExperimentalCountRelationshipsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExperimentalCountRelationships not implemented")
+}
+func (UnimplementedExperimentalServiceServer) ExperimentalUnregisterRelationshipCounter(context.Context, *ExperimentalUnregisterRelationshipCounterRequest) (*ExperimentalUnregisterRelationshipCounterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExperimentalUnregisterRelationshipCounter not implemented")
 }
 func (UnimplementedExperimentalServiceServer) mustEmbedUnimplementedExperimentalServiceServer() {}
 
@@ -404,6 +457,60 @@ func _ExperimentalService_ExperimentalDiffSchema_Handler(srv interface{}, ctx co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ExperimentalService_ExperimentalRegisterRelationshipCounter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExperimentalRegisterRelationshipCounterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExperimentalServiceServer).ExperimentalRegisterRelationshipCounter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ExperimentalService_ExperimentalRegisterRelationshipCounter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExperimentalServiceServer).ExperimentalRegisterRelationshipCounter(ctx, req.(*ExperimentalRegisterRelationshipCounterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ExperimentalService_ExperimentalCountRelationships_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExperimentalCountRelationshipsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExperimentalServiceServer).ExperimentalCountRelationships(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ExperimentalService_ExperimentalCountRelationships_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExperimentalServiceServer).ExperimentalCountRelationships(ctx, req.(*ExperimentalCountRelationshipsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ExperimentalService_ExperimentalUnregisterRelationshipCounter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExperimentalUnregisterRelationshipCounterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExperimentalServiceServer).ExperimentalUnregisterRelationshipCounter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ExperimentalService_ExperimentalUnregisterRelationshipCounter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExperimentalServiceServer).ExperimentalUnregisterRelationshipCounter(ctx, req.(*ExperimentalUnregisterRelationshipCounterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ExperimentalService_ServiceDesc is the grpc.ServiceDesc for ExperimentalService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -430,6 +537,18 @@ var ExperimentalService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ExperimentalDiffSchema",
 			Handler:    _ExperimentalService_ExperimentalDiffSchema_Handler,
+		},
+		{
+			MethodName: "ExperimentalRegisterRelationshipCounter",
+			Handler:    _ExperimentalService_ExperimentalRegisterRelationshipCounter_Handler,
+		},
+		{
+			MethodName: "ExperimentalCountRelationships",
+			Handler:    _ExperimentalService_ExperimentalCountRelationships_Handler,
+		},
+		{
+			MethodName: "ExperimentalUnregisterRelationshipCounter",
+			Handler:    _ExperimentalService_ExperimentalUnregisterRelationshipCounter_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
