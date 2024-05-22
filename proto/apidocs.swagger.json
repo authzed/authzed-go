@@ -2039,26 +2039,22 @@
     "v1ExperimentalCountRelationshipsRequest": {
       "type": "object",
       "properties": {
-        "consistency": {
-          "$ref": "#/definitions/v1Consistency",
-          "description": "consistency defines the consistency level for the count operation. If the\nrequested consistency is fully consistent or represents a zedtoken that is\nnot stored in the system, the count will be performed synchronously, which\ncan be *quite slow* for large datasets."
-        },
-        "relationshipFilter": {
-          "$ref": "#/definitions/v1RelationshipFilter",
-          "description": "relationship_filter defines the filter to be applied to the relationships\nto be counted."
+        "name": {
+          "type": "string",
+          "description": "name is the name of the counter whose count is being requested."
         }
       }
     },
     "v1ExperimentalCountRelationshipsResponse": {
       "type": "object",
       "properties": {
-        "readAt": {
-          "$ref": "#/definitions/v1ZedToken",
-          "title": "read_at is the ZedToken at which the relationship count was performed"
+        "counterStillCalculating": {
+          "type": "boolean",
+          "description": "counter_still_calculating is true if the counter is still calculating the count."
         },
-        "relationshipCount": {
-          "type": "string",
-          "format": "uint64"
+        "readCounterValue": {
+          "$ref": "#/definitions/v1ReadCounterValue",
+          "description": "read_counter_value is the value of the counter at the time of the read."
         }
       }
     },
@@ -2163,6 +2159,10 @@
     "v1ExperimentalRegisterRelationshipCounterRequest": {
       "type": "object",
       "properties": {
+        "name": {
+          "type": "string",
+          "description": "name is the name of the counter being registered."
+        },
         "relationshipFilter": {
           "$ref": "#/definitions/v1RelationshipFilter",
           "description": "relationship_filter defines the filter to be applied to the relationships\nto be counted."
@@ -2175,8 +2175,9 @@
     "v1ExperimentalUnregisterRelationshipCounterRequest": {
       "type": "object",
       "properties": {
-        "relationshipFilter": {
-          "$ref": "#/definitions/v1RelationshipFilter"
+        "name": {
+          "type": "string",
+          "description": "name is the name of the counter being unregistered."
         }
       }
     },
@@ -2402,6 +2403,20 @@
         "OPERATION_MUST_MATCH"
       ],
       "default": "OPERATION_UNSPECIFIED"
+    },
+    "v1ReadCounterValue": {
+      "type": "object",
+      "properties": {
+        "relationshipCount": {
+          "type": "string",
+          "format": "uint64",
+          "description": "relationship_count is the count of relationships that match the filter."
+        },
+        "readAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the relationship count applies."
+        }
+      }
     },
     "v1ReadRelationshipsRequest": {
       "type": "object",
