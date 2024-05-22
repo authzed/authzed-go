@@ -59,6 +59,28 @@ func (m *ExperimentalRegisterRelationshipCounterRequest) validate(all bool) erro
 
 	var errors []error
 
+	if len(m.GetName()) > 64 {
+		err := ExperimentalRegisterRelationshipCounterRequestValidationError{
+			field:  "Name",
+			reason: "value length must be at most 64 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_ExperimentalRegisterRelationshipCounterRequest_Name_Pattern.MatchString(m.GetName()) {
+		err := ExperimentalRegisterRelationshipCounterRequestValidationError{
+			field:  "Name",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if m.GetRelationshipFilter() == nil {
 		err := ExperimentalRegisterRelationshipCounterRequestValidationError{
 			field:  "RelationshipFilter",
@@ -183,6 +205,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ExperimentalRegisterRelationshipCounterRequestValidationError{}
+
+var _ExperimentalRegisterRelationshipCounterRequest_Name_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
 
 // Validate checks the field values on
 // ExperimentalRegisterRelationshipCounterResponse with the rules defined in
@@ -318,39 +342,10 @@ func (m *ExperimentalCountRelationshipsRequest) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetConsistency()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ExperimentalCountRelationshipsRequestValidationError{
-					field:  "Consistency",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, ExperimentalCountRelationshipsRequestValidationError{
-					field:  "Consistency",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetConsistency()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return ExperimentalCountRelationshipsRequestValidationError{
-				field:  "Consistency",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if m.GetRelationshipFilter() == nil {
+	if len(m.GetName()) > 64 {
 		err := ExperimentalCountRelationshipsRequestValidationError{
-			field:  "RelationshipFilter",
-			reason: "value is required",
+			field:  "Name",
+			reason: "value length must be at most 64 bytes",
 		}
 		if !all {
 			return err
@@ -358,33 +353,15 @@ func (m *ExperimentalCountRelationshipsRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if all {
-		switch v := interface{}(m.GetRelationshipFilter()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ExperimentalCountRelationshipsRequestValidationError{
-					field:  "RelationshipFilter",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, ExperimentalCountRelationshipsRequestValidationError{
-					field:  "RelationshipFilter",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
+	if !_ExperimentalCountRelationshipsRequest_Name_Pattern.MatchString(m.GetName()) {
+		err := ExperimentalCountRelationshipsRequestValidationError{
+			field:  "Name",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\"",
 		}
-	} else if v, ok := interface{}(m.GetRelationshipFilter()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return ExperimentalCountRelationshipsRequestValidationError{
-				field:  "RelationshipFilter",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
+		if !all {
+			return err
 		}
+		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
@@ -469,6 +446,8 @@ var _ interface {
 	ErrorName() string
 } = ExperimentalCountRelationshipsRequestValidationError{}
 
+var _ExperimentalCountRelationshipsRequest_Name_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
+
 // Validate checks the field values on ExperimentalCountRelationshipsResponse
 // with the rules defined in the proto definition for this message. If any
 // rules are violated, the first error encountered is returned, or nil if
@@ -493,47 +472,63 @@ func (m *ExperimentalCountRelationshipsResponse) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetReadAt() == nil {
-		err := ExperimentalCountRelationshipsResponseValidationError{
-			field:  "ReadAt",
-			reason: "value is required",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if all {
-		switch v := interface{}(m.GetReadAt()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ExperimentalCountRelationshipsResponseValidationError{
-					field:  "ReadAt",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	switch v := m.CounterResult.(type) {
+	case *ExperimentalCountRelationshipsResponse_CounterStillCalculating:
+		if v == nil {
+			err := ExperimentalCountRelationshipsResponseValidationError{
+				field:  "CounterResult",
+				reason: "oneof value cannot be a typed-nil",
 			}
-		case interface{ Validate() error }:
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		// no validation rules for CounterStillCalculating
+	case *ExperimentalCountRelationshipsResponse_ReadCounterValue:
+		if v == nil {
+			err := ExperimentalCountRelationshipsResponseValidationError{
+				field:  "CounterResult",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetReadCounterValue()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExperimentalCountRelationshipsResponseValidationError{
+						field:  "ReadCounterValue",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExperimentalCountRelationshipsResponseValidationError{
+						field:  "ReadCounterValue",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetReadCounterValue()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, ExperimentalCountRelationshipsResponseValidationError{
-					field:  "ReadAt",
+				return ExperimentalCountRelationshipsResponseValidationError{
+					field:  "ReadCounterValue",
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetReadAt()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return ExperimentalCountRelationshipsResponseValidationError{
-				field:  "ReadAt",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
 
-	// no validation rules for RelationshipCount
+	default:
+		_ = v // ensures v is used
+	}
 
 	if len(errors) > 0 {
 		return ExperimentalCountRelationshipsResponseMultiError(errors)
@@ -617,6 +612,148 @@ var _ interface {
 	ErrorName() string
 } = ExperimentalCountRelationshipsResponseValidationError{}
 
+// Validate checks the field values on ReadCounterValue with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ReadCounterValue) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadCounterValue with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReadCounterValueMultiError, or nil if none found.
+func (m *ReadCounterValue) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadCounterValue) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for RelationshipCount
+
+	if m.GetReadAt() == nil {
+		err := ReadCounterValueValidationError{
+			field:  "ReadAt",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetReadAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReadCounterValueValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReadCounterValueValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReadAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReadCounterValueValidationError{
+				field:  "ReadAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ReadCounterValueMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReadCounterValueMultiError is an error wrapping multiple validation errors
+// returned by ReadCounterValue.ValidateAll() if the designated constraints
+// aren't met.
+type ReadCounterValueMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadCounterValueMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadCounterValueMultiError) AllErrors() []error { return m }
+
+// ReadCounterValueValidationError is the validation error returned by
+// ReadCounterValue.Validate if the designated constraints aren't met.
+type ReadCounterValueValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReadCounterValueValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReadCounterValueValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReadCounterValueValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReadCounterValueValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReadCounterValueValidationError) ErrorName() string { return "ReadCounterValueValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ReadCounterValueValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReadCounterValue.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReadCounterValueValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReadCounterValueValidationError{}
+
 // Validate checks the field values on
 // ExperimentalUnregisterRelationshipCounterRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -641,10 +778,10 @@ func (m *ExperimentalUnregisterRelationshipCounterRequest) validate(all bool) er
 
 	var errors []error
 
-	if m.GetRelationshipFilter() == nil {
+	if len(m.GetName()) > 64 {
 		err := ExperimentalUnregisterRelationshipCounterRequestValidationError{
-			field:  "RelationshipFilter",
-			reason: "value is required",
+			field:  "Name",
+			reason: "value length must be at most 64 bytes",
 		}
 		if !all {
 			return err
@@ -652,33 +789,15 @@ func (m *ExperimentalUnregisterRelationshipCounterRequest) validate(all bool) er
 		errors = append(errors, err)
 	}
 
-	if all {
-		switch v := interface{}(m.GetRelationshipFilter()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ExperimentalUnregisterRelationshipCounterRequestValidationError{
-					field:  "RelationshipFilter",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, ExperimentalUnregisterRelationshipCounterRequestValidationError{
-					field:  "RelationshipFilter",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
+	if !_ExperimentalUnregisterRelationshipCounterRequest_Name_Pattern.MatchString(m.GetName()) {
+		err := ExperimentalUnregisterRelationshipCounterRequestValidationError{
+			field:  "Name",
+			reason: "value does not match regex pattern \"^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\"",
 		}
-	} else if v, ok := interface{}(m.GetRelationshipFilter()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return ExperimentalUnregisterRelationshipCounterRequestValidationError{
-				field:  "RelationshipFilter",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
+		if !all {
+			return err
 		}
+		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
@@ -769,6 +888,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ExperimentalUnregisterRelationshipCounterRequestValidationError{}
+
+var _ExperimentalUnregisterRelationshipCounterRequest_Name_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
 
 // Validate checks the field values on
 // ExperimentalUnregisterRelationshipCounterResponse with the rules defined in
