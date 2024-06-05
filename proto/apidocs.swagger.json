@@ -15,6 +15,12 @@
   },
   "tags": [
     {
+      "name": "WatchPermissionsService"
+    },
+    {
+      "name": "WatchPermissionSetsService"
+    },
+    {
       "name": "DeveloperService"
     },
     {
@@ -932,6 +938,15 @@
       ],
       "default": "WILDCARD_OPTION_UNSPECIFIED"
     },
+    "PermissionSetChangeSetOperation": {
+      "type": "string",
+      "enum": [
+        "SET_OPERATION_UNSPECIFIED",
+        "SET_OPERATION_ADDED",
+        "SET_OPERATION_REMOVED"
+      ],
+      "default": "SET_OPERATION_UNSPECIFIED"
+    },
     "SubjectFilterRelationFilter": {
       "type": "object",
       "properties": {
@@ -939,6 +954,15 @@
           "type": "string"
         }
       }
+    },
+    "apiv1Cursor": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      },
+      "description": "Cursor is used to provide resumption of listing between calls to APIs\nsuch as LookupResources."
     },
     "apiv1ReadSchemaRequest": {
       "type": "object",
@@ -1011,6 +1035,29 @@
         }
       },
       "description": "WriteSchemaResponse is the resulting data after having written a Schema to\na Permissions System."
+    },
+    "materializev0Cursor": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "limit is the number of permission sets to stream over a single LookupPermissionSets call that was requested."
+        },
+        "token": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "token is the snapshot revision at which the cursor was computed."
+        },
+        "startingIndex": {
+          "type": "integer",
+          "format": "int64",
+          "title": "starting_index is an offset of the permission set represented by this cursor"
+        },
+        "completedMembers": {
+          "type": "boolean",
+          "title": "completed_members is a boolean flag that indicates that the cursor has reached the end of the permission sets"
+        }
+      }
     },
     "protobufAny": {
       "type": "object",
@@ -1130,6 +1177,29 @@
         }
       }
     },
+    "v0LookupPermissionSetsRequired": {
+      "type": "object",
+      "properties": {
+        "requiredLookupAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "required_lookup_at is the snapshot revision at which the permission set needs to be rebuilt to."
+        }
+      },
+      "description": "LookupPermissionSetsRequired is a signal that the consumer should perform a LookupPermissionSets call because\nthe permission set snapshot needs to be rebuilt from scratch. This typically happens when the origin SpiceDB\ncluster has seen its schema changed."
+    },
+    "v0LookupPermissionSetsResponse": {
+      "type": "object",
+      "properties": {
+        "change": {
+          "$ref": "#/definitions/v0PermissionSetChange",
+          "description": "change represents the permission set delta necessary to transition an uninitialized target system to\na specific snapshot revision. In practice it's not different from the WatchPermissionSetsResponse.change, except\nall changes will be of time SET_OPERATION_ADDED because it's assumed there is no known previous state.\n\nApplying the deltas to a previously initialized target system would yield incorrect results."
+        },
+        "cursor": {
+          "$ref": "#/definitions/materializev0Cursor",
+          "description": "cursor points to a specific permission set in a revision.\nThe consumer should keep track of the cursor in order to resume streaming in the event of consumer restarts. This\nis particularly important in backfill scenarios that may take hours or event days to complete."
+        }
+      }
+    },
     "v0LookupShareResponse": {
       "type": "object",
       "properties": {
@@ -1150,6 +1220,23 @@
         }
       }
     },
+    "v0MemberReference": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string",
+          "title": "object_type is the type of object of a permission set member"
+        },
+        "objectId": {
+          "type": "string",
+          "title": "object_id is the ID of a permission set member"
+        },
+        "optionalPermissionOrRelation": {
+          "type": "string",
+          "title": "optional_permission_or_relation is the permission or relation referenced by this permission set member"
+        }
+      }
+    },
     "v0ObjectAndRelation": {
       "type": "object",
       "properties": {
@@ -1161,6 +1248,66 @@
         },
         "relation": {
           "type": "string"
+        }
+      }
+    },
+    "v0PermissionChange": {
+      "type": "object",
+      "properties": {
+        "revision": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "revision represents the revision at which the change occurred."
+        },
+        "resource": {
+          "$ref": "#/definitions/v1ObjectReference",
+          "description": "resource is the resource that the permission change is related to."
+        },
+        "permission": {
+          "type": "string",
+          "description": "permission is the permission that has changed."
+        },
+        "subject": {
+          "$ref": "#/definitions/v1SubjectReference",
+          "description": "subject is the subject that the permission change is related to."
+        },
+        "permissionship": {
+          "$ref": "#/definitions/v0PermissionChangePermissionship",
+          "description": "permissionship is the new permissionship of the subject over the resource after the change."
+        }
+      }
+    },
+    "v0PermissionChangePermissionship": {
+      "type": "string",
+      "enum": [
+        "PERMISSIONSHIP_UNSPECIFIED",
+        "PERMISSIONSHIP_NO_PERMISSION",
+        "PERMISSIONSHIP_HAS_PERMISSION",
+        "PERMISSIONSHIP_CONDITIONAL_PERMISSION"
+      ],
+      "default": "PERMISSIONSHIP_UNSPECIFIED"
+    },
+    "v0PermissionSetChange": {
+      "type": "object",
+      "properties": {
+        "atRevision": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "revision represents the revision at which the permission set change occurred."
+        },
+        "operation": {
+          "$ref": "#/definitions/PermissionSetChangeSetOperation",
+          "title": "operation represents the type of set operation that took place as part of the change"
+        },
+        "parentSet": {
+          "$ref": "#/definitions/v0SetReference",
+          "title": "parent_set represents the permission set parent of either another set or a member"
+        },
+        "childSet": {
+          "$ref": "#/definitions/v0SetReference",
+          "title": "child_set represents the scenario where another set is considered member of the parent set"
+        },
+        "childMember": {
+          "$ref": "#/definitions/v0MemberReference",
+          "title": "child_member represents the scenario where an specific object is considered member of the parent set"
         }
       }
     },
@@ -1188,6 +1335,23 @@
             "type": "object",
             "$ref": "#/definitions/v0RelationTuple"
           }
+        }
+      }
+    },
+    "v0SetReference": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string",
+          "title": "object_type is the type of object in a permission set"
+        },
+        "objectId": {
+          "type": "string",
+          "title": "object_id is the ID of a permission set"
+        },
+        "permissionOrRelation": {
+          "type": "string",
+          "title": "permission_or_relation is the permission or relation referenced by this permission set"
         }
       }
     },
@@ -1237,6 +1401,57 @@
         },
         "updatedValidationYaml": {
           "type": "string"
+        }
+      }
+    },
+    "v0WatchPermissionSetsResponse": {
+      "type": "object",
+      "properties": {
+        "change": {
+          "$ref": "#/definitions/v0PermissionSetChange",
+          "description": "change is the permission set delta that has occurred as result of a mutation in origin SpiceDB.\nThe consumer should apply this change to the current state of the permission sets in their target system.\nOnce an event arrives with completed_revision instead, the consumer shall consider the set of\nchanges originating from that revision completed.\n\nThe consumer should keep track of the revision in order to resume streaming in the event of consumer restarts."
+        },
+        "completedRevision": {
+          "$ref": "#/definitions/v1ZedToken",
+          "title": "completed_revision is the revision token that indicates the completion of a set of changes. It may also be\nreceived without accompanying set of changes, indicating that a mutation in the origin SpiceDB cluster did\nnot yield any effective changes in the permission sets"
+        },
+        "lookupPermissionSetsRequired": {
+          "$ref": "#/definitions/v0LookupPermissionSetsRequired",
+          "description": "lookup_permission_sets_required is a signal that the consumer should perform a LookupPermissionSets call because\nthe permission set snapshot needs to be rebuilt from scratch. This typically happens when the origin SpiceDB\ncluster has seen its schema changed."
+        }
+      }
+    },
+    "v0WatchPermissionsResponse": {
+      "type": "object",
+      "properties": {
+        "change": {
+          "$ref": "#/definitions/v0PermissionChange",
+          "description": "change is the computed permission delta that has occurred as result of a mutation in origin SpiceDB.\nThe consumer should apply this change to the current state of the computed permissions in their target system.\nOnce an event arrives with completed_revision instead, the consumer shall consider there are not more changes\noriginating from that revision.\n\nThe consumer should keep track of the revision in order to resume streaming in the event of consumer restarts."
+        },
+        "completedRevision": {
+          "$ref": "#/definitions/v1ZedToken",
+          "title": "completed_revision is the revision token that indicates all changes originating from a revision have been\nstreamed and thus the revision should be considered completed. It may also be\nreceived without accompanying set of changes, indicating that a mutation in the origin SpiceDB cluster did\nnot yield any effective changes in the computed permissions"
+        }
+      }
+    },
+    "v0WatchedPermission": {
+      "type": "object",
+      "properties": {
+        "resourceType": {
+          "type": "string",
+          "description": "resource_type is the type of the resource to watch for changes."
+        },
+        "permission": {
+          "type": "string",
+          "description": "permission is the permission to watch for changes."
+        },
+        "subjectType": {
+          "type": "string",
+          "description": "subject_type is the type of the subject to watch for changes."
+        },
+        "optionalSubjectRelation": {
+          "type": "string",
+          "description": "optional_subject_relation is the relation on the subject to watch for changes."
         }
       }
     },
@@ -1351,7 +1566,7 @@
           "description": "optional_limit, if non-zero, specifies the limit on the number of\nrelationships the server can return in one page. By default, the server\nwill pick a page size, and the server is free to choose a smaller size\nat will."
         },
         "optionalCursor": {
-          "$ref": "#/definitions/v1Cursor",
+          "$ref": "#/definitions/apiv1Cursor",
           "description": "optional_cursor, if specified, indicates the cursor after which results\nshould resume being returned. The cursor can be found on the\nBulkExportRelationshipsResponse object."
         },
         "optionalRelationshipFilter": {
@@ -1365,7 +1580,7 @@
       "type": "object",
       "properties": {
         "afterResultCursor": {
-          "$ref": "#/definitions/v1Cursor"
+          "$ref": "#/definitions/apiv1Cursor"
         },
         "relationships": {
           "type": "array",
@@ -1645,15 +1860,6 @@
         }
       },
       "description": "ContextualizedCaveat represents a reference to a caveat to be used by caveated relationships.\nThe context consists of key-value pairs that will be injected at evaluation time.\nThe keys must match the arguments defined on the caveat in the schema."
-    },
-    "v1Cursor": {
-      "type": "object",
-      "properties": {
-        "token": {
-          "type": "string"
-        }
-      },
-      "description": "Cursor is used to provide resumption of listing between calls to APIs\nsuch as LookupResources."
     },
     "v1DebugInformation": {
       "type": "object",
@@ -2222,7 +2428,7 @@
           "description": "optional_limit, if non-zero, specifies the limit on the number of resources to return\nbefore the stream is closed on the server side. By default, the stream will continue\nresolving resources until exhausted or the stream is closed due to the client or a\nnetwork issue."
         },
         "optionalCursor": {
-          "$ref": "#/definitions/v1Cursor",
+          "$ref": "#/definitions/apiv1Cursor",
           "description": "optional_cursor, if specified, indicates the cursor after which results should resume being returned.\nThe cursor can be found on the LookupResourcesResponse object."
         }
       },
@@ -2248,7 +2454,7 @@
           "title": "partial_caveat_info holds information of a partially-evaluated caveated response"
         },
         "afterResultCursor": {
-          "$ref": "#/definitions/v1Cursor",
+          "$ref": "#/definitions/apiv1Cursor",
           "description": "after_result_cursor holds a cursor that can be used to resume the LookupResources stream after this\nresult."
         }
       },
@@ -2286,7 +2492,7 @@
           "description": "optional_concrete_limit, if non-zero, specifies the limit on the number of\n*concrete* (non-wildcard) subjects to return before the stream is closed on the\nserver side. With the default value of zero, the stream will continue resolving\nconcrete subjects until exhausted or the stream is closed due to the client or\na network issue.\n\nNOTE: Wildcard subjects (\"*\") have special treatment when cursors and limits are used. Because\nwildcards can apply to *any* concrete subjects, if a wildcard subject is found within the dataset,\na wildcard subject can be returned for *all* LookupSubjects calls, regardless of the cursor or\nlimit.\n\nFor example, if wildcards are requested, a wildcard subject exists, there is a specified limit\nof 10 concrete subjects, and at least 10 concrete subjects exist, the API will return 11 subjects\nin total: the 10 concrete + the wildcard\n\nFurthermore, if a wildcard has a set of exclusions generated by the dataset,\nthe exclusions *will respect the cursor* and only a *partial* set of exclusions will be returned\nfor each invocation of the API.\n\n***IT IS UP TO THE CALLER IN THIS CASE TO COMBINE THE EXCLUSIONS IF DESIRED***"
         },
         "optionalCursor": {
-          "$ref": "#/definitions/v1Cursor",
+          "$ref": "#/definitions/apiv1Cursor",
           "description": "optional_cursor, if specified, indicates the cursor after which results should resume being returned.\nThe cursor can be found on the LookupSubjectsResponse object.\n\nNOTE: See above for notes about how cursors interact with wildcard subjects."
         },
         "wildcardOption": {
@@ -2334,7 +2540,7 @@
           "description": "excluded_subjects are the subjects excluded. This list\nwill only contain subjects if `subject.subject_object_id` is a wildcard (`*`) and\nwill only be populated if exclusions exist from the wildcard."
         },
         "afterResultCursor": {
-          "$ref": "#/definitions/v1Cursor",
+          "$ref": "#/definitions/apiv1Cursor",
           "description": "after_result_cursor holds a cursor that can be used to resume the LookupSubjects stream after this\nresult."
         }
       },
@@ -2434,7 +2640,7 @@
           "description": "optional_limit, if non-zero, specifies the limit on the number of relationships to return\nbefore the stream is closed on the server side. By default, the stream will continue\nresolving relationships until exhausted or the stream is closed due to the client or a\nnetwork issue."
         },
         "optionalCursor": {
-          "$ref": "#/definitions/v1Cursor",
+          "$ref": "#/definitions/apiv1Cursor",
           "description": "optional_cursor, if specified, indicates the cursor after which results should resume being returned.\nThe cursor can be found on the ReadRelationshipsResponse object."
         }
       },
@@ -2452,7 +2658,7 @@
           "description": "relationship is the found relationship."
         },
         "afterResultCursor": {
-          "$ref": "#/definitions/v1Cursor",
+          "$ref": "#/definitions/apiv1Cursor",
           "description": "after_result_cursor holds a cursor that can be used to resume the ReadRelationships stream after this\nresult."
         }
       },

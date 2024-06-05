@@ -1,4 +1,4 @@
-package v1
+package materialize
 
 const (
 	BufRepository = "buf.build/authzed/api"
