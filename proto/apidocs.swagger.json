@@ -1101,6 +1101,16 @@
       },
       "description": "The `Status` type defines a logical error model that is suitable for\ndifferent programming environments, including REST APIs and RPC APIs. It is\nused by [gRPC](https://github.com/grpc). Each `Status` message contains\nthree pieces of data: error code, error message, and error details.\n\nYou can find out more about this error model and how to work with it in the\n[API Design Guide](https://cloud.google.com/apis/design/errors)."
     },
+    "v0BreakingSchemaChange": {
+      "type": "object",
+      "properties": {
+        "changeAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "change_at is the revision at which a breaking schema event has happened."
+        }
+      },
+      "description": "BreakingSchemaChange is used to signal a breaking schema change has happened, and that the consumer should\nexpect delays in the ingestion of new changes, because the permission set snapshot needs to be rebuilt from scratch.\nOnce the snapshot is ready, the consumer will receive a LookupPermissionSetsRequired event."
+    },
     "v0DeveloperError": {
       "type": "object",
       "properties": {
@@ -1185,7 +1195,7 @@
           "description": "required_lookup_at is the snapshot revision at which the permission set needs to be rebuilt to."
         }
       },
-      "description": "LookupPermissionSetsRequired is a signal that the consumer should perform a LookupPermissionSets call because\nthe permission set snapshot needs to be rebuilt from scratch. This typically happens when the origin SpiceDB\ncluster has seen its schema changed."
+      "description": "LookupPermissionSetsRequired is a signal that the consumer should perform a LookupPermissionSets call because\nthe permission set snapshot needs to be rebuilt from scratch. This typically happens when the origin SpiceDB\ncluster has seen its schema changed, see BreakingSchemaChange event."
     },
     "v0LookupPermissionSetsResponse": {
       "type": "object",
@@ -1418,6 +1428,10 @@
         "lookupPermissionSetsRequired": {
           "$ref": "#/definitions/v0LookupPermissionSetsRequired",
           "description": "lookup_permission_sets_required is a signal that the consumer should perform a LookupPermissionSets call because\nthe permission set snapshot needs to be rebuilt from scratch. This typically happens when the origin SpiceDB\ncluster has seen its schema changed."
+        },
+        "breakingSchemaChange": {
+          "$ref": "#/definitions/v0BreakingSchemaChange",
+          "description": "breaking_schema_change is a signal that a breaking schema change has been written to the origin SpiceDB cluster,\nand that the consumer should expect delays in the ingestion of new changes,\nbecause the permission set snapshot needs to be rebuilt from scratch. Once the snapshot is ready, the consumer\nwill receive a LookupPermissionSetsRequired event."
         }
       }
     },
