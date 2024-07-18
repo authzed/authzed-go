@@ -139,6 +139,13 @@ func (m *LookupPermissionSetsRequest) CloneVT() *LookupPermissionSetsRequest {
 	r := new(LookupPermissionSetsRequest)
 	r.Limit = m.Limit
 	r.OptionalStartingAfterCursor = m.OptionalStartingAfterCursor.CloneVT()
+	if rhs := m.OptionalAtRevision; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *v1.ZedToken }); ok {
+			r.OptionalAtRevision = vtpb.CloneVT()
+		} else {
+			r.OptionalAtRevision = proto.Clone(rhs).(*v1.ZedToken)
+		}
+	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -494,6 +501,13 @@ func (this *LookupPermissionSetsRequest) EqualVT(that *LookupPermissionSetsReque
 		return false
 	}
 	if this.Limit != that.Limit {
+		return false
+	}
+	if equal, ok := interface{}(this.OptionalAtRevision).(interface{ EqualVT(*v1.ZedToken) bool }); ok {
+		if !equal.EqualVT(that.OptionalAtRevision) {
+			return false
+		}
+	} else if !proto.Equal(this.OptionalAtRevision, that.OptionalAtRevision) {
 		return false
 	}
 	if !this.OptionalStartingAfterCursor.EqualVT(that.OptionalStartingAfterCursor) {
@@ -1018,6 +1032,28 @@ func (m *LookupPermissionSetsRequest) MarshalToSizedBufferVT(dAtA []byte) (int, 
 		i--
 		dAtA[i] = 0x22
 	}
+	if m.OptionalAtRevision != nil {
+		if vtmsg, ok := interface{}(m.OptionalAtRevision).(interface {
+			MarshalToSizedBufferVT([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.OptionalAtRevision)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(encoded)))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
 	if m.Limit != 0 {
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Limit))
 		i--
@@ -1538,6 +1574,16 @@ func (m *LookupPermissionSetsRequest) SizeVT() (n int) {
 	_ = l
 	if m.Limit != 0 {
 		n += 1 + protohelpers.SizeOfVarint(uint64(m.Limit))
+	}
+	if m.OptionalAtRevision != nil {
+		if size, ok := interface{}(m.OptionalAtRevision).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalAtRevision)
+		}
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	if m.OptionalStartingAfterCursor != nil {
 		l = m.OptionalStartingAfterCursor.SizeVT()
@@ -2230,6 +2276,50 @@ func (m *LookupPermissionSetsRequest) UnmarshalVT(dAtA []byte) error {
 					break
 				}
 			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalAtRevision", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.OptionalAtRevision == nil {
+				m.OptionalAtRevision = &v1.ZedToken{}
+			}
+			if unmarshal, ok := interface{}(m.OptionalAtRevision).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalAtRevision); err != nil {
+					return err
+				}
+			}
+			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OptionalStartingAfterCursor", wireType)

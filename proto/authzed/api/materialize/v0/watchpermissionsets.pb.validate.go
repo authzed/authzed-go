@@ -596,6 +596,35 @@ func (m *LookupPermissionSetsRequest) validate(all bool) error {
 	// no validation rules for Limit
 
 	if all {
+		switch v := interface{}(m.GetOptionalAtRevision()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LookupPermissionSetsRequestValidationError{
+					field:  "OptionalAtRevision",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LookupPermissionSetsRequestValidationError{
+					field:  "OptionalAtRevision",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetOptionalAtRevision()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LookupPermissionSetsRequestValidationError{
+				field:  "OptionalAtRevision",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
 		switch v := interface{}(m.GetOptionalStartingAfterCursor()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
