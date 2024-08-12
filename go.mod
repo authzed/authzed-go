@@ -8,7 +8,7 @@ require (
 	github.com/authzed/grpcutil v0.0.0-20230908193239-4286bb1d6403
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/ecordell/optgen v0.0.9
-	github.com/envoyproxy/protoc-gen-validate v1.0.4
+	github.com/envoyproxy/protoc-gen-validate v1.1.0
 	github.com/golangci/golangci-lint v1.59.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.21.0
 	github.com/jzelinskie/stringz v0.0.3
@@ -16,7 +16,7 @@ require (
 	github.com/planetscale/vtprotobuf v0.6.0
 	github.com/samber/lo v1.46.0
 	github.com/stretchr/testify v1.9.0
-	golang.org/x/sync v0.7.0
+	golang.org/x/sync v0.8.0
 	golang.org/x/vuln v1.1.3
 	google.golang.org/genproto/googleapis/api v0.0.0-20240723171418-e6d459c13d2a
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240723171418-e6d459c13d2a
