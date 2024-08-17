@@ -24,7 +24,7 @@ func (g Gen) All() error {
 const (
 	ProtoPath     = "proto/authzed/api"
 	BufRepository = "buf.build/authzed/api"
-	BufTag        = "0306d77e12c14b40d178dd20db79b0e61b5879a4"
+	BufTag        = "v1.35.0"
 )
 
 // Proto runs proto codegen
@@ -49,11 +49,13 @@ func generateVersionFiles() error {
 	for _, entry := range entries {
 		if entry.IsDir() && !strings.HasSuffix(entry.Name(), "_test") {
 			var b bytes.Buffer
-			tmpl.Execute(&b, map[string]string{
+			if err := tmpl.Execute(&b, map[string]string{
 				"package": entry.Name(),
 				"bufRepo": BufRepository,
 				"bufTag":  BufTag,
-			})
+			}); err != nil {
+				return fmt.Errorf("failed to execute version template: %w", err)
+			}
 
 			versionPath := filepath.Join(ProtoPath, entry.Name(), "zz_generated.version.go")
 			if err := os.WriteFile(versionPath, b.Bytes(), 0o644); err != nil {

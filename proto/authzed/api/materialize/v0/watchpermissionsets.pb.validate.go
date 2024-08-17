@@ -494,6 +494,8 @@ func (m *Cursor) validate(all bool) error {
 
 	// no validation rules for CompletedMembers
 
+	// no validation rules for StartingKey
+
 	if len(errors) > 0 {
 		return CursorMultiError(errors)
 	}
