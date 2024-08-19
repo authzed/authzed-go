@@ -1056,6 +1056,10 @@
         "completedMembers": {
           "type": "boolean",
           "title": "completed_members is a boolean flag that indicates that the cursor has reached the end of the permission sets"
+        },
+        "startingKey": {
+          "type": "string",
+          "description": "starting_key is a string cursor used by some backends to resume the stream from a specific point."
         }
       }
     },
