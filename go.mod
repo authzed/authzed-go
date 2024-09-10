@@ -2,7 +2,7 @@ module github.com/authzed/authzed-go
 
 go 1.22.7
 
-toolchain go1.22.7
+toolchain go1.23.1
 
 require (
 	github.com/authzed/grpcutil v0.0.0-20230908193239-4286bb1d6403
