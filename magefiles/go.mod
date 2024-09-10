@@ -1,7 +1,7 @@
 module github.com/authzed/authzed-go/magefiles
 
-go 1.21
-toolchain go1.22.5
+go 1.22.7
+toolchain go1.22.7
 
 require (
 	github.com/bufbuild/buf v1.39.0
