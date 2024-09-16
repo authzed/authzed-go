@@ -4,7 +4,3 @@ repos:
     rev: "v1.29.0"
     hooks:
       - id: "yamllint"
-  - repo: "https://github.com/golangci/golangci-lint.git"
-    rev: "v1.61.0"
-    hooks:
-      - id: "golangci-lint"
