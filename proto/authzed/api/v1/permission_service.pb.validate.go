@@ -4992,6 +4992,626 @@ var _ResolvedSubject_Permissionship_NotInLookup = map[LookupPermissionship]struc
 	0: {},
 }
 
+// Validate checks the field values on ImportBulkRelationshipsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ImportBulkRelationshipsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ImportBulkRelationshipsRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ImportBulkRelationshipsRequestMultiError, or nil if none found.
+func (m *ImportBulkRelationshipsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ImportBulkRelationshipsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetRelationships() {
+		_, _ = idx, item
+
+		if item == nil {
+			err := ImportBulkRelationshipsRequestValidationError{
+				field:  fmt.Sprintf("Relationships[%v]", idx),
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ImportBulkRelationshipsRequestValidationError{
+						field:  fmt.Sprintf("Relationships[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ImportBulkRelationshipsRequestValidationError{
+						field:  fmt.Sprintf("Relationships[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ImportBulkRelationshipsRequestValidationError{
+					field:  fmt.Sprintf("Relationships[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ImportBulkRelationshipsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ImportBulkRelationshipsRequestMultiError is an error wrapping multiple
+// validation errors returned by ImportBulkRelationshipsRequest.ValidateAll()
+// if the designated constraints aren't met.
+type ImportBulkRelationshipsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ImportBulkRelationshipsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ImportBulkRelationshipsRequestMultiError) AllErrors() []error { return m }
+
+// ImportBulkRelationshipsRequestValidationError is the validation error
+// returned by ImportBulkRelationshipsRequest.Validate if the designated
+// constraints aren't met.
+type ImportBulkRelationshipsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ImportBulkRelationshipsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ImportBulkRelationshipsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ImportBulkRelationshipsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ImportBulkRelationshipsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ImportBulkRelationshipsRequestValidationError) ErrorName() string {
+	return "ImportBulkRelationshipsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ImportBulkRelationshipsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sImportBulkRelationshipsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ImportBulkRelationshipsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ImportBulkRelationshipsRequestValidationError{}
+
+// Validate checks the field values on ImportBulkRelationshipsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ImportBulkRelationshipsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ImportBulkRelationshipsResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ImportBulkRelationshipsResponseMultiError, or nil if none found.
+func (m *ImportBulkRelationshipsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ImportBulkRelationshipsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for NumLoaded
+
+	if len(errors) > 0 {
+		return ImportBulkRelationshipsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ImportBulkRelationshipsResponseMultiError is an error wrapping multiple
+// validation errors returned by ImportBulkRelationshipsResponse.ValidateAll()
+// if the designated constraints aren't met.
+type ImportBulkRelationshipsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ImportBulkRelationshipsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ImportBulkRelationshipsResponseMultiError) AllErrors() []error { return m }
+
+// ImportBulkRelationshipsResponseValidationError is the validation error
+// returned by ImportBulkRelationshipsResponse.Validate if the designated
+// constraints aren't met.
+type ImportBulkRelationshipsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ImportBulkRelationshipsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ImportBulkRelationshipsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ImportBulkRelationshipsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ImportBulkRelationshipsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ImportBulkRelationshipsResponseValidationError) ErrorName() string {
+	return "ImportBulkRelationshipsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ImportBulkRelationshipsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sImportBulkRelationshipsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ImportBulkRelationshipsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ImportBulkRelationshipsResponseValidationError{}
+
+// Validate checks the field values on ExportBulkRelationshipsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExportBulkRelationshipsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExportBulkRelationshipsRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ExportBulkRelationshipsRequestMultiError, or nil if none found.
+func (m *ExportBulkRelationshipsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExportBulkRelationshipsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetConsistency()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExportBulkRelationshipsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExportBulkRelationshipsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetConsistency()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExportBulkRelationshipsRequestValidationError{
+				field:  "Consistency",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if m.GetOptionalLimit() < 0 {
+		err := ExportBulkRelationshipsRequestValidationError{
+			field:  "OptionalLimit",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetOptionalCursor()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExportBulkRelationshipsRequestValidationError{
+					field:  "OptionalCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExportBulkRelationshipsRequestValidationError{
+					field:  "OptionalCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetOptionalCursor()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExportBulkRelationshipsRequestValidationError{
+				field:  "OptionalCursor",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetOptionalRelationshipFilter()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExportBulkRelationshipsRequestValidationError{
+					field:  "OptionalRelationshipFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExportBulkRelationshipsRequestValidationError{
+					field:  "OptionalRelationshipFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetOptionalRelationshipFilter()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExportBulkRelationshipsRequestValidationError{
+				field:  "OptionalRelationshipFilter",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ExportBulkRelationshipsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExportBulkRelationshipsRequestMultiError is an error wrapping multiple
+// validation errors returned by ExportBulkRelationshipsRequest.ValidateAll()
+// if the designated constraints aren't met.
+type ExportBulkRelationshipsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExportBulkRelationshipsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExportBulkRelationshipsRequestMultiError) AllErrors() []error { return m }
+
+// ExportBulkRelationshipsRequestValidationError is the validation error
+// returned by ExportBulkRelationshipsRequest.Validate if the designated
+// constraints aren't met.
+type ExportBulkRelationshipsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExportBulkRelationshipsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExportBulkRelationshipsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExportBulkRelationshipsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExportBulkRelationshipsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExportBulkRelationshipsRequestValidationError) ErrorName() string {
+	return "ExportBulkRelationshipsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExportBulkRelationshipsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExportBulkRelationshipsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExportBulkRelationshipsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExportBulkRelationshipsRequestValidationError{}
+
+// Validate checks the field values on ExportBulkRelationshipsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExportBulkRelationshipsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExportBulkRelationshipsResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ExportBulkRelationshipsResponseMultiError, or nil if none found.
+func (m *ExportBulkRelationshipsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExportBulkRelationshipsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetAfterResultCursor()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExportBulkRelationshipsResponseValidationError{
+					field:  "AfterResultCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExportBulkRelationshipsResponseValidationError{
+					field:  "AfterResultCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetAfterResultCursor()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExportBulkRelationshipsResponseValidationError{
+				field:  "AfterResultCursor",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetRelationships() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ExportBulkRelationshipsResponseValidationError{
+						field:  fmt.Sprintf("Relationships[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ExportBulkRelationshipsResponseValidationError{
+						field:  fmt.Sprintf("Relationships[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ExportBulkRelationshipsResponseValidationError{
+					field:  fmt.Sprintf("Relationships[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ExportBulkRelationshipsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExportBulkRelationshipsResponseMultiError is an error wrapping multiple
+// validation errors returned by ExportBulkRelationshipsResponse.ValidateAll()
+// if the designated constraints aren't met.
+type ExportBulkRelationshipsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExportBulkRelationshipsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExportBulkRelationshipsResponseMultiError) AllErrors() []error { return m }
+
+// ExportBulkRelationshipsResponseValidationError is the validation error
+// returned by ExportBulkRelationshipsResponse.Validate if the designated
+// constraints aren't met.
+type ExportBulkRelationshipsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExportBulkRelationshipsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExportBulkRelationshipsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExportBulkRelationshipsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExportBulkRelationshipsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExportBulkRelationshipsResponseValidationError) ErrorName() string {
+	return "ExportBulkRelationshipsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExportBulkRelationshipsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExportBulkRelationshipsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExportBulkRelationshipsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExportBulkRelationshipsResponseValidationError{}
+
 // Validate checks the field values on SubjectFilter_RelationFilter with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.

@@ -2408,6 +2408,67 @@
     "v1ExperimentalUnregisterRelationshipCounterResponse": {
       "type": "object"
     },
+    "v1ExportBulkRelationshipsRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency"
+        },
+        "optionalLimit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "optional_limit, if non-zero, specifies the limit on the number of\nrelationships the server can return in one page. By default, the server\nwill pick a page size, and the server is free to choose a smaller size\nat will."
+        },
+        "optionalCursor": {
+          "$ref": "#/definitions/apiv1Cursor",
+          "description": "optional_cursor, if specified, indicates the cursor after which results\nshould resume being returned. The cursor can be found on the\nBulkExportRelationshipsResponse object."
+        },
+        "optionalRelationshipFilter": {
+          "$ref": "#/definitions/v1RelationshipFilter",
+          "description": "optional_relationship_filter, if specified, indicates the\nfilter to apply to each relationship to be exported."
+        }
+      },
+      "description": "ExportBulkRelationshipsRequest represents a resumable request for\nall relationships from the server."
+    },
+    "v1ExportBulkRelationshipsResponse": {
+      "type": "object",
+      "properties": {
+        "afterResultCursor": {
+          "$ref": "#/definitions/apiv1Cursor"
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Relationship"
+          }
+        }
+      },
+      "description": "ExportBulkRelationshipsResponse is one page in a stream of relationship\ngroups that meet the criteria specified by the originating request. The\nserver will continue to stream back relationship groups as quickly as it can\nuntil all relationships have been transmitted back."
+    },
+    "v1ImportBulkRelationshipsRequest": {
+      "type": "object",
+      "properties": {
+        "relationships": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Relationship"
+          }
+        }
+      },
+      "description": "ImportBulkRelationshipsRequest represents one batch of the streaming\nImportBulkRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally."
+    },
+    "v1ImportBulkRelationshipsResponse": {
+      "type": "object",
+      "properties": {
+        "numLoaded": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "ImportBulkRelationshipsResponse is returned on successful completion of the\nbulk load stream, and contains the total number of relationships loaded."
+    },
     "v1LookupPermissionship": {
       "type": "string",
       "enum": [
