@@ -144,3 +144,23 @@ func main() {
 	}
 }
 ```
+
+### Insecure Credentials
+For contexts that don't require TLS, such as a development environment or integration
+tests, it's possible to set up a client that does not use TLS:
+
+```go
+import (
+	"github.com/authzed/grpcutil"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+
+	"github.com/authzed/authzed-go/v1"
+)
+
+client, err := authzed.NewClient(
+    "localhost:50051",
+    grpc.WithTransportCredentials(insecure.NewCredentials()),
+    grpcutil.WithInsecureBearerToken("some token"),
+)
+```
