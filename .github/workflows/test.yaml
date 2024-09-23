@@ -1,0 +1,20 @@
+---
+name: "Test"
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches: ["*"]
+jobs:
+  tests:
+    name: "Unit and Integration Tests"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v4"
+      - uses: "actions/setup-go@v5"
+      - uses: "authzed/action-spicedb@v1"
+        with:
+          version: "latest"
+      - name: "Run tests"
+        run: "go test ./..."
