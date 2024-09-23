@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: ["*"]
 jobs:
-  pytest:
+  tests:
     name: "Unit and Integration Tests"
     runs-on: "ubuntu-latest"
     steps:
