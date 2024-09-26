@@ -2214,6 +2214,247 @@ func (x *ResolvedSubject) GetPartialCaveatInfo() *PartialCaveatInfo {
 	return nil
 }
 
+// ImportBulkRelationshipsRequest represents one batch of the streaming
+// ImportBulkRelationships API. The maximum size is only limited by the backing
+// datastore, and optimal size should be determined by the calling client
+// experimentally.
+type ImportBulkRelationshipsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Relationships []*Relationship `protobuf:"bytes,1,rep,name=relationships,proto3" json:"relationships,omitempty"`
+}
+
+func (x *ImportBulkRelationshipsRequest) Reset() {
+	*x = ImportBulkRelationshipsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_authzed_api_v1_permission_service_proto_msgTypes[24]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ImportBulkRelationshipsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ImportBulkRelationshipsRequest) ProtoMessage() {}
+
+func (x *ImportBulkRelationshipsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[24]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ImportBulkRelationshipsRequest.ProtoReflect.Descriptor instead.
+func (*ImportBulkRelationshipsRequest) Descriptor() ([]byte, []int) {
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *ImportBulkRelationshipsRequest) GetRelationships() []*Relationship {
+	if x != nil {
+		return x.Relationships
+	}
+	return nil
+}
+
+// ImportBulkRelationshipsResponse is returned on successful completion of the
+// bulk load stream, and contains the total number of relationships loaded.
+type ImportBulkRelationshipsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	NumLoaded uint64 `protobuf:"varint,1,opt,name=num_loaded,json=numLoaded,proto3" json:"num_loaded,omitempty"`
+}
+
+func (x *ImportBulkRelationshipsResponse) Reset() {
+	*x = ImportBulkRelationshipsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_authzed_api_v1_permission_service_proto_msgTypes[25]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ImportBulkRelationshipsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ImportBulkRelationshipsResponse) ProtoMessage() {}
+
+func (x *ImportBulkRelationshipsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[25]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ImportBulkRelationshipsResponse.ProtoReflect.Descriptor instead.
+func (*ImportBulkRelationshipsResponse) Descriptor() ([]byte, []int) {
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *ImportBulkRelationshipsResponse) GetNumLoaded() uint64 {
+	if x != nil {
+		return x.NumLoaded
+	}
+	return 0
+}
+
+// ExportBulkRelationshipsRequest represents a resumable request for
+// all relationships from the server.
+type ExportBulkRelationshipsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Consistency *Consistency `protobuf:"bytes,1,opt,name=consistency,proto3" json:"consistency,omitempty"`
+	// optional_limit, if non-zero, specifies the limit on the number of
+	// relationships the server can return in one page. By default, the server
+	// will pick a page size, and the server is free to choose a smaller size
+	// at will.
+	OptionalLimit uint32 `protobuf:"varint,2,opt,name=optional_limit,json=optionalLimit,proto3" json:"optional_limit,omitempty"`
+	// optional_cursor, if specified, indicates the cursor after which results
+	// should resume being returned. The cursor can be found on the
+	// BulkExportRelationshipsResponse object.
+	OptionalCursor *Cursor `protobuf:"bytes,3,opt,name=optional_cursor,json=optionalCursor,proto3" json:"optional_cursor,omitempty"`
+	// optional_relationship_filter, if specified, indicates the
+	// filter to apply to each relationship to be exported.
+	OptionalRelationshipFilter *RelationshipFilter `protobuf:"bytes,4,opt,name=optional_relationship_filter,json=optionalRelationshipFilter,proto3" json:"optional_relationship_filter,omitempty"`
+}
+
+func (x *ExportBulkRelationshipsRequest) Reset() {
+	*x = ExportBulkRelationshipsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_authzed_api_v1_permission_service_proto_msgTypes[26]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ExportBulkRelationshipsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExportBulkRelationshipsRequest) ProtoMessage() {}
+
+func (x *ExportBulkRelationshipsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[26]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExportBulkRelationshipsRequest.ProtoReflect.Descriptor instead.
+func (*ExportBulkRelationshipsRequest) Descriptor() ([]byte, []int) {
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *ExportBulkRelationshipsRequest) GetConsistency() *Consistency {
+	if x != nil {
+		return x.Consistency
+	}
+	return nil
+}
+
+func (x *ExportBulkRelationshipsRequest) GetOptionalLimit() uint32 {
+	if x != nil {
+		return x.OptionalLimit
+	}
+	return 0
+}
+
+func (x *ExportBulkRelationshipsRequest) GetOptionalCursor() *Cursor {
+	if x != nil {
+		return x.OptionalCursor
+	}
+	return nil
+}
+
+func (x *ExportBulkRelationshipsRequest) GetOptionalRelationshipFilter() *RelationshipFilter {
+	if x != nil {
+		return x.OptionalRelationshipFilter
+	}
+	return nil
+}
+
+// ExportBulkRelationshipsResponse is one page in a stream of relationship
+// groups that meet the criteria specified by the originating request. The
+// server will continue to stream back relationship groups as quickly as it can
+// until all relationships have been transmitted back.
+type ExportBulkRelationshipsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	AfterResultCursor *Cursor         `protobuf:"bytes,1,opt,name=after_result_cursor,json=afterResultCursor,proto3" json:"after_result_cursor,omitempty"`
+	Relationships     []*Relationship `protobuf:"bytes,2,rep,name=relationships,proto3" json:"relationships,omitempty"`
+}
+
+func (x *ExportBulkRelationshipsResponse) Reset() {
+	*x = ExportBulkRelationshipsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_authzed_api_v1_permission_service_proto_msgTypes[27]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ExportBulkRelationshipsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExportBulkRelationshipsResponse) ProtoMessage() {}
+
+func (x *ExportBulkRelationshipsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[27]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExportBulkRelationshipsResponse.ProtoReflect.Descriptor instead.
+func (*ExportBulkRelationshipsResponse) Descriptor() ([]byte, []int) {
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *ExportBulkRelationshipsResponse) GetAfterResultCursor() *Cursor {
+	if x != nil {
+		return x.AfterResultCursor
+	}
+	return nil
+}
+
+func (x *ExportBulkRelationshipsResponse) GetRelationships() []*Relationship {
+	if x != nil {
+		return x.Relationships
+	}
+	return nil
+}
+
 type SubjectFilter_RelationFilter struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2225,7 +2466,7 @@ type SubjectFilter_RelationFilter struct {
 func (x *SubjectFilter_RelationFilter) Reset() {
 	*x = SubjectFilter_RelationFilter{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_authzed_api_v1_permission_service_proto_msgTypes[24]
+		mi := &file_authzed_api_v1_permission_service_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2238,7 +2479,7 @@ func (x *SubjectFilter_RelationFilter) String() string {
 func (*SubjectFilter_RelationFilter) ProtoMessage() {}
 
 func (x *SubjectFilter_RelationFilter) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[24]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2781,7 +3022,49 @@ var file_authzed_api_v1_permission_service_proto_rawDesc = []byte{
 	0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x74, 0x69,
 	0x61, 0x6c, 0x43, 0x61, 0x76, 0x65, 0x61, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x42, 0x08, 0xfa, 0x42,
 	0x05, 0x8a, 0x01, 0x02, 0x10, 0x00, 0x52, 0x11, 0x70, 0x61, 0x72, 0x74, 0x69, 0x61, 0x6c, 0x43,
-	0x61, 0x76, 0x65, 0x61, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x2a, 0x99, 0x01, 0x0a, 0x14, 0x4c, 0x6f,
+	0x61, 0x76, 0x65, 0x61, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x22, 0x73, 0x0a, 0x1e, 0x49, 0x6d, 0x70,
+	0x6f, 0x72, 0x74, 0x42, 0x75, 0x6c, 0x6b, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x68, 0x69, 0x70, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x51, 0x0a, 0x0d, 0x72,
+	0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x18, 0x01, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69,
+	0x2e, 0x76, 0x31, 0x2e, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70,
+	0x42, 0x0d, 0xfa, 0x42, 0x0a, 0x92, 0x01, 0x07, 0x22, 0x05, 0x8a, 0x01, 0x02, 0x10, 0x01, 0x52,
+	0x0d, 0x72, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x22, 0x40,
+	0x0a, 0x1f, 0x49, 0x6d, 0x70, 0x6f, 0x72, 0x74, 0x42, 0x75, 0x6c, 0x6b, 0x52, 0x65, 0x6c, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x6e, 0x75, 0x6d, 0x5f, 0x6c, 0x6f, 0x61, 0x64, 0x65, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x6e, 0x75, 0x6d, 0x4c, 0x6f, 0x61, 0x64, 0x65, 0x64,
+	0x22, 0xb6, 0x02, 0x0a, 0x1e, 0x45, 0x78, 0x70, 0x6f, 0x72, 0x74, 0x42, 0x75, 0x6c, 0x6b, 0x52,
+	0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x3d, 0x0a, 0x0b, 0x63, 0x6f, 0x6e, 0x73, 0x69, 0x73, 0x74, 0x65, 0x6e,
+	0x63, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a,
+	0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e, 0x73, 0x69, 0x73,
+	0x74, 0x65, 0x6e, 0x63, 0x79, 0x52, 0x0b, 0x63, 0x6f, 0x6e, 0x73, 0x69, 0x73, 0x74, 0x65, 0x6e,
+	0x63, 0x79, 0x12, 0x2e, 0x0a, 0x0e, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x5f, 0x6c,
+	0x69, 0x6d, 0x69, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x42, 0x07, 0xfa, 0x42, 0x04, 0x2a,
+	0x02, 0x28, 0x00, 0x52, 0x0d, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x4c, 0x69, 0x6d,
+	0x69, 0x74, 0x12, 0x3f, 0x0a, 0x0f, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x5f, 0x63,
+	0x75, 0x72, 0x73, 0x6f, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x61, 0x75,
+	0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x75, 0x72,
+	0x73, 0x6f, 0x72, 0x52, 0x0e, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x43, 0x75, 0x72,
+	0x73, 0x6f, 0x72, 0x12, 0x64, 0x0a, 0x1c, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x5f,
+	0x72, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x5f, 0x66, 0x69, 0x6c,
+	0x74, 0x65, 0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x61, 0x75, 0x74, 0x68,
+	0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x52, 0x65, 0x6c, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x46, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x52, 0x1a, 0x6f,
+	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x68, 0x69, 0x70, 0x46, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x22, 0xad, 0x01, 0x0a, 0x1f, 0x45, 0x78,
+	0x70, 0x6f, 0x72, 0x74, 0x42, 0x75, 0x6c, 0x6b, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x73, 0x68, 0x69, 0x70, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x46, 0x0a,
+	0x13, 0x61, 0x66, 0x74, 0x65, 0x72, 0x5f, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x5f, 0x63, 0x75,
+	0x72, 0x73, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x61, 0x75, 0x74,
+	0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x75, 0x72, 0x73,
+	0x6f, 0x72, 0x52, 0x11, 0x61, 0x66, 0x74, 0x65, 0x72, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x43,
+	0x75, 0x72, 0x73, 0x6f, 0x72, 0x12, 0x42, 0x0a, 0x0d, 0x72, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x61,
+	0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x52, 0x65,
+	0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x52, 0x0d, 0x72, 0x65, 0x6c, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x2a, 0x99, 0x01, 0x0a, 0x14, 0x4c, 0x6f,
 	0x6f, 0x6b, 0x75, 0x70, 0x50, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x68,
 	0x69, 0x70, 0x12, 0x25, 0x0a, 0x21, 0x4c, 0x4f, 0x4f, 0x4b, 0x55, 0x50, 0x5f, 0x50, 0x45, 0x52,
 	0x4d, 0x49, 0x53, 0x53, 0x49, 0x4f, 0x4e, 0x53, 0x48, 0x49, 0x50, 0x5f, 0x55, 0x4e, 0x53, 0x50,
@@ -2791,7 +3074,7 @@ var file_authzed_api_v1_permission_service_proto_rawDesc = []byte{
 	0x4e, 0x10, 0x01, 0x12, 0x30, 0x0a, 0x2c, 0x4c, 0x4f, 0x4f, 0x4b, 0x55, 0x50, 0x5f, 0x50, 0x45,
 	0x52, 0x4d, 0x49, 0x53, 0x53, 0x49, 0x4f, 0x4e, 0x53, 0x48, 0x49, 0x50, 0x5f, 0x43, 0x4f, 0x4e,
 	0x44, 0x49, 0x54, 0x49, 0x4f, 0x4e, 0x41, 0x4c, 0x5f, 0x50, 0x45, 0x52, 0x4d, 0x49, 0x53, 0x53,
-	0x49, 0x4f, 0x4e, 0x10, 0x02, 0x32, 0x9a, 0x09, 0x0a, 0x12, 0x50, 0x65, 0x72, 0x6d, 0x69, 0x73,
+	0x49, 0x4f, 0x4e, 0x10, 0x02, 0x32, 0x84, 0x0c, 0x0a, 0x12, 0x50, 0x65, 0x72, 0x6d, 0x69, 0x73,
 	0x73, 0x69, 0x6f, 0x6e, 0x73, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x8d, 0x01, 0x0a,
 	0x11, 0x52, 0x65, 0x61, 0x64, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69,
 	0x70, 0x73, 0x12, 0x28, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69,
@@ -2865,12 +3148,34 @@ var file_authzed_api_v1_permission_service_proto_rawDesc = []byte{
 	0x63, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x23, 0x82, 0xd3, 0xe4,
 	0x93, 0x02, 0x1d, 0x3a, 0x01, 0x2a, 0x22, 0x18, 0x2f, 0x76, 0x31, 0x2f, 0x70, 0x65, 0x72, 0x6d,
 	0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73,
-	0x30, 0x01, 0x42, 0x4a, 0x0a, 0x12, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65,
-	0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x50, 0x01, 0x5a, 0x32, 0x67, 0x69, 0x74, 0x68,
-	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2f, 0x61,
-	0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2d, 0x67, 0x6f, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f,
-	0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x30, 0x01, 0x12, 0xb2, 0x01, 0x0a, 0x17, 0x49, 0x6d, 0x70, 0x6f, 0x72, 0x74, 0x42, 0x75, 0x6c,
+	0x6b, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x12, 0x2e,
+	0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
+	0x49, 0x6d, 0x70, 0x6f, 0x72, 0x74, 0x42, 0x75, 0x6c, 0x6b, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2f,
+	0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
+	0x49, 0x6d, 0x70, 0x6f, 0x72, 0x74, 0x42, 0x75, 0x6c, 0x6b, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x34, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2e, 0x3a, 0x01, 0x2a, 0x22, 0x29, 0x2f, 0x76, 0x31, 0x2f,
+	0x65, 0x78, 0x70, 0x65, 0x72, 0x69, 0x6d, 0x65, 0x6e, 0x74, 0x61, 0x6c, 0x2f, 0x72, 0x65, 0x6c,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x2f, 0x62, 0x75, 0x6c, 0x6b, 0x69,
+	0x6d, 0x70, 0x6f, 0x72, 0x74, 0x28, 0x01, 0x12, 0xb2, 0x01, 0x0a, 0x17, 0x45, 0x78, 0x70, 0x6f,
+	0x72, 0x74, 0x42, 0x75, 0x6c, 0x6b, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68,
+	0x69, 0x70, 0x73, 0x12, 0x2e, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70,
+	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x45, 0x78, 0x70, 0x6f, 0x72, 0x74, 0x42, 0x75, 0x6c, 0x6b, 0x52,
+	0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x2f, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70,
+	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x45, 0x78, 0x70, 0x6f, 0x72, 0x74, 0x42, 0x75, 0x6c, 0x6b, 0x52,
+	0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x34, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2e, 0x3a, 0x01, 0x2a, 0x22,
+	0x29, 0x2f, 0x76, 0x31, 0x2f, 0x65, 0x78, 0x70, 0x65, 0x72, 0x69, 0x6d, 0x65, 0x6e, 0x74, 0x61,
+	0x6c, 0x2f, 0x72, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x73, 0x2f,
+	0x62, 0x75, 0x6c, 0x6b, 0x65, 0x78, 0x70, 0x6f, 0x72, 0x74, 0x30, 0x01, 0x42, 0x4a, 0x0a, 0x12,
+	0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2e, 0x61, 0x70, 0x69, 0x2e,
+	0x76, 0x31, 0x50, 0x01, 0x5a, 0x32, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
+	0x2f, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64, 0x2f, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65, 0x64,
+	0x2d, 0x67, 0x6f, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x61, 0x75, 0x74, 0x68, 0x7a, 0x65,
+	0x64, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2886,7 +3191,7 @@ func file_authzed_api_v1_permission_service_proto_rawDescGZIP() []byte {
 }
 
 var file_authzed_api_v1_permission_service_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_authzed_api_v1_permission_service_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
+var file_authzed_api_v1_permission_service_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
 var file_authzed_api_v1_permission_service_proto_goTypes = []any{
 	(LookupPermissionship)(0),                         // 0: authzed.api.v1.LookupPermissionship
 	(Precondition_Operation)(0),                       // 1: authzed.api.v1.Precondition.Operation
@@ -2917,105 +3222,119 @@ var file_authzed_api_v1_permission_service_proto_goTypes = []any{
 	(*LookupSubjectsRequest)(nil),                     // 26: authzed.api.v1.LookupSubjectsRequest
 	(*LookupSubjectsResponse)(nil),                    // 27: authzed.api.v1.LookupSubjectsResponse
 	(*ResolvedSubject)(nil),                           // 28: authzed.api.v1.ResolvedSubject
-	(*SubjectFilter_RelationFilter)(nil),              // 29: authzed.api.v1.SubjectFilter.RelationFilter
-	(*ZedToken)(nil),                                  // 30: authzed.api.v1.ZedToken
-	(*Cursor)(nil),                                    // 31: authzed.api.v1.Cursor
-	(*Relationship)(nil),                              // 32: authzed.api.v1.Relationship
-	(*RelationshipUpdate)(nil),                        // 33: authzed.api.v1.RelationshipUpdate
-	(*ObjectReference)(nil),                           // 34: authzed.api.v1.ObjectReference
-	(*SubjectReference)(nil),                          // 35: authzed.api.v1.SubjectReference
-	(*structpb.Struct)(nil),                           // 36: google.protobuf.Struct
-	(*PartialCaveatInfo)(nil),                         // 37: authzed.api.v1.PartialCaveatInfo
-	(*DebugInformation)(nil),                          // 38: authzed.api.v1.DebugInformation
-	(*status.Status)(nil),                             // 39: google.rpc.Status
-	(*PermissionRelationshipTree)(nil),                // 40: authzed.api.v1.PermissionRelationshipTree
+	(*ImportBulkRelationshipsRequest)(nil),            // 29: authzed.api.v1.ImportBulkRelationshipsRequest
+	(*ImportBulkRelationshipsResponse)(nil),           // 30: authzed.api.v1.ImportBulkRelationshipsResponse
+	(*ExportBulkRelationshipsRequest)(nil),            // 31: authzed.api.v1.ExportBulkRelationshipsRequest
+	(*ExportBulkRelationshipsResponse)(nil),           // 32: authzed.api.v1.ExportBulkRelationshipsResponse
+	(*SubjectFilter_RelationFilter)(nil),              // 33: authzed.api.v1.SubjectFilter.RelationFilter
+	(*ZedToken)(nil),                                  // 34: authzed.api.v1.ZedToken
+	(*Cursor)(nil),                                    // 35: authzed.api.v1.Cursor
+	(*Relationship)(nil),                              // 36: authzed.api.v1.Relationship
+	(*RelationshipUpdate)(nil),                        // 37: authzed.api.v1.RelationshipUpdate
+	(*ObjectReference)(nil),                           // 38: authzed.api.v1.ObjectReference
+	(*SubjectReference)(nil),                          // 39: authzed.api.v1.SubjectReference
+	(*structpb.Struct)(nil),                           // 40: google.protobuf.Struct
+	(*PartialCaveatInfo)(nil),                         // 41: authzed.api.v1.PartialCaveatInfo
+	(*DebugInformation)(nil),                          // 42: authzed.api.v1.DebugInformation
+	(*status.Status)(nil),                             // 43: google.rpc.Status
+	(*PermissionRelationshipTree)(nil),                // 44: authzed.api.v1.PermissionRelationshipTree
 }
 var file_authzed_api_v1_permission_service_proto_depIdxs = []int32{
-	30, // 0: authzed.api.v1.Consistency.at_least_as_fresh:type_name -> authzed.api.v1.ZedToken
-	30, // 1: authzed.api.v1.Consistency.at_exact_snapshot:type_name -> authzed.api.v1.ZedToken
+	34, // 0: authzed.api.v1.Consistency.at_least_as_fresh:type_name -> authzed.api.v1.ZedToken
+	34, // 1: authzed.api.v1.Consistency.at_exact_snapshot:type_name -> authzed.api.v1.ZedToken
 	7,  // 2: authzed.api.v1.RelationshipFilter.optional_subject_filter:type_name -> authzed.api.v1.SubjectFilter
-	29, // 3: authzed.api.v1.SubjectFilter.optional_relation:type_name -> authzed.api.v1.SubjectFilter.RelationFilter
+	33, // 3: authzed.api.v1.SubjectFilter.optional_relation:type_name -> authzed.api.v1.SubjectFilter.RelationFilter
 	5,  // 4: authzed.api.v1.ReadRelationshipsRequest.consistency:type_name -> authzed.api.v1.Consistency
 	6,  // 5: authzed.api.v1.ReadRelationshipsRequest.relationship_filter:type_name -> authzed.api.v1.RelationshipFilter
-	31, // 6: authzed.api.v1.ReadRelationshipsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
-	30, // 7: authzed.api.v1.ReadRelationshipsResponse.read_at:type_name -> authzed.api.v1.ZedToken
-	32, // 8: authzed.api.v1.ReadRelationshipsResponse.relationship:type_name -> authzed.api.v1.Relationship
-	31, // 9: authzed.api.v1.ReadRelationshipsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	35, // 6: authzed.api.v1.ReadRelationshipsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	34, // 7: authzed.api.v1.ReadRelationshipsResponse.read_at:type_name -> authzed.api.v1.ZedToken
+	36, // 8: authzed.api.v1.ReadRelationshipsResponse.relationship:type_name -> authzed.api.v1.Relationship
+	35, // 9: authzed.api.v1.ReadRelationshipsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
 	1,  // 10: authzed.api.v1.Precondition.operation:type_name -> authzed.api.v1.Precondition.Operation
 	6,  // 11: authzed.api.v1.Precondition.filter:type_name -> authzed.api.v1.RelationshipFilter
-	33, // 12: authzed.api.v1.WriteRelationshipsRequest.updates:type_name -> authzed.api.v1.RelationshipUpdate
+	37, // 12: authzed.api.v1.WriteRelationshipsRequest.updates:type_name -> authzed.api.v1.RelationshipUpdate
 	10, // 13: authzed.api.v1.WriteRelationshipsRequest.optional_preconditions:type_name -> authzed.api.v1.Precondition
-	30, // 14: authzed.api.v1.WriteRelationshipsResponse.written_at:type_name -> authzed.api.v1.ZedToken
+	34, // 14: authzed.api.v1.WriteRelationshipsResponse.written_at:type_name -> authzed.api.v1.ZedToken
 	6,  // 15: authzed.api.v1.DeleteRelationshipsRequest.relationship_filter:type_name -> authzed.api.v1.RelationshipFilter
 	10, // 16: authzed.api.v1.DeleteRelationshipsRequest.optional_preconditions:type_name -> authzed.api.v1.Precondition
-	30, // 17: authzed.api.v1.DeleteRelationshipsResponse.deleted_at:type_name -> authzed.api.v1.ZedToken
+	34, // 17: authzed.api.v1.DeleteRelationshipsResponse.deleted_at:type_name -> authzed.api.v1.ZedToken
 	2,  // 18: authzed.api.v1.DeleteRelationshipsResponse.deletion_progress:type_name -> authzed.api.v1.DeleteRelationshipsResponse.DeletionProgress
 	5,  // 19: authzed.api.v1.CheckPermissionRequest.consistency:type_name -> authzed.api.v1.Consistency
-	34, // 20: authzed.api.v1.CheckPermissionRequest.resource:type_name -> authzed.api.v1.ObjectReference
-	35, // 21: authzed.api.v1.CheckPermissionRequest.subject:type_name -> authzed.api.v1.SubjectReference
-	36, // 22: authzed.api.v1.CheckPermissionRequest.context:type_name -> google.protobuf.Struct
-	30, // 23: authzed.api.v1.CheckPermissionResponse.checked_at:type_name -> authzed.api.v1.ZedToken
+	38, // 20: authzed.api.v1.CheckPermissionRequest.resource:type_name -> authzed.api.v1.ObjectReference
+	39, // 21: authzed.api.v1.CheckPermissionRequest.subject:type_name -> authzed.api.v1.SubjectReference
+	40, // 22: authzed.api.v1.CheckPermissionRequest.context:type_name -> google.protobuf.Struct
+	34, // 23: authzed.api.v1.CheckPermissionResponse.checked_at:type_name -> authzed.api.v1.ZedToken
 	3,  // 24: authzed.api.v1.CheckPermissionResponse.permissionship:type_name -> authzed.api.v1.CheckPermissionResponse.Permissionship
-	37, // 25: authzed.api.v1.CheckPermissionResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	38, // 26: authzed.api.v1.CheckPermissionResponse.debug_trace:type_name -> authzed.api.v1.DebugInformation
+	41, // 25: authzed.api.v1.CheckPermissionResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	42, // 26: authzed.api.v1.CheckPermissionResponse.debug_trace:type_name -> authzed.api.v1.DebugInformation
 	5,  // 27: authzed.api.v1.CheckBulkPermissionsRequest.consistency:type_name -> authzed.api.v1.Consistency
 	18, // 28: authzed.api.v1.CheckBulkPermissionsRequest.items:type_name -> authzed.api.v1.CheckBulkPermissionsRequestItem
-	34, // 29: authzed.api.v1.CheckBulkPermissionsRequestItem.resource:type_name -> authzed.api.v1.ObjectReference
-	35, // 30: authzed.api.v1.CheckBulkPermissionsRequestItem.subject:type_name -> authzed.api.v1.SubjectReference
-	36, // 31: authzed.api.v1.CheckBulkPermissionsRequestItem.context:type_name -> google.protobuf.Struct
-	30, // 32: authzed.api.v1.CheckBulkPermissionsResponse.checked_at:type_name -> authzed.api.v1.ZedToken
+	38, // 29: authzed.api.v1.CheckBulkPermissionsRequestItem.resource:type_name -> authzed.api.v1.ObjectReference
+	39, // 30: authzed.api.v1.CheckBulkPermissionsRequestItem.subject:type_name -> authzed.api.v1.SubjectReference
+	40, // 31: authzed.api.v1.CheckBulkPermissionsRequestItem.context:type_name -> google.protobuf.Struct
+	34, // 32: authzed.api.v1.CheckBulkPermissionsResponse.checked_at:type_name -> authzed.api.v1.ZedToken
 	20, // 33: authzed.api.v1.CheckBulkPermissionsResponse.pairs:type_name -> authzed.api.v1.CheckBulkPermissionsPair
 	18, // 34: authzed.api.v1.CheckBulkPermissionsPair.request:type_name -> authzed.api.v1.CheckBulkPermissionsRequestItem
 	21, // 35: authzed.api.v1.CheckBulkPermissionsPair.item:type_name -> authzed.api.v1.CheckBulkPermissionsResponseItem
-	39, // 36: authzed.api.v1.CheckBulkPermissionsPair.error:type_name -> google.rpc.Status
+	43, // 36: authzed.api.v1.CheckBulkPermissionsPair.error:type_name -> google.rpc.Status
 	3,  // 37: authzed.api.v1.CheckBulkPermissionsResponseItem.permissionship:type_name -> authzed.api.v1.CheckPermissionResponse.Permissionship
-	37, // 38: authzed.api.v1.CheckBulkPermissionsResponseItem.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	41, // 38: authzed.api.v1.CheckBulkPermissionsResponseItem.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
 	5,  // 39: authzed.api.v1.ExpandPermissionTreeRequest.consistency:type_name -> authzed.api.v1.Consistency
-	34, // 40: authzed.api.v1.ExpandPermissionTreeRequest.resource:type_name -> authzed.api.v1.ObjectReference
-	30, // 41: authzed.api.v1.ExpandPermissionTreeResponse.expanded_at:type_name -> authzed.api.v1.ZedToken
-	40, // 42: authzed.api.v1.ExpandPermissionTreeResponse.tree_root:type_name -> authzed.api.v1.PermissionRelationshipTree
+	38, // 40: authzed.api.v1.ExpandPermissionTreeRequest.resource:type_name -> authzed.api.v1.ObjectReference
+	34, // 41: authzed.api.v1.ExpandPermissionTreeResponse.expanded_at:type_name -> authzed.api.v1.ZedToken
+	44, // 42: authzed.api.v1.ExpandPermissionTreeResponse.tree_root:type_name -> authzed.api.v1.PermissionRelationshipTree
 	5,  // 43: authzed.api.v1.LookupResourcesRequest.consistency:type_name -> authzed.api.v1.Consistency
-	35, // 44: authzed.api.v1.LookupResourcesRequest.subject:type_name -> authzed.api.v1.SubjectReference
-	36, // 45: authzed.api.v1.LookupResourcesRequest.context:type_name -> google.protobuf.Struct
-	31, // 46: authzed.api.v1.LookupResourcesRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
-	30, // 47: authzed.api.v1.LookupResourcesResponse.looked_up_at:type_name -> authzed.api.v1.ZedToken
+	39, // 44: authzed.api.v1.LookupResourcesRequest.subject:type_name -> authzed.api.v1.SubjectReference
+	40, // 45: authzed.api.v1.LookupResourcesRequest.context:type_name -> google.protobuf.Struct
+	35, // 46: authzed.api.v1.LookupResourcesRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	34, // 47: authzed.api.v1.LookupResourcesResponse.looked_up_at:type_name -> authzed.api.v1.ZedToken
 	0,  // 48: authzed.api.v1.LookupResourcesResponse.permissionship:type_name -> authzed.api.v1.LookupPermissionship
-	37, // 49: authzed.api.v1.LookupResourcesResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	31, // 50: authzed.api.v1.LookupResourcesResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	41, // 49: authzed.api.v1.LookupResourcesResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	35, // 50: authzed.api.v1.LookupResourcesResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
 	5,  // 51: authzed.api.v1.LookupSubjectsRequest.consistency:type_name -> authzed.api.v1.Consistency
-	34, // 52: authzed.api.v1.LookupSubjectsRequest.resource:type_name -> authzed.api.v1.ObjectReference
-	36, // 53: authzed.api.v1.LookupSubjectsRequest.context:type_name -> google.protobuf.Struct
-	31, // 54: authzed.api.v1.LookupSubjectsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	38, // 52: authzed.api.v1.LookupSubjectsRequest.resource:type_name -> authzed.api.v1.ObjectReference
+	40, // 53: authzed.api.v1.LookupSubjectsRequest.context:type_name -> google.protobuf.Struct
+	35, // 54: authzed.api.v1.LookupSubjectsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
 	4,  // 55: authzed.api.v1.LookupSubjectsRequest.wildcard_option:type_name -> authzed.api.v1.LookupSubjectsRequest.WildcardOption
-	30, // 56: authzed.api.v1.LookupSubjectsResponse.looked_up_at:type_name -> authzed.api.v1.ZedToken
+	34, // 56: authzed.api.v1.LookupSubjectsResponse.looked_up_at:type_name -> authzed.api.v1.ZedToken
 	0,  // 57: authzed.api.v1.LookupSubjectsResponse.permissionship:type_name -> authzed.api.v1.LookupPermissionship
-	37, // 58: authzed.api.v1.LookupSubjectsResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	41, // 58: authzed.api.v1.LookupSubjectsResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
 	28, // 59: authzed.api.v1.LookupSubjectsResponse.subject:type_name -> authzed.api.v1.ResolvedSubject
 	28, // 60: authzed.api.v1.LookupSubjectsResponse.excluded_subjects:type_name -> authzed.api.v1.ResolvedSubject
-	31, // 61: authzed.api.v1.LookupSubjectsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	35, // 61: authzed.api.v1.LookupSubjectsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
 	0,  // 62: authzed.api.v1.ResolvedSubject.permissionship:type_name -> authzed.api.v1.LookupPermissionship
-	37, // 63: authzed.api.v1.ResolvedSubject.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	8,  // 64: authzed.api.v1.PermissionsService.ReadRelationships:input_type -> authzed.api.v1.ReadRelationshipsRequest
-	11, // 65: authzed.api.v1.PermissionsService.WriteRelationships:input_type -> authzed.api.v1.WriteRelationshipsRequest
-	13, // 66: authzed.api.v1.PermissionsService.DeleteRelationships:input_type -> authzed.api.v1.DeleteRelationshipsRequest
-	15, // 67: authzed.api.v1.PermissionsService.CheckPermission:input_type -> authzed.api.v1.CheckPermissionRequest
-	17, // 68: authzed.api.v1.PermissionsService.CheckBulkPermissions:input_type -> authzed.api.v1.CheckBulkPermissionsRequest
-	22, // 69: authzed.api.v1.PermissionsService.ExpandPermissionTree:input_type -> authzed.api.v1.ExpandPermissionTreeRequest
-	24, // 70: authzed.api.v1.PermissionsService.LookupResources:input_type -> authzed.api.v1.LookupResourcesRequest
-	26, // 71: authzed.api.v1.PermissionsService.LookupSubjects:input_type -> authzed.api.v1.LookupSubjectsRequest
-	9,  // 72: authzed.api.v1.PermissionsService.ReadRelationships:output_type -> authzed.api.v1.ReadRelationshipsResponse
-	12, // 73: authzed.api.v1.PermissionsService.WriteRelationships:output_type -> authzed.api.v1.WriteRelationshipsResponse
-	14, // 74: authzed.api.v1.PermissionsService.DeleteRelationships:output_type -> authzed.api.v1.DeleteRelationshipsResponse
-	16, // 75: authzed.api.v1.PermissionsService.CheckPermission:output_type -> authzed.api.v1.CheckPermissionResponse
-	19, // 76: authzed.api.v1.PermissionsService.CheckBulkPermissions:output_type -> authzed.api.v1.CheckBulkPermissionsResponse
-	23, // 77: authzed.api.v1.PermissionsService.ExpandPermissionTree:output_type -> authzed.api.v1.ExpandPermissionTreeResponse
-	25, // 78: authzed.api.v1.PermissionsService.LookupResources:output_type -> authzed.api.v1.LookupResourcesResponse
-	27, // 79: authzed.api.v1.PermissionsService.LookupSubjects:output_type -> authzed.api.v1.LookupSubjectsResponse
-	72, // [72:80] is the sub-list for method output_type
-	64, // [64:72] is the sub-list for method input_type
-	64, // [64:64] is the sub-list for extension type_name
-	64, // [64:64] is the sub-list for extension extendee
-	0,  // [0:64] is the sub-list for field type_name
+	41, // 63: authzed.api.v1.ResolvedSubject.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	36, // 64: authzed.api.v1.ImportBulkRelationshipsRequest.relationships:type_name -> authzed.api.v1.Relationship
+	5,  // 65: authzed.api.v1.ExportBulkRelationshipsRequest.consistency:type_name -> authzed.api.v1.Consistency
+	35, // 66: authzed.api.v1.ExportBulkRelationshipsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	6,  // 67: authzed.api.v1.ExportBulkRelationshipsRequest.optional_relationship_filter:type_name -> authzed.api.v1.RelationshipFilter
+	35, // 68: authzed.api.v1.ExportBulkRelationshipsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	36, // 69: authzed.api.v1.ExportBulkRelationshipsResponse.relationships:type_name -> authzed.api.v1.Relationship
+	8,  // 70: authzed.api.v1.PermissionsService.ReadRelationships:input_type -> authzed.api.v1.ReadRelationshipsRequest
+	11, // 71: authzed.api.v1.PermissionsService.WriteRelationships:input_type -> authzed.api.v1.WriteRelationshipsRequest
+	13, // 72: authzed.api.v1.PermissionsService.DeleteRelationships:input_type -> authzed.api.v1.DeleteRelationshipsRequest
+	15, // 73: authzed.api.v1.PermissionsService.CheckPermission:input_type -> authzed.api.v1.CheckPermissionRequest
+	17, // 74: authzed.api.v1.PermissionsService.CheckBulkPermissions:input_type -> authzed.api.v1.CheckBulkPermissionsRequest
+	22, // 75: authzed.api.v1.PermissionsService.ExpandPermissionTree:input_type -> authzed.api.v1.ExpandPermissionTreeRequest
+	24, // 76: authzed.api.v1.PermissionsService.LookupResources:input_type -> authzed.api.v1.LookupResourcesRequest
+	26, // 77: authzed.api.v1.PermissionsService.LookupSubjects:input_type -> authzed.api.v1.LookupSubjectsRequest
+	29, // 78: authzed.api.v1.PermissionsService.ImportBulkRelationships:input_type -> authzed.api.v1.ImportBulkRelationshipsRequest
+	31, // 79: authzed.api.v1.PermissionsService.ExportBulkRelationships:input_type -> authzed.api.v1.ExportBulkRelationshipsRequest
+	9,  // 80: authzed.api.v1.PermissionsService.ReadRelationships:output_type -> authzed.api.v1.ReadRelationshipsResponse
+	12, // 81: authzed.api.v1.PermissionsService.WriteRelationships:output_type -> authzed.api.v1.WriteRelationshipsResponse
+	14, // 82: authzed.api.v1.PermissionsService.DeleteRelationships:output_type -> authzed.api.v1.DeleteRelationshipsResponse
+	16, // 83: authzed.api.v1.PermissionsService.CheckPermission:output_type -> authzed.api.v1.CheckPermissionResponse
+	19, // 84: authzed.api.v1.PermissionsService.CheckBulkPermissions:output_type -> authzed.api.v1.CheckBulkPermissionsResponse
+	23, // 85: authzed.api.v1.PermissionsService.ExpandPermissionTree:output_type -> authzed.api.v1.ExpandPermissionTreeResponse
+	25, // 86: authzed.api.v1.PermissionsService.LookupResources:output_type -> authzed.api.v1.LookupResourcesResponse
+	27, // 87: authzed.api.v1.PermissionsService.LookupSubjects:output_type -> authzed.api.v1.LookupSubjectsResponse
+	30, // 88: authzed.api.v1.PermissionsService.ImportBulkRelationships:output_type -> authzed.api.v1.ImportBulkRelationshipsResponse
+	32, // 89: authzed.api.v1.PermissionsService.ExportBulkRelationships:output_type -> authzed.api.v1.ExportBulkRelationshipsResponse
+	80, // [80:90] is the sub-list for method output_type
+	70, // [70:80] is the sub-list for method input_type
+	70, // [70:70] is the sub-list for extension type_name
+	70, // [70:70] is the sub-list for extension extendee
+	0,  // [0:70] is the sub-list for field type_name
 }
 
 func init() { file_authzed_api_v1_permission_service_proto_init() }
@@ -3315,6 +3634,54 @@ func file_authzed_api_v1_permission_service_proto_init() {
 			}
 		}
 		file_authzed_api_v1_permission_service_proto_msgTypes[24].Exporter = func(v any, i int) any {
+			switch v := v.(*ImportBulkRelationshipsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_authzed_api_v1_permission_service_proto_msgTypes[25].Exporter = func(v any, i int) any {
+			switch v := v.(*ImportBulkRelationshipsResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_authzed_api_v1_permission_service_proto_msgTypes[26].Exporter = func(v any, i int) any {
+			switch v := v.(*ExportBulkRelationshipsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_authzed_api_v1_permission_service_proto_msgTypes[27].Exporter = func(v any, i int) any {
+			switch v := v.(*ExportBulkRelationshipsResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_authzed_api_v1_permission_service_proto_msgTypes[28].Exporter = func(v any, i int) any {
 			switch v := v.(*SubjectFilter_RelationFilter); i {
 			case 0:
 				return &v.state
@@ -3343,7 +3710,7 @@ func file_authzed_api_v1_permission_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_authzed_api_v1_permission_service_proto_rawDesc,
 			NumEnums:      5,
-			NumMessages:   25,
+			NumMessages:   29,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

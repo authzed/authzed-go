@@ -1,16 +1,16 @@
 ---
-version: "v1"
+version: "v2"
 plugins:
-  - name: "go"
-    path: ["go", "run", "google.golang.org/protobuf/cmd/protoc-gen-go"]
+  # Go
+  - local: ["go", "run", "google.golang.org/protobuf/cmd/protoc-gen-go"]
     out: "../proto"
     opt: "paths=source_relative"
-  - name: "go-grpc"
-    out: "../proto"
-    path: ["go", "run", "google.golang.org/grpc/cmd/protoc-gen-go-grpc"]
+  # Go-grpc
+  - out: "../proto"
+    local: ["go", "run", "google.golang.org/grpc/cmd/protoc-gen-go-grpc"]
     opt: "paths=source_relative"
-  - name: "go-vtproto"
-    path:
+  # Go-vtproto
+  - local:
       [
         "go",
         "run",
@@ -18,12 +18,12 @@ plugins:
       ]
     out: "../proto"
     opt: "paths=source_relative,features=marshal+unmarshal+size+clone+equal"
-  - name: "validate"
-    path: ["go", "run", "github.com/envoyproxy/protoc-gen-validate"]
+  # Validate
+  - local: ["go", "run", "github.com/envoyproxy/protoc-gen-validate"]
     out: "../proto"
     opt: "paths=source_relative,lang=go"
-  - name: "grpc-gateway"
-    path:
+  # Grpc-gateway
+  - local:
       [
         "go",
         "run",
@@ -31,9 +31,9 @@ plugins:
       ]
     out: "../proto"
     opt: "paths=source_relative"
-  - name: "openapiv2"
-    out: "../proto"
-    path:
+  # Openapi V2
+  - out: "../proto"
+    local:
       [
         "go",
         "run",
