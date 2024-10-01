@@ -348,7 +348,7 @@
         "parameters": [
           {
             "name": "body",
-            "description": "BulkImportRelationshipsRequest represents one batch of the streaming\nBulkImportRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. (streaming inputs)",
+            "description": "BulkImportRelationshipsRequest represents one batch of the streaming\nBulkImportRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. Any relationships within the same request are guaranteed to\nbe written in a single transaction. If any of the relationships already\nexist, the transaction will fail and no relationships will be written. (streaming inputs)",
             "in": "body",
             "required": true,
             "schema": {
@@ -680,7 +680,7 @@
         "parameters": [
           {
             "name": "body",
-            "description": "WriteRelationshipsRequest contains a list of Relationship mutations that\nshould be applied to the service. If the optional_preconditions parameter\nis included, all of the specified preconditions must also be satisfied before\nthe write will be committed.",
+            "description": "WriteRelationshipsRequest contains a list of Relationship mutations that\nshould be applied to the service. If the optional_preconditions parameter\nis included, all of the specified preconditions must also be satisfied before\nthe write will be committed. All updates will be applied transactionally,\nand if any preconditions fail, the entire transaction will be reverted.",
             "in": "body",
             "required": true,
             "schema": {
@@ -1619,9 +1619,13 @@
             "type": "object",
             "$ref": "#/definitions/v1Relationship"
           }
+        },
+        "optionalTransactionMetadata": {
+          "type": "object",
+          "description": "optional_transaction_metadata is an optional field that can be used to store metadata about the transaction.\nIf specified, this metadata will be supplied in the WatchResponse for the creations associated with\nthis transaction."
         }
       },
-      "description": "BulkImportRelationshipsRequest represents one batch of the streaming\nBulkImportRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally."
+      "description": "BulkImportRelationshipsRequest represents one batch of the streaming\nBulkImportRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. Any relationships within the same request are guaranteed to\nbe written in a single transaction. If any of the relationships already\nexist, the transaction will fail and no relationships will be written."
     },
     "v1BulkImportRelationshipsResponse": {
       "type": "object",
@@ -1915,6 +1919,10 @@
         "optionalAllowPartialDeletions": {
           "type": "boolean",
           "description": "optional_allow_partial_deletions, if true and a limit is specified, will delete matching found\nrelationships up to the count specified in optional_limit, and no more."
+        },
+        "optionalTransactionMetadata": {
+          "type": "object",
+          "description": "optional_transaction_metadata is an optional field that can be used to store metadata about the transaction.\nIf specified, this metadata will be supplied in the WatchResponse for the deletions associated with\nthis transaction."
         }
       },
       "description": "DeleteRelationshipsRequest specifies which Relationships should be deleted,\nrequesting the delete of *ALL* relationships that match the specified\nfilters. If the optional_preconditions parameter is included, all of the\nspecified preconditions must also be satisfied before the delete will be\nexecuted."
@@ -2455,6 +2463,10 @@
             "type": "object",
             "$ref": "#/definitions/v1Relationship"
           }
+        },
+        "optionalTransactionMetadata": {
+          "type": "object",
+          "description": "optional_transaction_metadata is an optional field that can be used to store metadata about the transaction.\nIf specified, this metadata will be supplied in the WatchResponse for the creations associated with\nthis transaction."
         }
       },
       "description": "ImportBulkRelationshipsRequest represents one batch of the streaming\nImportBulkRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally."
@@ -2891,10 +2903,16 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1RelationshipUpdate"
-          }
+          },
+          "description": "updates are the RelationshipUpdate events that have occurred since the\nlast watch response."
         },
         "changesThrough": {
-          "$ref": "#/definitions/v1ZedToken"
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "changes_through is the ZedToken that represents the point in time\nthat the watch response is current through. This token can be used\nin a subsequent WatchRequest to resume watching from this point."
+        },
+        "optionalTransactionMetadata": {
+          "type": "object",
+          "description": "optional_transaction_metadata is an optional field that returns the transaction metadata\ngiven to SpiceDB during the transaction that produced the changes in this response.\nThis field may not exist if no transaction metadata was provided."
         }
       },
       "description": "WatchResponse contains all tuple modification events in ascending\ntimestamp order, from the requested start snapshot to a snapshot\nencoded in the watch response. The client can use the snapshot to resume\nwatching where the previous watch response left off."
@@ -2916,9 +2934,13 @@
             "$ref": "#/definitions/v1Precondition"
           },
           "title": "To be bounded by configuration"
+        },
+        "optionalTransactionMetadata": {
+          "type": "object",
+          "description": "optional_transaction_metadata is an optional field that can be used to store metadata about the transaction.\nIf specified, this metadata will be supplied in the WatchResponse for the updates associated with this\ntransaction."
         }
       },
-      "description": "WriteRelationshipsRequest contains a list of Relationship mutations that\nshould be applied to the service. If the optional_preconditions parameter\nis included, all of the specified preconditions must also be satisfied before\nthe write will be committed."
+      "description": "WriteRelationshipsRequest contains a list of Relationship mutations that\nshould be applied to the service. If the optional_preconditions parameter\nis included, all of the specified preconditions must also be satisfied before\nthe write will be committed. All updates will be applied transactionally,\nand if any preconditions fail, the entire transaction will be reverted."
     },
     "v1WriteRelationshipsResponse": {
       "type": "object",

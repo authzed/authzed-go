@@ -198,6 +198,7 @@ func (m *WriteRelationshipsRequest) CloneVT() *WriteRelationshipsRequest {
 		return (*WriteRelationshipsRequest)(nil)
 	}
 	r := new(WriteRelationshipsRequest)
+	r.OptionalTransactionMetadata = (*structpb.Struct)((*structpb1.Struct)(m.OptionalTransactionMetadata).CloneVT())
 	if rhs := m.Updates; rhs != nil {
 		tmpContainer := make([]*RelationshipUpdate, len(rhs))
 		for k, v := range rhs {
@@ -248,6 +249,7 @@ func (m *DeleteRelationshipsRequest) CloneVT() *DeleteRelationshipsRequest {
 	r.RelationshipFilter = m.RelationshipFilter.CloneVT()
 	r.OptionalLimit = m.OptionalLimit
 	r.OptionalAllowPartialDeletions = m.OptionalAllowPartialDeletions
+	r.OptionalTransactionMetadata = (*structpb.Struct)((*structpb1.Struct)(m.OptionalTransactionMetadata).CloneVT())
 	if rhs := m.OptionalPreconditions; rhs != nil {
 		tmpContainer := make([]*Precondition, len(rhs))
 		for k, v := range rhs {
@@ -622,6 +624,7 @@ func (m *ImportBulkRelationshipsRequest) CloneVT() *ImportBulkRelationshipsReque
 		return (*ImportBulkRelationshipsRequest)(nil)
 	}
 	r := new(ImportBulkRelationshipsRequest)
+	r.OptionalTransactionMetadata = (*structpb.Struct)((*structpb1.Struct)(m.OptionalTransactionMetadata).CloneVT())
 	if rhs := m.Relationships; rhs != nil {
 		tmpContainer := make([]*Relationship, len(rhs))
 		for k, v := range rhs {
@@ -1003,6 +1006,9 @@ func (this *WriteRelationshipsRequest) EqualVT(that *WriteRelationshipsRequest) 
 			}
 		}
 	}
+	if !(*structpb1.Struct)(this.OptionalTransactionMetadata).EqualVT((*structpb1.Struct)(that.OptionalTransactionMetadata)) {
+		return false
+	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
@@ -1062,6 +1068,9 @@ func (this *DeleteRelationshipsRequest) EqualVT(that *DeleteRelationshipsRequest
 		return false
 	}
 	if this.OptionalAllowPartialDeletions != that.OptionalAllowPartialDeletions {
+		return false
+	}
+	if !(*structpb1.Struct)(this.OptionalTransactionMetadata).EqualVT((*structpb1.Struct)(that.OptionalTransactionMetadata)) {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -1630,6 +1639,9 @@ func (this *ImportBulkRelationshipsRequest) EqualVT(that *ImportBulkRelationship
 				return false
 			}
 		}
+	}
+	if !(*structpb1.Struct)(this.OptionalTransactionMetadata).EqualVT((*structpb1.Struct)(that.OptionalTransactionMetadata)) {
+		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
@@ -2215,6 +2227,16 @@ func (m *WriteRelationshipsRequest) MarshalToSizedBufferVT(dAtA []byte) (int, er
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.OptionalTransactionMetadata != nil {
+		size, err := (*structpb1.Struct)(m.OptionalTransactionMetadata).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1a
+	}
 	if len(m.OptionalPreconditions) > 0 {
 		for iNdEx := len(m.OptionalPreconditions) - 1; iNdEx >= 0; iNdEx-- {
 			size, err := m.OptionalPreconditions[iNdEx].MarshalToSizedBufferVT(dAtA[:i])
@@ -2314,6 +2336,16 @@ func (m *DeleteRelationshipsRequest) MarshalToSizedBufferVT(dAtA []byte) (int, e
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.OptionalTransactionMetadata != nil {
+		size, err := (*structpb1.Struct)(m.OptionalTransactionMetadata).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x2a
 	}
 	if m.OptionalAllowPartialDeletions {
 		i--
@@ -3466,6 +3498,16 @@ func (m *ImportBulkRelationshipsRequest) MarshalToSizedBufferVT(dAtA []byte) (in
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.OptionalTransactionMetadata != nil {
+		size, err := (*structpb1.Struct)(m.OptionalTransactionMetadata).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+	}
 	if len(m.Relationships) > 0 {
 		for iNdEx := len(m.Relationships) - 1; iNdEx >= 0; iNdEx-- {
 			size, err := m.Relationships[iNdEx].MarshalToSizedBufferVT(dAtA[:i])
@@ -3845,6 +3887,10 @@ func (m *WriteRelationshipsRequest) SizeVT() (n int) {
 			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 		}
 	}
+	if m.OptionalTransactionMetadata != nil {
+		l = (*structpb1.Struct)(m.OptionalTransactionMetadata).SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -3884,6 +3930,10 @@ func (m *DeleteRelationshipsRequest) SizeVT() (n int) {
 	}
 	if m.OptionalAllowPartialDeletions {
 		n += 2
+	}
+	if m.OptionalTransactionMetadata != nil {
+		l = (*structpb1.Struct)(m.OptionalTransactionMetadata).SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	n += len(m.unknownFields)
 	return n
@@ -4321,6 +4371,10 @@ func (m *ImportBulkRelationshipsRequest) SizeVT() (n int) {
 			l = e.SizeVT()
 			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 		}
+	}
+	if m.OptionalTransactionMetadata != nil {
+		l = (*structpb1.Struct)(m.OptionalTransactionMetadata).SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	n += len(m.unknownFields)
 	return n
@@ -5548,6 +5602,42 @@ func (m *WriteRelationshipsRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalTransactionMetadata", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.OptionalTransactionMetadata == nil {
+				m.OptionalTransactionMetadata = &structpb.Struct{}
+			}
+			if err := (*structpb1.Struct)(m.OptionalTransactionMetadata).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -5795,6 +5885,42 @@ func (m *DeleteRelationshipsRequest) UnmarshalVT(dAtA []byte) error {
 				}
 			}
 			m.OptionalAllowPartialDeletions = bool(v != 0)
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalTransactionMetadata", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.OptionalTransactionMetadata == nil {
+				m.OptionalTransactionMetadata = &structpb.Struct{}
+			}
+			if err := (*structpb1.Struct)(m.OptionalTransactionMetadata).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -8677,6 +8803,42 @@ func (m *ImportBulkRelationshipsRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			m.Relationships = append(m.Relationships, &Relationship{})
 			if err := m.Relationships[len(m.Relationships)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalTransactionMetadata", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.OptionalTransactionMetadata == nil {
+				m.OptionalTransactionMetadata = &structpb.Struct{}
+			}
+			if err := (*structpb1.Struct)(m.OptionalTransactionMetadata).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
