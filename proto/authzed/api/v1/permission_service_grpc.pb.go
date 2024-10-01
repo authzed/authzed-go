@@ -71,7 +71,8 @@ type PermissionsServiceClient interface {
 	// performance, the caller should attempt to write relationships in as close
 	// to relationship sort order as possible: (resource.object_type,
 	// resource.object_id, relation, subject.object.object_type,
-	// subject.object.object_id, subject.optional_relation)
+	// subject.object.object_id, subject.optional_relation). All relationships
+	// written are done so under a single transaction.
 	ImportBulkRelationships(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ImportBulkRelationshipsRequest, ImportBulkRelationshipsResponse], error)
 	// ExportBulkRelationships is the fastest path available to exporting
 	// relationships from the server. It is resumable, and will return results
@@ -266,7 +267,8 @@ type PermissionsServiceServer interface {
 	// performance, the caller should attempt to write relationships in as close
 	// to relationship sort order as possible: (resource.object_type,
 	// resource.object_id, relation, subject.object.object_type,
-	// subject.object.object_id, subject.optional_relation)
+	// subject.object.object_id, subject.optional_relation). All relationships
+	// written are done so under a single transaction.
 	ImportBulkRelationships(grpc.ClientStreamingServer[ImportBulkRelationshipsRequest, ImportBulkRelationshipsResponse]) error
 	// ExportBulkRelationships is the fastest path available to exporting
 	// relationships from the server. It is resumable, and will return results

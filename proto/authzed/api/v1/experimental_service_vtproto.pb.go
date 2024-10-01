@@ -300,7 +300,6 @@ func (m *BulkImportRelationshipsRequest) CloneVT() *BulkImportRelationshipsReque
 		return (*BulkImportRelationshipsRequest)(nil)
 	}
 	r := new(BulkImportRelationshipsRequest)
-	r.OptionalTransactionMetadata = (*structpb.Struct)((*structpb1.Struct)(m.OptionalTransactionMetadata).CloneVT())
 	if rhs := m.Relationships; rhs != nil {
 		tmpContainer := make([]*Relationship, len(rhs))
 		for k, v := range rhs {
@@ -1414,9 +1413,6 @@ func (this *BulkImportRelationshipsRequest) EqualVT(that *BulkImportRelationship
 				return false
 			}
 		}
-	}
-	if !(*structpb1.Struct)(this.OptionalTransactionMetadata).EqualVT((*structpb1.Struct)(that.OptionalTransactionMetadata)) {
-		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
@@ -3339,16 +3335,6 @@ func (m *BulkImportRelationshipsRequest) MarshalToSizedBufferVT(dAtA []byte) (in
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
-	}
-	if m.OptionalTransactionMetadata != nil {
-		size, err := (*structpb1.Struct)(m.OptionalTransactionMetadata).MarshalToSizedBufferVT(dAtA[:i])
-		if err != nil {
-			return 0, err
-		}
-		i -= size
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
-		i--
-		dAtA[i] = 0x12
 	}
 	if len(m.Relationships) > 0 {
 		for iNdEx := len(m.Relationships) - 1; iNdEx >= 0; iNdEx-- {
@@ -5289,10 +5275,6 @@ func (m *BulkImportRelationshipsRequest) SizeVT() (n int) {
 			l = e.SizeVT()
 			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 		}
-	}
-	if m.OptionalTransactionMetadata != nil {
-		l = (*structpb1.Struct)(m.OptionalTransactionMetadata).SizeVT()
-		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	n += len(m.unknownFields)
 	return n
@@ -7421,42 +7403,6 @@ func (m *BulkImportRelationshipsRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			m.Relationships = append(m.Relationships, &Relationship{})
 			if err := m.Relationships[len(m.Relationships)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field OptionalTransactionMetadata", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.OptionalTransactionMetadata == nil {
-				m.OptionalTransactionMetadata = &structpb.Struct{}
-			}
-			if err := (*structpb1.Struct)(m.OptionalTransactionMetadata).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
