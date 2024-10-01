@@ -1619,10 +1619,6 @@
             "type": "object",
             "$ref": "#/definitions/v1Relationship"
           }
-        },
-        "optionalTransactionMetadata": {
-          "type": "object",
-          "description": "optional_transaction_metadata is an optional field that can be used to store metadata about the transaction.\nIf specified, this metadata will be supplied in the WatchResponse for the creations associated with\nthis transaction."
         }
       },
       "description": "BulkImportRelationshipsRequest represents one batch of the streaming\nBulkImportRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. Any relationships within the same request are guaranteed to\nbe written in a single transaction. If any of the relationships already\nexist, the transaction will fail and no relationships will be written."
@@ -2463,10 +2459,6 @@
             "type": "object",
             "$ref": "#/definitions/v1Relationship"
           }
-        },
-        "optionalTransactionMetadata": {
-          "type": "object",
-          "description": "optional_transaction_metadata is an optional field that can be used to store metadata about the transaction.\nIf specified, this metadata will be supplied in the WatchResponse for the creations associated with\nthis transaction."
         }
       },
       "description": "ImportBulkRelationshipsRequest represents one batch of the streaming\nImportBulkRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally."
