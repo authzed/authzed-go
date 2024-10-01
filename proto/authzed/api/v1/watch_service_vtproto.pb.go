@@ -7,8 +7,10 @@ package v1
 import (
 	fmt "fmt"
 	protohelpers "github.com/planetscale/vtprotobuf/protohelpers"
+	structpb1 "github.com/planetscale/vtprotobuf/types/known/structpb"
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 	io "io"
 )
 
@@ -54,6 +56,7 @@ func (m *WatchResponse) CloneVT() *WatchResponse {
 	}
 	r := new(WatchResponse)
 	r.ChangesThrough = m.ChangesThrough.CloneVT()
+	r.OptionalTransactionMetadata = (*structpb.Struct)((*structpb1.Struct)(m.OptionalTransactionMetadata).CloneVT())
 	if rhs := m.Updates; rhs != nil {
 		tmpContainer := make([]*RelationshipUpdate, len(rhs))
 		for k, v := range rhs {
@@ -141,6 +144,9 @@ func (this *WatchResponse) EqualVT(that *WatchResponse) bool {
 		}
 	}
 	if !this.ChangesThrough.EqualVT(that.ChangesThrough) {
+		return false
+	}
+	if !(*structpb1.Struct)(this.OptionalTransactionMetadata).EqualVT((*structpb1.Struct)(that.OptionalTransactionMetadata)) {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -247,6 +253,16 @@ func (m *WatchResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.OptionalTransactionMetadata != nil {
+		size, err := (*structpb1.Struct)(m.OptionalTransactionMetadata).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1a
+	}
 	if m.ChangesThrough != nil {
 		size, err := m.ChangesThrough.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -312,6 +328,10 @@ func (m *WatchResponse) SizeVT() (n int) {
 	}
 	if m.ChangesThrough != nil {
 		l = m.ChangesThrough.SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if m.OptionalTransactionMetadata != nil {
+		l = (*structpb1.Struct)(m.OptionalTransactionMetadata).SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -567,6 +587,42 @@ func (m *WatchResponse) UnmarshalVT(dAtA []byte) error {
 				m.ChangesThrough = &ZedToken{}
 			}
 			if err := m.ChangesThrough.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalTransactionMetadata", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.OptionalTransactionMetadata == nil {
+				m.OptionalTransactionMetadata = &structpb.Struct{}
+			}
+			if err := (*structpb1.Struct)(m.OptionalTransactionMetadata).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

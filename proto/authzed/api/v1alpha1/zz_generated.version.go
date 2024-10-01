@@ -2,5 +2,5 @@ package v1alpha1
 
 const (
 	BufRepository = "buf.build/authzed/api"
-	BufTag        = "v1.37.0"
+	BufTag        = "53e6b1087a076a9802ed2218f3a43404f779a1ff"
 )
