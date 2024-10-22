@@ -37,14 +37,18 @@ func ExampleNewClient() {
 	log.Println(client)
 }
 
-func randomString(length int) string {
+func randomString(length int) (string, error) {
 	buffer := make([]byte, length)
-	rand.Read(buffer)
-	return base64.StdEncoding.EncodeToString(buffer)[:length]
+	_, err := rand.Read(buffer)
+	if err != nil {
+		return "", err
+	}
+	return base64.StdEncoding.EncodeToString(buffer)[:length], nil
 }
 
 func testClient(t *testing.T) *authzed.Client {
-	token := randomString(12)
+	token, err := randomString(12)
+	require.NoError(t, err)
 	client, err := authzed.NewClient(
 		"localhost:50051",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
