@@ -2,13 +2,14 @@ package authzed_test
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/base64"
 	"errors"
 	"io"
 	"log"
 	"testing"
 
 	"github.com/authzed/grpcutil"
-	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -36,8 +37,14 @@ func ExampleNewClient() {
 	log.Println(client)
 }
 
-func SutClient(t *testing.T) *authzed.Client {
-	token := uuid.New().String()
+func randomString(length int) string {
+	buffer := make([]byte, length)
+	rand.Read(buffer)
+	return base64.StdEncoding.EncodeToString(buffer)[:length]
+}
+
+func testClient(t *testing.T) *authzed.Client {
+	token := randomString(12)
 	client, err := authzed.NewClient(
 		"localhost:50051",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -50,7 +57,7 @@ func SutClient(t *testing.T) *authzed.Client {
 func TestBasicSchema(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
-	client := SutClient(t)
+	client := testClient(t)
 	defer client.Conn.Close()
 
 	schema := `
@@ -73,7 +80,7 @@ func TestBasicSchema(t *testing.T) {
 func TestSchemaWithCaveats(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
-	client := SutClient(t)
+	client := testClient(t)
 	defer client.Conn.Close()
 
 	err := WriteTestSchema(client)
@@ -83,7 +90,7 @@ func TestSchemaWithCaveats(t *testing.T) {
 func TestCheck(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
-	client := SutClient(t)
+	client := testClient(t)
 	defer client.Conn.Close()
 
 	err := WriteTestSchema(client)
@@ -131,7 +138,7 @@ func TestCheck(t *testing.T) {
 func TestCaveatedCheck(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
-	client := SutClient(t)
+	client := testClient(t)
 	defer client.Conn.Close()
 
 	err := WriteTestSchema(client)
@@ -181,7 +188,7 @@ func TestCaveatedCheck(t *testing.T) {
 func TestLookupResources(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
-	client := SutClient(t)
+	client := testClient(t)
 	defer client.Conn.Close()
 
 	err := WriteTestSchema(client)
@@ -193,8 +200,6 @@ func TestLookupResources(t *testing.T) {
 	// for this case, where we know how many results we're expecting. This is meant as an
 	// example to demonstrate a real-world lookupResources usage.
 	pageLimit := 50
-	// The page buffer is where we'll store individual results from the stream
-	pageBuffer := make([]string, 0, pageLimit)
 	// Where the result buffer is where we'll concatenate the page buffers together
 	// to get a final set of results
 	resultBuffer := make([]string, 0)
@@ -208,7 +213,8 @@ func TestLookupResources(t *testing.T) {
 		})
 		require.NoError(err)
 
-		resultCount := 0
+		// The page buffer is where we'll store individual results from the stream
+		pageBuffer := make([]string, 0, pageLimit)
 	stream:
 		for {
 			item, err := response.Recv()
@@ -218,12 +224,12 @@ func TestLookupResources(t *testing.T) {
 			case err != nil:
 				require.NoError(err)
 			default:
-				resultCount += 1
 				pageBuffer = append(pageBuffer, item.ResourceObjectId)
 			}
 		}
 
 		resultBuffer = append(resultBuffer, pageBuffer...)
+		resultCount := len(pageBuffer)
 
 		// If there are no results or the number of results is less than the page limit,
 		// we know that we've exhausted the pages of results.
@@ -239,7 +245,7 @@ func TestLookupResources(t *testing.T) {
 func TestLookupSubjects(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
-	client := SutClient(t)
+	client := testClient(t)
 	defer client.Conn.Close()
 
 	err := WriteTestSchema(client)
@@ -280,7 +286,7 @@ stream:
 func TestCheckBulkPermissions(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
-	client := SutClient(t)
+	client := testClient(t)
 	defer client.Conn.Close()
 
 	err := WriteTestSchema(client)
@@ -313,7 +319,7 @@ func TestCheckBulkPermissions(t *testing.T) {
 func TestBulkExportImport(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
-	client := SutClient(t)
+	client := testClient(t)
 	defer client.Conn.Close()
 
 	err := WriteTestSchema(client)
@@ -343,7 +349,7 @@ stream:
 
 	// Note that this has a different preshared key
 	// Validate import
-	emptyClient := SutClient(t)
+	emptyClient := testClient(t)
 	err = WriteTestSchema(emptyClient)
 	require.NoError(err)
 
