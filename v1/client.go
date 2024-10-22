@@ -11,6 +11,9 @@ import (
 //
 // Clients are backed by a gRPC client and as such are thread-safe.
 type Client struct {
+	// Provide a handle on the underlying connection to enable cleanup
+	// behaviors (among others)
+	Conn *grpc.ClientConn
 	v1.SchemaServiceClient
 	v1.PermissionsServiceClient
 	v1.WatchServiceClient
@@ -34,6 +37,7 @@ func NewClient(endpoint string, opts ...grpc.DialOption) (*Client, error) {
 	}
 
 	return &Client{
+		conn,
 		v1.NewSchemaServiceClient(conn),
 		v1.NewPermissionsServiceClient(conn),
 		v1.NewWatchServiceClient(conn),
@@ -50,6 +54,7 @@ func NewClientWithExperimentalAPIs(endpoint string, opts ...grpc.DialOption) (*C
 
 	return &ClientWithExperimental{
 		Client{
+			conn,
 			v1.NewSchemaServiceClient(conn),
 			v1.NewPermissionsServiceClient(conn),
 			v1.NewWatchServiceClient(conn),
