@@ -65,6 +65,7 @@ func NewRetryableClient(endpoint string, opts ...grpc.DialOption) (*RetryableCli
 	return &RetryableClient{
 		ClientWithExperimental{
 			Client{
+				conn,
 				v1.NewSchemaServiceClient(conn),
 				v1.NewPermissionsServiceClient(conn),
 				v1.NewWatchServiceClient(conn),
