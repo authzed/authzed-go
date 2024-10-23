@@ -6,6 +6,11 @@ on:
       - "main"
   pull_request:
     branches: ["*"]
+  # NOTE: this is required for checks to be run in the
+  # merge queue.
+  merge_group:
+    types:
+      - "checks_requested"
 jobs:
   tests:
     name: "Unit and Integration Tests"
