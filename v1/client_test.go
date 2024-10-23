@@ -47,6 +47,7 @@ func randomString(length int) (string, error) {
 }
 
 func testClient(t *testing.T) *authzed.Client {
+	t.Helper()
 	token, err := randomString(12)
 	require.NoError(t, err)
 	client, err := authzed.NewClient(
@@ -219,17 +220,13 @@ func TestLookupResources(t *testing.T) {
 
 		// The page buffer is where we'll store individual results from the stream
 		pageBuffer := make([]string, 0, pageLimit)
-	stream:
 		for {
 			item, err := response.Recv()
-			switch {
-			case errors.Is(err, io.EOF):
-				break stream
-			case err != nil:
-				require.NoError(err)
-			default:
-				pageBuffer = append(pageBuffer, item.ResourceObjectId)
+			if errors.Is(err, io.EOF) {
+				break
 			}
+			require.NoError(err)
+			pageBuffer = append(pageBuffer, item.ResourceObjectId)
 		}
 
 		resultBuffer = append(resultBuffer, pageBuffer...)
@@ -269,17 +266,13 @@ func TestLookupSubjects(t *testing.T) {
 	})
 	require.NoError(err)
 
-stream:
 	for {
 		item, err := response.Recv()
-		switch {
-		case errors.Is(err, io.EOF):
-			break stream
-		case err != nil:
-			require.NoError(err)
-		default:
-			resultBuffer = append(resultBuffer, item.Subject.SubjectObjectId)
+		if errors.Is(err, io.EOF) {
+			break
 		}
+		require.NoError(err)
+		resultBuffer = append(resultBuffer, item.Subject.SubjectObjectId)
 	}
 
 	require.Contains(resultBuffer, emilia.Object.ObjectId)
@@ -336,17 +329,13 @@ func TestBulkExportImport(t *testing.T) {
 	require.NoError(err)
 
 	exportResults := make([]*v1.Relationship, 0)
-stream:
 	for {
 		item, err := exportResponse.Recv()
-		switch {
-		case errors.Is(err, io.EOF):
-			break stream
-		case err != nil:
-			require.NoError(err)
-		default:
-			exportResults = append(exportResults, item.Relationships...)
+		if errors.Is(err, io.EOF) {
+			break
 		}
+		require.NoError(err)
+		exportResults = append(exportResults, item.Relationships...)
 	}
 
 	require.Len(exportResults, 4)
@@ -372,17 +361,13 @@ stream:
 	require.NoError(err)
 
 	exportAfterImportResults := make([]*v1.Relationship, 0)
-afterImportStream:
 	for {
 		item, err := exportAfterImportResponse.Recv()
-		switch {
-		case errors.Is(err, io.EOF):
-			break afterImportStream
-		case err != nil:
-			require.NoError(err)
-		default:
-			exportAfterImportResults = append(exportAfterImportResults, item.Relationships...)
+		if errors.Is(err, io.EOF) {
+			break
 		}
+		require.NoError(err)
+		exportAfterImportResults = append(exportAfterImportResults, item.Relationships...)
 	}
 
 	require.Len(exportAfterImportResults, 4)
