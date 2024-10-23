@@ -325,7 +325,9 @@ func TestBulkExportImport(t *testing.T) {
 	require.NoError(err)
 
 	// Validate export
-	exportResponse, err := client.PermissionsServiceClient.ExportBulkRelationships(context.Background(), &v1.ExportBulkRelationshipsRequest{})
+	exportResponse, err := client.PermissionsServiceClient.ExportBulkRelationships(context.Background(), &v1.ExportBulkRelationshipsRequest{
+		Consistency: fullyConsistent,
+	})
 	require.NoError(err)
 
 	exportResults := make([]*v1.Relationship, 0)
@@ -357,7 +359,9 @@ func TestBulkExportImport(t *testing.T) {
 	require.Equal(uint64(4), importResponse.NumLoaded)
 
 	// Validate that things were loaded
-	exportAfterImportResponse, err := emptyClient.PermissionsServiceClient.ExportBulkRelationships(context.Background(), &v1.ExportBulkRelationshipsRequest{})
+	exportAfterImportResponse, err := emptyClient.PermissionsServiceClient.ExportBulkRelationships(context.Background(), &v1.ExportBulkRelationshipsRequest{
+		Consistency: fullyConsistent,
+	})
 	require.NoError(err)
 
 	exportAfterImportResults := make([]*v1.Relationship, 0)
