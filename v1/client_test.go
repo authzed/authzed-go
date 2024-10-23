@@ -65,6 +65,9 @@ func TestBasicSchema(t *testing.T) {
 	client := testClient(t)
 	defer client.Conn.Close()
 
+	ctx, cancel := context.WithCancel(context.Background())
+	t.Cleanup(cancel)
+
 	schema := `
 	definition document {
 		relation reader: user
@@ -72,11 +75,11 @@ func TestBasicSchema(t *testing.T) {
 	definition user {}
 	`
 
-	writeResponse, err := client.SchemaServiceClient.WriteSchema(context.Background(), &v1.WriteSchemaRequest{Schema: schema})
+	writeResponse, err := client.SchemaServiceClient.WriteSchema(ctx, &v1.WriteSchemaRequest{Schema: schema})
 	require.NoError(err)
 	require.NotEmpty(writeResponse.WrittenAt.String())
 
-	readResponse, err := client.SchemaServiceClient.ReadSchema(context.Background(), &v1.ReadSchemaRequest{})
+	readResponse, err := client.SchemaServiceClient.ReadSchema(ctx, &v1.ReadSchemaRequest{})
 	require.NoError(err)
 	require.Contains(readResponse.SchemaText, "definition document")
 	require.Contains(readResponse.SchemaText, "definition user")
@@ -98,12 +101,14 @@ func TestCheck(t *testing.T) {
 	client := testClient(t)
 	defer client.Conn.Close()
 
+	ctx, cancel := context.WithCancel(context.Background())
+	t.Cleanup(cancel)
 	err := WriteTestSchema(client)
 	require.NoError(err)
 	emilia, beatrice, postOne, _, err := WriteTestTuples(client)
 	require.NoError(err)
 
-	firstResponse, err := client.PermissionsServiceClient.CheckPermission(context.Background(), &v1.CheckPermissionRequest{
+	firstResponse, err := client.PermissionsServiceClient.CheckPermission(ctx, &v1.CheckPermissionRequest{
 		Resource:    postOne,
 		Permission:  "view",
 		Subject:     emilia,
@@ -112,7 +117,7 @@ func TestCheck(t *testing.T) {
 	require.NoError(err)
 	require.Equal(v1.CheckPermissionResponse_PERMISSIONSHIP_HAS_PERMISSION, firstResponse.Permissionship)
 
-	secondResponse, err := client.PermissionsServiceClient.CheckPermission(context.Background(), &v1.CheckPermissionRequest{
+	secondResponse, err := client.PermissionsServiceClient.CheckPermission(ctx, &v1.CheckPermissionRequest{
 		Resource:    postOne,
 		Permission:  "write",
 		Subject:     emilia,
@@ -121,7 +126,7 @@ func TestCheck(t *testing.T) {
 	require.NoError(err)
 	require.Equal(v1.CheckPermissionResponse_PERMISSIONSHIP_HAS_PERMISSION, secondResponse.Permissionship)
 
-	thirdResponse, err := client.PermissionsServiceClient.CheckPermission(context.Background(), &v1.CheckPermissionRequest{
+	thirdResponse, err := client.PermissionsServiceClient.CheckPermission(ctx, &v1.CheckPermissionRequest{
 		Resource:    postOne,
 		Permission:  "view",
 		Subject:     beatrice,
@@ -130,7 +135,7 @@ func TestCheck(t *testing.T) {
 	require.NoError(err)
 	require.Equal(v1.CheckPermissionResponse_PERMISSIONSHIP_HAS_PERMISSION, thirdResponse.Permissionship)
 
-	fourthResponse, err := client.PermissionsServiceClient.CheckPermission(context.Background(), &v1.CheckPermissionRequest{
+	fourthResponse, err := client.PermissionsServiceClient.CheckPermission(ctx, &v1.CheckPermissionRequest{
 		Resource:    postOne,
 		Permission:  "write",
 		Subject:     beatrice,
@@ -146,6 +151,8 @@ func TestCaveatedCheck(t *testing.T) {
 	client := testClient(t)
 	defer client.Conn.Close()
 
+	ctx, cancel := context.WithCancel(context.Background())
+	t.Cleanup(cancel)
 	err := WriteTestSchema(client)
 	require.NoError(err)
 	_, beatrice, postOne, _, err := WriteTestTuples(client)
@@ -154,7 +161,7 @@ func TestCaveatedCheck(t *testing.T) {
 	// Likes Harry Potter
 	likesContext, err := structpb.NewStruct(map[string]any{"likes": true})
 	require.NoError(err)
-	firstResponse, err := client.PermissionsServiceClient.CheckPermission(context.Background(), &v1.CheckPermissionRequest{
+	firstResponse, err := client.PermissionsServiceClient.CheckPermission(ctx, &v1.CheckPermissionRequest{
 		Resource:    postOne,
 		Permission:  "view_as_fan",
 		Subject:     beatrice,
@@ -167,7 +174,7 @@ func TestCaveatedCheck(t *testing.T) {
 	// No longer likes Harry Potter
 	dislikesContext, err := structpb.NewStruct(map[string]any{"likes": false})
 	require.NoError(err)
-	secondResponse, err := client.PermissionsServiceClient.CheckPermission(context.Background(), &v1.CheckPermissionRequest{
+	secondResponse, err := client.PermissionsServiceClient.CheckPermission(ctx, &v1.CheckPermissionRequest{
 		Resource:    postOne,
 		Permission:  "view_as_fan",
 		Subject:     beatrice,
@@ -179,7 +186,7 @@ func TestCaveatedCheck(t *testing.T) {
 
 	// Fandom is in question
 	require.NoError(err)
-	thirdResponse, err := client.PermissionsServiceClient.CheckPermission(context.Background(), &v1.CheckPermissionRequest{
+	thirdResponse, err := client.PermissionsServiceClient.CheckPermission(ctx, &v1.CheckPermissionRequest{
 		Resource:    postOne,
 		Permission:  "view_as_fan",
 		Subject:     beatrice,
@@ -196,6 +203,8 @@ func TestLookupResources(t *testing.T) {
 	client := testClient(t)
 	defer client.Conn.Close()
 
+	ctx, cancel := context.WithCancel(context.Background())
+	t.Cleanup(cancel)
 	err := WriteTestSchema(client)
 	require.NoError(err)
 	emilia, _, postOne, postTwo, err := WriteTestTuples(client)
@@ -210,7 +219,7 @@ func TestLookupResources(t *testing.T) {
 	resultBuffer := make([]string, 0)
 
 	for {
-		response, err := client.PermissionsServiceClient.LookupResources(context.Background(), &v1.LookupResourcesRequest{
+		response, err := client.PermissionsServiceClient.LookupResources(ctx, &v1.LookupResourcesRequest{
 			ResourceObjectType: "post",
 			Permission:         "write",
 			Subject:            emilia,
@@ -249,6 +258,8 @@ func TestLookupSubjects(t *testing.T) {
 	client := testClient(t)
 	defer client.Conn.Close()
 
+	ctx, cancel := context.WithCancel(context.Background())
+	t.Cleanup(cancel)
 	err := WriteTestSchema(client)
 	require.NoError(err)
 	emilia, beatrice, postOne, _, err := WriteTestTuples(client)
@@ -258,7 +269,7 @@ func TestLookupSubjects(t *testing.T) {
 	// doesn't support cursoring.
 	resultBuffer := make([]string, 0)
 
-	response, err := client.PermissionsServiceClient.LookupSubjects(context.Background(), &v1.LookupSubjectsRequest{
+	response, err := client.PermissionsServiceClient.LookupSubjects(ctx, &v1.LookupSubjectsRequest{
 		SubjectObjectType: "user",
 		Permission:        "view",
 		Resource:          postOne,
@@ -286,12 +297,14 @@ func TestCheckBulkPermissions(t *testing.T) {
 	client := testClient(t)
 	defer client.Conn.Close()
 
+	ctx, cancel := context.WithCancel(context.Background())
+	t.Cleanup(cancel)
 	err := WriteTestSchema(client)
 	require.NoError(err)
 	emilia, _, postOne, _, err := WriteTestTuples(client)
 	require.NoError(err)
 
-	response, err := client.PermissionsServiceClient.CheckBulkPermissions(context.Background(), &v1.CheckBulkPermissionsRequest{
+	response, err := client.PermissionsServiceClient.CheckBulkPermissions(ctx, &v1.CheckBulkPermissionsRequest{
 		Consistency: fullyConsistent,
 		Items: []*v1.CheckBulkPermissionsRequestItem{
 			{
@@ -319,13 +332,15 @@ func TestBulkExportImport(t *testing.T) {
 	client := testClient(t)
 	defer client.Conn.Close()
 
+	ctx, cancel := context.WithCancel(context.Background())
+	t.Cleanup(cancel)
 	err := WriteTestSchema(client)
 	require.NoError(err)
 	_, _, _, _, err = WriteTestTuples(client)
 	require.NoError(err)
 
 	// Validate export
-	exportResponse, err := client.PermissionsServiceClient.ExportBulkRelationships(context.Background(), &v1.ExportBulkRelationshipsRequest{
+	exportResponse, err := client.PermissionsServiceClient.ExportBulkRelationships(ctx, &v1.ExportBulkRelationshipsRequest{
 		Consistency: fullyConsistent,
 	})
 	require.NoError(err)
@@ -348,7 +363,7 @@ func TestBulkExportImport(t *testing.T) {
 	err = WriteTestSchema(emptyClient)
 	require.NoError(err)
 
-	stream, err := emptyClient.PermissionsServiceClient.ImportBulkRelationships(context.Background())
+	stream, err := emptyClient.PermissionsServiceClient.ImportBulkRelationships(ctx)
 	require.NoError(err)
 	err = stream.Send(&v1.ImportBulkRelationshipsRequest{
 		Relationships: exportResults,
@@ -359,7 +374,7 @@ func TestBulkExportImport(t *testing.T) {
 	require.Equal(uint64(4), importResponse.NumLoaded)
 
 	// Validate that things were loaded
-	exportAfterImportResponse, err := emptyClient.PermissionsServiceClient.ExportBulkRelationships(context.Background(), &v1.ExportBulkRelationshipsRequest{
+	exportAfterImportResponse, err := emptyClient.PermissionsServiceClient.ExportBulkRelationships(ctx, &v1.ExportBulkRelationshipsRequest{
 		Consistency: fullyConsistent,
 	})
 	require.NoError(err)
