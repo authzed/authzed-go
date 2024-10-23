@@ -56,6 +56,7 @@ func testClient(t *testing.T) *authzed.Client {
 		grpcutil.WithInsecureBearerToken(token),
 	)
 	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Conn.Close()) })
 	return client
 }
 
@@ -63,7 +64,6 @@ func TestBasicSchema(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
 	client := testClient(t)
-	defer client.Conn.Close()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	t.Cleanup(cancel)
@@ -89,7 +89,6 @@ func TestSchemaWithCaveats(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
 	client := testClient(t)
-	defer client.Conn.Close()
 
 	err := WriteTestSchema(client)
 	require.NoError(err)
@@ -99,7 +98,6 @@ func TestCheck(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
 	client := testClient(t)
-	defer client.Conn.Close()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	t.Cleanup(cancel)
@@ -149,7 +147,6 @@ func TestCaveatedCheck(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
 	client := testClient(t)
-	defer client.Conn.Close()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	t.Cleanup(cancel)
@@ -201,7 +198,6 @@ func TestLookupResources(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
 	client := testClient(t)
-	defer client.Conn.Close()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	t.Cleanup(cancel)
@@ -256,7 +252,6 @@ func TestLookupSubjects(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
 	client := testClient(t)
-	defer client.Conn.Close()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	t.Cleanup(cancel)
@@ -295,7 +290,6 @@ func TestCheckBulkPermissions(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
 	client := testClient(t)
-	defer client.Conn.Close()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	t.Cleanup(cancel)
@@ -330,7 +324,6 @@ func TestBulkExportImport(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
 	client := testClient(t)
-	defer client.Conn.Close()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	t.Cleanup(cancel)
