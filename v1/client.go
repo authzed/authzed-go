@@ -13,10 +13,14 @@ import (
 type Client struct {
 	// Provide a handle on the underlying connection to enable cleanup
 	// behaviors (among others)
-	Conn *grpc.ClientConn
+	conn *grpc.ClientConn
 	v1.SchemaServiceClient
 	v1.PermissionsServiceClient
 	v1.WatchServiceClient
+}
+
+func (c *Client) Close() error {
+	return c.conn.Close()
 }
 
 // ClientWithExperimental represents and open connection to Authzed with

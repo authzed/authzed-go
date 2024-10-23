@@ -56,7 +56,7 @@ func testClient(t *testing.T) *authzed.Client {
 		grpcutil.WithInsecureBearerToken(token),
 	)
 	require.NoError(t, err)
-	t.Cleanup(func() { require.NoError(t, client.Conn.Close()) })
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	return client
 }
 
