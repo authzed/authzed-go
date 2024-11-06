@@ -3030,6 +3030,11 @@
       "in": "header"
     }
   },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
   "externalDocs": {
     "description": "More about the Authzed API.",
     "url": "https://docs.authzed.com/reference/api"
