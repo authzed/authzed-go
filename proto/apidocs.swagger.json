@@ -3024,12 +3024,18 @@
     }
   },
   "securityDefinitions": {
-    "ApiKeyAuth": {
+    "bearer": {
       "type": "apiKey",
+      "description": "SpiceDB preshared-key, prefixed by Bearer: Bearer \u003cpreshared-key\u003e",
       "name": "Authorization",
       "in": "header"
     }
   },
+  "security": [
+    {
+      "bearer": []
+    }
+  ],
   "externalDocs": {
     "description": "More about the Authzed API.",
     "url": "https://docs.authzed.com/reference/api"
