@@ -679,7 +679,7 @@ func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.S
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ImportBulkRelationships", runtime.WithHTTPPathPattern("/v1/experimental/relationships/bulkimport"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ImportBulkRelationships", runtime.WithHTTPPathPattern("/v1/relationships/importbulk"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -701,7 +701,7 @@ func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.S
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ExportBulkRelationships", runtime.WithHTTPPathPattern("/v1/experimental/relationships/bulkexport"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ExportBulkRelationships", runtime.WithHTTPPathPattern("/v1/relationships/exportbulk"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -737,9 +737,9 @@ var (
 
 	pattern_PermissionsService_LookupSubjects_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "permissions", "subjects"}, ""))
 
-	pattern_PermissionsService_ImportBulkRelationships_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "experimental", "relationships", "bulkimport"}, ""))
+	pattern_PermissionsService_ImportBulkRelationships_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "relationships", "importbulk"}, ""))
 
-	pattern_PermissionsService_ExportBulkRelationships_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "experimental", "relationships", "bulkexport"}, ""))
+	pattern_PermissionsService_ExportBulkRelationships_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "relationships", "exportbulk"}, ""))
 )
 
 var (
