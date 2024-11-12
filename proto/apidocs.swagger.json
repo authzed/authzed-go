@@ -616,6 +616,83 @@
         ]
       }
     },
+    "/v1/relationships/exportbulk": {
+      "post": {
+        "summary": "ExportBulkRelationships is the fastest path available to exporting\nrelationships from the server. It is resumable, and will return results\nin an order determined by the server.",
+        "operationId": "PermissionsService_ExportBulkRelationships",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v1ExportBulkRelationshipsResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v1ExportBulkRelationshipsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "ExportBulkRelationshipsRequest represents a resumable request for\nall relationships from the server.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ExportBulkRelationshipsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PermissionsService"
+        ]
+      }
+    },
+    "/v1/relationships/importbulk": {
+      "post": {
+        "summary": "ImportBulkRelationships is a faster path to writing a large number of\nrelationships at once. It is both batched and streaming. For maximum\nperformance, the caller should attempt to write relationships in as close\nto relationship sort order as possible: (resource.object_type,\nresource.object_id, relation, subject.object.object_type,\nsubject.object.object_id, subject.optional_relation). All relationships\nwritten are done so under a single transaction.",
+        "operationId": "PermissionsService_ImportBulkRelationships",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ImportBulkRelationshipsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "ImportBulkRelationshipsRequest represents one batch of the streaming\nImportBulkRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. (streaming inputs)",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ImportBulkRelationshipsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PermissionsService"
+        ]
+      }
+    },
     "/v1/relationships/read": {
       "post": {
         "summary": "ReadRelationships reads a set of the relationships matching one or more\nfilters.",
@@ -3026,10 +3103,16 @@
   "securityDefinitions": {
     "ApiKeyAuth": {
       "type": "apiKey",
+      "description": "SpiceDB preshared-key, prefixed by Bearer: Bearer \u003cpreshared-key\u003e",
       "name": "Authorization",
       "in": "header"
     }
   },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
   "externalDocs": {
     "description": "More about the Authzed API.",
     "url": "https://docs.authzed.com/reference/api"
