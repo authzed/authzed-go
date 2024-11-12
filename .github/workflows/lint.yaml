@@ -69,6 +69,9 @@ jobs:
           format: "sarif"
           output: "trivy-results.sarif"
           severity: "CRITICAL"
+        env:
+          TRIVY_DB_REPOSITORY: "public.ecr.aws/aquasecurity/trivy-db"
+          TRIVY_JAVA_DB_REPOSITORY: "public.ecr.aws/aquasecurity/trivy-java-db"
       - name: "Upload Trivy scan results to GitHub Security tab"
         uses: "github/codeql-action/upload-sarif@v3"
         with:
