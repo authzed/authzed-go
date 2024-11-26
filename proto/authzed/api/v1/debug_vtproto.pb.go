@@ -9,10 +9,12 @@ import (
 	protohelpers "github.com/planetscale/vtprotobuf/protohelpers"
 	durationpb1 "github.com/planetscale/vtprotobuf/types/known/durationpb"
 	structpb1 "github.com/planetscale/vtprotobuf/types/known/structpb"
+	timestamppb1 "github.com/planetscale/vtprotobuf/types/known/timestamppb"
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	structpb "google.golang.org/protobuf/types/known/structpb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	io "io"
 )
 
@@ -76,6 +78,7 @@ func (m *CheckDebugTrace) CloneVT() *CheckDebugTrace {
 	r.Result = m.Result
 	r.CaveatEvaluationInfo = m.CaveatEvaluationInfo.CloneVT()
 	r.Duration = (*durationpb.Duration)((*durationpb1.Duration)(m.Duration).CloneVT())
+	r.OptionalExpiresAt = (*timestamppb.Timestamp)((*timestamppb1.Timestamp)(m.OptionalExpiresAt).CloneVT())
 	if m.Resolution != nil {
 		r.Resolution = m.Resolution.(interface {
 			CloneVT() isCheckDebugTrace_Resolution
@@ -223,6 +226,9 @@ func (this *CheckDebugTrace) EqualVT(that *CheckDebugTrace) bool {
 		return false
 	}
 	if !(*durationpb1.Duration)(this.Duration).EqualVT((*durationpb1.Duration)(that.Duration)) {
+		return false
+	}
+	if !(*timestamppb1.Timestamp)(this.OptionalExpiresAt).EqualVT((*timestamppb1.Timestamp)(that.OptionalExpiresAt)) {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -441,6 +447,16 @@ func (m *CheckDebugTrace) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			return 0, err
 		}
 		i -= size
+	}
+	if m.OptionalExpiresAt != nil {
+		size, err := (*timestamppb1.Timestamp)(m.OptionalExpiresAt).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x52
 	}
 	if m.Duration != nil {
 		size, err := (*durationpb1.Duration)(m.Duration).MarshalToSizedBufferVT(dAtA[:i])
@@ -681,6 +697,10 @@ func (m *CheckDebugTrace) SizeVT() (n int) {
 	}
 	if m.Duration != nil {
 		l = (*durationpb1.Duration)(m.Duration).SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if m.OptionalExpiresAt != nil {
+		l = (*timestamppb1.Timestamp)(m.OptionalExpiresAt).SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -1245,6 +1265,42 @@ func (m *CheckDebugTrace) UnmarshalVT(dAtA []byte) error {
 				m.Duration = &durationpb.Duration{}
 			}
 			if err := (*durationpb1.Duration)(m.Duration).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalExpiresAt", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.OptionalExpiresAt == nil {
+				m.OptionalExpiresAt = &timestamppb.Timestamp{}
+			}
+			if err := (*timestamppb1.Timestamp)(m.OptionalExpiresAt).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

@@ -10,6 +10,7 @@ package v1
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 
@@ -24,21 +25,24 @@ import (
 )
 
 // Suppress "imported and not used" errors
-var _ codes.Code
-var _ io.Reader
-var _ status.Status
-var _ = runtime.String
-var _ = utilities.NewDoubleArray
-var _ = metadata.Join
+var (
+	_ codes.Code
+	_ io.Reader
+	_ status.Status
+	_ = errors.New
+	_ = runtime.String
+	_ = utilities.NewDoubleArray
+	_ = metadata.Join
+)
 
 func request_PermissionsService_ReadRelationships_0(ctx context.Context, marshaler runtime.Marshaler, client PermissionsServiceClient, req *http.Request, pathParams map[string]string) (PermissionsService_ReadRelationshipsClient, runtime.ServerMetadata, error) {
-	var protoReq ReadRelationshipsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ReadRelationshipsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	stream, err := client.ReadRelationships(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -49,147 +53,136 @@ func request_PermissionsService_ReadRelationships_0(ctx context.Context, marshal
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_PermissionsService_WriteRelationships_0(ctx context.Context, marshaler runtime.Marshaler, client PermissionsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq WriteRelationshipsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq WriteRelationshipsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.WriteRelationships(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_PermissionsService_WriteRelationships_0(ctx context.Context, marshaler runtime.Marshaler, server PermissionsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq WriteRelationshipsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq WriteRelationshipsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.WriteRelationships(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_PermissionsService_DeleteRelationships_0(ctx context.Context, marshaler runtime.Marshaler, client PermissionsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteRelationshipsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq DeleteRelationshipsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.DeleteRelationships(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_PermissionsService_DeleteRelationships_0(ctx context.Context, marshaler runtime.Marshaler, server PermissionsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteRelationshipsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq DeleteRelationshipsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.DeleteRelationships(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_PermissionsService_CheckPermission_0(ctx context.Context, marshaler runtime.Marshaler, client PermissionsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CheckPermissionRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq CheckPermissionRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.CheckPermission(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_PermissionsService_CheckPermission_0(ctx context.Context, marshaler runtime.Marshaler, server PermissionsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CheckPermissionRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq CheckPermissionRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.CheckPermission(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_PermissionsService_CheckBulkPermissions_0(ctx context.Context, marshaler runtime.Marshaler, client PermissionsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CheckBulkPermissionsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq CheckBulkPermissionsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.CheckBulkPermissions(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_PermissionsService_CheckBulkPermissions_0(ctx context.Context, marshaler runtime.Marshaler, server PermissionsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CheckBulkPermissionsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq CheckBulkPermissionsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.CheckBulkPermissions(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_PermissionsService_ExpandPermissionTree_0(ctx context.Context, marshaler runtime.Marshaler, client PermissionsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExpandPermissionTreeRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExpandPermissionTreeRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.ExpandPermissionTree(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_PermissionsService_ExpandPermissionTree_0(ctx context.Context, marshaler runtime.Marshaler, server PermissionsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExpandPermissionTreeRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExpandPermissionTreeRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.ExpandPermissionTree(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_PermissionsService_LookupResources_0(ctx context.Context, marshaler runtime.Marshaler, client PermissionsServiceClient, req *http.Request, pathParams map[string]string) (PermissionsService_LookupResourcesClient, runtime.ServerMetadata, error) {
-	var protoReq LookupResourcesRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq LookupResourcesRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	stream, err := client.LookupResources(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -200,17 +193,16 @@ func request_PermissionsService_LookupResources_0(ctx context.Context, marshaler
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_PermissionsService_LookupSubjects_0(ctx context.Context, marshaler runtime.Marshaler, client PermissionsServiceClient, req *http.Request, pathParams map[string]string) (PermissionsService_LookupSubjectsClient, runtime.ServerMetadata, error) {
-	var protoReq LookupSubjectsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq LookupSubjectsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	stream, err := client.LookupSubjects(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -221,7 +213,6 @@ func request_PermissionsService_LookupSubjects_0(ctx context.Context, marshaler 
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_PermissionsService_ImportBulkRelationships_0(ctx context.Context, marshaler runtime.Marshaler, client PermissionsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
@@ -235,7 +226,7 @@ func request_PermissionsService_ImportBulkRelationships_0(ctx context.Context, m
 	for {
 		var protoReq ImportBulkRelationshipsRequest
 		err = dec.Decode(&protoReq)
-		if err == io.EOF {
+		if errors.Is(err, io.EOF) {
 			break
 		}
 		if err != nil {
@@ -243,14 +234,13 @@ func request_PermissionsService_ImportBulkRelationships_0(ctx context.Context, m
 			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 		}
 		if err = stream.Send(&protoReq); err != nil {
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				break
 			}
 			grpclog.Errorf("Failed to send request: %v", err)
 			return nil, metadata, err
 		}
 	}
-
 	if err := stream.CloseSend(); err != nil {
 		grpclog.Errorf("Failed to terminate client stream: %v", err)
 		return nil, metadata, err
@@ -261,21 +251,19 @@ func request_PermissionsService_ImportBulkRelationships_0(ctx context.Context, m
 		return nil, metadata, err
 	}
 	metadata.HeaderMD = header
-
 	msg, err := stream.CloseAndRecv()
 	metadata.TrailerMD = stream.Trailer()
 	return msg, metadata, err
-
 }
 
 func request_PermissionsService_ExportBulkRelationships_0(ctx context.Context, marshaler runtime.Marshaler, client PermissionsServiceClient, req *http.Request, pathParams map[string]string) (PermissionsService_ExportBulkRelationshipsClient, runtime.ServerMetadata, error) {
-	var protoReq ExportBulkRelationshipsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExportBulkRelationshipsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	stream, err := client.ExportBulkRelationships(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -286,7 +274,6 @@ func request_PermissionsService_ExportBulkRelationships_0(ctx context.Context, m
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 // RegisterPermissionsServiceHandlerServer registers the http handlers for service PermissionsService to "mux".
@@ -295,23 +282,19 @@ func request_PermissionsService_ExportBulkRelationships_0(ctx context.Context, m
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterPermissionsServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterPermissionsServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server PermissionsServiceServer) error {
-
-	mux.Handle("POST", pattern_PermissionsService_ReadRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_ReadRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 		return
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_WriteRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_WriteRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/WriteRelationships", runtime.WithHTTPPathPattern("/v1/relationships/write"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/WriteRelationships", runtime.WithHTTPPathPattern("/v1/relationships/write"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -323,20 +306,15 @@ func RegisterPermissionsServiceHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_WriteRelationships_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_DeleteRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_DeleteRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/DeleteRelationships", runtime.WithHTTPPathPattern("/v1/relationships/delete"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/DeleteRelationships", runtime.WithHTTPPathPattern("/v1/relationships/delete"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -348,20 +326,15 @@ func RegisterPermissionsServiceHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_DeleteRelationships_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_CheckPermission_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_CheckPermission_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/CheckPermission", runtime.WithHTTPPathPattern("/v1/permissions/check"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/CheckPermission", runtime.WithHTTPPathPattern("/v1/permissions/check"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -373,20 +346,15 @@ func RegisterPermissionsServiceHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_CheckPermission_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_CheckBulkPermissions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_CheckBulkPermissions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/CheckBulkPermissions", runtime.WithHTTPPathPattern("/v1/permissions/checkbulk"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/CheckBulkPermissions", runtime.WithHTTPPathPattern("/v1/permissions/checkbulk"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -398,20 +366,15 @@ func RegisterPermissionsServiceHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_CheckBulkPermissions_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_ExpandPermissionTree_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_ExpandPermissionTree_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ExpandPermissionTree", runtime.WithHTTPPathPattern("/v1/permissions/expand"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ExpandPermissionTree", runtime.WithHTTPPathPattern("/v1/permissions/expand"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -423,33 +386,31 @@ func RegisterPermissionsServiceHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_ExpandPermissionTree_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
 
-	mux.Handle("POST", pattern_PermissionsService_LookupResources_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_LookupResources_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 		return
 	})
 
-	mux.Handle("POST", pattern_PermissionsService_LookupSubjects_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_LookupSubjects_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 		return
 	})
 
-	mux.Handle("POST", pattern_PermissionsService_ImportBulkRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_ImportBulkRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 		return
 	})
 
-	mux.Handle("POST", pattern_PermissionsService_ExportBulkRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_ExportBulkRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -480,7 +441,6 @@ func RegisterPermissionsServiceHandlerFromEndpoint(ctx context.Context, mux *run
 			}
 		}()
 	}()
-
 	return RegisterPermissionsServiceHandler(ctx, mux, conn)
 }
 
@@ -496,14 +456,11 @@ func RegisterPermissionsServiceHandler(ctx context.Context, mux *runtime.ServeMu
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "PermissionsServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client PermissionsServiceClient) error {
-
-	mux.Handle("POST", pattern_PermissionsService_ReadRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_ReadRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ReadRelationships", runtime.WithHTTPPathPattern("/v1/relationships/read"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ReadRelationships", runtime.WithHTTPPathPattern("/v1/relationships/read"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -514,18 +471,13 @@ func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_ReadRelationships_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_WriteRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_WriteRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/WriteRelationships", runtime.WithHTTPPathPattern("/v1/relationships/write"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/WriteRelationships", runtime.WithHTTPPathPattern("/v1/relationships/write"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -536,18 +488,13 @@ func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_WriteRelationships_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_DeleteRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_DeleteRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/DeleteRelationships", runtime.WithHTTPPathPattern("/v1/relationships/delete"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/DeleteRelationships", runtime.WithHTTPPathPattern("/v1/relationships/delete"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -558,18 +505,13 @@ func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_DeleteRelationships_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_CheckPermission_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_CheckPermission_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/CheckPermission", runtime.WithHTTPPathPattern("/v1/permissions/check"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/CheckPermission", runtime.WithHTTPPathPattern("/v1/permissions/check"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -580,18 +522,13 @@ func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_CheckPermission_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_CheckBulkPermissions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_CheckBulkPermissions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/CheckBulkPermissions", runtime.WithHTTPPathPattern("/v1/permissions/checkbulk"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/CheckBulkPermissions", runtime.WithHTTPPathPattern("/v1/permissions/checkbulk"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -602,18 +539,13 @@ func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_CheckBulkPermissions_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_ExpandPermissionTree_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_ExpandPermissionTree_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ExpandPermissionTree", runtime.WithHTTPPathPattern("/v1/permissions/expand"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ExpandPermissionTree", runtime.WithHTTPPathPattern("/v1/permissions/expand"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -624,18 +556,13 @@ func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_ExpandPermissionTree_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_LookupResources_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_LookupResources_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/LookupResources", runtime.WithHTTPPathPattern("/v1/permissions/resources"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/LookupResources", runtime.WithHTTPPathPattern("/v1/permissions/resources"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -646,18 +573,13 @@ func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_LookupResources_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_LookupSubjects_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_LookupSubjects_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/LookupSubjects", runtime.WithHTTPPathPattern("/v1/permissions/subjects"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/LookupSubjects", runtime.WithHTTPPathPattern("/v1/permissions/subjects"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -668,18 +590,13 @@ func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_LookupSubjects_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_ImportBulkRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_ImportBulkRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ImportBulkRelationships", runtime.WithHTTPPathPattern("/v1/relationships/importbulk"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ImportBulkRelationships", runtime.WithHTTPPathPattern("/v1/relationships/importbulk"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -690,18 +607,13 @@ func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_ImportBulkRelationships_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_PermissionsService_ExportBulkRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_PermissionsService_ExportBulkRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ExportBulkRelationships", runtime.WithHTTPPathPattern("/v1/relationships/exportbulk"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.PermissionsService/ExportBulkRelationships", runtime.WithHTTPPathPattern("/v1/relationships/exportbulk"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -712,54 +624,33 @@ func RegisterPermissionsServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_PermissionsService_ExportBulkRelationships_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
 	return nil
 }
 
 var (
-	pattern_PermissionsService_ReadRelationships_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "relationships", "read"}, ""))
-
-	pattern_PermissionsService_WriteRelationships_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "relationships", "write"}, ""))
-
-	pattern_PermissionsService_DeleteRelationships_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "relationships", "delete"}, ""))
-
-	pattern_PermissionsService_CheckPermission_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "permissions", "check"}, ""))
-
-	pattern_PermissionsService_CheckBulkPermissions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "permissions", "checkbulk"}, ""))
-
-	pattern_PermissionsService_ExpandPermissionTree_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "permissions", "expand"}, ""))
-
-	pattern_PermissionsService_LookupResources_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "permissions", "resources"}, ""))
-
-	pattern_PermissionsService_LookupSubjects_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "permissions", "subjects"}, ""))
-
+	pattern_PermissionsService_ReadRelationships_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "relationships", "read"}, ""))
+	pattern_PermissionsService_WriteRelationships_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "relationships", "write"}, ""))
+	pattern_PermissionsService_DeleteRelationships_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "relationships", "delete"}, ""))
+	pattern_PermissionsService_CheckPermission_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "permissions", "check"}, ""))
+	pattern_PermissionsService_CheckBulkPermissions_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "permissions", "checkbulk"}, ""))
+	pattern_PermissionsService_ExpandPermissionTree_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "permissions", "expand"}, ""))
+	pattern_PermissionsService_LookupResources_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "permissions", "resources"}, ""))
+	pattern_PermissionsService_LookupSubjects_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "permissions", "subjects"}, ""))
 	pattern_PermissionsService_ImportBulkRelationships_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "relationships", "importbulk"}, ""))
-
 	pattern_PermissionsService_ExportBulkRelationships_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "relationships", "exportbulk"}, ""))
 )
 
 var (
-	forward_PermissionsService_ReadRelationships_0 = runtime.ForwardResponseStream
-
-	forward_PermissionsService_WriteRelationships_0 = runtime.ForwardResponseMessage
-
-	forward_PermissionsService_DeleteRelationships_0 = runtime.ForwardResponseMessage
-
-	forward_PermissionsService_CheckPermission_0 = runtime.ForwardResponseMessage
-
-	forward_PermissionsService_CheckBulkPermissions_0 = runtime.ForwardResponseMessage
-
-	forward_PermissionsService_ExpandPermissionTree_0 = runtime.ForwardResponseMessage
-
-	forward_PermissionsService_LookupResources_0 = runtime.ForwardResponseStream
-
-	forward_PermissionsService_LookupSubjects_0 = runtime.ForwardResponseStream
-
+	forward_PermissionsService_ReadRelationships_0       = runtime.ForwardResponseStream
+	forward_PermissionsService_WriteRelationships_0      = runtime.ForwardResponseMessage
+	forward_PermissionsService_DeleteRelationships_0     = runtime.ForwardResponseMessage
+	forward_PermissionsService_CheckPermission_0         = runtime.ForwardResponseMessage
+	forward_PermissionsService_CheckBulkPermissions_0    = runtime.ForwardResponseMessage
+	forward_PermissionsService_ExpandPermissionTree_0    = runtime.ForwardResponseMessage
+	forward_PermissionsService_LookupResources_0         = runtime.ForwardResponseStream
+	forward_PermissionsService_LookupSubjects_0          = runtime.ForwardResponseStream
 	forward_PermissionsService_ImportBulkRelationships_0 = runtime.ForwardResponseMessage
-
 	forward_PermissionsService_ExportBulkRelationships_0 = runtime.ForwardResponseStream
 )
