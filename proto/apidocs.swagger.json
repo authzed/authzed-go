@@ -348,7 +348,7 @@
         "parameters": [
           {
             "name": "body",
-            "description": "BulkImportRelationshipsRequest represents one batch of the streaming\nBulkImportRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. Any relationships within the same request are guaranteed to\nbe written in a single transaction. If any of the relationships already\nexist, the transaction will fail and no relationships will be written. (streaming inputs)",
+            "description": "BulkImportRelationshipsRequest represents one batch of the streaming\nBulkImportRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. When BulkImport is invoked and receives its first request message,\na transaction is opened to import the relationships. All requests sent to the same\ninvocation are executed under this single transaction. If a relationship already\nexists within the datastore, the entire transaction will fail with an error. (streaming inputs)",
             "in": "body",
             "required": true,
             "schema": {
@@ -680,7 +680,7 @@
         "parameters": [
           {
             "name": "body",
-            "description": "ImportBulkRelationshipsRequest represents one batch of the streaming\nImportBulkRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. (streaming inputs)",
+            "description": "ImportBulkRelationshipsRequest represents one batch of the streaming\nImportBulkRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. When ImportBulk is invoked and receives its first request message,\na transaction is opened to import the relationships. All requests sent to the same\ninvocation are executed under this single transaction. If a relationship already\nexists within the datastore, the entire transaction will fail with an error. (streaming inputs)",
             "in": "body",
             "required": true,
             "schema": {
@@ -1698,7 +1698,7 @@
           }
         }
       },
-      "description": "BulkImportRelationshipsRequest represents one batch of the streaming\nBulkImportRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. Any relationships within the same request are guaranteed to\nbe written in a single transaction. If any of the relationships already\nexist, the transaction will fail and no relationships will be written."
+      "description": "BulkImportRelationshipsRequest represents one batch of the streaming\nBulkImportRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. When BulkImport is invoked and receives its first request message,\na transaction is opened to import the relationships. All requests sent to the same\ninvocation are executed under this single transaction. If a relationship already\nexists within the datastore, the entire transaction will fail with an error."
     },
     "v1BulkImportRelationshipsResponse": {
       "type": "object",
@@ -1847,6 +1847,11 @@
         "subProblems": {
           "$ref": "#/definitions/CheckDebugTraceSubProblems",
           "description": "sub_problems holds the sub problems that were executed to resolve the answer to this Check. An empty list\nand a permissionship of PERMISSIONSHIP_HAS_PERMISSION indicates the subject was found within this relation."
+        },
+        "optionalExpiresAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "optional_expires_at is the time at which at least one of the relationships used to\ncompute this result, expires (if any). This is *not* related to the caching window."
         }
       },
       "description": "CheckDebugTrace is a recursive trace of the requests made for resolving a CheckPermission\nAPI call."
@@ -1907,6 +1912,11 @@
         "debugTrace": {
           "$ref": "#/definitions/v1DebugInformation",
           "description": "debug_trace is the debugging trace of this check, if requested."
+        },
+        "optionalExpiresAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "optional_expires_at is the time at which at least one of the relationships used to\ncompute this result, expires (if any). This is *not* related to the caching window."
         }
       }
     },
@@ -2538,7 +2548,7 @@
           }
         }
       },
-      "description": "ImportBulkRelationshipsRequest represents one batch of the streaming\nImportBulkRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally."
+      "description": "ImportBulkRelationshipsRequest represents one batch of the streaming\nImportBulkRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. When ImportBulk is invoked and receives its first request message,\na transaction is opened to import the relationships. All requests sent to the same\ninvocation are executed under this single transaction. If a relationship already\nexists within the datastore, the entire transaction will fail with an error."
     },
     "v1ImportBulkRelationshipsResponse": {
       "type": "object",
@@ -2841,7 +2851,12 @@
         },
         "optionalCaveat": {
           "$ref": "#/definitions/v1ContextualizedCaveat",
-          "title": "optional_caveat is a reference to a the caveat that must be enforced over the relationship"
+          "description": "optional_caveat is a reference to a the caveat that must be enforced over the relationship."
+        },
+        "optionalExpiresAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "optional_expires_at is the time at which the relationship expires, if any."
         }
       },
       "description": "Relationship specifies how a resource relates to a subject. Relationships\nform the data for the graph over which all permissions questions are\nanswered."

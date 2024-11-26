@@ -10,6 +10,7 @@ package v1
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 
@@ -24,12 +25,15 @@ import (
 )
 
 // Suppress "imported and not used" errors
-var _ codes.Code
-var _ io.Reader
-var _ status.Status
-var _ = runtime.String
-var _ = utilities.NewDoubleArray
-var _ = metadata.Join
+var (
+	_ codes.Code
+	_ io.Reader
+	_ status.Status
+	_ = errors.New
+	_ = runtime.String
+	_ = utilities.NewDoubleArray
+	_ = metadata.Join
+)
 
 func request_ExperimentalService_BulkImportRelationships_0(ctx context.Context, marshaler runtime.Marshaler, client ExperimentalServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var metadata runtime.ServerMetadata
@@ -42,7 +46,7 @@ func request_ExperimentalService_BulkImportRelationships_0(ctx context.Context, 
 	for {
 		var protoReq BulkImportRelationshipsRequest
 		err = dec.Decode(&protoReq)
-		if err == io.EOF {
+		if errors.Is(err, io.EOF) {
 			break
 		}
 		if err != nil {
@@ -50,14 +54,13 @@ func request_ExperimentalService_BulkImportRelationships_0(ctx context.Context, 
 			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 		}
 		if err = stream.Send(&protoReq); err != nil {
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				break
 			}
 			grpclog.Errorf("Failed to send request: %v", err)
 			return nil, metadata, err
 		}
 	}
-
 	if err := stream.CloseSend(); err != nil {
 		grpclog.Errorf("Failed to terminate client stream: %v", err)
 		return nil, metadata, err
@@ -68,21 +71,19 @@ func request_ExperimentalService_BulkImportRelationships_0(ctx context.Context, 
 		return nil, metadata, err
 	}
 	metadata.HeaderMD = header
-
 	msg, err := stream.CloseAndRecv()
 	metadata.TrailerMD = stream.Trailer()
 	return msg, metadata, err
-
 }
 
 func request_ExperimentalService_BulkExportRelationships_0(ctx context.Context, marshaler runtime.Marshaler, client ExperimentalServiceClient, req *http.Request, pathParams map[string]string) (ExperimentalService_BulkExportRelationshipsClient, runtime.ServerMetadata, error) {
-	var protoReq BulkExportRelationshipsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq BulkExportRelationshipsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	stream, err := client.BulkExportRelationships(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -93,215 +94,198 @@ func request_ExperimentalService_BulkExportRelationships_0(ctx context.Context, 
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ExperimentalService_BulkCheckPermission_0(ctx context.Context, marshaler runtime.Marshaler, client ExperimentalServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq BulkCheckPermissionRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq BulkCheckPermissionRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.BulkCheckPermission(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ExperimentalService_BulkCheckPermission_0(ctx context.Context, marshaler runtime.Marshaler, server ExperimentalServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq BulkCheckPermissionRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq BulkCheckPermissionRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.BulkCheckPermission(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_ExperimentalService_ExperimentalReflectSchema_0(ctx context.Context, marshaler runtime.Marshaler, client ExperimentalServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalReflectSchemaRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalReflectSchemaRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.ExperimentalReflectSchema(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ExperimentalService_ExperimentalReflectSchema_0(ctx context.Context, marshaler runtime.Marshaler, server ExperimentalServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalReflectSchemaRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalReflectSchemaRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.ExperimentalReflectSchema(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_ExperimentalService_ExperimentalComputablePermissions_0(ctx context.Context, marshaler runtime.Marshaler, client ExperimentalServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalComputablePermissionsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalComputablePermissionsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.ExperimentalComputablePermissions(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ExperimentalService_ExperimentalComputablePermissions_0(ctx context.Context, marshaler runtime.Marshaler, server ExperimentalServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalComputablePermissionsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalComputablePermissionsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.ExperimentalComputablePermissions(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_ExperimentalService_ExperimentalDependentRelations_0(ctx context.Context, marshaler runtime.Marshaler, client ExperimentalServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalDependentRelationsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalDependentRelationsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.ExperimentalDependentRelations(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ExperimentalService_ExperimentalDependentRelations_0(ctx context.Context, marshaler runtime.Marshaler, server ExperimentalServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalDependentRelationsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalDependentRelationsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.ExperimentalDependentRelations(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_ExperimentalService_ExperimentalDiffSchema_0(ctx context.Context, marshaler runtime.Marshaler, client ExperimentalServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalDiffSchemaRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalDiffSchemaRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.ExperimentalDiffSchema(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ExperimentalService_ExperimentalDiffSchema_0(ctx context.Context, marshaler runtime.Marshaler, server ExperimentalServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalDiffSchemaRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalDiffSchemaRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.ExperimentalDiffSchema(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_ExperimentalService_ExperimentalRegisterRelationshipCounter_0(ctx context.Context, marshaler runtime.Marshaler, client ExperimentalServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalRegisterRelationshipCounterRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalRegisterRelationshipCounterRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.ExperimentalRegisterRelationshipCounter(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ExperimentalService_ExperimentalRegisterRelationshipCounter_0(ctx context.Context, marshaler runtime.Marshaler, server ExperimentalServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalRegisterRelationshipCounterRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalRegisterRelationshipCounterRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.ExperimentalRegisterRelationshipCounter(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_ExperimentalService_ExperimentalCountRelationships_0(ctx context.Context, marshaler runtime.Marshaler, client ExperimentalServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalCountRelationshipsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalCountRelationshipsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.ExperimentalCountRelationships(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ExperimentalService_ExperimentalCountRelationships_0(ctx context.Context, marshaler runtime.Marshaler, server ExperimentalServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalCountRelationshipsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalCountRelationshipsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.ExperimentalCountRelationships(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_ExperimentalService_ExperimentalUnregisterRelationshipCounter_0(ctx context.Context, marshaler runtime.Marshaler, client ExperimentalServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalUnregisterRelationshipCounterRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalUnregisterRelationshipCounterRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.ExperimentalUnregisterRelationshipCounter(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ExperimentalService_ExperimentalUnregisterRelationshipCounter_0(ctx context.Context, marshaler runtime.Marshaler, server ExperimentalServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExperimentalUnregisterRelationshipCounterRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExperimentalUnregisterRelationshipCounterRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.ExperimentalUnregisterRelationshipCounter(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 // RegisterExperimentalServiceHandlerServer registers the http handlers for service ExperimentalService to "mux".
@@ -310,30 +294,26 @@ func local_request_ExperimentalService_ExperimentalUnregisterRelationshipCounter
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterExperimentalServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterExperimentalServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ExperimentalServiceServer) error {
-
-	mux.Handle("POST", pattern_ExperimentalService_BulkImportRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_BulkImportRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 		return
 	})
 
-	mux.Handle("POST", pattern_ExperimentalService_BulkExportRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_BulkExportRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 		return
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_BulkCheckPermission_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_BulkCheckPermission_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/BulkCheckPermission", runtime.WithHTTPPathPattern("/v1/experimental/permissions/bulkcheckpermission"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/BulkCheckPermission", runtime.WithHTTPPathPattern("/v1/experimental/permissions/bulkcheckpermission"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -345,20 +325,15 @@ func RegisterExperimentalServiceHandlerServer(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_BulkCheckPermission_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalReflectSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalReflectSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalReflectSchema", runtime.WithHTTPPathPattern("/v1/experimental/reflectschema"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalReflectSchema", runtime.WithHTTPPathPattern("/v1/experimental/reflectschema"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -370,20 +345,15 @@ func RegisterExperimentalServiceHandlerServer(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalReflectSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalComputablePermissions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalComputablePermissions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalComputablePermissions", runtime.WithHTTPPathPattern("/v1/experimental/permissions/computable"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalComputablePermissions", runtime.WithHTTPPathPattern("/v1/experimental/permissions/computable"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -395,20 +365,15 @@ func RegisterExperimentalServiceHandlerServer(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalComputablePermissions_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalDependentRelations_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalDependentRelations_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalDependentRelations", runtime.WithHTTPPathPattern("/v1/experimental/permissions/dependent"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalDependentRelations", runtime.WithHTTPPathPattern("/v1/experimental/permissions/dependent"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -420,20 +385,15 @@ func RegisterExperimentalServiceHandlerServer(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalDependentRelations_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalDiffSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalDiffSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalDiffSchema", runtime.WithHTTPPathPattern("/v1/experimental/diffschema"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalDiffSchema", runtime.WithHTTPPathPattern("/v1/experimental/diffschema"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -445,20 +405,15 @@ func RegisterExperimentalServiceHandlerServer(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalDiffSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalRegisterRelationshipCounter_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalRegisterRelationshipCounter_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalRegisterRelationshipCounter", runtime.WithHTTPPathPattern("/v1/experimental/registerrelationshipcounter"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalRegisterRelationshipCounter", runtime.WithHTTPPathPattern("/v1/experimental/registerrelationshipcounter"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -470,20 +425,15 @@ func RegisterExperimentalServiceHandlerServer(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalRegisterRelationshipCounter_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalCountRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalCountRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalCountRelationships", runtime.WithHTTPPathPattern("/v1/experimental/countrelationships"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalCountRelationships", runtime.WithHTTPPathPattern("/v1/experimental/countrelationships"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -495,20 +445,15 @@ func RegisterExperimentalServiceHandlerServer(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalCountRelationships_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalUnregisterRelationshipCounter_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalUnregisterRelationshipCounter_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalUnregisterRelationshipCounter", runtime.WithHTTPPathPattern("/v1/experimental/unregisterrelationshipcounter"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalUnregisterRelationshipCounter", runtime.WithHTTPPathPattern("/v1/experimental/unregisterrelationshipcounter"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -520,9 +465,7 @@ func RegisterExperimentalServiceHandlerServer(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalUnregisterRelationshipCounter_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
 
 	return nil
@@ -549,7 +492,6 @@ func RegisterExperimentalServiceHandlerFromEndpoint(ctx context.Context, mux *ru
 			}
 		}()
 	}()
-
 	return RegisterExperimentalServiceHandler(ctx, mux, conn)
 }
 
@@ -565,14 +507,11 @@ func RegisterExperimentalServiceHandler(ctx context.Context, mux *runtime.ServeM
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "ExperimentalServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterExperimentalServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ExperimentalServiceClient) error {
-
-	mux.Handle("POST", pattern_ExperimentalService_BulkImportRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_BulkImportRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/BulkImportRelationships", runtime.WithHTTPPathPattern("/v1/experimental/relationships/bulkimport"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/BulkImportRelationships", runtime.WithHTTPPathPattern("/v1/experimental/relationships/bulkimport"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -583,18 +522,13 @@ func RegisterExperimentalServiceHandlerClient(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_BulkImportRelationships_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_BulkExportRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_BulkExportRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/BulkExportRelationships", runtime.WithHTTPPathPattern("/v1/experimental/relationships/bulkexport"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/BulkExportRelationships", runtime.WithHTTPPathPattern("/v1/experimental/relationships/bulkexport"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -605,18 +539,13 @@ func RegisterExperimentalServiceHandlerClient(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_BulkExportRelationships_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_BulkCheckPermission_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_BulkCheckPermission_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/BulkCheckPermission", runtime.WithHTTPPathPattern("/v1/experimental/permissions/bulkcheckpermission"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/BulkCheckPermission", runtime.WithHTTPPathPattern("/v1/experimental/permissions/bulkcheckpermission"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -627,18 +556,13 @@ func RegisterExperimentalServiceHandlerClient(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_BulkCheckPermission_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalReflectSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalReflectSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalReflectSchema", runtime.WithHTTPPathPattern("/v1/experimental/reflectschema"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalReflectSchema", runtime.WithHTTPPathPattern("/v1/experimental/reflectschema"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -649,18 +573,13 @@ func RegisterExperimentalServiceHandlerClient(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalReflectSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalComputablePermissions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalComputablePermissions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalComputablePermissions", runtime.WithHTTPPathPattern("/v1/experimental/permissions/computable"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalComputablePermissions", runtime.WithHTTPPathPattern("/v1/experimental/permissions/computable"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -671,18 +590,13 @@ func RegisterExperimentalServiceHandlerClient(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalComputablePermissions_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalDependentRelations_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalDependentRelations_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalDependentRelations", runtime.WithHTTPPathPattern("/v1/experimental/permissions/dependent"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalDependentRelations", runtime.WithHTTPPathPattern("/v1/experimental/permissions/dependent"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -693,18 +607,13 @@ func RegisterExperimentalServiceHandlerClient(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalDependentRelations_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalDiffSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalDiffSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalDiffSchema", runtime.WithHTTPPathPattern("/v1/experimental/diffschema"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalDiffSchema", runtime.WithHTTPPathPattern("/v1/experimental/diffschema"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -715,18 +624,13 @@ func RegisterExperimentalServiceHandlerClient(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalDiffSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalRegisterRelationshipCounter_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalRegisterRelationshipCounter_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalRegisterRelationshipCounter", runtime.WithHTTPPathPattern("/v1/experimental/registerrelationshipcounter"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalRegisterRelationshipCounter", runtime.WithHTTPPathPattern("/v1/experimental/registerrelationshipcounter"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -737,18 +641,13 @@ func RegisterExperimentalServiceHandlerClient(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalRegisterRelationshipCounter_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalCountRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalCountRelationships_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalCountRelationships", runtime.WithHTTPPathPattern("/v1/experimental/countrelationships"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalCountRelationships", runtime.WithHTTPPathPattern("/v1/experimental/countrelationships"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -759,18 +658,13 @@ func RegisterExperimentalServiceHandlerClient(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalCountRelationships_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ExperimentalService_ExperimentalUnregisterRelationshipCounter_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ExperimentalService_ExperimentalUnregisterRelationshipCounter_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalUnregisterRelationshipCounter", runtime.WithHTTPPathPattern("/v1/experimental/unregisterrelationshipcounter"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/authzed.api.v1.ExperimentalService/ExperimentalUnregisterRelationshipCounter", runtime.WithHTTPPathPattern("/v1/experimental/unregisterrelationshipcounter"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -781,54 +675,33 @@ func RegisterExperimentalServiceHandlerClient(ctx context.Context, mux *runtime.
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ExperimentalService_ExperimentalUnregisterRelationshipCounter_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
 	return nil
 }
 
 var (
-	pattern_ExperimentalService_BulkImportRelationships_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "experimental", "relationships", "bulkimport"}, ""))
-
-	pattern_ExperimentalService_BulkExportRelationships_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "experimental", "relationships", "bulkexport"}, ""))
-
-	pattern_ExperimentalService_BulkCheckPermission_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "experimental", "permissions", "bulkcheckpermission"}, ""))
-
-	pattern_ExperimentalService_ExperimentalReflectSchema_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "experimental", "reflectschema"}, ""))
-
-	pattern_ExperimentalService_ExperimentalComputablePermissions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "experimental", "permissions", "computable"}, ""))
-
-	pattern_ExperimentalService_ExperimentalDependentRelations_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "experimental", "permissions", "dependent"}, ""))
-
-	pattern_ExperimentalService_ExperimentalDiffSchema_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "experimental", "diffschema"}, ""))
-
-	pattern_ExperimentalService_ExperimentalRegisterRelationshipCounter_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "experimental", "registerrelationshipcounter"}, ""))
-
-	pattern_ExperimentalService_ExperimentalCountRelationships_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "experimental", "countrelationships"}, ""))
-
+	pattern_ExperimentalService_BulkImportRelationships_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "experimental", "relationships", "bulkimport"}, ""))
+	pattern_ExperimentalService_BulkExportRelationships_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "experimental", "relationships", "bulkexport"}, ""))
+	pattern_ExperimentalService_BulkCheckPermission_0                       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "experimental", "permissions", "bulkcheckpermission"}, ""))
+	pattern_ExperimentalService_ExperimentalReflectSchema_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "experimental", "reflectschema"}, ""))
+	pattern_ExperimentalService_ExperimentalComputablePermissions_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "experimental", "permissions", "computable"}, ""))
+	pattern_ExperimentalService_ExperimentalDependentRelations_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "experimental", "permissions", "dependent"}, ""))
+	pattern_ExperimentalService_ExperimentalDiffSchema_0                    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "experimental", "diffschema"}, ""))
+	pattern_ExperimentalService_ExperimentalRegisterRelationshipCounter_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "experimental", "registerrelationshipcounter"}, ""))
+	pattern_ExperimentalService_ExperimentalCountRelationships_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "experimental", "countrelationships"}, ""))
 	pattern_ExperimentalService_ExperimentalUnregisterRelationshipCounter_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "experimental", "unregisterrelationshipcounter"}, ""))
 )
 
 var (
-	forward_ExperimentalService_BulkImportRelationships_0 = runtime.ForwardResponseMessage
-
-	forward_ExperimentalService_BulkExportRelationships_0 = runtime.ForwardResponseStream
-
-	forward_ExperimentalService_BulkCheckPermission_0 = runtime.ForwardResponseMessage
-
-	forward_ExperimentalService_ExperimentalReflectSchema_0 = runtime.ForwardResponseMessage
-
-	forward_ExperimentalService_ExperimentalComputablePermissions_0 = runtime.ForwardResponseMessage
-
-	forward_ExperimentalService_ExperimentalDependentRelations_0 = runtime.ForwardResponseMessage
-
-	forward_ExperimentalService_ExperimentalDiffSchema_0 = runtime.ForwardResponseMessage
-
-	forward_ExperimentalService_ExperimentalRegisterRelationshipCounter_0 = runtime.ForwardResponseMessage
-
-	forward_ExperimentalService_ExperimentalCountRelationships_0 = runtime.ForwardResponseMessage
-
+	forward_ExperimentalService_BulkImportRelationships_0                   = runtime.ForwardResponseMessage
+	forward_ExperimentalService_BulkExportRelationships_0                   = runtime.ForwardResponseStream
+	forward_ExperimentalService_BulkCheckPermission_0                       = runtime.ForwardResponseMessage
+	forward_ExperimentalService_ExperimentalReflectSchema_0                 = runtime.ForwardResponseMessage
+	forward_ExperimentalService_ExperimentalComputablePermissions_0         = runtime.ForwardResponseMessage
+	forward_ExperimentalService_ExperimentalDependentRelations_0            = runtime.ForwardResponseMessage
+	forward_ExperimentalService_ExperimentalDiffSchema_0                    = runtime.ForwardResponseMessage
+	forward_ExperimentalService_ExperimentalRegisterRelationshipCounter_0   = runtime.ForwardResponseMessage
+	forward_ExperimentalService_ExperimentalCountRelationships_0            = runtime.ForwardResponseMessage
 	forward_ExperimentalService_ExperimentalUnregisterRelationshipCounter_0 = runtime.ForwardResponseMessage
 )

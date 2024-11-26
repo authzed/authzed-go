@@ -372,6 +372,35 @@ func (m *CheckDebugTrace) validate(all bool) error {
 		}
 	}
 
+	if all {
+		switch v := interface{}(m.GetOptionalExpiresAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CheckDebugTraceValidationError{
+					field:  "OptionalExpiresAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CheckDebugTraceValidationError{
+					field:  "OptionalExpiresAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetOptionalExpiresAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CheckDebugTraceValidationError{
+				field:  "OptionalExpiresAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	oneofResolutionPresent := false
 	switch v := m.Resolution.(type) {
 	case *CheckDebugTrace_WasCachedResult:
