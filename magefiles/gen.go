@@ -24,14 +24,16 @@ func (g Gen) All() error {
 const (
 	ProtoPath     = "proto/authzed/api"
 	BufRepository = "buf.build/authzed/api"
-	BufTag        = "0aa4ec48683094d891bc6031de5db6d7576bb709"
+	BufTag        = "05f596b3c0e14ebdfffd043a954ef40dd26c49ae"
 )
 
 // Proto runs proto codegen
 func (Gen) Proto() error {
 	bufRef := BufRepository + ":" + BufTag
 	fmt.Println("generating", bufRef)
-	runDirV("magefiles", "go", "run", "github.com/bufbuild/buf/cmd/buf", "generate", bufRef)
+	if err := runDirV("magefiles", "go", "run", "github.com/bufbuild/buf/cmd/buf", "generate", bufRef); err != nil {
+		return err
+	}
 	return generateVersionFiles()
 }
 
