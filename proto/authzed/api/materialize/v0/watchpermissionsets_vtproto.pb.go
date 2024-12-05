@@ -115,6 +115,7 @@ func (m *Cursor) CloneVT() *Cursor {
 	r.StartingIndex = m.StartingIndex
 	r.CompletedMembers = m.CompletedMembers
 	r.StartingKey = m.StartingKey
+	r.Cursor = m.Cursor
 	if rhs := m.Token; rhs != nil {
 		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *v1.ZedToken }); ok {
 			r.Token = vtpb.CloneVT()
@@ -486,6 +487,9 @@ func (this *Cursor) EqualVT(that *Cursor) bool {
 		return false
 	}
 	if this.StartingKey != that.StartingKey {
+		return false
+	}
+	if this.Cursor != that.Cursor {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -966,6 +970,13 @@ func (m *Cursor) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.Cursor) > 0 {
+		i -= len(m.Cursor)
+		copy(dAtA[i:], m.Cursor)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Cursor)))
+		i--
+		dAtA[i] = 0x42
 	}
 	if len(m.StartingKey) > 0 {
 		i -= len(m.StartingKey)
@@ -1606,6 +1617,10 @@ func (m *Cursor) SizeVT() (n int) {
 		n += 2
 	}
 	l = len(m.StartingKey)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	l = len(m.Cursor)
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
@@ -2288,6 +2303,38 @@ func (m *Cursor) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.StartingKey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Cursor", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Cursor = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

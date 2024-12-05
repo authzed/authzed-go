@@ -496,6 +496,8 @@ func (m *Cursor) validate(all bool) error {
 
 	// no validation rules for StartingKey
 
+	// no validation rules for Cursor
+
 	if len(errors) > 0 {
 		return CursorMultiError(errors)
 	}
