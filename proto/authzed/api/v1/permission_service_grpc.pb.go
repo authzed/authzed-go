@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	PermissionsService_ReadRelationships_FullMethodName       = "/authzed.api.v1.PermissionsService/ReadRelationships"
+	PermissionsService_ReadBulkRelationships_FullMethodName   = "/authzed.api.v1.PermissionsService/ReadBulkRelationships"
 	PermissionsService_WriteRelationships_FullMethodName      = "/authzed.api.v1.PermissionsService/WriteRelationships"
 	PermissionsService_DeleteRelationships_FullMethodName     = "/authzed.api.v1.PermissionsService/DeleteRelationships"
 	PermissionsService_CheckPermission_FullMethodName         = "/authzed.api.v1.PermissionsService/CheckPermission"
@@ -41,6 +42,7 @@ type PermissionsServiceClient interface {
 	// ReadRelationships reads a set of the relationships matching one or more
 	// filters.
 	ReadRelationships(ctx context.Context, in *ReadRelationshipsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ReadRelationshipsResponse], error)
+	ReadBulkRelationships(ctx context.Context, in *ReadBulkRelationshipsRequest, opts ...grpc.CallOption) (*ReadBulkRelationshipsResponse, error)
 	// WriteRelationships atomically writes and/or deletes a set of specified
 	// relationships. An optional set of preconditions can be provided that must
 	// be satisfied for the operation to commit.
@@ -106,6 +108,16 @@ func (c *permissionsServiceClient) ReadRelationships(ctx context.Context, in *Re
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type PermissionsService_ReadRelationshipsClient = grpc.ServerStreamingClient[ReadRelationshipsResponse]
+
+func (c *permissionsServiceClient) ReadBulkRelationships(ctx context.Context, in *ReadBulkRelationshipsRequest, opts ...grpc.CallOption) (*ReadBulkRelationshipsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReadBulkRelationshipsResponse)
+	err := c.cc.Invoke(ctx, PermissionsService_ReadBulkRelationships_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
 func (c *permissionsServiceClient) WriteRelationships(ctx context.Context, in *WriteRelationshipsRequest, opts ...grpc.CallOption) (*WriteRelationshipsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
@@ -237,6 +249,7 @@ type PermissionsServiceServer interface {
 	// ReadRelationships reads a set of the relationships matching one or more
 	// filters.
 	ReadRelationships(*ReadRelationshipsRequest, grpc.ServerStreamingServer[ReadRelationshipsResponse]) error
+	ReadBulkRelationships(context.Context, *ReadBulkRelationshipsRequest) (*ReadBulkRelationshipsResponse, error)
 	// WriteRelationships atomically writes and/or deletes a set of specified
 	// relationships. An optional set of preconditions can be provided that must
 	// be satisfied for the operation to commit.
@@ -286,6 +299,9 @@ type UnimplementedPermissionsServiceServer struct{}
 
 func (UnimplementedPermissionsServiceServer) ReadRelationships(*ReadRelationshipsRequest, grpc.ServerStreamingServer[ReadRelationshipsResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method ReadRelationships not implemented")
+}
+func (UnimplementedPermissionsServiceServer) ReadBulkRelationships(context.Context, *ReadBulkRelationshipsRequest) (*ReadBulkRelationshipsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReadBulkRelationships not implemented")
 }
 func (UnimplementedPermissionsServiceServer) WriteRelationships(context.Context, *WriteRelationshipsRequest) (*WriteRelationshipsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WriteRelationships not implemented")
@@ -345,6 +361,24 @@ func _PermissionsService_ReadRelationships_Handler(srv interface{}, stream grpc.
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type PermissionsService_ReadRelationshipsServer = grpc.ServerStreamingServer[ReadRelationshipsResponse]
+
+func _PermissionsService_ReadBulkRelationships_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReadBulkRelationshipsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PermissionsServiceServer).ReadBulkRelationships(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PermissionsService_ReadBulkRelationships_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PermissionsServiceServer).ReadBulkRelationships(ctx, req.(*ReadBulkRelationshipsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
 
 func _PermissionsService_WriteRelationships_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WriteRelationshipsRequest)
@@ -483,6 +517,10 @@ var PermissionsService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "authzed.api.v1.PermissionsService",
 	HandlerType: (*PermissionsServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ReadBulkRelationships",
+			Handler:    _PermissionsService_ReadBulkRelationships_Handler,
+		},
 		{
 			MethodName: "WriteRelationships",
 			Handler:    _PermissionsService_WriteRelationships_Handler,
