@@ -79,6 +79,8 @@ func (m *CheckDebugTrace) CloneVT() *CheckDebugTrace {
 	r.CaveatEvaluationInfo = m.CaveatEvaluationInfo.CloneVT()
 	r.Duration = (*durationpb.Duration)((*durationpb1.Duration)(m.Duration).CloneVT())
 	r.OptionalExpiresAt = (*timestamppb.Timestamp)((*timestamppb1.Timestamp)(m.OptionalExpiresAt).CloneVT())
+	r.TraceOperationId = m.TraceOperationId
+	r.Source = m.Source
 	if m.Resolution != nil {
 		r.Resolution = m.Resolution.(interface {
 			CloneVT() isCheckDebugTrace_Resolution
@@ -229,6 +231,12 @@ func (this *CheckDebugTrace) EqualVT(that *CheckDebugTrace) bool {
 		return false
 	}
 	if !(*timestamppb1.Timestamp)(this.OptionalExpiresAt).EqualVT((*timestamppb1.Timestamp)(that.OptionalExpiresAt)) {
+		return false
+	}
+	if this.TraceOperationId != that.TraceOperationId {
+		return false
+	}
+	if this.Source != that.Source {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -447,6 +455,20 @@ func (m *CheckDebugTrace) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			return 0, err
 		}
 		i -= size
+	}
+	if len(m.Source) > 0 {
+		i -= len(m.Source)
+		copy(dAtA[i:], m.Source)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Source)))
+		i--
+		dAtA[i] = 0x62
+	}
+	if len(m.TraceOperationId) > 0 {
+		i -= len(m.TraceOperationId)
+		copy(dAtA[i:], m.TraceOperationId)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.TraceOperationId)))
+		i--
+		dAtA[i] = 0x5a
 	}
 	if m.OptionalExpiresAt != nil {
 		size, err := (*timestamppb1.Timestamp)(m.OptionalExpiresAt).MarshalToSizedBufferVT(dAtA[:i])
@@ -701,6 +723,14 @@ func (m *CheckDebugTrace) SizeVT() (n int) {
 	}
 	if m.OptionalExpiresAt != nil {
 		l = (*timestamppb1.Timestamp)(m.OptionalExpiresAt).SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	l = len(m.TraceOperationId)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	l = len(m.Source)
+	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -1303,6 +1333,70 @@ func (m *CheckDebugTrace) UnmarshalVT(dAtA []byte) error {
 			if err := (*timestamppb1.Timestamp)(m.OptionalExpiresAt).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TraceOperationId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TraceOperationId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 12:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Source", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Source = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

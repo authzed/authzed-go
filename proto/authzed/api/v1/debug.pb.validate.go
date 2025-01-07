@@ -401,6 +401,10 @@ func (m *CheckDebugTrace) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for TraceOperationId
+
+	// no validation rules for Source
+
 	oneofResolutionPresent := false
 	switch v := m.Resolution.(type) {
 	case *CheckDebugTrace_WasCachedResult:
