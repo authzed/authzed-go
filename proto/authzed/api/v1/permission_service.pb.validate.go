@@ -1108,6 +1108,926 @@ var _ interface {
 	ErrorName() string
 } = ReadRelationshipsResponseValidationError{}
 
+// Validate checks the field values on ReadBulkRelationshipsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ReadBulkRelationshipsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadBulkRelationshipsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReadBulkRelationshipsRequestMultiError, or nil if none found.
+func (m *ReadBulkRelationshipsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadBulkRelationshipsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetConsistency()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsRequestValidationError{
+					field:  "Consistency",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetConsistency()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReadBulkRelationshipsRequestValidationError{
+				field:  "Consistency",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetItems() {
+		_, _ = idx, item
+
+		if item == nil {
+			err := ReadBulkRelationshipsRequestValidationError{
+				field:  fmt.Sprintf("Items[%v]", idx),
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ReadBulkRelationshipsRequestValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ReadBulkRelationshipsRequestValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ReadBulkRelationshipsRequestValidationError{
+					field:  fmt.Sprintf("Items[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetOptionalCursor()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsRequestValidationError{
+					field:  "OptionalCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsRequestValidationError{
+					field:  "OptionalCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetOptionalCursor()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReadBulkRelationshipsRequestValidationError{
+				field:  "OptionalCursor",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ReadBulkRelationshipsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReadBulkRelationshipsRequestMultiError is an error wrapping multiple
+// validation errors returned by ReadBulkRelationshipsRequest.ValidateAll() if
+// the designated constraints aren't met.
+type ReadBulkRelationshipsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadBulkRelationshipsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadBulkRelationshipsRequestMultiError) AllErrors() []error { return m }
+
+// ReadBulkRelationshipsRequestValidationError is the validation error returned
+// by ReadBulkRelationshipsRequest.Validate if the designated constraints
+// aren't met.
+type ReadBulkRelationshipsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReadBulkRelationshipsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReadBulkRelationshipsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReadBulkRelationshipsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReadBulkRelationshipsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReadBulkRelationshipsRequestValidationError) ErrorName() string {
+	return "ReadBulkRelationshipsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReadBulkRelationshipsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReadBulkRelationshipsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReadBulkRelationshipsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReadBulkRelationshipsRequestValidationError{}
+
+// Validate checks the field values on ReadBulkRelationshipsRequestItem with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *ReadBulkRelationshipsRequestItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadBulkRelationshipsRequestItem with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ReadBulkRelationshipsRequestItemMultiError, or nil if none found.
+func (m *ReadBulkRelationshipsRequestItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadBulkRelationshipsRequestItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetRelationshipFilter() == nil {
+		err := ReadBulkRelationshipsRequestItemValidationError{
+			field:  "RelationshipFilter",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetRelationshipFilter()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsRequestItemValidationError{
+					field:  "RelationshipFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsRequestItemValidationError{
+					field:  "RelationshipFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRelationshipFilter()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReadBulkRelationshipsRequestItemValidationError{
+				field:  "RelationshipFilter",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if m.GetOptionalLimit() < 0 {
+		err := ReadBulkRelationshipsRequestItemValidationError{
+			field:  "OptionalLimit",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return ReadBulkRelationshipsRequestItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReadBulkRelationshipsRequestItemMultiError is an error wrapping multiple
+// validation errors returned by
+// ReadBulkRelationshipsRequestItem.ValidateAll() if the designated
+// constraints aren't met.
+type ReadBulkRelationshipsRequestItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadBulkRelationshipsRequestItemMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadBulkRelationshipsRequestItemMultiError) AllErrors() []error { return m }
+
+// ReadBulkRelationshipsRequestItemValidationError is the validation error
+// returned by ReadBulkRelationshipsRequestItem.Validate if the designated
+// constraints aren't met.
+type ReadBulkRelationshipsRequestItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReadBulkRelationshipsRequestItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReadBulkRelationshipsRequestItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReadBulkRelationshipsRequestItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReadBulkRelationshipsRequestItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReadBulkRelationshipsRequestItemValidationError) ErrorName() string {
+	return "ReadBulkRelationshipsRequestItemValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReadBulkRelationshipsRequestItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReadBulkRelationshipsRequestItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReadBulkRelationshipsRequestItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReadBulkRelationshipsRequestItemValidationError{}
+
+// Validate checks the field values on ReadBulkRelationshipsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ReadBulkRelationshipsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadBulkRelationshipsResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ReadBulkRelationshipsResponseMultiError, or nil if none found.
+func (m *ReadBulkRelationshipsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadBulkRelationshipsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetReadAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsResponseValidationError{
+					field:  "ReadAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReadAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReadBulkRelationshipsResponseValidationError{
+				field:  "ReadAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetPairs() {
+		_, _ = idx, item
+
+		if item == nil {
+			err := ReadBulkRelationshipsResponseValidationError{
+				field:  fmt.Sprintf("Pairs[%v]", idx),
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ReadBulkRelationshipsResponseValidationError{
+						field:  fmt.Sprintf("Pairs[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ReadBulkRelationshipsResponseValidationError{
+						field:  fmt.Sprintf("Pairs[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ReadBulkRelationshipsResponseValidationError{
+					field:  fmt.Sprintf("Pairs[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetAfterResultCursor()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsResponseValidationError{
+					field:  "AfterResultCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsResponseValidationError{
+					field:  "AfterResultCursor",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetAfterResultCursor()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReadBulkRelationshipsResponseValidationError{
+				field:  "AfterResultCursor",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ReadBulkRelationshipsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReadBulkRelationshipsResponseMultiError is an error wrapping multiple
+// validation errors returned by ReadBulkRelationshipsResponse.ValidateAll()
+// if the designated constraints aren't met.
+type ReadBulkRelationshipsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadBulkRelationshipsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadBulkRelationshipsResponseMultiError) AllErrors() []error { return m }
+
+// ReadBulkRelationshipsResponseValidationError is the validation error
+// returned by ReadBulkRelationshipsResponse.Validate if the designated
+// constraints aren't met.
+type ReadBulkRelationshipsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReadBulkRelationshipsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReadBulkRelationshipsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReadBulkRelationshipsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReadBulkRelationshipsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReadBulkRelationshipsResponseValidationError) ErrorName() string {
+	return "ReadBulkRelationshipsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReadBulkRelationshipsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReadBulkRelationshipsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReadBulkRelationshipsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReadBulkRelationshipsResponseValidationError{}
+
+// Validate checks the field values on ReadBulkRelationshipsPair with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ReadBulkRelationshipsPair) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadBulkRelationshipsPair with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReadBulkRelationshipsPairMultiError, or nil if none found.
+func (m *ReadBulkRelationshipsPair) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadBulkRelationshipsPair) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetRequest()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsPairValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsPairValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRequest()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReadBulkRelationshipsPairValidationError{
+				field:  "Request",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	switch v := m.Response.(type) {
+	case *ReadBulkRelationshipsPair_Item:
+		if v == nil {
+			err := ReadBulkRelationshipsPairValidationError{
+				field:  "Response",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetItem()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ReadBulkRelationshipsPairValidationError{
+						field:  "Item",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ReadBulkRelationshipsPairValidationError{
+						field:  "Item",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetItem()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ReadBulkRelationshipsPairValidationError{
+					field:  "Item",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ReadBulkRelationshipsPair_Error:
+		if v == nil {
+			err := ReadBulkRelationshipsPairValidationError{
+				field:  "Response",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetError()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ReadBulkRelationshipsPairValidationError{
+						field:  "Error",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ReadBulkRelationshipsPairValidationError{
+						field:  "Error",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetError()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ReadBulkRelationshipsPairValidationError{
+					field:  "Error",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+
+	if len(errors) > 0 {
+		return ReadBulkRelationshipsPairMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReadBulkRelationshipsPairMultiError is an error wrapping multiple validation
+// errors returned by ReadBulkRelationshipsPair.ValidateAll() if the
+// designated constraints aren't met.
+type ReadBulkRelationshipsPairMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadBulkRelationshipsPairMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadBulkRelationshipsPairMultiError) AllErrors() []error { return m }
+
+// ReadBulkRelationshipsPairValidationError is the validation error returned by
+// ReadBulkRelationshipsPair.Validate if the designated constraints aren't met.
+type ReadBulkRelationshipsPairValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReadBulkRelationshipsPairValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReadBulkRelationshipsPairValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReadBulkRelationshipsPairValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReadBulkRelationshipsPairValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReadBulkRelationshipsPairValidationError) ErrorName() string {
+	return "ReadBulkRelationshipsPairValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReadBulkRelationshipsPairValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReadBulkRelationshipsPair.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReadBulkRelationshipsPairValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReadBulkRelationshipsPairValidationError{}
+
+// Validate checks the field values on ReadBulkRelationshipsResponseItem with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *ReadBulkRelationshipsResponseItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadBulkRelationshipsResponseItem
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// ReadBulkRelationshipsResponseItemMultiError, or nil if none found.
+func (m *ReadBulkRelationshipsResponseItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadBulkRelationshipsResponseItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetRelationships()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsResponseItemValidationError{
+					field:  "Relationships",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReadBulkRelationshipsResponseItemValidationError{
+					field:  "Relationships",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRelationships()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReadBulkRelationshipsResponseItemValidationError{
+				field:  "Relationships",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ReadBulkRelationshipsResponseItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReadBulkRelationshipsResponseItemMultiError is an error wrapping multiple
+// validation errors returned by
+// ReadBulkRelationshipsResponseItem.ValidateAll() if the designated
+// constraints aren't met.
+type ReadBulkRelationshipsResponseItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadBulkRelationshipsResponseItemMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadBulkRelationshipsResponseItemMultiError) AllErrors() []error { return m }
+
+// ReadBulkRelationshipsResponseItemValidationError is the validation error
+// returned by ReadBulkRelationshipsResponseItem.Validate if the designated
+// constraints aren't met.
+type ReadBulkRelationshipsResponseItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReadBulkRelationshipsResponseItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReadBulkRelationshipsResponseItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReadBulkRelationshipsResponseItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReadBulkRelationshipsResponseItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReadBulkRelationshipsResponseItemValidationError) ErrorName() string {
+	return "ReadBulkRelationshipsResponseItemValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReadBulkRelationshipsResponseItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReadBulkRelationshipsResponseItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReadBulkRelationshipsResponseItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReadBulkRelationshipsResponseItemValidationError{}
+
 // Validate checks the field values on Precondition with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
