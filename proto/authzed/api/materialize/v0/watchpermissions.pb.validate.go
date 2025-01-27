@@ -134,7 +134,7 @@ type WatchPermissionsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WatchPermissionsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -244,7 +244,7 @@ type WatchedPermissionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WatchedPermissionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -433,7 +433,7 @@ type WatchPermissionsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WatchPermissionsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -626,7 +626,7 @@ type PermissionChangeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PermissionChangeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

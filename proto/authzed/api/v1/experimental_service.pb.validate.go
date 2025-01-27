@@ -136,7 +136,7 @@ type ExperimentalRegisterRelationshipCounterRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalRegisterRelationshipCounterRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -247,7 +247,7 @@ type ExperimentalRegisterRelationshipCounterResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalRegisterRelationshipCounterResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -379,7 +379,7 @@ type ExperimentalCountRelationshipsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalCountRelationshipsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -545,7 +545,7 @@ type ExperimentalCountRelationshipsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalCountRelationshipsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -690,7 +690,7 @@ type ReadCounterValueMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReadCounterValueMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -815,7 +815,7 @@ type ExperimentalUnregisterRelationshipCounterRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalUnregisterRelationshipCounterRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -930,7 +930,7 @@ type ExperimentalUnregisterRelationshipCounterResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalUnregisterRelationshipCounterResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1114,7 +1114,7 @@ type BulkCheckPermissionRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BulkCheckPermissionRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1347,7 +1347,7 @@ type BulkCheckPermissionRequestItemMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BulkCheckPermissionRequestItemMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1526,7 +1526,7 @@ type BulkCheckPermissionResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BulkCheckPermissionResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1745,7 +1745,7 @@ type BulkCheckPermissionPairMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BulkCheckPermissionPairMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1898,7 +1898,7 @@ type BulkCheckPermissionResponseItemMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BulkCheckPermissionResponseItemMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2050,7 +2050,7 @@ type BulkImportRelationshipsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BulkImportRelationshipsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2155,7 +2155,7 @@ type BulkImportRelationshipsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BulkImportRelationshipsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2356,7 +2356,7 @@ type BulkExportRelationshipsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BulkExportRelationshipsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2522,7 +2522,7 @@ type BulkExportRelationshipsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BulkExportRelationshipsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2690,7 +2690,7 @@ type ExperimentalReflectSchemaRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalReflectSchemaRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2892,7 +2892,7 @@ type ExperimentalReflectSchemaResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalReflectSchemaResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3003,7 +3003,7 @@ type ExpSchemaFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExpSchemaFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3175,7 +3175,7 @@ type ExpDefinitionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExpDefinitionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3314,7 +3314,7 @@ type ExpCaveatMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExpCaveatMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3420,7 +3420,7 @@ type ExpCaveatParameterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExpCaveatParameterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3561,7 +3561,7 @@ type ExpRelationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExpRelationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3706,7 +3706,7 @@ type ExpTypeReferenceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExpTypeReferenceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3812,7 +3812,7 @@ type ExpPermissionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExpPermissionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3950,7 +3950,7 @@ type ExperimentalComputablePermissionsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalComputablePermissionsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4059,7 +4059,7 @@ type ExpRelationReferenceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExpRelationReferenceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4227,7 +4227,7 @@ type ExperimentalComputablePermissionsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalComputablePermissionsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4365,7 +4365,7 @@ type ExperimentalDependentRelationsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalDependentRelationsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4534,7 +4534,7 @@ type ExperimentalDependentRelationsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalDependentRelationsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4668,7 +4668,7 @@ type ExperimentalDiffSchemaRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalDiffSchemaRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4834,7 +4834,7 @@ type ExperimentalDiffSchemaResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExperimentalDiffSchemaResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4995,7 +4995,7 @@ type ExpRelationSubjectTypeChangeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExpRelationSubjectTypeChangeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -5129,7 +5129,7 @@ type ExpCaveatParameterTypeChangeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExpCaveatParameterTypeChangeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6016,7 +6016,7 @@ type ExpSchemaDiffMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExpSchemaDiffMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

@@ -102,7 +102,7 @@ type DebugInformationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DebugInformationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -490,7 +490,7 @@ type CheckDebugTraceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CheckDebugTraceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -662,7 +662,7 @@ type CaveatEvalInfoMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CaveatEvalInfoMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -796,7 +796,7 @@ type CheckDebugTrace_SubProblemsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CheckDebugTrace_SubProblemsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

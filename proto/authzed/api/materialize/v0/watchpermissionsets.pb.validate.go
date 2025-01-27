@@ -100,7 +100,7 @@ type WatchPermissionSetsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WatchPermissionSetsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -371,7 +371,7 @@ type WatchPermissionSetsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WatchPermissionSetsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -511,7 +511,7 @@ type CursorMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CursorMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -671,7 +671,7 @@ type LookupPermissionSetsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LookupPermissionSetsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -832,7 +832,7 @@ type LookupPermissionSetsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LookupPermissionSetsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1082,7 +1082,7 @@ type PermissionSetChangeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PermissionSetChangeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1189,7 +1189,7 @@ type SetReferenceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetReferenceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1295,7 +1295,7 @@ type MemberReferenceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MemberReferenceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1424,7 +1424,7 @@ type LookupPermissionSetsRequiredMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LookupPermissionSetsRequiredMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1556,7 +1556,7 @@ type BreakingSchemaChangeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BreakingSchemaChangeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

@@ -230,7 +230,7 @@ type RelationshipMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RelationshipMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -383,7 +383,7 @@ type ContextualizedCaveatMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ContextualizedCaveatMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -549,7 +549,7 @@ type SubjectReferenceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SubjectReferenceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -695,7 +695,7 @@ type ObjectReferenceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ObjectReferenceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -809,7 +809,7 @@ type ZedTokenMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ZedTokenMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -918,7 +918,7 @@ type CursorMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CursorMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1080,7 +1080,7 @@ type RelationshipUpdateMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RelationshipUpdateMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1317,7 +1317,7 @@ type PermissionRelationshipTreeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PermissionRelationshipTreeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1486,7 +1486,7 @@ type AlgebraicSubjectSetMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AlgebraicSubjectSetMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1626,7 +1626,7 @@ type DirectSubjectSetMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DirectSubjectSetMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1737,7 +1737,7 @@ type PartialCaveatInfoMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PartialCaveatInfoMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

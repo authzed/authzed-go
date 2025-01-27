@@ -151,7 +151,7 @@ type RelationTupleMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RelationTupleMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -317,7 +317,7 @@ type ObjectAndRelationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ObjectAndRelationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -469,7 +469,7 @@ type RelationReferenceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RelationReferenceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -642,7 +642,7 @@ type UserMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UserMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
