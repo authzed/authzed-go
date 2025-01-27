@@ -148,7 +148,7 @@ type WatchResourcesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WatchResourcesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -316,7 +316,7 @@ type PermissionUpdateMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PermissionUpdateMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -479,7 +479,7 @@ type WatchResourcesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WatchResourcesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

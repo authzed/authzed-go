@@ -98,7 +98,7 @@ type ReadSchemaRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReadSchemaRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -204,7 +204,7 @@ type ReadSchemaResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReadSchemaResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -319,7 +319,7 @@ type WriteSchemaRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WriteSchemaRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -423,7 +423,7 @@ type WriteSchemaResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WriteSchemaResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
