@@ -86,7 +86,7 @@
     },
     "/v1/experimental/diffschema": {
       "post": {
-        "summary": "EXPERIMENTAL: DiffSchema is an API that allows clients to request the difference between the\nspecified schema and the schema stored in SpiceDB. This is useful for clients that need to\nintrospect the schema of a SpiceDB instance.",
+        "summary": "DEPRECATED: Promoted to DiffSchema in the stable API.",
         "operationId": "ExperimentalService_ExperimentalDiffSchema",
         "responses": {
           "200": {
@@ -153,7 +153,7 @@
     },
     "/v1/experimental/permissions/computable": {
       "post": {
-        "summary": "EXPERIMENTAL: ComputablePermissions is an API that allows clients to request the set of\npermissions that compute based off a relation. For example, if a schema has a relation\n`viewer` and a permission `view` defined as `permission view = viewer + editor`, then the\ncomputable permissions for the relation `viewer` will include `view`.",
+        "summary": "DEPRECATED: Promoted to ComputablePermissions in the stable API.",
         "operationId": "ExperimentalService_ExperimentalComputablePermissions",
         "responses": {
           "200": {
@@ -186,7 +186,7 @@
     },
     "/v1/experimental/permissions/dependent": {
       "post": {
-        "summary": "EXPERIMENTAL: DependentRelations is an API that allows clients to request the set of\nrelations and permissions that used to compute a permission, recursively. It is the\ninverse of the ComputablePermissions API.",
+        "summary": "DEPRECATED: Promoted to DependentRelations in the stable API.",
         "operationId": "ExperimentalService_ExperimentalDependentRelations",
         "responses": {
           "200": {
@@ -219,7 +219,7 @@
     },
     "/v1/experimental/reflectschema": {
       "post": {
-        "summary": "EXPERIMENTAL: ReflectSchema is an API that allows clients to reflect the schema stored in\nSpiceDB. This is useful for clients that need to introspect the schema of a SpiceDB instance.",
+        "summary": "DEPRECATED: Promoted to ReflectSchema in the stable API.",
         "operationId": "ExperimentalService_ExperimentalReflectSchema",
         "responses": {
           "200": {
@@ -770,6 +770,105 @@
         ]
       }
     },
+    "/v1/schema/diffschema": {
+      "post": {
+        "summary": "DiffSchema returns the difference between the specified schema and the current\nschema stored in SpiceDB.",
+        "operationId": "SchemaService_DiffSchema",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DiffSchemaResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DiffSchemaRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SchemaService"
+        ]
+      }
+    },
+    "/v1/schema/permissions/computable": {
+      "post": {
+        "summary": "ComputablePermissions returns the set of permissions that compute based off a relation\nin the current schema. For example, if the schema has a relation `viewer` and a permission\n`view` defined as `permission view = viewer + editor`, then the\ncomputable permissions for the relation `viewer` will include `view`.",
+        "operationId": "SchemaService_ComputablePermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ComputablePermissionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ComputablePermissionsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SchemaService"
+        ]
+      }
+    },
+    "/v1/schema/permissions/dependent": {
+      "post": {
+        "summary": "DependentRelations returns the set of relations and permissions that used\nto compute a permission, recursively, in the current schema. It is the\ninverse of the ComputablePermissions API.",
+        "operationId": "SchemaService_DependentRelations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DependentRelationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DependentRelationsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SchemaService"
+        ]
+      }
+    },
     "/v1/schema/read": {
       "post": {
         "summary": "Read returns the current Object Definitions for a Permissions System.",
@@ -797,6 +896,39 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/apiv1ReadSchemaRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SchemaService"
+        ]
+      }
+    },
+    "/v1/schema/reflectschema": {
+      "post": {
+        "summary": "ReflectSchema reflects the current schema stored in SpiceDB, returning a structural\nform of the schema for use by client tooling.",
+        "operationId": "SchemaService_ReflectSchema",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ReflectSchemaResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ReflectSchemaRequest"
             }
           }
         ],
@@ -1950,6 +2082,40 @@
       ],
       "default": "PERMISSIONSHIP_UNSPECIFIED"
     },
+    "v1ComputablePermissionsRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency"
+        },
+        "definitionName": {
+          "type": "string"
+        },
+        "relationName": {
+          "type": "string"
+        },
+        "optionalDefinitionNameFilter": {
+          "type": "string",
+          "description": "optional_definition_name_match is a prefix that is matched against the definition name(s)\nfor the permissions returned.\nIf not specified, will be ignored."
+        }
+      }
+    },
+    "v1ComputablePermissionsResponse": {
+      "type": "object",
+      "properties": {
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ReflectionRelationReference"
+          }
+        },
+        "readAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the schema was read."
+        }
+      }
+    },
     "v1Consistency": {
       "type": "object",
       "properties": {
@@ -2040,6 +2206,63 @@
         "deletionProgress": {
           "$ref": "#/definitions/DeleteRelationshipsResponseDeletionProgress",
           "description": "deletion_progress is an enumeration of the possible outcomes that occurred when attempting to delete the specified relationships."
+        }
+      }
+    },
+    "v1DependentRelationsRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency"
+        },
+        "definitionName": {
+          "type": "string"
+        },
+        "permissionName": {
+          "type": "string"
+        }
+      }
+    },
+    "v1DependentRelationsResponse": {
+      "type": "object",
+      "properties": {
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ReflectionRelationReference"
+          }
+        },
+        "readAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the schema was read."
+        }
+      }
+    },
+    "v1DiffSchemaRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency"
+        },
+        "comparisonSchema": {
+          "type": "string"
+        }
+      }
+    },
+    "v1DiffSchemaResponse": {
+      "type": "object",
+      "properties": {
+        "diffs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ReflectionSchemaDiff"
+          }
+        },
+        "readAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the schema was read."
         }
       }
     },
@@ -2853,6 +3076,299 @@
         }
       },
       "description": "ReadRelationshipsResponse contains a Relationship found that matches the\nspecified relationship filter(s). A instance of this response message will\nbe streamed to the client for each relationship found."
+    },
+    "v1ReflectSchemaRequest": {
+      "type": "object",
+      "properties": {
+        "consistency": {
+          "$ref": "#/definitions/v1Consistency"
+        },
+        "optionalFilters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ReflectionSchemaFilter"
+          },
+          "title": "optional_filters defines optional filters that are applied in\nan OR fashion to the schema, before being returned"
+        }
+      }
+    },
+    "v1ReflectSchemaResponse": {
+      "type": "object",
+      "properties": {
+        "definitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ReflectionDefinition"
+          },
+          "description": "definitions are the definitions defined in the schema."
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ReflectionCaveat"
+          },
+          "description": "caveats are the caveats defined in the schema."
+        },
+        "readAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the schema was read."
+        }
+      }
+    },
+    "v1ReflectionCaveat": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string",
+          "description": "comment is a human-readable comments on the caveat. Will include\ndelimiter characters."
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ReflectionCaveatParameter"
+          }
+        },
+        "expression": {
+          "type": "string"
+        }
+      },
+      "description": "ReflectionCaveat is the representation of a caveat in the schema."
+    },
+    "v1ReflectionCaveatParameter": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "title": "type is the type of the parameter. Will be a string representing the\ntype, e.g. `int` or `list\u003cstring\u003e`"
+        },
+        "parentCaveatName": {
+          "type": "string"
+        }
+      },
+      "description": "ReflectionCaveatParameter is the representation of a parameter in a caveat."
+    },
+    "v1ReflectionCaveatParameterTypeChange": {
+      "type": "object",
+      "properties": {
+        "parameter": {
+          "$ref": "#/definitions/v1ReflectionCaveatParameter"
+        },
+        "previousType": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ReflectionDefinition": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string",
+          "description": "comment is a human-readable comments on the definition. Will include\ndelimiter characters."
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ReflectionRelation"
+          }
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ReflectionPermission"
+          }
+        }
+      },
+      "description": "ReflectionDefinition is the representation of a definition in the schema."
+    },
+    "v1ReflectionPermission": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string",
+          "description": "comment is a human-readable comments on the permission. Will include\ndelimiter characters."
+        },
+        "parentDefinitionName": {
+          "type": "string"
+        }
+      },
+      "description": "ReflectionPermission is the representation of a permission in the schema."
+    },
+    "v1ReflectionRelation": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "parentDefinitionName": {
+          "type": "string"
+        },
+        "subjectTypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ReflectionTypeReference"
+          }
+        }
+      },
+      "description": "ReflectionRelation is the representation of a relation in the schema."
+    },
+    "v1ReflectionRelationReference": {
+      "type": "object",
+      "properties": {
+        "definitionName": {
+          "type": "string"
+        },
+        "relationName": {
+          "type": "string"
+        },
+        "isPermission": {
+          "type": "boolean"
+        }
+      },
+      "description": "ReflectionRelationReference is a reference to a relation or permission in the schema."
+    },
+    "v1ReflectionRelationSubjectTypeChange": {
+      "type": "object",
+      "properties": {
+        "relation": {
+          "$ref": "#/definitions/v1ReflectionRelation"
+        },
+        "changedSubjectType": {
+          "$ref": "#/definitions/v1ReflectionTypeReference"
+        }
+      }
+    },
+    "v1ReflectionSchemaDiff": {
+      "type": "object",
+      "properties": {
+        "definitionAdded": {
+          "$ref": "#/definitions/v1ReflectionDefinition"
+        },
+        "definitionRemoved": {
+          "$ref": "#/definitions/v1ReflectionDefinition"
+        },
+        "definitionDocCommentChanged": {
+          "$ref": "#/definitions/v1ReflectionDefinition"
+        },
+        "relationAdded": {
+          "$ref": "#/definitions/v1ReflectionRelation"
+        },
+        "relationRemoved": {
+          "$ref": "#/definitions/v1ReflectionRelation"
+        },
+        "relationDocCommentChanged": {
+          "$ref": "#/definitions/v1ReflectionRelation"
+        },
+        "relationSubjectTypeAdded": {
+          "$ref": "#/definitions/v1ReflectionRelationSubjectTypeChange"
+        },
+        "relationSubjectTypeRemoved": {
+          "$ref": "#/definitions/v1ReflectionRelationSubjectTypeChange"
+        },
+        "permissionAdded": {
+          "$ref": "#/definitions/v1ReflectionPermission"
+        },
+        "permissionRemoved": {
+          "$ref": "#/definitions/v1ReflectionPermission"
+        },
+        "permissionDocCommentChanged": {
+          "$ref": "#/definitions/v1ReflectionPermission"
+        },
+        "permissionExprChanged": {
+          "$ref": "#/definitions/v1ReflectionPermission"
+        },
+        "caveatAdded": {
+          "$ref": "#/definitions/v1ReflectionCaveat"
+        },
+        "caveatRemoved": {
+          "$ref": "#/definitions/v1ReflectionCaveat"
+        },
+        "caveatDocCommentChanged": {
+          "$ref": "#/definitions/v1ReflectionCaveat"
+        },
+        "caveatExprChanged": {
+          "$ref": "#/definitions/v1ReflectionCaveat"
+        },
+        "caveatParameterAdded": {
+          "$ref": "#/definitions/v1ReflectionCaveatParameter"
+        },
+        "caveatParameterRemoved": {
+          "$ref": "#/definitions/v1ReflectionCaveatParameter"
+        },
+        "caveatParameterTypeChanged": {
+          "$ref": "#/definitions/v1ReflectionCaveatParameterTypeChange"
+        }
+      },
+      "description": "ReflectionSchemaDiff is the representation of a diff between two schemas."
+    },
+    "v1ReflectionSchemaFilter": {
+      "type": "object",
+      "properties": {
+        "optionalDefinitionNameFilter": {
+          "type": "string",
+          "description": "optional_definition_name_filter is a prefix that is matched against the definition name."
+        },
+        "optionalCaveatNameFilter": {
+          "type": "string",
+          "description": "optional_caveat_name_filter is a prefix that is matched against the caveat name."
+        },
+        "optionalRelationNameFilter": {
+          "type": "string",
+          "description": "optional_relation_name_filter is a prefix that is matched against the relation name."
+        },
+        "optionalPermissionNameFilter": {
+          "type": "string",
+          "description": "optional_permission_name_filter is a prefix that is matched against the permission name."
+        }
+      },
+      "description": "ReflectionSchemaFilter is a filter that can be applied to the schema on reflection."
+    },
+    "v1ReflectionTypeReference": {
+      "type": "object",
+      "properties": {
+        "subjectDefinitionName": {
+          "type": "string",
+          "description": "subject_definition_name is the name of the subject's definition."
+        },
+        "optionalCaveatName": {
+          "type": "string",
+          "description": "optional_caveat_name is the name of the caveat that is applied to the subject, if any."
+        },
+        "isTerminalSubject": {
+          "type": "boolean",
+          "description": "is_terminal_subject is true if the subject is terminal, meaning it is referenced directly vs a sub-relation."
+        },
+        "optionalRelationName": {
+          "type": "string",
+          "description": "optional_relation_name is the name of the relation that is applied to the subject, if any."
+        },
+        "isPublicWildcard": {
+          "type": "boolean",
+          "description": "is_public_wildcard is true if the subject is a public wildcard."
+        }
+      },
+      "description": "ReflectionTypeReference is the representation of a type reference in the schema."
     },
     "v1Relationship": {
       "type": "object",
