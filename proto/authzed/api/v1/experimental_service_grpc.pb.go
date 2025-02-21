@@ -56,21 +56,17 @@ type ExperimentalServiceClient interface {
 	// NOTE: BulkCheckPermission has been promoted to the stable API as "CheckBulkPermission" and the
 	// API will be removed from experimental in a future release.
 	BulkCheckPermission(ctx context.Context, in *BulkCheckPermissionRequest, opts ...grpc.CallOption) (*BulkCheckPermissionResponse, error)
-	// EXPERIMENTAL: ReflectSchema is an API that allows clients to reflect the schema stored in
-	// SpiceDB. This is useful for clients that need to introspect the schema of a SpiceDB instance.
+	// Deprecated: Do not use.
+	// DEPRECATED: Promoted to ReflectSchema in the stable API.
 	ExperimentalReflectSchema(ctx context.Context, in *ExperimentalReflectSchemaRequest, opts ...grpc.CallOption) (*ExperimentalReflectSchemaResponse, error)
-	// EXPERIMENTAL: ComputablePermissions is an API that allows clients to request the set of
-	// permissions that compute based off a relation. For example, if a schema has a relation
-	// `viewer` and a permission `view` defined as `permission view = viewer + editor`, then the
-	// computable permissions for the relation `viewer` will include `view`.
+	// Deprecated: Do not use.
+	// DEPRECATED: Promoted to ComputablePermissions in the stable API.
 	ExperimentalComputablePermissions(ctx context.Context, in *ExperimentalComputablePermissionsRequest, opts ...grpc.CallOption) (*ExperimentalComputablePermissionsResponse, error)
-	// EXPERIMENTAL: DependentRelations is an API that allows clients to request the set of
-	// relations and permissions that used to compute a permission, recursively. It is the
-	// inverse of the ComputablePermissions API.
+	// Deprecated: Do not use.
+	// DEPRECATED: Promoted to DependentRelations in the stable API.
 	ExperimentalDependentRelations(ctx context.Context, in *ExperimentalDependentRelationsRequest, opts ...grpc.CallOption) (*ExperimentalDependentRelationsResponse, error)
-	// EXPERIMENTAL: DiffSchema is an API that allows clients to request the difference between the
-	// specified schema and the schema stored in SpiceDB. This is useful for clients that need to
-	// introspect the schema of a SpiceDB instance.
+	// Deprecated: Do not use.
+	// DEPRECATED: Promoted to DiffSchema in the stable API.
 	ExperimentalDiffSchema(ctx context.Context, in *ExperimentalDiffSchemaRequest, opts ...grpc.CallOption) (*ExperimentalDiffSchemaResponse, error)
 	// EXPERIMENTAL: RegisterRelationshipCounter registers a new filter for counting relationships. A filter must be registered before
 	// a count can be requested.
@@ -132,6 +128,7 @@ func (c *experimentalServiceClient) BulkCheckPermission(ctx context.Context, in 
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *experimentalServiceClient) ExperimentalReflectSchema(ctx context.Context, in *ExperimentalReflectSchemaRequest, opts ...grpc.CallOption) (*ExperimentalReflectSchemaResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ExperimentalReflectSchemaResponse)
@@ -142,6 +139,7 @@ func (c *experimentalServiceClient) ExperimentalReflectSchema(ctx context.Contex
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *experimentalServiceClient) ExperimentalComputablePermissions(ctx context.Context, in *ExperimentalComputablePermissionsRequest, opts ...grpc.CallOption) (*ExperimentalComputablePermissionsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ExperimentalComputablePermissionsResponse)
@@ -152,6 +150,7 @@ func (c *experimentalServiceClient) ExperimentalComputablePermissions(ctx contex
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *experimentalServiceClient) ExperimentalDependentRelations(ctx context.Context, in *ExperimentalDependentRelationsRequest, opts ...grpc.CallOption) (*ExperimentalDependentRelationsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ExperimentalDependentRelationsResponse)
@@ -162,6 +161,7 @@ func (c *experimentalServiceClient) ExperimentalDependentRelations(ctx context.C
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *experimentalServiceClient) ExperimentalDiffSchema(ctx context.Context, in *ExperimentalDiffSchemaRequest, opts ...grpc.CallOption) (*ExperimentalDiffSchemaResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ExperimentalDiffSchemaResponse)
@@ -227,21 +227,17 @@ type ExperimentalServiceServer interface {
 	// NOTE: BulkCheckPermission has been promoted to the stable API as "CheckBulkPermission" and the
 	// API will be removed from experimental in a future release.
 	BulkCheckPermission(context.Context, *BulkCheckPermissionRequest) (*BulkCheckPermissionResponse, error)
-	// EXPERIMENTAL: ReflectSchema is an API that allows clients to reflect the schema stored in
-	// SpiceDB. This is useful for clients that need to introspect the schema of a SpiceDB instance.
+	// Deprecated: Do not use.
+	// DEPRECATED: Promoted to ReflectSchema in the stable API.
 	ExperimentalReflectSchema(context.Context, *ExperimentalReflectSchemaRequest) (*ExperimentalReflectSchemaResponse, error)
-	// EXPERIMENTAL: ComputablePermissions is an API that allows clients to request the set of
-	// permissions that compute based off a relation. For example, if a schema has a relation
-	// `viewer` and a permission `view` defined as `permission view = viewer + editor`, then the
-	// computable permissions for the relation `viewer` will include `view`.
+	// Deprecated: Do not use.
+	// DEPRECATED: Promoted to ComputablePermissions in the stable API.
 	ExperimentalComputablePermissions(context.Context, *ExperimentalComputablePermissionsRequest) (*ExperimentalComputablePermissionsResponse, error)
-	// EXPERIMENTAL: DependentRelations is an API that allows clients to request the set of
-	// relations and permissions that used to compute a permission, recursively. It is the
-	// inverse of the ComputablePermissions API.
+	// Deprecated: Do not use.
+	// DEPRECATED: Promoted to DependentRelations in the stable API.
 	ExperimentalDependentRelations(context.Context, *ExperimentalDependentRelationsRequest) (*ExperimentalDependentRelationsResponse, error)
-	// EXPERIMENTAL: DiffSchema is an API that allows clients to request the difference between the
-	// specified schema and the schema stored in SpiceDB. This is useful for clients that need to
-	// introspect the schema of a SpiceDB instance.
+	// Deprecated: Do not use.
+	// DEPRECATED: Promoted to DiffSchema in the stable API.
 	ExperimentalDiffSchema(context.Context, *ExperimentalDiffSchemaRequest) (*ExperimentalDiffSchemaResponse, error)
 	// EXPERIMENTAL: RegisterRelationshipCounter registers a new filter for counting relationships. A filter must be registered before
 	// a count can be requested.
