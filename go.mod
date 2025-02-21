@@ -1,10 +1,11 @@
 module github.com/authzed/authzed-go
 
-go 1.22.7
-toolchain go1.23.1
+go 1.23.0
+
+toolchain go1.23.5
 
 require (
-	github.com/authzed/grpcutil v0.0.0-20230908193239-4286bb1d6403
+	github.com/authzed/grpcutil v0.0.0-20240123194739-2ea1e3d2d98b
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/ecordell/optgen v0.0.9
 	github.com/envoyproxy/protoc-gen-validate v1.2.1
@@ -18,7 +19,7 @@ require (
 	golang.org/x/sync v0.11.0
 	golang.org/x/vuln v1.1.4
 	google.golang.org/genproto/googleapis/api v0.0.0-20250204164813-702378808489
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250204164813-702378808489
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250219182151-9fdb1cabc7b2
 	google.golang.org/grpc v1.70.0
 	google.golang.org/protobuf v1.36.5
 )
@@ -26,6 +27,7 @@ require (
 require (
 	4d63.com/gocheckcompilerdirectives v1.2.1 // indirect
 	4d63.com/gochecknoglobals v0.2.2 // indirect
+	cloud.google.com/go/compute/metadata v0.6.0 // indirect
 	github.com/4meepo/tagalign v1.4.1 // indirect
 	github.com/Abirdcfly/dupword v0.1.3 // indirect
 	github.com/Antonboom/errname v1.0.0 // indirect
