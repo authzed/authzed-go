@@ -10,17 +10,17 @@ require (
 	github.com/ecordell/optgen v0.0.9
 	github.com/envoyproxy/protoc-gen-validate v1.2.1
 	github.com/golangci/golangci-lint v1.64.6
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.1
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3
 	github.com/jzelinskie/stringz v0.0.3
 	github.com/magefile/mage v1.15.0
 	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10
 	github.com/samber/lo v1.49.1
 	github.com/stretchr/testify v1.10.0
-	golang.org/x/sync v0.11.0
+	golang.org/x/sync v0.12.0
 	golang.org/x/vuln v1.1.4
-	google.golang.org/genproto/googleapis/api v0.0.0-20250204164813-702378808489
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250219182151-9fdb1cabc7b2
-	google.golang.org/grpc v1.70.0
+	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250303144028-a0af3efb3deb
+	google.golang.org/grpc v1.71.0
 	google.golang.org/protobuf v1.36.5
 )
 
