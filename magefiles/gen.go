@@ -24,7 +24,7 @@ func (g Gen) All() error {
 const (
 	ProtoPath     = "proto/authzed/api"
 	BufRepository = "buf.build/authzed/api"
-	BufTag        = "03fe5b66b0358ee4af301e030d45121fff922d91"
+	BufTag        = "5b3a174b95f00c9a7a8a429da5cc2969cf8a8f01"
 )
 
 // Proto runs proto codegen

@@ -2206,6 +2206,11 @@
         "deletionProgress": {
           "$ref": "#/definitions/DeleteRelationshipsResponseDeletionProgress",
           "description": "deletion_progress is an enumeration of the possible outcomes that occurred when attempting to delete the specified relationships."
+        },
+        "relationshipsDeletedCount": {
+          "type": "string",
+          "format": "uint64",
+          "description": "relationships_deleted_count is the number of relationships that were deleted."
         }
       }
     },

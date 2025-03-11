@@ -277,6 +277,7 @@ func (m *DeleteRelationshipsResponse) CloneVT() *DeleteRelationshipsResponse {
 	r := new(DeleteRelationshipsResponse)
 	r.DeletedAt = m.DeletedAt.CloneVT()
 	r.DeletionProgress = m.DeletionProgress
+	r.RelationshipsDeletedCount = m.RelationshipsDeletedCount
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -1097,6 +1098,9 @@ func (this *DeleteRelationshipsResponse) EqualVT(that *DeleteRelationshipsRespon
 		return false
 	}
 	if this.DeletionProgress != that.DeletionProgress {
+		return false
+	}
+	if this.RelationshipsDeletedCount != that.RelationshipsDeletedCount {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -2434,6 +2438,11 @@ func (m *DeleteRelationshipsResponse) MarshalToSizedBufferVT(dAtA []byte) (int, 
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.RelationshipsDeletedCount != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RelationshipsDeletedCount))
+		i--
+		dAtA[i] = 0x18
 	}
 	if m.DeletionProgress != 0 {
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.DeletionProgress))
@@ -4001,6 +4010,9 @@ func (m *DeleteRelationshipsResponse) SizeVT() (n int) {
 	}
 	if m.DeletionProgress != 0 {
 		n += 1 + protohelpers.SizeOfVarint(uint64(m.DeletionProgress))
+	}
+	if m.RelationshipsDeletedCount != 0 {
+		n += 1 + protohelpers.SizeOfVarint(uint64(m.RelationshipsDeletedCount))
 	}
 	n += len(m.unknownFields)
 	return n
@@ -6084,6 +6096,25 @@ func (m *DeleteRelationshipsResponse) UnmarshalVT(dAtA []byte) error {
 				b := dAtA[iNdEx]
 				iNdEx++
 				m.DeletionProgress |= DeleteRelationshipsResponse_DeletionProgress(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RelationshipsDeletedCount", wireType)
+			}
+			m.RelationshipsDeletedCount = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.RelationshipsDeletedCount |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
