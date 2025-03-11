@@ -1907,6 +1907,8 @@ func (m *DeleteRelationshipsResponse) validate(all bool) error {
 
 	// no validation rules for DeletionProgress
 
+	// no validation rules for RelationshipsDeletedCount
+
 	if len(errors) > 0 {
 		return DeleteRelationshipsResponseMultiError(errors)
 	}
