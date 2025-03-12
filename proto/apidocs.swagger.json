@@ -2760,6 +2760,10 @@
         "optionalRelationshipFilter": {
           "$ref": "#/definitions/v1RelationshipFilter",
           "description": "optional_relationship_filter, if specified, indicates the\nfilter to apply to each relationship to be exported."
+        },
+        "includeObjectData": {
+          "type": "boolean",
+          "description": "include_object_data, if true, indicates that object data should be included in the response."
         }
       },
       "description": "ExportBulkRelationshipsRequest represents a resumable request for\nall relationships from the server."

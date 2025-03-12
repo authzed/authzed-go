@@ -681,6 +681,7 @@ func (m *ExportBulkRelationshipsRequest) CloneVT() *ExportBulkRelationshipsReque
 	r.OptionalLimit = m.OptionalLimit
 	r.OptionalCursor = m.OptionalCursor.CloneVT()
 	r.OptionalRelationshipFilter = m.OptionalRelationshipFilter.CloneVT()
+	r.IncludeObjectData = m.IncludeObjectData
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -1730,6 +1731,9 @@ func (this *ExportBulkRelationshipsRequest) EqualVT(that *ExportBulkRelationship
 		return false
 	}
 	if !this.OptionalRelationshipFilter.EqualVT(that.OptionalRelationshipFilter) {
+		return false
+	}
+	if this.IncludeObjectData != that.IncludeObjectData {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -3749,6 +3753,16 @@ func (m *ExportBulkRelationshipsRequest) MarshalToSizedBufferVT(dAtA []byte) (in
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.IncludeObjectData {
+		i--
+		if m.IncludeObjectData {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x28
+	}
 	if m.OptionalRelationshipFilter != nil {
 		size, err := m.OptionalRelationshipFilter.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -4614,6 +4628,9 @@ func (m *ExportBulkRelationshipsRequest) SizeVT() (n int) {
 	if m.OptionalRelationshipFilter != nil {
 		l = m.OptionalRelationshipFilter.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if m.IncludeObjectData {
+		n += 2
 	}
 	n += len(m.unknownFields)
 	return n
@@ -9571,6 +9588,26 @@ func (m *ExportBulkRelationshipsRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IncludeObjectData", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IncludeObjectData = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
