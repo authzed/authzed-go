@@ -1000,7 +1000,7 @@
         "parameters": [
           {
             "name": "body",
-            "description": "WatchRequest specifies the object definitions for which we want to start\nwatching mutations, and an optional start snapshot for when to start\nwatching.",
+            "description": "WatchRequest specifies what mutations to watch for, and an optional start snapshot for when to start\nwatching.",
             "in": "body",
             "required": true,
             "schema": {
@@ -3495,6 +3495,17 @@
       },
       "title": "SubjectReference is used for referring to the subject portion of a\nRelationship. The relation component is optional and is used for defining a\nsub-relation on the subject, e.g. group:123#members"
     },
+    "v1WatchKind": {
+      "type": "string",
+      "enum": [
+        "WATCH_KIND_UNSPECIFIED",
+        "WATCH_KIND_INCLUDE_RELATIONSHIP_UPDATES",
+        "WATCH_KIND_INCLUDE_SCHEMA_UPDATES",
+        "WATCH_KIND_INCLUDE_CHECKPOINTS"
+      ],
+      "default": "WATCH_KIND_UNSPECIFIED",
+      "title": "- WATCH_KIND_UNSPECIFIED: Default, just relationship updates (for backwards compatibility)"
+    },
     "v1WatchRequest": {
       "type": "object",
       "properties": {
@@ -3503,7 +3514,7 @@
           "items": {
             "type": "string"
           },
-          "description": "optional_object_types is a filter of resource object types to watch for changes.\nIf specified, only changes to the specified object types will be returned and\noptional_relationship_filters cannot be used."
+          "description": "optional_object_types is a filter of resource object types to watch for relationship changes.\nIf specified, only changes to the specified object types will be returned and\noptional_relationship_filters cannot be used."
         },
         "optionalStartCursor": {
           "$ref": "#/definitions/v1ZedToken",
@@ -3516,9 +3527,16 @@
             "$ref": "#/definitions/v1RelationshipFilter"
           },
           "description": "optional_relationship_filters, if specified, indicates the\nfilter(s) to apply to each relationship to be returned by watch.\nThe relationship will be returned as long as at least one filter matches,\nthis allows clients to match relationships on multiple filters on a single watch call.\nIf specified, optional_object_types cannot be used."
+        },
+        "optionalUpdateKinds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1WatchKind"
+          },
+          "title": "optional_update_kinds, if specified, indicates what kinds of mutations to include"
         }
       },
-      "description": "WatchRequest specifies the object definitions for which we want to start\nwatching mutations, and an optional start snapshot for when to start\nwatching."
+      "description": "WatchRequest specifies what mutations to watch for, and an optional start snapshot for when to start\nwatching."
     },
     "v1WatchResponse": {
       "type": "object",
@@ -3538,9 +3556,21 @@
         "optionalTransactionMetadata": {
           "type": "object",
           "description": "optional_transaction_metadata is an optional field that returns the transaction metadata\ngiven to SpiceDB during the transaction that produced the changes in this response.\nThis field may not exist if no transaction metadata was provided."
+        },
+        "schemaUpdates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ReflectionSchemaDiff"
+          },
+          "description": "schema_updates are the schema update events that have occurred since the\nlast watch response."
+        },
+        "isCheckpoint": {
+          "type": "boolean",
+          "description": "is_checkpoint, if true, indicates that a revision was reached."
         }
       },
-      "description": "WatchResponse contains all tuple modification events in ascending\ntimestamp order, from the requested start snapshot to a snapshot\nencoded in the watch response. The client can use the snapshot to resume\nwatching where the previous watch response left off."
+      "description": "WatchResponse contains all mutation events in ascending timestamp order,\nfrom the requested start snapshot to a snapshot\nencoded in the watch response. The client can use the snapshot to resume\nwatching where the previous watch response left off."
     },
     "v1WriteRelationshipsRequest": {
       "type": "object",

@@ -39,6 +39,11 @@ func (m *WatchRequest) CloneVT() *WatchRequest {
 		}
 		r.OptionalRelationshipFilters = tmpContainer
 	}
+	if rhs := m.OptionalUpdateKinds; rhs != nil {
+		tmpContainer := make([]WatchKind, len(rhs))
+		copy(tmpContainer, rhs)
+		r.OptionalUpdateKinds = tmpContainer
+	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -57,12 +62,20 @@ func (m *WatchResponse) CloneVT() *WatchResponse {
 	r := new(WatchResponse)
 	r.ChangesThrough = m.ChangesThrough.CloneVT()
 	r.OptionalTransactionMetadata = (*structpb.Struct)((*structpb1.Struct)(m.OptionalTransactionMetadata).CloneVT())
+	r.IsCheckpoint = m.IsCheckpoint
 	if rhs := m.Updates; rhs != nil {
 		tmpContainer := make([]*RelationshipUpdate, len(rhs))
 		for k, v := range rhs {
 			tmpContainer[k] = v.CloneVT()
 		}
 		r.Updates = tmpContainer
+	}
+	if rhs := m.SchemaUpdates; rhs != nil {
+		tmpContainer := make([]*ReflectionSchemaDiff, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v.CloneVT()
+		}
+		r.SchemaUpdates = tmpContainer
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -110,6 +123,15 @@ func (this *WatchRequest) EqualVT(that *WatchRequest) bool {
 			}
 		}
 	}
+	if len(this.OptionalUpdateKinds) != len(that.OptionalUpdateKinds) {
+		return false
+	}
+	for i, vx := range this.OptionalUpdateKinds {
+		vy := that.OptionalUpdateKinds[i]
+		if vx != vy {
+			return false
+		}
+	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
@@ -147,6 +169,26 @@ func (this *WatchResponse) EqualVT(that *WatchResponse) bool {
 		return false
 	}
 	if !(*structpb1.Struct)(this.OptionalTransactionMetadata).EqualVT((*structpb1.Struct)(that.OptionalTransactionMetadata)) {
+		return false
+	}
+	if len(this.SchemaUpdates) != len(that.SchemaUpdates) {
+		return false
+	}
+	for i, vx := range this.SchemaUpdates {
+		vy := that.SchemaUpdates[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &ReflectionSchemaDiff{}
+			}
+			if q == nil {
+				q = &ReflectionSchemaDiff{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
+		}
+	}
+	if this.IsCheckpoint != that.IsCheckpoint {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -188,6 +230,27 @@ func (m *WatchRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.OptionalUpdateKinds) > 0 {
+		var pksize2 int
+		for _, num := range m.OptionalUpdateKinds {
+			pksize2 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num1 := range m.OptionalUpdateKinds {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA[j1] = uint8(num)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
 	}
 	if len(m.OptionalRelationshipFilters) > 0 {
 		for iNdEx := len(m.OptionalRelationshipFilters) - 1; iNdEx >= 0; iNdEx-- {
@@ -253,6 +316,28 @@ func (m *WatchResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.IsCheckpoint {
+		i--
+		if m.IsCheckpoint {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x28
+	}
+	if len(m.SchemaUpdates) > 0 {
+		for iNdEx := len(m.SchemaUpdates) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.SchemaUpdates[iNdEx].MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x22
+		}
+	}
 	if m.OptionalTransactionMetadata != nil {
 		size, err := (*structpb1.Struct)(m.OptionalTransactionMetadata).MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -310,6 +395,13 @@ func (m *WatchRequest) SizeVT() (n int) {
 			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 		}
 	}
+	if len(m.OptionalUpdateKinds) > 0 {
+		l = 0
+		for _, e := range m.OptionalUpdateKinds {
+			l += protohelpers.SizeOfVarint(uint64(e))
+		}
+		n += 1 + protohelpers.SizeOfVarint(uint64(l)) + l
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -333,6 +425,15 @@ func (m *WatchResponse) SizeVT() (n int) {
 	if m.OptionalTransactionMetadata != nil {
 		l = (*structpb1.Struct)(m.OptionalTransactionMetadata).SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if len(m.SchemaUpdates) > 0 {
+		for _, e := range m.SchemaUpdates {
+			l = e.SizeVT()
+			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+		}
+	}
+	if m.IsCheckpoint {
+		n += 2
 	}
 	n += len(m.unknownFields)
 	return n
@@ -469,6 +570,75 @@ func (m *WatchRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 4:
+			if wireType == 0 {
+				var v WatchKind
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protohelpers.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= WatchKind(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				m.OptionalUpdateKinds = append(m.OptionalUpdateKinds, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protohelpers.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return protohelpers.ErrInvalidLength
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return protohelpers.ErrInvalidLength
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				if elementCount != 0 && len(m.OptionalUpdateKinds) == 0 {
+					m.OptionalUpdateKinds = make([]WatchKind, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v WatchKind
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return protohelpers.ErrIntOverflow
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						v |= WatchKind(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					m.OptionalUpdateKinds = append(m.OptionalUpdateKinds, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalUpdateKinds", wireType)
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -626,6 +796,60 @@ func (m *WatchResponse) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SchemaUpdates", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.SchemaUpdates = append(m.SchemaUpdates, &ReflectionSchemaDiff{})
+			if err := m.SchemaUpdates[len(m.SchemaUpdates)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsCheckpoint", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsCheckpoint = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
