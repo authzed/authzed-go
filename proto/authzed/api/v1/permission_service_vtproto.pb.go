@@ -636,7 +636,6 @@ func (m *ImportBulkRelationshipsRequest) CloneVT() *ImportBulkRelationshipsReque
 		return (*ImportBulkRelationshipsRequest)(nil)
 	}
 	r := new(ImportBulkRelationshipsRequest)
-	r.IncludeObjectData = m.IncludeObjectData
 	if rhs := m.Relationships; rhs != nil {
 		tmpContainer := make([]*Relationship, len(rhs))
 		for k, v := range rhs {
@@ -1682,9 +1681,6 @@ func (this *ImportBulkRelationshipsRequest) EqualVT(that *ImportBulkRelationship
 				return false
 			}
 		}
-	}
-	if this.IncludeObjectData != that.IncludeObjectData {
-		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
@@ -3660,16 +3656,6 @@ func (m *ImportBulkRelationshipsRequest) MarshalToSizedBufferVT(dAtA []byte) (in
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if m.IncludeObjectData {
-		i--
-		if m.IncludeObjectData {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x10
-	}
 	if len(m.Relationships) > 0 {
 		for iNdEx := len(m.Relationships) - 1; iNdEx >= 0; iNdEx-- {
 			size, err := m.Relationships[iNdEx].MarshalToSizedBufferVT(dAtA[:i])
@@ -4587,9 +4573,6 @@ func (m *ImportBulkRelationshipsRequest) SizeVT() (n int) {
 			l = e.SizeVT()
 			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 		}
-	}
-	if m.IncludeObjectData {
-		n += 2
 	}
 	n += len(m.unknownFields)
 	return n
@@ -9320,26 +9303,6 @@ func (m *ImportBulkRelationshipsRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field IncludeObjectData", wireType)
-			}
-			var v int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			m.IncludeObjectData = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])

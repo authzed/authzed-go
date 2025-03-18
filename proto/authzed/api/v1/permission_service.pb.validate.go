@@ -5299,8 +5299,6 @@ func (m *ImportBulkRelationshipsRequest) validate(all bool) error {
 
 	}
 
-	// no validation rules for IncludeObjectData
-
 	if len(errors) > 0 {
 		return ImportBulkRelationshipsRequestMultiError(errors)
 	}
