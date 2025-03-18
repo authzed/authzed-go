@@ -93,14 +93,17 @@ Continuous integration enforces that `go mod tidy` has been run.
 ### Updating generated Protobuf code
 
 All [Protobuf] code is managed using [buf].
-The [shebang] at the top of `buf.gen.yaml` contains the [Buf Registry ref] that will be generated.
-You can regenerate the code by executing `buf.gen.yaml`:
+The [shebang] at the top of [magefiles/gen.go][gen-file] contains the [Buf Registry ref] that will be generated.
+You can regenerate the code using the `mage` commands:
 
 [Protobuf]: https://developers.google.com/protocol-buffers/
 [buf]: https://docs.buf.build/installation
 [shebang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [Buf Registry ref]: https://buf.build/authzed/api/history
+[gen-file]: https://github.com/authzed/authzed-go/blob/main/magefiles/gen.go#L27
 
 ```sh
-./buf.gen.yaml
+mage gen:all
+# or just the proto
+mage gen:proto
 ```
