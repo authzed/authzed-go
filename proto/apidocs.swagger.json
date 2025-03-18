@@ -2793,10 +2793,6 @@
             "type": "object",
             "$ref": "#/definitions/v1Relationship"
           }
-        },
-        "includeObjectData": {
-          "type": "boolean",
-          "description": "include_object_data, if true, indicates that object data is allowed in the relationships."
         }
       },
       "description": "ImportBulkRelationshipsRequest represents one batch of the streaming\nImportBulkRelationships API. The maximum size is only limited by the backing\ndatastore, and optimal size should be determined by the calling client\nexperimentally. When ImportBulk is invoked and receives its first request message,\na transaction is opened to import the relationships. All requests sent to the same\ninvocation are executed under this single transaction. If a relationship already\nexists within the datastore, the entire transaction will fail with an error."
