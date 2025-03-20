@@ -62,6 +62,7 @@ func (m *WatchResponse) CloneVT() *WatchResponse {
 	r := new(WatchResponse)
 	r.ChangesThrough = m.ChangesThrough.CloneVT()
 	r.OptionalTransactionMetadata = (*structpb.Struct)((*structpb1.Struct)(m.OptionalTransactionMetadata).CloneVT())
+	r.SchemaUpdated = m.SchemaUpdated
 	r.IsCheckpoint = m.IsCheckpoint
 	if rhs := m.Updates; rhs != nil {
 		tmpContainer := make([]*RelationshipUpdate, len(rhs))
@@ -69,13 +70,6 @@ func (m *WatchResponse) CloneVT() *WatchResponse {
 			tmpContainer[k] = v.CloneVT()
 		}
 		r.Updates = tmpContainer
-	}
-	if rhs := m.SchemaUpdates; rhs != nil {
-		tmpContainer := make([]*ReflectionSchemaDiff, len(rhs))
-		for k, v := range rhs {
-			tmpContainer[k] = v.CloneVT()
-		}
-		r.SchemaUpdates = tmpContainer
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -171,22 +165,8 @@ func (this *WatchResponse) EqualVT(that *WatchResponse) bool {
 	if !(*structpb1.Struct)(this.OptionalTransactionMetadata).EqualVT((*structpb1.Struct)(that.OptionalTransactionMetadata)) {
 		return false
 	}
-	if len(this.SchemaUpdates) != len(that.SchemaUpdates) {
+	if this.SchemaUpdated != that.SchemaUpdated {
 		return false
-	}
-	for i, vx := range this.SchemaUpdates {
-		vy := that.SchemaUpdates[i]
-		if p, q := vx, vy; p != q {
-			if p == nil {
-				p = &ReflectionSchemaDiff{}
-			}
-			if q == nil {
-				q = &ReflectionSchemaDiff{}
-			}
-			if !p.EqualVT(q) {
-				return false
-			}
-		}
 	}
 	if this.IsCheckpoint != that.IsCheckpoint {
 		return false
@@ -326,17 +306,15 @@ func (m *WatchResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x28
 	}
-	if len(m.SchemaUpdates) > 0 {
-		for iNdEx := len(m.SchemaUpdates) - 1; iNdEx >= 0; iNdEx-- {
-			size, err := m.SchemaUpdates[iNdEx].MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
-			i--
-			dAtA[i] = 0x22
+	if m.SchemaUpdated {
+		i--
+		if m.SchemaUpdated {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
 		}
+		i--
+		dAtA[i] = 0x20
 	}
 	if m.OptionalTransactionMetadata != nil {
 		size, err := (*structpb1.Struct)(m.OptionalTransactionMetadata).MarshalToSizedBufferVT(dAtA[:i])
@@ -426,11 +404,8 @@ func (m *WatchResponse) SizeVT() (n int) {
 		l = (*structpb1.Struct)(m.OptionalTransactionMetadata).SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
-	if len(m.SchemaUpdates) > 0 {
-		for _, e := range m.SchemaUpdates {
-			l = e.SizeVT()
-			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
-		}
+	if m.SchemaUpdated {
+		n += 2
 	}
 	if m.IsCheckpoint {
 		n += 2
@@ -797,10 +772,10 @@ func (m *WatchResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			iNdEx = postIndex
 		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SchemaUpdates", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SchemaUpdated", wireType)
 			}
-			var msglen int
+			var v int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return protohelpers.ErrIntOverflow
@@ -810,26 +785,12 @@ func (m *WatchResponse) UnmarshalVT(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				v |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.SchemaUpdates = append(m.SchemaUpdates, &ReflectionSchemaDiff{})
-			if err := m.SchemaUpdates[len(m.SchemaUpdates)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
+			m.SchemaUpdated = bool(v != 0)
 		case 5:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field IsCheckpoint", wireType)

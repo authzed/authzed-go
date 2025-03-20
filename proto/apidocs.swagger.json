@@ -3533,7 +3533,7 @@
           "items": {
             "$ref": "#/definitions/v1WatchKind"
           },
-          "title": "optional_update_kinds, if specified, indicates what kinds of mutations to include"
+          "description": "optional_update_kinds, if specified, indicates what kinds of mutations to include."
         }
       },
       "description": "WatchRequest specifies what mutations to watch for, and an optional start snapshot for when to start\nwatching."
@@ -3557,17 +3557,13 @@
           "type": "object",
           "description": "optional_transaction_metadata is an optional field that returns the transaction metadata\ngiven to SpiceDB during the transaction that produced the changes in this response.\nThis field may not exist if no transaction metadata was provided."
         },
-        "schemaUpdates": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1ReflectionSchemaDiff"
-          },
-          "description": "schema_updates are the schema update events that have occurred since the\nlast watch response."
+        "schemaUpdated": {
+          "type": "boolean",
+          "description": "schema_updated, if true, indicates that the schema was changed in this revision."
         },
         "isCheckpoint": {
           "type": "boolean",
-          "description": "is_checkpoint, if true, indicates that a revision was reached."
+          "description": "is_checkpoint, if true, indicates that a checkpoint was reached.\nA checkpoint indicates that the server guarantees that the client\nwill not observe any changes at a revision below or equal to the revision in this response."
         }
       },
       "description": "WatchResponse contains all mutation events in ascending timestamp order,\nfrom the requested start snapshot to a snapshot\nencoded in the watch response. The client can use the snapshot to resume\nwatching where the previous watch response left off."
