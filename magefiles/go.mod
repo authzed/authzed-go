@@ -7,7 +7,7 @@ toolchain go1.24.1
 require (
 	github.com/bufbuild/buf v1.50.1
 	github.com/envoyproxy/protoc-gen-validate v1.2.1
-	github.com/golangci/golangci-lint v1.64.7
+	github.com/golangci/golangci-lint v1.64.8
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3
 	github.com/magefile/mage v1.15.0
 	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10
