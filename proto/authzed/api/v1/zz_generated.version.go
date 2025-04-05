@@ -1,6 +1,6 @@
 package v1
 
 const (
-	BufRepository = "buf.build/authzed/api"
-	BufTag        = "7144bbf4ecce52796a101560eb4cb6be1aa9be19"
+	BufRepository = "/Users/andriyko/Github/authzed/api"
+	BufTag        = ""
 )

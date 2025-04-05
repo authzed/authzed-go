@@ -147,6 +147,7 @@ func (m *ReadRelationshipsRequest) CloneVT() *ReadRelationshipsRequest {
 	r.RelationshipFilter = m.RelationshipFilter.CloneVT()
 	r.OptionalLimit = m.OptionalLimit
 	r.OptionalCursor = m.OptionalCursor.CloneVT()
+	r.IncludeObjectData = m.IncludeObjectData
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -166,6 +167,8 @@ func (m *ReadRelationshipsResponse) CloneVT() *ReadRelationshipsResponse {
 	r.ReadAt = m.ReadAt.CloneVT()
 	r.Relationship = m.Relationship.CloneVT()
 	r.AfterResultCursor = m.AfterResultCursor.CloneVT()
+	r.ResourceObjectData = (*structpb.Struct)((*structpb1.Struct)(m.ResourceObjectData).CloneVT())
+	r.SubjectObjectData = (*structpb.Struct)((*structpb1.Struct)(m.SubjectObjectData).CloneVT())
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -515,6 +518,7 @@ func (m *LookupResourcesRequest) CloneVT() *LookupResourcesRequest {
 	r.Context = (*structpb.Struct)((*structpb1.Struct)(m.Context).CloneVT())
 	r.OptionalLimit = m.OptionalLimit
 	r.OptionalCursor = m.OptionalCursor.CloneVT()
+	r.IncludeObjectData = m.IncludeObjectData
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -536,6 +540,7 @@ func (m *LookupResourcesResponse) CloneVT() *LookupResourcesResponse {
 	r.Permissionship = m.Permissionship
 	r.PartialCaveatInfo = m.PartialCaveatInfo.CloneVT()
 	r.AfterResultCursor = m.AfterResultCursor.CloneVT()
+	r.ResourceObjectData = (*structpb.Struct)((*structpb1.Struct)(m.ResourceObjectData).CloneVT())
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -561,6 +566,7 @@ func (m *LookupSubjectsRequest) CloneVT() *LookupSubjectsRequest {
 	r.OptionalConcreteLimit = m.OptionalConcreteLimit
 	r.OptionalCursor = m.OptionalCursor.CloneVT()
 	r.WildcardOption = m.WildcardOption
+	r.IncludeObjectData = m.IncludeObjectData
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -614,6 +620,7 @@ func (m *ResolvedSubject) CloneVT() *ResolvedSubject {
 	r.SubjectObjectId = m.SubjectObjectId
 	r.Permissionship = m.Permissionship
 	r.PartialCaveatInfo = m.PartialCaveatInfo.CloneVT()
+	r.SubjectObjectData = (*structpb.Struct)((*structpb1.Struct)(m.SubjectObjectData).CloneVT())
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -674,6 +681,7 @@ func (m *ExportBulkRelationshipsRequest) CloneVT() *ExportBulkRelationshipsReque
 	r.OptionalLimit = m.OptionalLimit
 	r.OptionalCursor = m.OptionalCursor.CloneVT()
 	r.OptionalRelationshipFilter = m.OptionalRelationshipFilter.CloneVT()
+	r.IncludeObjectData = m.IncludeObjectData
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -914,6 +922,9 @@ func (this *ReadRelationshipsRequest) EqualVT(that *ReadRelationshipsRequest) bo
 	if !this.OptionalCursor.EqualVT(that.OptionalCursor) {
 		return false
 	}
+	if this.IncludeObjectData != that.IncludeObjectData {
+		return false
+	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
@@ -937,6 +948,12 @@ func (this *ReadRelationshipsResponse) EqualVT(that *ReadRelationshipsResponse) 
 		return false
 	}
 	if !this.AfterResultCursor.EqualVT(that.AfterResultCursor) {
+		return false
+	}
+	if !(*structpb1.Struct)(this.ResourceObjectData).EqualVT((*structpb1.Struct)(that.ResourceObjectData)) {
+		return false
+	}
+	if !(*structpb1.Struct)(this.SubjectObjectData).EqualVT((*structpb1.Struct)(that.SubjectObjectData)) {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -1465,6 +1482,9 @@ func (this *LookupResourcesRequest) EqualVT(that *LookupResourcesRequest) bool {
 	if !this.OptionalCursor.EqualVT(that.OptionalCursor) {
 		return false
 	}
+	if this.IncludeObjectData != that.IncludeObjectData {
+		return false
+	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
@@ -1494,6 +1514,9 @@ func (this *LookupResourcesResponse) EqualVT(that *LookupResourcesResponse) bool
 		return false
 	}
 	if !this.AfterResultCursor.EqualVT(that.AfterResultCursor) {
+		return false
+	}
+	if !(*structpb1.Struct)(this.ResourceObjectData).EqualVT((*structpb1.Struct)(that.ResourceObjectData)) {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -1537,6 +1560,9 @@ func (this *LookupSubjectsRequest) EqualVT(that *LookupSubjectsRequest) bool {
 		return false
 	}
 	if this.WildcardOption != that.WildcardOption {
+		return false
+	}
+	if this.IncludeObjectData != that.IncludeObjectData {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -1624,6 +1650,9 @@ func (this *ResolvedSubject) EqualVT(that *ResolvedSubject) bool {
 	if !this.PartialCaveatInfo.EqualVT(that.PartialCaveatInfo) {
 		return false
 	}
+	if !(*structpb1.Struct)(this.SubjectObjectData).EqualVT((*structpb1.Struct)(that.SubjectObjectData)) {
+		return false
+	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
@@ -1702,6 +1731,9 @@ func (this *ExportBulkRelationshipsRequest) EqualVT(that *ExportBulkRelationship
 		return false
 	}
 	if !this.OptionalRelationshipFilter.EqualVT(that.OptionalRelationshipFilter) {
+		return false
+	}
+	if this.IncludeObjectData != that.IncludeObjectData {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -2070,6 +2102,16 @@ func (m *ReadRelationshipsRequest) MarshalToSizedBufferVT(dAtA []byte) (int, err
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.IncludeObjectData {
+		i--
+		if m.IncludeObjectData {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x28
+	}
 	if m.OptionalCursor != nil {
 		size, err := m.OptionalCursor.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -2137,6 +2179,26 @@ func (m *ReadRelationshipsResponse) MarshalToSizedBufferVT(dAtA []byte) (int, er
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.SubjectObjectData != nil {
+		size, err := (*structpb1.Struct)(m.SubjectObjectData).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.ResourceObjectData != nil {
+		size, err := (*structpb1.Struct)(m.ResourceObjectData).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x22
 	}
 	if m.AfterResultCursor != nil {
 		size, err := m.AfterResultCursor.MarshalToSizedBufferVT(dAtA[:i])
@@ -3131,6 +3193,16 @@ func (m *LookupResourcesRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.IncludeObjectData {
+		i--
+		if m.IncludeObjectData {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x40
+	}
 	if m.OptionalCursor != nil {
 		size, err := m.OptionalCursor.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -3223,6 +3295,16 @@ func (m *LookupResourcesResponse) MarshalToSizedBufferVT(dAtA []byte) (int, erro
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.ResourceObjectData != nil {
+		size, err := (*structpb1.Struct)(m.ResourceObjectData).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x32
+	}
 	if m.AfterResultCursor != nil {
 		size, err := m.AfterResultCursor.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -3297,6 +3379,16 @@ func (m *LookupSubjectsRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error)
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.IncludeObjectData {
+		i--
+		if m.IncludeObjectData {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x50
 	}
 	if m.WildcardOption != 0 {
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.WildcardOption))
@@ -3508,6 +3600,16 @@ func (m *ResolvedSubject) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.SubjectObjectData != nil {
+		size, err := (*structpb1.Struct)(m.SubjectObjectData).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x22
+	}
 	if m.PartialCaveatInfo != nil {
 		size, err := m.PartialCaveatInfo.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -3645,6 +3747,16 @@ func (m *ExportBulkRelationshipsRequest) MarshalToSizedBufferVT(dAtA []byte) (in
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.IncludeObjectData {
+		i--
+		if m.IncludeObjectData {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x28
 	}
 	if m.OptionalRelationshipFilter != nil {
 		size, err := m.OptionalRelationshipFilter.MarshalToSizedBufferVT(dAtA[:i])
@@ -3885,6 +3997,9 @@ func (m *ReadRelationshipsRequest) SizeVT() (n int) {
 		l = m.OptionalCursor.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
+	if m.IncludeObjectData {
+		n += 2
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -3905,6 +4020,14 @@ func (m *ReadRelationshipsResponse) SizeVT() (n int) {
 	}
 	if m.AfterResultCursor != nil {
 		l = m.AfterResultCursor.SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if m.ResourceObjectData != nil {
+		l = (*structpb1.Struct)(m.ResourceObjectData).SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if m.SubjectObjectData != nil {
+		l = (*structpb1.Struct)(m.SubjectObjectData).SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -4294,6 +4417,9 @@ func (m *LookupResourcesRequest) SizeVT() (n int) {
 		l = m.OptionalCursor.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
+	if m.IncludeObjectData {
+		n += 2
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -4321,6 +4447,10 @@ func (m *LookupResourcesResponse) SizeVT() (n int) {
 	}
 	if m.AfterResultCursor != nil {
 		l = m.AfterResultCursor.SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if m.ResourceObjectData != nil {
+		l = (*structpb1.Struct)(m.ResourceObjectData).SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -4366,6 +4496,9 @@ func (m *LookupSubjectsRequest) SizeVT() (n int) {
 	}
 	if m.WildcardOption != 0 {
 		n += 1 + protohelpers.SizeOfVarint(uint64(m.WildcardOption))
+	}
+	if m.IncludeObjectData {
+		n += 2
 	}
 	n += len(m.unknownFields)
 	return n
@@ -4433,6 +4566,10 @@ func (m *ResolvedSubject) SizeVT() (n int) {
 		l = m.PartialCaveatInfo.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
+	if m.SubjectObjectData != nil {
+		l = (*structpb1.Struct)(m.SubjectObjectData).SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -4486,6 +4623,9 @@ func (m *ExportBulkRelationshipsRequest) SizeVT() (n int) {
 	if m.OptionalRelationshipFilter != nil {
 		l = m.OptionalRelationshipFilter.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if m.IncludeObjectData {
+		n += 2
 	}
 	n += len(m.unknownFields)
 	return n
@@ -5291,6 +5431,26 @@ func (m *ReadRelationshipsRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IncludeObjectData", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IncludeObjectData = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -5447,6 +5607,78 @@ func (m *ReadRelationshipsResponse) UnmarshalVT(dAtA []byte) error {
 				m.AfterResultCursor = &Cursor{}
 			}
 			if err := m.AfterResultCursor.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ResourceObjectData", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.ResourceObjectData == nil {
+				m.ResourceObjectData = &structpb.Struct{}
+			}
+			if err := (*structpb1.Struct)(m.ResourceObjectData).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SubjectObjectData", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.SubjectObjectData == nil {
+				m.SubjectObjectData = &structpb.Struct{}
+			}
+			if err := (*structpb1.Struct)(m.SubjectObjectData).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -7916,6 +8148,26 @@ func (m *LookupResourcesRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 8:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IncludeObjectData", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IncludeObjectData = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -8123,6 +8375,42 @@ func (m *LookupResourcesResponse) UnmarshalVT(dAtA []byte) error {
 				m.AfterResultCursor = &Cursor{}
 			}
 			if err := m.AfterResultCursor.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ResourceObjectData", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.ResourceObjectData == nil {
+				m.ResourceObjectData = &structpb.Struct{}
+			}
+			if err := (*structpb1.Struct)(m.ResourceObjectData).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -8455,6 +8743,26 @@ func (m *LookupSubjectsRequest) UnmarshalVT(dAtA []byte) error {
 					break
 				}
 			}
+		case 10:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IncludeObjectData", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IncludeObjectData = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -8905,6 +9213,42 @@ func (m *ResolvedSubject) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SubjectObjectData", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.SubjectObjectData == nil {
+				m.SubjectObjectData = &structpb.Struct{}
+			}
+			if err := (*structpb1.Struct)(m.SubjectObjectData).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -9238,6 +9582,26 @@ func (m *ExportBulkRelationshipsRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IncludeObjectData", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IncludeObjectData = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])

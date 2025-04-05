@@ -2765,6 +2765,10 @@
         "optionalRelationshipFilter": {
           "$ref": "#/definitions/v1RelationshipFilter",
           "description": "optional_relationship_filter, if specified, indicates the\nfilter to apply to each relationship to be exported."
+        },
+        "includeObjectData": {
+          "type": "boolean",
+          "description": "include_object_data, if true, indicates that object data should be included in the response."
         }
       },
       "description": "ExportBulkRelationshipsRequest represents a resumable request for\nall relationships from the server."
@@ -2848,6 +2852,10 @@
         "optionalCursor": {
           "$ref": "#/definitions/apiv1Cursor",
           "description": "optional_cursor, if specified, indicates the cursor after which results should resume being returned.\nThe cursor can be found on the LookupResourcesResponse object."
+        },
+        "includeObjectData": {
+          "type": "boolean",
+          "description": "include_object_data, if true, indicates that object data should be included in the response."
         }
       },
       "description": "LookupResourcesRequest performs a lookup of all resources of a particular\nkind on which the subject has the specified permission or the relation in\nwhich the subject exists, streaming back the IDs of those resources."
@@ -2874,6 +2882,10 @@
         "afterResultCursor": {
           "$ref": "#/definitions/apiv1Cursor",
           "description": "after_result_cursor holds a cursor that can be used to resume the LookupResources stream after this\nresult."
+        },
+        "resourceObjectData": {
+          "type": "object",
+          "description": "resource_object_data is the optional object data associated with the resource."
         }
       },
       "description": "LookupResourcesResponse contains a single matching resource object ID for the\nrequested object type, permission, and subject."
@@ -2916,6 +2928,10 @@
         "wildcardOption": {
           "$ref": "#/definitions/LookupSubjectsRequestWildcardOption",
           "description": "wildcard_option specifies whether wildcards should be returned by LookupSubjects.\nFor backwards compatibility, defaults to WILDCARD_OPTION_INCLUDE_WILDCARDS if unspecified."
+        },
+        "includeObjectData": {
+          "type": "boolean",
+          "description": "include_object_data, if true, indicates that object data should be included in the response."
         }
       },
       "description": "LookupSubjectsRequest performs a lookup of all subjects of a particular\nkind for which the subject has the specified permission or the relation in\nwhich the subject exists, streaming back the IDs of those subjects."
@@ -2972,6 +2988,9 @@
         },
         "objectId": {
           "type": "string"
+        },
+        "objectData": {
+          "type": "object"
         }
       },
       "description": "ObjectReference is used to refer to a specific object in the system."
@@ -3060,6 +3079,10 @@
         "optionalCursor": {
           "$ref": "#/definitions/apiv1Cursor",
           "description": "optional_cursor, if specified, indicates the cursor after which results should resume being returned.\nThe cursor can be found on the ReadRelationshipsResponse object."
+        },
+        "includeObjectData": {
+          "type": "boolean",
+          "description": "include_object_data, if true, indicates that object data should be included in the response."
         }
       },
       "description": "ReadRelationshipsRequest specifies one or more filters used to read matching\nrelationships within the system."
@@ -3078,6 +3101,14 @@
         "afterResultCursor": {
           "$ref": "#/definitions/apiv1Cursor",
           "description": "after_result_cursor holds a cursor that can be used to resume the ReadRelationships stream after this\nresult."
+        },
+        "resourceObjectData": {
+          "type": "object",
+          "description": "resource_object_data is the optional object data associated with the resource."
+        },
+        "subjectObjectData": {
+          "type": "object",
+          "description": "subject_object_data is the optional object data associated with the subject."
         }
       },
       "description": "ReadRelationshipsResponse contains a Relationship found that matches the\nspecified relationship filter(s). A instance of this response message will\nbe streamed to the client for each relationship found."
@@ -3464,6 +3495,10 @@
         "partialCaveatInfo": {
           "$ref": "#/definitions/v1PartialCaveatInfo",
           "title": "partial_caveat_info holds information of a partially-evaluated caveated response"
+        },
+        "subjectObjectData": {
+          "type": "object",
+          "description": "subject_object_data is the optional object data associated with the subject."
         }
       },
       "description": "ResolvedSubject is a single subject resolved within LookupSubjects."

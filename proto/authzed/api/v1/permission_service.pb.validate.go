@@ -817,6 +817,8 @@ func (m *ReadRelationshipsRequest) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for IncludeObjectData
+
 	if len(errors) > 0 {
 		return ReadRelationshipsRequestMultiError(errors)
 	}
@@ -1022,6 +1024,64 @@ func (m *ReadRelationshipsResponse) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return ReadRelationshipsResponseValidationError{
 				field:  "AfterResultCursor",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetResourceObjectData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReadRelationshipsResponseValidationError{
+					field:  "ResourceObjectData",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReadRelationshipsResponseValidationError{
+					field:  "ResourceObjectData",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetResourceObjectData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReadRelationshipsResponseValidationError{
+				field:  "ResourceObjectData",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetSubjectObjectData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReadRelationshipsResponseValidationError{
+					field:  "SubjectObjectData",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReadRelationshipsResponseValidationError{
+					field:  "SubjectObjectData",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSubjectObjectData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReadRelationshipsResponseValidationError{
+				field:  "SubjectObjectData",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -4060,6 +4120,8 @@ func (m *LookupResourcesRequest) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for IncludeObjectData
+
 	if len(errors) > 0 {
 		return LookupResourcesRequestMultiError(errors)
 	}
@@ -4271,6 +4333,35 @@ func (m *LookupResourcesResponse) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return LookupResourcesResponseValidationError{
 				field:  "AfterResultCursor",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetResourceObjectData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LookupResourcesResponseValidationError{
+					field:  "ResourceObjectData",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LookupResourcesResponseValidationError{
+					field:  "ResourceObjectData",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetResourceObjectData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LookupResourcesResponseValidationError{
+				field:  "ResourceObjectData",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -4588,6 +4679,8 @@ func (m *LookupSubjectsRequest) validate(all bool) error {
 	}
 
 	// no validation rules for WildcardOption
+
+	// no validation rules for IncludeObjectData
 
 	if len(errors) > 0 {
 		return LookupSubjectsRequestMultiError(errors)
@@ -5024,6 +5117,35 @@ func (m *ResolvedSubject) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return ResolvedSubjectValidationError{
 				field:  "PartialCaveatInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetSubjectObjectData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ResolvedSubjectValidationError{
+					field:  "SubjectObjectData",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ResolvedSubjectValidationError{
+					field:  "SubjectObjectData",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSubjectObjectData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ResolvedSubjectValidationError{
+				field:  "SubjectObjectData",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -5484,6 +5606,8 @@ func (m *ExportBulkRelationshipsRequest) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for IncludeObjectData
 
 	if len(errors) > 0 {
 		return ExportBulkRelationshipsRequestMultiError(errors)
