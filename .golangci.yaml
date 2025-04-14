@@ -1,48 +1,57 @@
----
-run:
-  timeout: "5m"
-issues:
-  exclude-dirs:
-    - "proto"
-output:
-  sort-results: true
-linters-settings:
-  goimports:
-    local-prefixes: "github.com/authzed/authzed-go"
-  revive:
-    rules:
-      - name: "unused-parameter"
-        disabled: true
-  gosec:
-    excludes:
-      - "G402"  # Allow users to configure InsecureSkipVerify
+version: "2"
 linters:
   enable:
-    - "bidichk"
-    - "bodyclose"
-    - "errcheck"
-    - "errname"
-    - "errorlint"
-    - "gofumpt"
-    - "goimports"
-    - "goprintffuncname"
-    - "gosec"
-    - "gosimple"
-    - "govet"
-    - "importas"
-    - "ineffassign"
-    - "makezero"
-    - "paralleltest"
-    - "prealloc"
-    - "predeclared"
-    - "promlinter"
-    - "revive"
-    - "rowserrcheck"
-    - "staticcheck"
-    - "stylecheck"
-    - "typecheck"
-    - "unconvert"
-    - "unused"
-    - "usetesting"
-    - "wastedassign"
-    - "whitespace"
+    - bidichk
+    - bodyclose
+    - errname
+    - errorlint
+    - goprintffuncname
+    - gosec
+    - importas
+    - makezero
+    - paralleltest
+    - prealloc
+    - predeclared
+    - promlinter
+    - revive
+    - rowserrcheck
+    - staticcheck
+    - unconvert
+    - usetesting
+    - wastedassign
+    - whitespace
+  settings:
+    gosec:
+      excludes:
+        - G402
+    revive:
+      rules:
+        - name: unused-parameter
+          disabled: true
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - proto
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gofumpt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/authzed/authzed-go
+  exclusions:
+    generated: lax
+    paths:
+      - proto
+      - third_party$
+      - builtin$
+      - examples$
