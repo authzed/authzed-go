@@ -15,11 +15,18 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/types/known/structpb"
 
+	"go.uber.org/goleak"
+
 	v1 "github.com/authzed/authzed-go/proto/authzed/api/v1"
 	"github.com/authzed/authzed-go/v1"
 )
 
 var fullyConsistent = &v1.Consistency{Requirement: &v1.Consistency_FullyConsistent{FullyConsistent: true}}
+
+func TestMain(m *testing.M) {
+	// Ensure that all goroutines have been cleaned up at the end of the test.
+	goleak.VerifyTestMain(m)
+}
 
 func ExampleNewClient() {
 	systemCerts, err := grpcutil.WithSystemCerts(grpcutil.VerifyCA)

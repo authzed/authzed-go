@@ -16,6 +16,7 @@ require (
 	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10
 	github.com/samber/lo v1.49.1
 	github.com/stretchr/testify v1.10.0
+	go.uber.org/goleak v1.3.0
 	golang.org/x/sync v0.13.0
 	golang.org/x/vuln v1.1.4
 	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb
