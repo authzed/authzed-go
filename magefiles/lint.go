@@ -51,7 +51,7 @@ func (Lint) Gofumpt() error {
 // Golangcilint runs golangci-lint
 func (Lint) Golangcilint() error {
 	fmt.Println("running golangci-lint")
-	return runDirV(".", "go", "run", "github.com/golangci/golangci-lint/cmd/golangci-lint", "run", "--fix")
+	return runDirV(".", "go", "run", "github.com/golangci/golangci-lint/v2/cmd/golangci-lint", "run", "--fix")
 }
 
 // Vulncheck runs vulncheck
