@@ -327,6 +327,44 @@ func TestCheckBulkPermissions(t *testing.T) {
 	require.Equal(v1.CheckPermissionResponse_PERMISSIONSHIP_HAS_PERMISSION, response.Pairs[1].GetItem().Permissionship)
 }
 
+func TestReadRelationships(t *testing.T) {
+	t.Parallel()
+	require := require.New(t)
+	client := testClient(t)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	t.Cleanup(cancel)
+	err := WriteTestSchema(client)
+	require.NoError(err)
+	_, _, postOne, _, err := WriteTestTuples(client)
+	require.NoError(err)
+
+	resultBuffer := make([]*v1.Relationship, 0)
+
+	response, err := client.ReadRelationships(ctx, &v1.ReadRelationshipsRequest{
+		Consistency: fullyConsistent,
+		RelationshipFilter: &v1.RelationshipFilter{
+			ResourceType:       "post",
+			OptionalResourceId: postOne.ObjectId,
+		},
+	})
+	require.NoError(err)
+
+	for {
+		item, err := response.Recv()
+		if errors.Is(err, io.EOF) {
+			break
+		}
+		require.NoError(err)
+		resultBuffer = append(resultBuffer, item.Relationship)
+	}
+
+	require.Len(resultBuffer, 3)
+	require.Equal(postOne.ObjectId, resultBuffer[0].Resource.ObjectId)
+	require.Equal(postOne.ObjectId, resultBuffer[1].Resource.ObjectId)
+	require.Equal(postOne.ObjectId, resultBuffer[2].Resource.ObjectId)
+}
+
 func TestBulkExportImport(t *testing.T) {
 	t.Parallel()
 	require := require.New(t)
