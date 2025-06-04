@@ -75,20 +75,20 @@ func NewRetryableClient(endpoint string, opts ...grpc.DialOption) (*RetryableCli
 	}, nil
 }
 
-// RetryableBulkImportRelationships is a wrapper around BulkImportRelationships.
+// RetryableBulkImportRelationships is a wrapper around ImportBulkRelationships.
 // It retries the bulk import with different conflict strategies in case of failure.
 // The conflict strategy can be one of Fail, Skip, or Touch.
 // Fail will return an error if any duplicate relationships are found.
 // Skip will ignore duplicates and continue with the import.
 // Touch will retry the import with TOUCH semantics in case of duplicates.
 func (rc *RetryableClient) RetryableBulkImportRelationships(ctx context.Context, relationships []*v1.Relationship, conflictStrategy ConflictStrategy) error {
-	bulkImportClient, err := rc.BulkImportRelationships(ctx)
+	bulkImportClient, err := rc.ImportBulkRelationships(ctx)
 	if err != nil {
 		return fmt.Errorf("error creating writer stream: %w", err)
 	}
 
 	// Error handled later during CloseAndRecv call
-	_ = bulkImportClient.Send(&v1.BulkImportRelationshipsRequest{
+	_ = bulkImportClient.Send(&v1.ImportBulkRelationshipsRequest{
 		Relationships: relationships,
 	})
 
@@ -98,7 +98,7 @@ func (rc *RetryableClient) RetryableBulkImportRelationships(ctx context.Context,
 	}
 
 	// Failure to commit transaction means the stream is closed, so it can't be reused any further
-	// The retry will be done using WriteRelationships instead of BulkImportRelationships
+	// The retry will be done using WriteRelationships instead of ImportBulkRelationships
 	// This lets us retry with TOUCH semantics in case of failure due to duplicates
 	retryable := isRetryableError(err)
 	conflict := isAlreadyExistsError(err)
