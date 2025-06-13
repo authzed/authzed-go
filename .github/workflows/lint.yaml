@@ -11,37 +11,35 @@ on:  # yamllint disable-line rule:truthy
     types:
       - "checks_requested"
 jobs:
-  go-lint:
-    name: "Lint Go"
+  lint:
     runs-on: "ubuntu-latest"
     steps:
       - uses: "actions/checkout@v4"
       - uses: "authzed/actions/setup-go@main"
-      - name: "Lint Go"
-        run: "go run magefile.go lint:go"
-      - name: "Go Mod Tidy"
+        with:
+          go-version-file: "go.mod"
+      - name: "Lint everything and check for tidy dependencies"
+        run: "go run magefile.go lint:all && go run magefile.go deps:tidy"
+      - name: "Check no diff"
         uses: "chainguard-dev/actions/nodiff@main"
         with:
           path: ""
-          fixup-command: "go run magefile.go deps:tidy"
+          fixup-command: "go run magefile.go lint:all && go run magefile.go deps:tidy"
   protobuf:
     name: "Generate Protobufs"
     runs-on: "ubuntu-latest"
     steps:
       - uses: "actions/checkout@v4"
       - uses: "authzed/actions/setup-go@main"
-      - uses: "chainguard-dev/actions/nodiff@main"
+        with:
+          go-version-file: "go.mod"
+      - name: "Generate Protos"
+        run: "go run magefile.go gen:all"
+      - name: "Check no diff"
+        uses: "chainguard-dev/actions/nodiff@main"
         with:
           path: ""
-          fixup-command: "go run magefile.go gen:proto"
-  extra-lint:
-    name: "Lint YAML"
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: "actions/checkout@v4"
-      - uses: "authzed/actions/setup-go@main"
-      - name: "Lint Go"
-        run: "go run magefile.go lint:extra"
+          fixup-command: "go run magefile.go gen:all"
   codeql:
     name: "Analyze with CodeQL"
     runs-on: "ubuntu-latest"
