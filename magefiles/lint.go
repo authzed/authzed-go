@@ -18,7 +18,7 @@ func (l Lint) All() error {
 	return nil
 }
 
-// Extra lits everything that's not code
+// Extra lints everything that's not code
 func (l Lint) Extra() error {
 	mg.Deps(l.Yaml)
 	return nil
