@@ -9,6 +9,7 @@ package v1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -259,7 +260,7 @@ var File_authzed_api_v1_watch_service_proto protoreflect.FileDescriptor
 
 const file_authzed_api_v1_watch_service_proto_rawDesc = "" +
 	"\n" +
-	"\"authzed/api/v1/watch_service.proto\x12\x0eauthzed.api.v1\x1a\x19authzed/api/v1/core.proto\x1a'authzed/api/v1/permission_service.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x17validate/validate.proto\"\xe9\x03\n" +
+	"\"authzed/api/v1/watch_service.proto\x12\x0eauthzed.api.v1\x1a\x19authzed/api/v1/core.proto\x1a'authzed/api/v1/permission_service.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17validate/validate.proto\"\xe9\x03\n" +
 	"\fWatchRequest\x12\xd3\x01\n" +
 	"\x15optional_object_types\x18\x01 \x03(\tB\x9e\x01\xfaBL\x92\x01I\b\x00\"ErC(\x80\x012>^([a-z][a-z0-9_]{1,62}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$\xbaHL\x92\x01I\b\x00\"ErC(\x80\x012>^([a-z][a-z0-9_]{1,62}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$R\x13optionalObjectTypes\x12L\n" +
 	"\x15optional_start_cursor\x18\x02 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x13optionalStartCursor\x12f\n" +
@@ -275,9 +276,10 @@ const file_authzed_api_v1_watch_service_proto_rawDesc = "" +
 	"\x16WATCH_KIND_UNSPECIFIED\x10\x00\x12+\n" +
 	"'WATCH_KIND_INCLUDE_RELATIONSHIP_UPDATES\x10\x01\x12%\n" +
 	"!WATCH_KIND_INCLUDE_SCHEMA_UPDATES\x10\x02\x12\"\n" +
-	"\x1eWATCH_KIND_INCLUDE_CHECKPOINTS\x10\x032l\n" +
-	"\fWatchService\x12\\\n" +
-	"\x05Watch\x12\x1c.authzed.api.v1.WatchRequest\x1a\x1d.authzed.api.v1.WatchResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/v1/watch0\x01BJ\n" +
+	"\x1eWATCH_KIND_INCLUDE_CHECKPOINTS\x10\x032v\n" +
+	"\fWatchService\x12f\n" +
+	"\x05Watch\x12\x1c.authzed.api.v1.WatchRequest\x1a\x1d.authzed.api.v1.WatchResponse\"\x1e\x92A\a\n" +
+	"\x05Watch\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/v1/watch0\x01BJ\n" +
 	"\x12com.authzed.api.v1P\x01Z2github.com/authzed/authzed-go/proto/authzed/api/v1b\x06proto3"
 
 var (

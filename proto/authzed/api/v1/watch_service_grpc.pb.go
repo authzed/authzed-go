@@ -26,6 +26,8 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WatchServiceClient interface {
+	// Watch returns a stream of events that occurred in the datastore in ascending timestamp order.
+	// The events can be relationship updates, schema updates, or checkpoints.
 	Watch(ctx context.Context, in *WatchRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchResponse], error)
 }
 
@@ -60,6 +62,8 @@ type WatchService_WatchClient = grpc.ServerStreamingClient[WatchResponse]
 // All implementations must embed UnimplementedWatchServiceServer
 // for forward compatibility.
 type WatchServiceServer interface {
+	// Watch returns a stream of events that occurred in the datastore in ascending timestamp order.
+	// The events can be relationship updates, schema updates, or checkpoints.
 	Watch(*WatchRequest, grpc.ServerStreamingServer[WatchResponse]) error
 	mustEmbedUnimplementedWatchServiceServer()
 }

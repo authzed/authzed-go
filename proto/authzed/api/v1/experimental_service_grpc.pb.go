@@ -38,23 +38,14 @@ const (
 // ExperimentalService exposes a number of APIs that are currently being
 // prototyped and tested for future inclusion in the stable API.
 type ExperimentalServiceClient interface {
-	// BulkImportRelationships is a faster path to writing a large number of
-	// relationships at once. It is both batched and streaming. For maximum
-	// performance, the caller should attempt to write relationships in as close
-	// to relationship sort order as possible: (resource.object_type,
-	// resource.object_id, relation, subject.object.object_type,
-	// subject.object.object_id, subject.optional_relation)
-	//
-	// EXPERIMENTAL
-	// https://github.com/authzed/spicedb/issues/1303
+	// Deprecated: Do not use.
+	// DEPRECATED: Promoted to ImportBulkRelationships in the stable API.
 	BulkImportRelationships(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[BulkImportRelationshipsRequest, BulkImportRelationshipsResponse], error)
-	// BulkExportRelationships is the fastest path available to exporting
-	// relationships from the server. It is resumable, and will return results
-	// in an order determined by the server.
+	// Deprecated: Do not use.
+	// DEPRECATED: Promoted to ExportBulkRelationships in the stable API.
 	BulkExportRelationships(ctx context.Context, in *BulkExportRelationshipsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[BulkExportRelationshipsResponse], error)
 	// Deprecated: Do not use.
-	// NOTE: BulkCheckPermission has been promoted to the stable API as "CheckBulkPermission" and the
-	// API will be removed from experimental in a future release.
+	// DEPRECATED: Promoted to CheckBulkPermission in the stable API.
 	BulkCheckPermission(ctx context.Context, in *BulkCheckPermissionRequest, opts ...grpc.CallOption) (*BulkCheckPermissionResponse, error)
 	// Deprecated: Do not use.
 	// DEPRECATED: Promoted to ReflectSchema in the stable API.
@@ -85,6 +76,7 @@ func NewExperimentalServiceClient(cc grpc.ClientConnInterface) ExperimentalServi
 	return &experimentalServiceClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *experimentalServiceClient) BulkImportRelationships(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[BulkImportRelationshipsRequest, BulkImportRelationshipsResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &ExperimentalService_ServiceDesc.Streams[0], ExperimentalService_BulkImportRelationships_FullMethodName, cOpts...)
@@ -98,6 +90,7 @@ func (c *experimentalServiceClient) BulkImportRelationships(ctx context.Context,
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ExperimentalService_BulkImportRelationshipsClient = grpc.ClientStreamingClient[BulkImportRelationshipsRequest, BulkImportRelationshipsResponse]
 
+// Deprecated: Do not use.
 func (c *experimentalServiceClient) BulkExportRelationships(ctx context.Context, in *BulkExportRelationshipsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[BulkExportRelationshipsResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &ExperimentalService_ServiceDesc.Streams[1], ExperimentalService_BulkExportRelationships_FullMethodName, cOpts...)
@@ -209,23 +202,14 @@ func (c *experimentalServiceClient) ExperimentalUnregisterRelationshipCounter(ct
 // ExperimentalService exposes a number of APIs that are currently being
 // prototyped and tested for future inclusion in the stable API.
 type ExperimentalServiceServer interface {
-	// BulkImportRelationships is a faster path to writing a large number of
-	// relationships at once. It is both batched and streaming. For maximum
-	// performance, the caller should attempt to write relationships in as close
-	// to relationship sort order as possible: (resource.object_type,
-	// resource.object_id, relation, subject.object.object_type,
-	// subject.object.object_id, subject.optional_relation)
-	//
-	// EXPERIMENTAL
-	// https://github.com/authzed/spicedb/issues/1303
+	// Deprecated: Do not use.
+	// DEPRECATED: Promoted to ImportBulkRelationships in the stable API.
 	BulkImportRelationships(grpc.ClientStreamingServer[BulkImportRelationshipsRequest, BulkImportRelationshipsResponse]) error
-	// BulkExportRelationships is the fastest path available to exporting
-	// relationships from the server. It is resumable, and will return results
-	// in an order determined by the server.
+	// Deprecated: Do not use.
+	// DEPRECATED: Promoted to ExportBulkRelationships in the stable API.
 	BulkExportRelationships(*BulkExportRelationshipsRequest, grpc.ServerStreamingServer[BulkExportRelationshipsResponse]) error
 	// Deprecated: Do not use.
-	// NOTE: BulkCheckPermission has been promoted to the stable API as "CheckBulkPermission" and the
-	// API will be removed from experimental in a future release.
+	// DEPRECATED: Promoted to CheckBulkPermission in the stable API.
 	BulkCheckPermission(context.Context, *BulkCheckPermissionRequest) (*BulkCheckPermissionResponse, error)
 	// Deprecated: Do not use.
 	// DEPRECATED: Promoted to ReflectSchema in the stable API.

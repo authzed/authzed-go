@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	WatchPermissionSetsService_WatchPermissionSets_FullMethodName  = "/authzed.api.materialize.v0.WatchPermissionSetsService/WatchPermissionSets"
-	WatchPermissionSetsService_LookupPermissionSets_FullMethodName = "/authzed.api.materialize.v0.WatchPermissionSetsService/LookupPermissionSets"
+	WatchPermissionSetsService_WatchPermissionSets_FullMethodName    = "/authzed.api.materialize.v0.WatchPermissionSetsService/WatchPermissionSets"
+	WatchPermissionSetsService_LookupPermissionSets_FullMethodName   = "/authzed.api.materialize.v0.WatchPermissionSetsService/LookupPermissionSets"
+	WatchPermissionSetsService_DownloadPermissionSets_FullMethodName = "/authzed.api.materialize.v0.WatchPermissionSetsService/DownloadPermissionSets"
 )
 
 // WatchPermissionSetsServiceClient is the client API for WatchPermissionSetsService service.
@@ -72,6 +73,11 @@ type WatchPermissionSetsServiceClient interface {
 	// cursor received. Once completed, the consumer may start streaming permission set changes using WatchPermissionSets
 	// and the revision token from the last LookupPermissionSets response.
 	LookupPermissionSets(ctx context.Context, in *LookupPermissionSetsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[LookupPermissionSetsResponse], error)
+	// DownloadPermissionSets returns URLs to download permission sets data as Avro files.
+	// This provides an alternative to LookupPermissionSets for customers who need to download
+	// large datasets efficiently. The returned URLs point to compressed Avro files containing
+	// the permission sets data in a normalized format.
+	DownloadPermissionSets(ctx context.Context, in *DownloadPermissionSetsRequest, opts ...grpc.CallOption) (*DownloadPermissionSetsResponse, error)
 }
 
 type watchPermissionSetsServiceClient struct {
@@ -119,6 +125,16 @@ func (c *watchPermissionSetsServiceClient) LookupPermissionSets(ctx context.Cont
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type WatchPermissionSetsService_LookupPermissionSetsClient = grpc.ServerStreamingClient[LookupPermissionSetsResponse]
+
+func (c *watchPermissionSetsServiceClient) DownloadPermissionSets(ctx context.Context, in *DownloadPermissionSetsRequest, opts ...grpc.CallOption) (*DownloadPermissionSetsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DownloadPermissionSetsResponse)
+	err := c.cc.Invoke(ctx, WatchPermissionSetsService_DownloadPermissionSets_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
 // WatchPermissionSetsServiceServer is the server API for WatchPermissionSetsService service.
 // All implementations must embed UnimplementedWatchPermissionSetsServiceServer
@@ -169,6 +185,11 @@ type WatchPermissionSetsServiceServer interface {
 	// cursor received. Once completed, the consumer may start streaming permission set changes using WatchPermissionSets
 	// and the revision token from the last LookupPermissionSets response.
 	LookupPermissionSets(*LookupPermissionSetsRequest, grpc.ServerStreamingServer[LookupPermissionSetsResponse]) error
+	// DownloadPermissionSets returns URLs to download permission sets data as Avro files.
+	// This provides an alternative to LookupPermissionSets for customers who need to download
+	// large datasets efficiently. The returned URLs point to compressed Avro files containing
+	// the permission sets data in a normalized format.
+	DownloadPermissionSets(context.Context, *DownloadPermissionSetsRequest) (*DownloadPermissionSetsResponse, error)
 	mustEmbedUnimplementedWatchPermissionSetsServiceServer()
 }
 
@@ -184,6 +205,9 @@ func (UnimplementedWatchPermissionSetsServiceServer) WatchPermissionSets(*WatchP
 }
 func (UnimplementedWatchPermissionSetsServiceServer) LookupPermissionSets(*LookupPermissionSetsRequest, grpc.ServerStreamingServer[LookupPermissionSetsResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method LookupPermissionSets not implemented")
+}
+func (UnimplementedWatchPermissionSetsServiceServer) DownloadPermissionSets(context.Context, *DownloadPermissionSetsRequest) (*DownloadPermissionSetsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DownloadPermissionSets not implemented")
 }
 func (UnimplementedWatchPermissionSetsServiceServer) mustEmbedUnimplementedWatchPermissionSetsServiceServer() {
 }
@@ -229,13 +253,36 @@ func _WatchPermissionSetsService_LookupPermissionSets_Handler(srv interface{}, s
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type WatchPermissionSetsService_LookupPermissionSetsServer = grpc.ServerStreamingServer[LookupPermissionSetsResponse]
 
+func _WatchPermissionSetsService_DownloadPermissionSets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DownloadPermissionSetsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WatchPermissionSetsServiceServer).DownloadPermissionSets(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WatchPermissionSetsService_DownloadPermissionSets_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WatchPermissionSetsServiceServer).DownloadPermissionSets(ctx, req.(*DownloadPermissionSetsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WatchPermissionSetsService_ServiceDesc is the grpc.ServiceDesc for WatchPermissionSetsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var WatchPermissionSetsService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "authzed.api.materialize.v0.WatchPermissionSetsService",
 	HandlerType: (*WatchPermissionSetsServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "DownloadPermissionSets",
+			Handler:    _WatchPermissionSetsService_DownloadPermissionSets_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "WatchPermissionSets",

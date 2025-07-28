@@ -798,6 +798,151 @@ func (x *BreakingSchemaChange) GetChangeAt() *v1.ZedToken {
 	return nil
 }
 
+type DownloadPermissionSetsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// optional_at_revision is a specific revision to download; for now this will
+	// just validate that it matches the backing store if provided.
+	OptionalAtRevision *v1.ZedToken `protobuf:"bytes,1,opt,name=optional_at_revision,json=optionalAtRevision,proto3" json:"optional_at_revision,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *DownloadPermissionSetsRequest) Reset() {
+	*x = DownloadPermissionSetsRequest{}
+	mi := &file_authzed_api_materialize_v0_watchpermissionsets_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DownloadPermissionSetsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DownloadPermissionSetsRequest) ProtoMessage() {}
+
+func (x *DownloadPermissionSetsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_authzed_api_materialize_v0_watchpermissionsets_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DownloadPermissionSetsRequest.ProtoReflect.Descriptor instead.
+func (*DownloadPermissionSetsRequest) Descriptor() ([]byte, []int) {
+	return file_authzed_api_materialize_v0_watchpermissionsets_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *DownloadPermissionSetsRequest) GetOptionalAtRevision() *v1.ZedToken {
+	if x != nil {
+		return x.OptionalAtRevision
+	}
+	return nil
+}
+
+type File struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// name is the filename of the downloadable file
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// url is the download URL for the file (typically a signed S3 URL)
+	Url           string `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *File) Reset() {
+	*x = File{}
+	mi := &file_authzed_api_materialize_v0_watchpermissionsets_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *File) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*File) ProtoMessage() {}
+
+func (x *File) ProtoReflect() protoreflect.Message {
+	mi := &file_authzed_api_materialize_v0_watchpermissionsets_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use File.ProtoReflect.Descriptor instead.
+func (*File) Descriptor() ([]byte, []int) {
+	return file_authzed_api_materialize_v0_watchpermissionsets_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *File) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *File) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+type DownloadPermissionSetsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// files contains the list of downloadable files with their URLs
+	Files         []*File `protobuf:"bytes,1,rep,name=files,proto3" json:"files,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DownloadPermissionSetsResponse) Reset() {
+	*x = DownloadPermissionSetsResponse{}
+	mi := &file_authzed_api_materialize_v0_watchpermissionsets_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DownloadPermissionSetsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DownloadPermissionSetsResponse) ProtoMessage() {}
+
+func (x *DownloadPermissionSetsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_authzed_api_materialize_v0_watchpermissionsets_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DownloadPermissionSetsResponse.ProtoReflect.Descriptor instead.
+func (*DownloadPermissionSetsResponse) Descriptor() ([]byte, []int) {
+	return file_authzed_api_materialize_v0_watchpermissionsets_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *DownloadPermissionSetsResponse) GetFiles() []*File {
+	if x != nil {
+		return x.Files
+	}
+	return nil
+}
+
 var File_authzed_api_materialize_v0_watchpermissionsets_proto protoreflect.FileDescriptor
 
 const file_authzed_api_materialize_v0_watchpermissionsets_proto_rawDesc = "" +
@@ -852,10 +997,18 @@ const file_authzed_api_materialize_v0_watchpermissionsets_proto_rawDesc = "" +
 	"\x1cLookupPermissionSetsRequired\x12F\n" +
 	"\x12required_lookup_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x10requiredLookupAt\"M\n" +
 	"\x14BreakingSchemaChange\x125\n" +
-	"\tchange_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\bchangeAt2\xb9\x02\n" +
+	"\tchange_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\bchangeAt\"k\n" +
+	"\x1dDownloadPermissionSetsRequest\x12J\n" +
+	"\x14optional_at_revision\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x12optionalAtRevision\",\n" +
+	"\x04File\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
+	"\x03url\x18\x02 \x01(\tR\x03url\"X\n" +
+	"\x1eDownloadPermissionSetsResponse\x126\n" +
+	"\x05files\x18\x01 \x03(\v2 .authzed.api.materialize.v0.FileR\x05files2\xcd\x03\n" +
 	"\x1aWatchPermissionSetsService\x12\x8a\x01\n" +
 	"\x13WatchPermissionSets\x126.authzed.api.materialize.v0.WatchPermissionSetsRequest\x1a7.authzed.api.materialize.v0.WatchPermissionSetsResponse\"\x000\x01\x12\x8d\x01\n" +
-	"\x14LookupPermissionSets\x127.authzed.api.materialize.v0.LookupPermissionSetsRequest\x1a8.authzed.api.materialize.v0.LookupPermissionSetsResponse\"\x000\x01Bb\n" +
+	"\x14LookupPermissionSets\x127.authzed.api.materialize.v0.LookupPermissionSetsRequest\x1a8.authzed.api.materialize.v0.LookupPermissionSetsResponse\"\x000\x01\x12\x91\x01\n" +
+	"\x16DownloadPermissionSets\x129.authzed.api.materialize.v0.DownloadPermissionSetsRequest\x1a:.authzed.api.materialize.v0.DownloadPermissionSetsResponse\"\x00Bb\n" +
 	"\x1ecom.authzed.api.materialize.v0P\x01Z>github.com/authzed/authzed-go/proto/authzed/api/materialize/v0b\x06proto3"
 
 var (
@@ -871,48 +1024,55 @@ func file_authzed_api_materialize_v0_watchpermissionsets_proto_rawDescGZIP() []b
 }
 
 var file_authzed_api_materialize_v0_watchpermissionsets_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_authzed_api_materialize_v0_watchpermissionsets_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_authzed_api_materialize_v0_watchpermissionsets_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_authzed_api_materialize_v0_watchpermissionsets_proto_goTypes = []any{
-	(PermissionSetChange_SetOperation)(0), // 0: authzed.api.materialize.v0.PermissionSetChange.SetOperation
-	(*WatchPermissionSetsRequest)(nil),    // 1: authzed.api.materialize.v0.WatchPermissionSetsRequest
-	(*WatchPermissionSetsResponse)(nil),   // 2: authzed.api.materialize.v0.WatchPermissionSetsResponse
-	(*Cursor)(nil),                        // 3: authzed.api.materialize.v0.Cursor
-	(*LookupPermissionSetsRequest)(nil),   // 4: authzed.api.materialize.v0.LookupPermissionSetsRequest
-	(*LookupPermissionSetsResponse)(nil),  // 5: authzed.api.materialize.v0.LookupPermissionSetsResponse
-	(*PermissionSetChange)(nil),           // 6: authzed.api.materialize.v0.PermissionSetChange
-	(*SetReference)(nil),                  // 7: authzed.api.materialize.v0.SetReference
-	(*MemberReference)(nil),               // 8: authzed.api.materialize.v0.MemberReference
-	(*LookupPermissionSetsRequired)(nil),  // 9: authzed.api.materialize.v0.LookupPermissionSetsRequired
-	(*BreakingSchemaChange)(nil),          // 10: authzed.api.materialize.v0.BreakingSchemaChange
-	(*v1.ZedToken)(nil),                   // 11: authzed.api.v1.ZedToken
+	(PermissionSetChange_SetOperation)(0),  // 0: authzed.api.materialize.v0.PermissionSetChange.SetOperation
+	(*WatchPermissionSetsRequest)(nil),     // 1: authzed.api.materialize.v0.WatchPermissionSetsRequest
+	(*WatchPermissionSetsResponse)(nil),    // 2: authzed.api.materialize.v0.WatchPermissionSetsResponse
+	(*Cursor)(nil),                         // 3: authzed.api.materialize.v0.Cursor
+	(*LookupPermissionSetsRequest)(nil),    // 4: authzed.api.materialize.v0.LookupPermissionSetsRequest
+	(*LookupPermissionSetsResponse)(nil),   // 5: authzed.api.materialize.v0.LookupPermissionSetsResponse
+	(*PermissionSetChange)(nil),            // 6: authzed.api.materialize.v0.PermissionSetChange
+	(*SetReference)(nil),                   // 7: authzed.api.materialize.v0.SetReference
+	(*MemberReference)(nil),                // 8: authzed.api.materialize.v0.MemberReference
+	(*LookupPermissionSetsRequired)(nil),   // 9: authzed.api.materialize.v0.LookupPermissionSetsRequired
+	(*BreakingSchemaChange)(nil),           // 10: authzed.api.materialize.v0.BreakingSchemaChange
+	(*DownloadPermissionSetsRequest)(nil),  // 11: authzed.api.materialize.v0.DownloadPermissionSetsRequest
+	(*File)(nil),                           // 12: authzed.api.materialize.v0.File
+	(*DownloadPermissionSetsResponse)(nil), // 13: authzed.api.materialize.v0.DownloadPermissionSetsResponse
+	(*v1.ZedToken)(nil),                    // 14: authzed.api.v1.ZedToken
 }
 var file_authzed_api_materialize_v0_watchpermissionsets_proto_depIdxs = []int32{
-	11, // 0: authzed.api.materialize.v0.WatchPermissionSetsRequest.optional_starting_after:type_name -> authzed.api.v1.ZedToken
+	14, // 0: authzed.api.materialize.v0.WatchPermissionSetsRequest.optional_starting_after:type_name -> authzed.api.v1.ZedToken
 	6,  // 1: authzed.api.materialize.v0.WatchPermissionSetsResponse.change:type_name -> authzed.api.materialize.v0.PermissionSetChange
-	11, // 2: authzed.api.materialize.v0.WatchPermissionSetsResponse.completed_revision:type_name -> authzed.api.v1.ZedToken
+	14, // 2: authzed.api.materialize.v0.WatchPermissionSetsResponse.completed_revision:type_name -> authzed.api.v1.ZedToken
 	9,  // 3: authzed.api.materialize.v0.WatchPermissionSetsResponse.lookup_permission_sets_required:type_name -> authzed.api.materialize.v0.LookupPermissionSetsRequired
 	10, // 4: authzed.api.materialize.v0.WatchPermissionSetsResponse.breaking_schema_change:type_name -> authzed.api.materialize.v0.BreakingSchemaChange
-	11, // 5: authzed.api.materialize.v0.Cursor.token:type_name -> authzed.api.v1.ZedToken
-	11, // 6: authzed.api.materialize.v0.LookupPermissionSetsRequest.optional_at_revision:type_name -> authzed.api.v1.ZedToken
+	14, // 5: authzed.api.materialize.v0.Cursor.token:type_name -> authzed.api.v1.ZedToken
+	14, // 6: authzed.api.materialize.v0.LookupPermissionSetsRequest.optional_at_revision:type_name -> authzed.api.v1.ZedToken
 	3,  // 7: authzed.api.materialize.v0.LookupPermissionSetsRequest.optional_starting_after_cursor:type_name -> authzed.api.materialize.v0.Cursor
 	6,  // 8: authzed.api.materialize.v0.LookupPermissionSetsResponse.change:type_name -> authzed.api.materialize.v0.PermissionSetChange
 	3,  // 9: authzed.api.materialize.v0.LookupPermissionSetsResponse.cursor:type_name -> authzed.api.materialize.v0.Cursor
-	11, // 10: authzed.api.materialize.v0.PermissionSetChange.at_revision:type_name -> authzed.api.v1.ZedToken
+	14, // 10: authzed.api.materialize.v0.PermissionSetChange.at_revision:type_name -> authzed.api.v1.ZedToken
 	0,  // 11: authzed.api.materialize.v0.PermissionSetChange.operation:type_name -> authzed.api.materialize.v0.PermissionSetChange.SetOperation
 	7,  // 12: authzed.api.materialize.v0.PermissionSetChange.parent_set:type_name -> authzed.api.materialize.v0.SetReference
 	7,  // 13: authzed.api.materialize.v0.PermissionSetChange.child_set:type_name -> authzed.api.materialize.v0.SetReference
 	8,  // 14: authzed.api.materialize.v0.PermissionSetChange.child_member:type_name -> authzed.api.materialize.v0.MemberReference
-	11, // 15: authzed.api.materialize.v0.LookupPermissionSetsRequired.required_lookup_at:type_name -> authzed.api.v1.ZedToken
-	11, // 16: authzed.api.materialize.v0.BreakingSchemaChange.change_at:type_name -> authzed.api.v1.ZedToken
-	1,  // 17: authzed.api.materialize.v0.WatchPermissionSetsService.WatchPermissionSets:input_type -> authzed.api.materialize.v0.WatchPermissionSetsRequest
-	4,  // 18: authzed.api.materialize.v0.WatchPermissionSetsService.LookupPermissionSets:input_type -> authzed.api.materialize.v0.LookupPermissionSetsRequest
-	2,  // 19: authzed.api.materialize.v0.WatchPermissionSetsService.WatchPermissionSets:output_type -> authzed.api.materialize.v0.WatchPermissionSetsResponse
-	5,  // 20: authzed.api.materialize.v0.WatchPermissionSetsService.LookupPermissionSets:output_type -> authzed.api.materialize.v0.LookupPermissionSetsResponse
-	19, // [19:21] is the sub-list for method output_type
-	17, // [17:19] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	14, // 15: authzed.api.materialize.v0.LookupPermissionSetsRequired.required_lookup_at:type_name -> authzed.api.v1.ZedToken
+	14, // 16: authzed.api.materialize.v0.BreakingSchemaChange.change_at:type_name -> authzed.api.v1.ZedToken
+	14, // 17: authzed.api.materialize.v0.DownloadPermissionSetsRequest.optional_at_revision:type_name -> authzed.api.v1.ZedToken
+	12, // 18: authzed.api.materialize.v0.DownloadPermissionSetsResponse.files:type_name -> authzed.api.materialize.v0.File
+	1,  // 19: authzed.api.materialize.v0.WatchPermissionSetsService.WatchPermissionSets:input_type -> authzed.api.materialize.v0.WatchPermissionSetsRequest
+	4,  // 20: authzed.api.materialize.v0.WatchPermissionSetsService.LookupPermissionSets:input_type -> authzed.api.materialize.v0.LookupPermissionSetsRequest
+	11, // 21: authzed.api.materialize.v0.WatchPermissionSetsService.DownloadPermissionSets:input_type -> authzed.api.materialize.v0.DownloadPermissionSetsRequest
+	2,  // 22: authzed.api.materialize.v0.WatchPermissionSetsService.WatchPermissionSets:output_type -> authzed.api.materialize.v0.WatchPermissionSetsResponse
+	5,  // 23: authzed.api.materialize.v0.WatchPermissionSetsService.LookupPermissionSets:output_type -> authzed.api.materialize.v0.LookupPermissionSetsResponse
+	13, // 24: authzed.api.materialize.v0.WatchPermissionSetsService.DownloadPermissionSets:output_type -> authzed.api.materialize.v0.DownloadPermissionSetsResponse
+	22, // [22:25] is the sub-list for method output_type
+	19, // [19:22] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_authzed_api_materialize_v0_watchpermissionsets_proto_init() }
@@ -936,7 +1096,7 @@ func file_authzed_api_materialize_v0_watchpermissionsets_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_authzed_api_materialize_v0_watchpermissionsets_proto_rawDesc), len(file_authzed_api_materialize_v0_watchpermissionsets_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   10,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
