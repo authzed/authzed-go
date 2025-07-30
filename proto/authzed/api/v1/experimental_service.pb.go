@@ -9,6 +9,7 @@ package v1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	status "google.golang.org/genproto/googleapis/rpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -2445,7 +2446,7 @@ var File_authzed_api_v1_experimental_service_proto protoreflect.FileDescriptor
 
 const file_authzed_api_v1_experimental_service_proto_rawDesc = "" +
 	"\n" +
-	")authzed/api/v1/experimental_service.proto\x12\x0eauthzed.api.v1\x1a\x19authzed/api/v1/core.proto\x1a'authzed/api/v1/permission_service.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x17google/rpc/status.proto\x1a\x17validate/validate.proto\"\xff\x01\n" +
+	")authzed/api/v1/experimental_service.proto\x12\x0eauthzed.api.v1\x1a\x19authzed/api/v1/core.proto\x1a'authzed/api/v1/permission_service.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x17google/rpc/status.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17validate/validate.proto\"\xff\x01\n" +
 	".ExperimentalRegisterRelationshipCounterRequest\x12h\n" +
 	"\x04name\x18\x01 \x01(\tBT\xfaB'r%(@2!^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\xbaH'r%(@2!^([a-z][a-z0-9_]{1,62}[a-z0-9])?$R\x04name\x12c\n" +
 	"\x13relationship_filter\x18\x02 \x01(\v2\".authzed.api.v1.RelationshipFilterB\x0e\xfaB\x05\x8a\x01\x02\x10\x01\xbaH\x03\xc8\x01\x01R\x12relationshipFilter\"1\n" +
@@ -2599,18 +2600,35 @@ const file_authzed_api_v1_experimental_service_proto_rawDesc = "" +
 	"\x16caveat_parameter_added\x18\x11 \x01(\v2\".authzed.api.v1.ExpCaveatParameterH\x00R\x14caveatParameterAdded\x12^\n" +
 	"\x18caveat_parameter_removed\x18\x12 \x01(\v2\".authzed.api.v1.ExpCaveatParameterH\x00R\x16caveatParameterRemoved\x12q\n" +
 	"\x1dcaveat_parameter_type_changed\x18\x13 \x01(\v2,.authzed.api.v1.ExpCaveatParameterTypeChangeH\x00R\x1acaveatParameterTypeChangedB\x06\n" +
-	"\x04diff2\xb6\x0f\n" +
-	"\x13ExperimentalService\x12\xb2\x01\n" +
-	"\x17BulkImportRelationships\x12..authzed.api.v1.BulkImportRelationshipsRequest\x1a/.authzed.api.v1.BulkImportRelationshipsResponse\"4\x82\xd3\xe4\x93\x02.:\x01*\")/v1/experimental/relationships/bulkimport(\x01\x12\xb2\x01\n" +
-	"\x17BulkExportRelationships\x12..authzed.api.v1.BulkExportRelationshipsRequest\x1a/.authzed.api.v1.BulkExportRelationshipsResponse\"4\x82\xd3\xe4\x93\x02.:\x01*\")/v1/experimental/relationships/bulkexport0\x01\x12\xae\x01\n" +
-	"\x13BulkCheckPermission\x12*.authzed.api.v1.BulkCheckPermissionRequest\x1a+.authzed.api.v1.BulkCheckPermissionResponse\">\x82\xd3\xe4\x93\x025:\x01*\"0/v1/experimental/permissions/bulkcheckpermission\x88\x02\x01\x12\xae\x01\n" +
-	"\x19ExperimentalReflectSchema\x120.authzed.api.v1.ExperimentalReflectSchemaRequest\x1a1.authzed.api.v1.ExperimentalReflectSchemaResponse\",\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/v1/experimental/reflectschema\x88\x02\x01\x12\xcf\x01\n" +
-	"!ExperimentalComputablePermissions\x128.authzed.api.v1.ExperimentalComputablePermissionsRequest\x1a9.authzed.api.v1.ExperimentalComputablePermissionsResponse\"5\x82\xd3\xe4\x93\x02,:\x01*\"'/v1/experimental/permissions/computable\x88\x02\x01\x12\xc5\x01\n" +
-	"\x1eExperimentalDependentRelations\x125.authzed.api.v1.ExperimentalDependentRelationsRequest\x1a6.authzed.api.v1.ExperimentalDependentRelationsResponse\"4\x82\xd3\xe4\x93\x02+:\x01*\"&/v1/experimental/permissions/dependent\x88\x02\x01\x12\xa2\x01\n" +
-	"\x16ExperimentalDiffSchema\x12-.authzed.api.v1.ExperimentalDiffSchemaRequest\x1a..authzed.api.v1.ExperimentalDiffSchemaResponse\")\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/v1/experimental/diffschema\x88\x02\x01\x12\xe3\x01\n" +
-	"'ExperimentalRegisterRelationshipCounter\x12>.authzed.api.v1.ExperimentalRegisterRelationshipCounterRequest\x1a?.authzed.api.v1.ExperimentalRegisterRelationshipCounterResponse\"7\x82\xd3\xe4\x93\x021:\x01*\",/v1/experimental/registerrelationshipcounter\x12\xbf\x01\n" +
-	"\x1eExperimentalCountRelationships\x125.authzed.api.v1.ExperimentalCountRelationshipsRequest\x1a6.authzed.api.v1.ExperimentalCountRelationshipsResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/experimental/countrelationships\x12\xeb\x01\n" +
-	")ExperimentalUnregisterRelationshipCounter\x12@.authzed.api.v1.ExperimentalUnregisterRelationshipCounterRequest\x1aA.authzed.api.v1.ExperimentalUnregisterRelationshipCounterResponse\"9\x82\xd3\xe4\x93\x023:\x01*\"./v1/experimental/unregisterrelationshipcounterBJ\n" +
+	"\x04diff2\xd8\x10\n" +
+	"\x13ExperimentalService\x12\xc4\x01\n" +
+	"\x17BulkImportRelationships\x12..authzed.api.v1.BulkImportRelationshipsRequest\x1a/.authzed.api.v1.BulkImportRelationshipsResponse\"F\x92A\f\n" +
+	"\n" +
+	"Deprecated\x82\xd3\xe4\x93\x02.:\x01*\")/v1/experimental/relationships/bulkimport\x88\x02\x01(\x01\x12\xc4\x01\n" +
+	"\x17BulkExportRelationships\x12..authzed.api.v1.BulkExportRelationshipsRequest\x1a/.authzed.api.v1.BulkExportRelationshipsResponse\"F\x92A\f\n" +
+	"\n" +
+	"Deprecated\x82\xd3\xe4\x93\x02.:\x01*\")/v1/experimental/relationships/bulkexport\x88\x02\x010\x01\x12\xbd\x01\n" +
+	"\x13BulkCheckPermission\x12*.authzed.api.v1.BulkCheckPermissionRequest\x1a+.authzed.api.v1.BulkCheckPermissionResponse\"M\x92A\f\n" +
+	"\n" +
+	"Deprecated\x82\xd3\xe4\x93\x025:\x01*\"0/v1/experimental/permissions/bulkcheckpermission\x88\x02\x01\x12\xbd\x01\n" +
+	"\x19ExperimentalReflectSchema\x120.authzed.api.v1.ExperimentalReflectSchemaRequest\x1a1.authzed.api.v1.ExperimentalReflectSchemaResponse\";\x92A\f\n" +
+	"\n" +
+	"Deprecated\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/v1/experimental/reflectschema\x88\x02\x01\x12\xde\x01\n" +
+	"!ExperimentalComputablePermissions\x128.authzed.api.v1.ExperimentalComputablePermissionsRequest\x1a9.authzed.api.v1.ExperimentalComputablePermissionsResponse\"D\x92A\f\n" +
+	"\n" +
+	"Deprecated\x82\xd3\xe4\x93\x02,:\x01*\"'/v1/experimental/permissions/computable\x88\x02\x01\x12\xd4\x01\n" +
+	"\x1eExperimentalDependentRelations\x125.authzed.api.v1.ExperimentalDependentRelationsRequest\x1a6.authzed.api.v1.ExperimentalDependentRelationsResponse\"C\x92A\f\n" +
+	"\n" +
+	"Deprecated\x82\xd3\xe4\x93\x02+:\x01*\"&/v1/experimental/permissions/dependent\x88\x02\x01\x12\xb1\x01\n" +
+	"\x16ExperimentalDiffSchema\x12-.authzed.api.v1.ExperimentalDiffSchemaRequest\x1a..authzed.api.v1.ExperimentalDiffSchemaResponse\"8\x92A\f\n" +
+	"\n" +
+	"Deprecated\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/v1/experimental/diffschema\x88\x02\x01\x12\xf4\x01\n" +
+	"'ExperimentalRegisterRelationshipCounter\x12>.authzed.api.v1.ExperimentalRegisterRelationshipCounterRequest\x1a?.authzed.api.v1.ExperimentalRegisterRelationshipCounterResponse\"H\x92A\x0e\n" +
+	"\fExperimental\x82\xd3\xe4\x93\x021:\x01*\",/v1/experimental/registerrelationshipcounter\x12\xd0\x01\n" +
+	"\x1eExperimentalCountRelationships\x125.authzed.api.v1.ExperimentalCountRelationshipsRequest\x1a6.authzed.api.v1.ExperimentalCountRelationshipsResponse\"?\x92A\x0e\n" +
+	"\fExperimental\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/experimental/countrelationships\x12\xfc\x01\n" +
+	")ExperimentalUnregisterRelationshipCounter\x12@.authzed.api.v1.ExperimentalUnregisterRelationshipCounterRequest\x1aA.authzed.api.v1.ExperimentalUnregisterRelationshipCounterResponse\"J\x92A\x0e\n" +
+	"\fExperimental\x82\xd3\xe4\x93\x023:\x01*\"./v1/experimental/unregisterrelationshipcounterBJ\n" +
 	"\x12com.authzed.api.v1P\x01Z2github.com/authzed/authzed-go/proto/authzed/api/v1b\x06proto3"
 
 var (

@@ -9,6 +9,7 @@ package v1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -1725,7 +1726,7 @@ var File_authzed_api_v1_schema_service_proto protoreflect.FileDescriptor
 
 const file_authzed_api_v1_schema_service_proto_rawDesc = "" +
 	"\n" +
-	"#authzed/api/v1/schema_service.proto\x12\x0eauthzed.api.v1\x1a\x19authzed/api/v1/core.proto\x1a'authzed/api/v1/permission_service.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17validate/validate.proto\"\x13\n" +
+	"#authzed/api/v1/schema_service.proto\x12\x0eauthzed.api.v1\x1a\x19authzed/api/v1/core.proto\x1a'authzed/api/v1/permission_service.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17validate/validate.proto\"\x13\n" +
 	"\x11ReadSchemaRequest\"x\n" +
 	"\x12ReadSchemaResponse\x12\x1f\n" +
 	"\vschema_text\x18\x01 \x01(\tR\n" +
@@ -1834,16 +1835,22 @@ const file_authzed_api_v1_schema_service_proto_rawDesc = "" +
 	"\x16caveat_parameter_added\x18\x11 \x01(\v2).authzed.api.v1.ReflectionCaveatParameterH\x00R\x14caveatParameterAdded\x12e\n" +
 	"\x18caveat_parameter_removed\x18\x12 \x01(\v2).authzed.api.v1.ReflectionCaveatParameterH\x00R\x16caveatParameterRemoved\x12x\n" +
 	"\x1dcaveat_parameter_type_changed\x18\x13 \x01(\v23.authzed.api.v1.ReflectionCaveatParameterTypeChangeH\x00R\x1acaveatParameterTypeChangedB\x06\n" +
-	"\x04diff2\xb0\x06\n" +
-	"\rSchemaService\x12o\n" +
+	"\x04diff2\xf3\x06\n" +
+	"\rSchemaService\x12z\n" +
 	"\n" +
-	"ReadSchema\x12!.authzed.api.v1.ReadSchemaRequest\x1a\".authzed.api.v1.ReadSchemaResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/schema/read\x12s\n" +
-	"\vWriteSchema\x12\".authzed.api.v1.WriteSchemaRequest\x1a#.authzed.api.v1.WriteSchemaResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/schema/write\x12\x81\x01\n" +
-	"\rReflectSchema\x12$.authzed.api.v1.ReflectSchemaRequest\x1a%.authzed.api.v1.ReflectSchemaResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/v1/schema/reflectschema\x12\xa2\x01\n" +
-	"\x15ComputablePermissions\x12,.authzed.api.v1.ComputablePermissionsRequest\x1a-.authzed.api.v1.ComputablePermissionsResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/schema/permissions/computable\x12\x98\x01\n" +
-	"\x12DependentRelations\x12).authzed.api.v1.DependentRelationsRequest\x1a*.authzed.api.v1.DependentRelationsResponse\"+\x82\xd3\xe4\x93\x02%:\x01*\" /v1/schema/permissions/dependent\x12u\n" +
+	"ReadSchema\x12!.authzed.api.v1.ReadSchemaRequest\x1a\".authzed.api.v1.ReadSchemaResponse\"%\x92A\b\n" +
+	"\x06Schema\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/schema/read\x12~\n" +
+	"\vWriteSchema\x12\".authzed.api.v1.WriteSchemaRequest\x1a#.authzed.api.v1.WriteSchemaResponse\"&\x92A\b\n" +
+	"\x06Schema\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/schema/write\x12\x8c\x01\n" +
+	"\rReflectSchema\x12$.authzed.api.v1.ReflectSchemaRequest\x1a%.authzed.api.v1.ReflectSchemaResponse\".\x92A\b\n" +
+	"\x06Schema\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/v1/schema/reflectschema\x12\xad\x01\n" +
+	"\x15ComputablePermissions\x12,.authzed.api.v1.ComputablePermissionsRequest\x1a-.authzed.api.v1.ComputablePermissionsResponse\"7\x92A\b\n" +
+	"\x06Schema\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/schema/permissions/computable\x12\xa3\x01\n" +
+	"\x12DependentRelations\x12).authzed.api.v1.DependentRelationsRequest\x1a*.authzed.api.v1.DependentRelationsResponse\"6\x92A\b\n" +
+	"\x06Schema\x82\xd3\xe4\x93\x02%:\x01*\" /v1/schema/permissions/dependent\x12\x80\x01\n" +
 	"\n" +
-	"DiffSchema\x12!.authzed.api.v1.DiffSchemaRequest\x1a\".authzed.api.v1.DiffSchemaResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/v1/schema/diffschemaBJ\n" +
+	"DiffSchema\x12!.authzed.api.v1.DiffSchemaRequest\x1a\".authzed.api.v1.DiffSchemaResponse\"+\x92A\b\n" +
+	"\x06Schema\x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/v1/schema/diffschemaBJ\n" +
 	"\x12com.authzed.api.v1P\x01Z2github.com/authzed/authzed-go/proto/authzed/api/v1b\x06proto3"
 
 var (

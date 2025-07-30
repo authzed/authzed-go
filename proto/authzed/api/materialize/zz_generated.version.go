@@ -2,5 +2,5 @@ package materialize
 
 const (
 	BufRepository = "buf.build/authzed/api"
-	BufTag        = "cd1170f065014690acaefaf0a9d93c62"
+	BufTag        = "1f7cceb174b24790b7243f5b49aa836a"
 )
