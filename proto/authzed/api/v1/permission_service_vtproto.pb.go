@@ -91,6 +91,11 @@ func (m *RelationshipFilter) CloneVT() *RelationshipFilter {
 	r.OptionalResourceIdPrefix = m.OptionalResourceIdPrefix
 	r.OptionalRelation = m.OptionalRelation
 	r.OptionalSubjectFilter = m.OptionalSubjectFilter.CloneVT()
+	if rhs := m.OptionalResourceIds; rhs != nil {
+		tmpContainer := make([]string, len(rhs))
+		copy(tmpContainer, rhs)
+		r.OptionalResourceIds = tmpContainer
+	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -841,6 +846,15 @@ func (this *RelationshipFilter) EqualVT(that *RelationshipFilter) bool {
 	}
 	if this.OptionalResourceIdPrefix != that.OptionalResourceIdPrefix {
 		return false
+	}
+	if len(this.OptionalResourceIds) != len(that.OptionalResourceIds) {
+		return false
+	}
+	for i, vx := range this.OptionalResourceIds {
+		vy := that.OptionalResourceIds[i]
+		if vx != vy {
+			return false
+		}
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
@@ -1901,6 +1915,15 @@ func (m *RelationshipFilter) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.OptionalResourceIds) > 0 {
+		for iNdEx := len(m.OptionalResourceIds) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.OptionalResourceIds[iNdEx])
+			copy(dAtA[i:], m.OptionalResourceIds[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalResourceIds[iNdEx])))
+			i--
+			dAtA[i] = 0x32
+		}
 	}
 	if len(m.OptionalResourceIdPrefix) > 0 {
 		i -= len(m.OptionalResourceIdPrefix)
@@ -3824,6 +3847,12 @@ func (m *RelationshipFilter) SizeVT() (n int) {
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
+	if len(m.OptionalResourceIds) > 0 {
+		for _, s := range m.OptionalResourceIds {
+			l = len(s)
+			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+		}
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -4878,6 +4907,38 @@ func (m *RelationshipFilter) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.OptionalResourceIdPrefix = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptionalResourceIds", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.OptionalResourceIds = append(m.OptionalResourceIds, string(dAtA[iNdEx:postIndex]))
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
