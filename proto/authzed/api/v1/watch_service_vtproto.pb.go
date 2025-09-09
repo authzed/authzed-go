@@ -71,6 +71,13 @@ func (m *WatchResponse) CloneVT() *WatchResponse {
 		}
 		r.Updates = tmpContainer
 	}
+	if rhs := m.FullRevisionMetadata; rhs != nil {
+		tmpContainer := make([]*structpb.Struct, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = (*structpb.Struct)((*structpb1.Struct)(v).CloneVT())
+		}
+		r.FullRevisionMetadata = tmpContainer
+	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -170,6 +177,23 @@ func (this *WatchResponse) EqualVT(that *WatchResponse) bool {
 	}
 	if this.IsCheckpoint != that.IsCheckpoint {
 		return false
+	}
+	if len(this.FullRevisionMetadata) != len(that.FullRevisionMetadata) {
+		return false
+	}
+	for i, vx := range this.FullRevisionMetadata {
+		vy := that.FullRevisionMetadata[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &structpb.Struct{}
+			}
+			if q == nil {
+				q = &structpb.Struct{}
+			}
+			if !(*structpb1.Struct)(p).EqualVT((*structpb1.Struct)(q)) {
+				return false
+			}
+		}
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
@@ -296,6 +320,18 @@ func (m *WatchResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if len(m.FullRevisionMetadata) > 0 {
+		for iNdEx := len(m.FullRevisionMetadata) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*structpb1.Struct)(m.FullRevisionMetadata[iNdEx]).MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x32
+		}
+	}
 	if m.IsCheckpoint {
 		i--
 		if m.IsCheckpoint {
@@ -409,6 +445,12 @@ func (m *WatchResponse) SizeVT() (n int) {
 	}
 	if m.IsCheckpoint {
 		n += 2
+	}
+	if len(m.FullRevisionMetadata) > 0 {
+		for _, e := range m.FullRevisionMetadata {
+			l = (*structpb1.Struct)(e).SizeVT()
+			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+		}
 	}
 	n += len(m.unknownFields)
 	return n
@@ -811,6 +853,40 @@ func (m *WatchResponse) UnmarshalVT(dAtA []byte) error {
 				}
 			}
 			m.IsCheckpoint = bool(v != 0)
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FullRevisionMetadata", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.FullRevisionMetadata = append(m.FullRevisionMetadata, &structpb.Struct{})
+			if err := (*structpb1.Struct)(m.FullRevisionMetadata[len(m.FullRevisionMetadata)-1]).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])

@@ -3254,7 +3254,7 @@
         },
         "optionalTransactionMetadata": {
           "type": "object",
-          "description": "optional_transaction_metadata is an optional field that returns the transaction metadata\ngiven to SpiceDB during the transaction that produced the changes in this response.\nThis field may not exist if no transaction metadata was provided."
+          "description": "optional_transaction_metadata is an optional field that returns the transaction metadata\ngiven to SpiceDB during the transaction that produced the changes in this response.\nThis field may not exist if no transaction metadata was provided, or if multiple pieces\nof metadata were found during the transaction (in which case it is ambiguous which to return)."
         },
         "schemaUpdated": {
           "type": "boolean",
@@ -3263,6 +3263,13 @@
         "isCheckpoint": {
           "type": "boolean",
           "description": "is_checkpoint, if true, indicates that a checkpoint was reached.\nA checkpoint indicates that the server guarantees that the client\nwill not observe any changes at a revision below or equal to the revision in this response."
+        },
+        "fullRevisionMetadata": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "full_revision_metadata contains all transaction metadata given to SpiceDB during the\nrevision that produced the changes in this response. Some datastores (such as CockroachDB)\ncan \"merge\" multiple transactions into a single revision (if the changes occurred concurrently),\nso this field is a list of all transaction metadata seen during the revision."
         }
       },
       "description": "WatchResponse contains all mutation events in ascending timestamp order,\nfrom the requested start snapshot to a snapshot\nencoded in the watch response. The client can use the snapshot to resume\nwatching where the previous watch response left off."
