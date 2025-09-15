@@ -5,10 +5,10 @@ go 1.24.0
 toolchain go1.24.1
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.8-20250717185734-6c6e0d3c608e.1
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.9-20250912141014-52f32327d4b0.1
 	github.com/authzed/grpcutil v0.0.0-20240123194739-2ea1e3d2d98b
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/ecordell/optgen v0.1.0
+	github.com/ecordell/optgen v0.1.1
 	github.com/envoyproxy/protoc-gen-validate v1.2.1
 	github.com/golangci/golangci-lint/v2 v2.4.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
@@ -22,8 +22,8 @@ require (
 	golang.org/x/vuln v1.1.4
 	google.golang.org/genproto/googleapis/api v0.0.0-20250818200422-3122310a409c
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250818200422-3122310a409c
-	google.golang.org/grpc v1.75.0
-	google.golang.org/protobuf v1.36.8
+	google.golang.org/grpc v1.75.1
+	google.golang.org/protobuf v1.36.9
 )
 
 require (
