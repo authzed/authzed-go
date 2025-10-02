@@ -472,7 +472,7 @@ func WriteTestTuples(client *authzed.Client) (emilia *v1.SubjectReference, beatr
 			},
 		},
 	})
-	return
+	return emilia, beatrice, postOne, postTwo, err
 }
 
 func WriteTestSchema(client *authzed.Client) error {
