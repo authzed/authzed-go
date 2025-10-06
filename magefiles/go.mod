@@ -8,12 +8,12 @@ require (
 	github.com/bufbuild/buf v1.57.2
 	github.com/envoyproxy/protoc-gen-validate v1.2.1
 	github.com/golangci/golangci-lint v1.64.8
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3
 	github.com/magefile/mage v1.15.0
 	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10
 	golang.org/x/vuln v1.1.4
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1
-	google.golang.org/protobuf v1.36.9
+	google.golang.org/protobuf v1.36.10
 	mvdan.cc/gofumpt v0.9.1
 )
 
@@ -271,9 +271,9 @@ require (
 	golang.org/x/term v0.35.0 // indirect
 	golang.org/x/text v0.29.0 // indirect
 	golang.org/x/tools v0.37.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20250908214217-97024824d090 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250908214217-97024824d090 // indirect
-	google.golang.org/grpc v1.75.0 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20250929231259-57b25ae835d4 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250929231259-57b25ae835d4 // indirect
+	google.golang.org/grpc v1.75.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
