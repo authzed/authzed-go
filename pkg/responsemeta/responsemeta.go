@@ -14,7 +14,7 @@ type ResponseMetadataHeaderKey string
 
 const (
 	// RequestID is the key in the response header metadata for the request's tracking ID, if any.
-	RequestID ResponseMetadataHeaderKey = "io.spicedb.respmeta.requestid"
+	RequestID ResponseMetadataHeaderKey = "x-request-id"
 
 	// ServerVersion is the key in the response header metadata holding the version of the server
 	// handling the API request, if requested via a request header.
