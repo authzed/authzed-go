@@ -15,13 +15,16 @@
   },
   "tags": [
     {
+      "name": "PermissionsService"
+    },
+    {
+      "name": "RelationshipsService"
+    },
+    {
       "name": "WatchPermissionsService"
     },
     {
       "name": "WatchPermissionSetsService"
-    },
-    {
-      "name": "PermissionsService"
     },
     {
       "name": "ExperimentalService"
@@ -994,7 +997,7 @@
         "parameters": [
           {
             "name": "body",
-            "description": "WatchRequest specifies what mutations to watch for, and an optional start snapshot for when to start\nwatching.",
+            "description": "WatchRequest specifies what mutations to watch for, and an optional start point for when to start\nwatching.",
             "in": "body",
             "required": true,
             "schema": {
@@ -1179,6 +1182,20 @@
             "$ref": "#/definitions/v0File"
           },
           "title": "files contains the list of downloadable files with their URLs"
+        }
+      }
+    },
+    "v0ExperimentalCountRelationshipsByFilterResponse": {
+      "type": "object",
+      "properties": {
+        "relationshipCount": {
+          "type": "string",
+          "format": "uint64",
+          "description": "relationship_count is the count of relationships that match the filter."
+        },
+        "readAt": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the relationship count applies."
         }
       }
     },
@@ -3217,7 +3234,7 @@
         },
         "optionalStartCursor": {
           "$ref": "#/definitions/v1ZedToken",
-          "description": "optional_start_cursor is the ZedToken holding the point-in-time at\nwhich to start watching for changes.\nIf not specified, the watch will begin at the current head revision\nof the datastore, returning any updates that occur after the caller\nmakes the request.\nNote that if this cursor references a point-in-time containing data\nthat has been garbage collected, an error will be returned."
+          "description": "optional_start_cursor is the ZedToken holding the point-in-time at\nwhich to start watching for changes.\nIf not specified, the watch will start from the current SpiceDB revision time of the request (\"head revision\").\nNote that if this cursor references a point-in-time containing data\nthat has been garbage collected, an error will be returned."
         },
         "optionalRelationshipFilters": {
           "type": "array",
@@ -3232,10 +3249,10 @@
           "items": {
             "$ref": "#/definitions/v1WatchKind"
           },
-          "description": "optional_update_kinds, if specified, indicates what kinds of mutations to include."
+          "description": "optional_update_kinds, if specified, indicates what kinds of mutations to include.\nIf your SpiceDB instance is running behind a proxy that aborts idle connections,\nwe recommend including Checkpoints to keep the stream alive even when there are no changes."
         }
       },
-      "description": "WatchRequest specifies what mutations to watch for, and an optional start snapshot for when to start\nwatching."
+      "description": "WatchRequest specifies what mutations to watch for, and an optional start point for when to start\nwatching."
     },
     "v1WatchResponse": {
       "type": "object",
@@ -3246,7 +3263,7 @@
             "type": "object",
             "$ref": "#/definitions/v1RelationshipUpdate"
           },
-          "description": "updates are the RelationshipUpdate events that have occurred since the\nlast watch response."
+          "description": "updates are the RelationshipUpdate events that have occurred since the\ncall was made, or since the point in time specified by changes_through."
         },
         "changesThrough": {
           "$ref": "#/definitions/v1ZedToken",
@@ -3272,7 +3289,7 @@
           "description": "full_revision_metadata contains all transaction metadata given to SpiceDB during the\nrevision that produced the changes in this response. Some datastores (such as CockroachDB)\ncan \"merge\" multiple transactions into a single revision (if the changes occurred concurrently),\nso this field is a list of all transaction metadata seen during the revision."
         }
       },
-      "description": "WatchResponse contains all mutation events in ascending timestamp order,\nfrom the requested start snapshot to a snapshot\nencoded in the watch response. The client can use the snapshot to resume\nwatching where the previous watch response left off."
+      "description": "WatchResponse contains all mutation events in ascending timestamp order.\nThis excludes relationships that were deleted because they expired.\nThe response includes a field that can be used to resume\nwatching from that point."
     },
     "v1WriteRelationshipsRequest": {
       "type": "object",
@@ -3303,7 +3320,8 @@
       "type": "object",
       "properties": {
         "writtenAt": {
-          "$ref": "#/definitions/v1ZedToken"
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "written_at is the revision at which the relationships were written or deleted."
         }
       }
     },
@@ -3334,7 +3352,7 @@
           "type": "string"
         }
       },
-      "description": "ZedToken is used to provide causality metadata between Write and Check\nrequests.\n\nSee the authzed.api.v1.Consistency message for more information."
+      "description": "ZedToken represents a point in time, or a \"revision\" in SpiceDB.\nIt is used to provide causality metadata between Write and read requests (Check, ReadRelationships, LookupResources, LookupSubjects)\nand can also be used to start watching for changes from a specific point in time.\n\nSee the authzed.api.v1.Consistency message for more information."
     }
   },
   "securityDefinitions": {
