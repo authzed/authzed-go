@@ -13,10 +13,6 @@ import (
 type ResponseMetadataHeaderKey string
 
 const (
-	// RequestIDHeader is the key in the response header metadata for the request's tracking ID.
-	// Provided for HTTP gateway compatibility where trailers are not easily accessible.
-	RequestIDHeader ResponseMetadataHeaderKey = "x-request-id"
-
 	// ServerVersion is the key in the response header metadata holding the version of the server
 	// handling the API request, if requested via a request header.
 	ServerVersion ResponseMetadataHeaderKey = "io.spicedb.debug.version"
