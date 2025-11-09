@@ -13,9 +13,6 @@ import (
 type ResponseMetadataHeaderKey string
 
 const (
-	// RequestID is the key in the response header metadata for the request's tracking ID, if any.
-	RequestID ResponseMetadataHeaderKey = "io.spicedb.respmeta.requestid"
-
 	// ServerVersion is the key in the response header metadata holding the version of the server
 	// handling the API request, if requested via a request header.
 	ServerVersion ResponseMetadataHeaderKey = "io.spicedb.debug.version"
@@ -25,6 +22,14 @@ const (
 type ResponseMetadataTrailerKey string
 
 const (
+	// RequestID is the key in the response trailer metadata for the request's tracking ID.
+	// Uses trailer to maintain gRPC retry policy compatibility (see gRPC proposal A6).
+	RequestID ResponseMetadataTrailerKey = "x-request-id"
+
+	// RequestIDLegacy is the legacy key in the response trailer metadata for backward compatibility.
+	// Kept to avoid breaking existing clients during transition period.
+	RequestIDLegacy ResponseMetadataTrailerKey = "io.spicedb.respmeta.requestid"
+
 	// DispatchedOperationsCount is the key in the response trailer metadata for
 	// the number of dispatched operations that were needed to perform the overall
 	// API call.
