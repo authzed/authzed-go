@@ -1182,6 +1182,11 @@
             "$ref": "#/definitions/v0File"
           },
           "title": "files contains the list of downloadable files with their URLs"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "timestamp represents the time associated with the returned data revision."
         }
       }
     },
