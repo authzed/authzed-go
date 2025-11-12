@@ -15,6 +15,9 @@
   },
   "tags": [
     {
+      "name": "BrokenSetsService"
+    },
+    {
       "name": "PermissionsService"
     },
     {
@@ -1172,6 +1175,23 @@
       },
       "description": "BreakingSchemaChange is used to signal a breaking schema change has happened, and that the consumer should\nexpect delays in the ingestion of new changes, because the permission set snapshot needs to be rebuilt from scratch.\nOnce the snapshot is ready, the consumer will receive a LookupPermissionSetsRequired event."
     },
+    "v0BrokenSet": {
+      "type": "object",
+      "properties": {
+        "resourceType": {
+          "type": "string",
+          "description": "resource_type is the type of the broken resource."
+        },
+        "resourceId": {
+          "type": "string",
+          "description": "resource_id is the id of the broken resource."
+        },
+        "permission": {
+          "type": "string",
+          "description": "permission is the broken permission set."
+        }
+      }
+    },
     "v0DownloadPermissionSetsResponse": {
       "type": "object",
       "properties": {
@@ -1309,6 +1329,23 @@
         "childMember": {
           "$ref": "#/definitions/v0MemberReference",
           "title": "child_member represents the scenario where an specific object is considered member of the parent set"
+        }
+      }
+    },
+    "v0ReadBrokenSetsResponse": {
+      "type": "object",
+      "properties": {
+        "brokenSets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v0BrokenSet"
+          },
+          "description": "broken_sets contains the list of broken sets found for the requested revision."
+        },
+        "revision": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "read_at is the ZedToken at which the broken set applies."
         }
       }
     },
