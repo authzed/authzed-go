@@ -15,16 +15,16 @@
   },
   "tags": [
     {
-      "name": "BrokenSetsService"
+      "name": "WatchPermissionsService"
+    },
+    {
+      "name": "BrokenPermissionsService"
     },
     {
       "name": "PermissionsService"
     },
     {
       "name": "RelationshipsService"
-    },
-    {
-      "name": "WatchPermissionsService"
     },
     {
       "name": "WatchPermissionSetsService"
@@ -1175,23 +1175,6 @@
       },
       "description": "BreakingSchemaChange is used to signal a breaking schema change has happened, and that the consumer should\nexpect delays in the ingestion of new changes, because the permission set snapshot needs to be rebuilt from scratch.\nOnce the snapshot is ready, the consumer will receive a LookupPermissionSetsRequired event."
     },
-    "v0BrokenSet": {
-      "type": "object",
-      "properties": {
-        "resourceType": {
-          "type": "string",
-          "description": "resource_type is the type of the broken resource."
-        },
-        "resourceId": {
-          "type": "string",
-          "description": "resource_id is the id of the broken resource."
-        },
-        "permission": {
-          "type": "string",
-          "description": "permission is the broken permission set."
-        }
-      }
-    },
     "v0DownloadPermissionSetsResponse": {
       "type": "object",
       "properties": {
@@ -1332,20 +1315,41 @@
         }
       }
     },
-    "v0ReadBrokenSetsResponse": {
+    "v0ReadBrokenWatchedPermissionsResponse": {
       "type": "object",
       "properties": {
-        "brokenSets": {
+        "revision": {
+          "$ref": "#/definitions/v1ZedToken",
+          "description": "revision is the ZedToken at which the response was evaluated."
+        },
+        "watchedPermission": {
+          "$ref": "#/definitions/v0WatchedPermission",
+          "description": "The watched permission that broke."
+        },
+        "cycle": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/v0BrokenSet"
+            "$ref": "#/definitions/v0Resource"
           },
-          "description": "broken_sets contains the list of broken sets found for the requested revision."
+          "description": "The resources involved in the cycle."
+        }
+      }
+    },
+    "v0Resource": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string",
+          "description": "object_type is the type of the resource."
         },
-        "revision": {
-          "$ref": "#/definitions/v1ZedToken",
-          "description": "read_at is the ZedToken at which the broken set applies."
+        "objectId": {
+          "type": "string",
+          "description": "object_id is the id of the resource."
+        },
+        "permissionOrRelation": {
+          "type": "string",
+          "description": "permission_or_relation is the permission/relation."
         }
       }
     },
