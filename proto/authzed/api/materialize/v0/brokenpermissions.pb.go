@@ -24,7 +24,7 @@ const (
 
 type ReadBrokenWatchedPermissionsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// optional_at_revision defines the specific revision at which the broken sets should be evaluated.
+	// optional_at_revision defines the specific revision at which the broken watched permissions should be evaluated.
 	// At this time, it is only compared against the revision of the provided backing store snapshot.
 	OptionalAtRevision *v1.ZedToken `protobuf:"bytes,2,opt,name=optional_at_revision,json=optionalAtRevision,proto3" json:"optional_at_revision,omitempty"`
 	unknownFields      protoimpl.UnknownFields
@@ -70,11 +70,11 @@ func (x *ReadBrokenWatchedPermissionsRequest) GetOptionalAtRevision() *v1.ZedTok
 
 type ReadBrokenWatchedPermissionsResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// revision is the ZedToken at which the response was evaluated.
+	// revision is the ZedToken at which the request was evaluated.
 	Revision *v1.ZedToken `protobuf:"bytes,1,opt,name=revision,proto3" json:"revision,omitempty"`
 	// The watched permission that broke.
-	WatchedPermission *WatchedPermission `protobuf:"bytes,2,opt,name=watched_permission,json=watchedPermission,proto3" json:"watched_permission,omitempty"`
-	// The resources involved in the cycle.
+	WatchedPermission *BrokenWatchedPermission `protobuf:"bytes,2,opt,name=watched_permission,json=watchedPermission,proto3" json:"watched_permission,omitempty"`
+	// The resources involved in the cycle. The resource order does not represent the cycle traversal order.
 	Cycle         []*Resource `protobuf:"bytes,3,rep,name=cycle,proto3" json:"cycle,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -117,7 +117,7 @@ func (x *ReadBrokenWatchedPermissionsResponse) GetRevision() *v1.ZedToken {
 	return nil
 }
 
-func (x *ReadBrokenWatchedPermissionsResponse) GetWatchedPermission() *WatchedPermission {
+func (x *ReadBrokenWatchedPermissionsResponse) GetWatchedPermission() *BrokenWatchedPermission {
 	if x != nil {
 		return x.WatchedPermission
 	}
@@ -129,6 +129,60 @@ func (x *ReadBrokenWatchedPermissionsResponse) GetCycle() []*Resource {
 		return x.Cycle
 	}
 	return nil
+}
+
+type BrokenWatchedPermission struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// resource_type is the type of the resource to watch for changes.
+	ResourceType string `protobuf:"bytes,1,opt,name=resource_type,json=resourceType,proto3" json:"resource_type,omitempty"`
+	// permission is the permission to watch for changes.
+	Permission    string `protobuf:"bytes,2,opt,name=permission,proto3" json:"permission,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BrokenWatchedPermission) Reset() {
+	*x = BrokenWatchedPermission{}
+	mi := &file_authzed_api_materialize_v0_brokenpermissions_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BrokenWatchedPermission) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BrokenWatchedPermission) ProtoMessage() {}
+
+func (x *BrokenWatchedPermission) ProtoReflect() protoreflect.Message {
+	mi := &file_authzed_api_materialize_v0_brokenpermissions_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BrokenWatchedPermission.ProtoReflect.Descriptor instead.
+func (*BrokenWatchedPermission) Descriptor() ([]byte, []int) {
+	return file_authzed_api_materialize_v0_brokenpermissions_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *BrokenWatchedPermission) GetResourceType() string {
+	if x != nil {
+		return x.ResourceType
+	}
+	return ""
+}
+
+func (x *BrokenWatchedPermission) GetPermission() string {
+	if x != nil {
+		return x.Permission
+	}
+	return ""
 }
 
 type Resource struct {
@@ -145,7 +199,7 @@ type Resource struct {
 
 func (x *Resource) Reset() {
 	*x = Resource{}
-	mi := &file_authzed_api_materialize_v0_brokenpermissions_proto_msgTypes[2]
+	mi := &file_authzed_api_materialize_v0_brokenpermissions_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -157,7 +211,7 @@ func (x *Resource) String() string {
 func (*Resource) ProtoMessage() {}
 
 func (x *Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_materialize_v0_brokenpermissions_proto_msgTypes[2]
+	mi := &file_authzed_api_materialize_v0_brokenpermissions_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -170,7 +224,7 @@ func (x *Resource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Resource.ProtoReflect.Descriptor instead.
 func (*Resource) Descriptor() ([]byte, []int) {
-	return file_authzed_api_materialize_v0_brokenpermissions_proto_rawDescGZIP(), []int{2}
+	return file_authzed_api_materialize_v0_brokenpermissions_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Resource) GetObjectType() string {
@@ -198,13 +252,18 @@ var File_authzed_api_materialize_v0_brokenpermissions_proto protoreflect.FileDes
 
 const file_authzed_api_materialize_v0_brokenpermissions_proto_rawDesc = "" +
 	"\n" +
-	"2authzed/api/materialize/v0/brokenpermissions.proto\x12\x1aauthzed.api.materialize.v0\x1a1authzed/api/materialize/v0/watchpermissions.proto\x1a\x19authzed/api/v1/core.proto\"q\n" +
+	"2authzed/api/materialize/v0/brokenpermissions.proto\x12\x1aauthzed.api.materialize.v0\x1a\x19authzed/api/v1/core.proto\"q\n" +
 	"#ReadBrokenWatchedPermissionsRequest\x12J\n" +
-	"\x14optional_at_revision\x18\x02 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x12optionalAtRevision\"\xf6\x01\n" +
+	"\x14optional_at_revision\x18\x02 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x12optionalAtRevision\"\xfc\x01\n" +
 	"$ReadBrokenWatchedPermissionsResponse\x124\n" +
-	"\brevision\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\brevision\x12\\\n" +
-	"\x12watched_permission\x18\x02 \x01(\v2-.authzed.api.materialize.v0.WatchedPermissionR\x11watchedPermission\x12:\n" +
-	"\x05cycle\x18\x03 \x03(\v2$.authzed.api.materialize.v0.ResourceR\x05cycle\"~\n" +
+	"\brevision\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\brevision\x12b\n" +
+	"\x12watched_permission\x18\x02 \x01(\v23.authzed.api.materialize.v0.BrokenWatchedPermissionR\x11watchedPermission\x12:\n" +
+	"\x05cycle\x18\x03 \x03(\v2$.authzed.api.materialize.v0.ResourceR\x05cycle\"^\n" +
+	"\x17BrokenWatchedPermission\x12#\n" +
+	"\rresource_type\x18\x01 \x01(\tR\fresourceType\x12\x1e\n" +
+	"\n" +
+	"permission\x18\x02 \x01(\tR\n" +
+	"permission\"~\n" +
 	"\bResource\x12\x1f\n" +
 	"\vobject_type\x18\x01 \x01(\tR\n" +
 	"objectType\x12\x1b\n" +
@@ -226,19 +285,19 @@ func file_authzed_api_materialize_v0_brokenpermissions_proto_rawDescGZIP() []byt
 	return file_authzed_api_materialize_v0_brokenpermissions_proto_rawDescData
 }
 
-var file_authzed_api_materialize_v0_brokenpermissions_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_authzed_api_materialize_v0_brokenpermissions_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_authzed_api_materialize_v0_brokenpermissions_proto_goTypes = []any{
 	(*ReadBrokenWatchedPermissionsRequest)(nil),  // 0: authzed.api.materialize.v0.ReadBrokenWatchedPermissionsRequest
 	(*ReadBrokenWatchedPermissionsResponse)(nil), // 1: authzed.api.materialize.v0.ReadBrokenWatchedPermissionsResponse
-	(*Resource)(nil),          // 2: authzed.api.materialize.v0.Resource
-	(*v1.ZedToken)(nil),       // 3: authzed.api.v1.ZedToken
-	(*WatchedPermission)(nil), // 4: authzed.api.materialize.v0.WatchedPermission
+	(*BrokenWatchedPermission)(nil),              // 2: authzed.api.materialize.v0.BrokenWatchedPermission
+	(*Resource)(nil),                             // 3: authzed.api.materialize.v0.Resource
+	(*v1.ZedToken)(nil),                          // 4: authzed.api.v1.ZedToken
 }
 var file_authzed_api_materialize_v0_brokenpermissions_proto_depIdxs = []int32{
-	3, // 0: authzed.api.materialize.v0.ReadBrokenWatchedPermissionsRequest.optional_at_revision:type_name -> authzed.api.v1.ZedToken
-	3, // 1: authzed.api.materialize.v0.ReadBrokenWatchedPermissionsResponse.revision:type_name -> authzed.api.v1.ZedToken
-	4, // 2: authzed.api.materialize.v0.ReadBrokenWatchedPermissionsResponse.watched_permission:type_name -> authzed.api.materialize.v0.WatchedPermission
-	2, // 3: authzed.api.materialize.v0.ReadBrokenWatchedPermissionsResponse.cycle:type_name -> authzed.api.materialize.v0.Resource
+	4, // 0: authzed.api.materialize.v0.ReadBrokenWatchedPermissionsRequest.optional_at_revision:type_name -> authzed.api.v1.ZedToken
+	4, // 1: authzed.api.materialize.v0.ReadBrokenWatchedPermissionsResponse.revision:type_name -> authzed.api.v1.ZedToken
+	2, // 2: authzed.api.materialize.v0.ReadBrokenWatchedPermissionsResponse.watched_permission:type_name -> authzed.api.materialize.v0.BrokenWatchedPermission
+	3, // 3: authzed.api.materialize.v0.ReadBrokenWatchedPermissionsResponse.cycle:type_name -> authzed.api.materialize.v0.Resource
 	0, // 4: authzed.api.materialize.v0.BrokenPermissionsService.ReadBrokenWatchedPermissions:input_type -> authzed.api.materialize.v0.ReadBrokenWatchedPermissionsRequest
 	1, // 5: authzed.api.materialize.v0.BrokenPermissionsService.ReadBrokenWatchedPermissions:output_type -> authzed.api.materialize.v0.ReadBrokenWatchedPermissionsResponse
 	5, // [5:6] is the sub-list for method output_type
@@ -253,14 +312,13 @@ func file_authzed_api_materialize_v0_brokenpermissions_proto_init() {
 	if File_authzed_api_materialize_v0_brokenpermissions_proto != nil {
 		return
 	}
-	file_authzed_api_materialize_v0_watchpermissions_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_authzed_api_materialize_v0_brokenpermissions_proto_rawDesc), len(file_authzed_api_materialize_v0_brokenpermissions_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

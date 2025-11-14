@@ -366,6 +366,112 @@ var _ interface {
 	ErrorName() string
 } = ReadBrokenWatchedPermissionsResponseValidationError{}
 
+// Validate checks the field values on BrokenWatchedPermission with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *BrokenWatchedPermission) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on BrokenWatchedPermission with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// BrokenWatchedPermissionMultiError, or nil if none found.
+func (m *BrokenWatchedPermission) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *BrokenWatchedPermission) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ResourceType
+
+	// no validation rules for Permission
+
+	if len(errors) > 0 {
+		return BrokenWatchedPermissionMultiError(errors)
+	}
+
+	return nil
+}
+
+// BrokenWatchedPermissionMultiError is an error wrapping multiple validation
+// errors returned by BrokenWatchedPermission.ValidateAll() if the designated
+// constraints aren't met.
+type BrokenWatchedPermissionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m BrokenWatchedPermissionMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m BrokenWatchedPermissionMultiError) AllErrors() []error { return m }
+
+// BrokenWatchedPermissionValidationError is the validation error returned by
+// BrokenWatchedPermission.Validate if the designated constraints aren't met.
+type BrokenWatchedPermissionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e BrokenWatchedPermissionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e BrokenWatchedPermissionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e BrokenWatchedPermissionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e BrokenWatchedPermissionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e BrokenWatchedPermissionValidationError) ErrorName() string {
+	return "BrokenWatchedPermissionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e BrokenWatchedPermissionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sBrokenWatchedPermission.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = BrokenWatchedPermissionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = BrokenWatchedPermissionValidationError{}
+
 // Validate checks the field values on Resource with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.

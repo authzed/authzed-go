@@ -15,9 +15,6 @@
   },
   "tags": [
     {
-      "name": "WatchPermissionsService"
-    },
-    {
       "name": "BrokenPermissionsService"
     },
     {
@@ -25,6 +22,9 @@
     },
     {
       "name": "RelationshipsService"
+    },
+    {
+      "name": "WatchPermissionsService"
     },
     {
       "name": "WatchPermissionSetsService"
@@ -1175,6 +1175,19 @@
       },
       "description": "BreakingSchemaChange is used to signal a breaking schema change has happened, and that the consumer should\nexpect delays in the ingestion of new changes, because the permission set snapshot needs to be rebuilt from scratch.\nOnce the snapshot is ready, the consumer will receive a LookupPermissionSetsRequired event."
     },
+    "v0BrokenWatchedPermission": {
+      "type": "object",
+      "properties": {
+        "resourceType": {
+          "type": "string",
+          "description": "resource_type is the type of the resource to watch for changes."
+        },
+        "permission": {
+          "type": "string",
+          "description": "permission is the permission to watch for changes."
+        }
+      }
+    },
     "v0DownloadPermissionSetsResponse": {
       "type": "object",
       "properties": {
@@ -1320,10 +1333,10 @@
       "properties": {
         "revision": {
           "$ref": "#/definitions/v1ZedToken",
-          "description": "revision is the ZedToken at which the response was evaluated."
+          "description": "revision is the ZedToken at which the request was evaluated."
         },
         "watchedPermission": {
-          "$ref": "#/definitions/v0WatchedPermission",
+          "$ref": "#/definitions/v0BrokenWatchedPermission",
           "description": "The watched permission that broke."
         },
         "cycle": {
@@ -1332,7 +1345,7 @@
             "type": "object",
             "$ref": "#/definitions/v0Resource"
           },
-          "description": "The resources involved in the cycle."
+          "description": "The resources involved in the cycle. The resource order does not represent the cycle traversal order."
         }
       }
     },
