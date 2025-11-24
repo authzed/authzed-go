@@ -15,7 +15,7 @@ jobs:
     name: "Lint Go"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v5"
+      - uses: "actions/checkout@v6"
       - uses: "authzed/actions/setup-go@main"
       - name: "Lint Go"
         run: "go run magefile.go lint:go"
@@ -28,7 +28,7 @@ jobs:
     name: "Generate Protobufs"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v5"
+      - uses: "actions/checkout@v6"
       - uses: "authzed/actions/setup-go@main"
       - uses: "chainguard-dev/actions/nodiff@main"
         with:
@@ -38,7 +38,7 @@ jobs:
     name: "Lint YAML"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v5"
+      - uses: "actions/checkout@v6"
       - uses: "authzed/actions/setup-go@main"
       - name: "Lint Go"
         run: "go run magefile.go lint:extra"
@@ -54,13 +54,13 @@ jobs:
       matrix:
         language: ["go"]
     steps:
-      - uses: "actions/checkout@v5"
+      - uses: "actions/checkout@v6"
       - uses: "authzed/actions/codeql@main"
   trivy:
     name: "Analyze with Trivy"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v5"
+      - uses: "actions/checkout@v6"
       - name: "Run Trivy vulnerability scanner"
         uses: "aquasecurity/trivy-action@master"
         with:
