@@ -10,6 +10,10 @@ updates:
     groups:
       go-mod:
         patterns: ["*"]
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
   - package-ecosystem: "gomod"
     directory: "/magefiles"
     schedule:
@@ -19,6 +23,10 @@ updates:
     groups:
       go-mod-magefiles:
         patterns: ["*"]
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -26,3 +34,7 @@ updates:
     groups:
       github-actions:
         patterns: ["*"]
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
