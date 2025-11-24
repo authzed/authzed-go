@@ -10,7 +10,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/ecordell/optgen v0.1.1
 	github.com/envoyproxy/protoc-gen-validate v1.2.1
-	github.com/golangci/golangci-lint/v2 v2.6.1
+	github.com/golangci/golangci-lint/v2 v2.6.2
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3
 	github.com/jzelinskie/stringz v0.0.3
 	github.com/magefile/mage v1.15.0
@@ -20,16 +20,16 @@ require (
 	go.uber.org/goleak v1.3.0
 	golang.org/x/sync v0.18.0
 	golang.org/x/vuln v1.1.4
-	google.golang.org/genproto/googleapis/api v0.0.0-20250929231259-57b25ae835d4
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250929231259-57b25ae835d4
-	google.golang.org/grpc v1.76.0
+	google.golang.org/genproto/googleapis/api v0.0.0-20251022142026-3a174f9686a8
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20251022142026-3a174f9686a8
+	google.golang.org/grpc v1.77.0
 	google.golang.org/protobuf v1.36.10
 )
 
 require (
 	4d63.com/gocheckcompilerdirectives v1.3.0 // indirect
 	4d63.com/gochecknoglobals v0.2.2 // indirect
-	cloud.google.com/go/compute/metadata v0.8.0 // indirect
+	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	codeberg.org/chavacava/garif v0.2.0 // indirect
 	dev.gaijin.team/go/exhaustruct/v4 v4.0.0 // indirect
 	dev.gaijin.team/go/golib v0.6.0 // indirect
@@ -148,8 +148,8 @@ require (
 	github.com/magiconair/properties v1.8.6 // indirect
 	github.com/manuelarte/embeddedstructfieldcheck v0.4.0 // indirect
 	github.com/manuelarte/funcorder v0.5.0 // indirect
-	github.com/maratori/testableexamples v1.0.0 // indirect
-	github.com/maratori/testpackage v1.1.1 // indirect
+	github.com/maratori/testableexamples v1.0.1 // indirect
+	github.com/maratori/testpackage v1.1.2 // indirect
 	github.com/matoous/godox v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -225,7 +225,7 @@ require (
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20251023183803-a4bb9ffd2546 // indirect
 	golang.org/x/mod v0.29.0 // indirect
-	golang.org/x/net v0.46.0 // indirect
+	golang.org/x/net v0.46.1-0.20251013234738-63d1a5100f82 // indirect
 	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/telemetry v0.0.0-20251008203120-078029d740a8 // indirect
 	golang.org/x/text v0.30.0 // indirect
