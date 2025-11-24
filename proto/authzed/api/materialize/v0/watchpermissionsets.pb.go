@@ -10,6 +10,7 @@ import (
 	v1 "github.com/authzed/authzed-go/proto/authzed/api/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -901,7 +902,9 @@ func (x *File) GetUrl() string {
 type DownloadPermissionSetsResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// files contains the list of downloadable files with their URLs
-	Files         []*File `protobuf:"bytes,1,rep,name=files,proto3" json:"files,omitempty"`
+	Files []*File `protobuf:"bytes,1,rep,name=files,proto3" json:"files,omitempty"`
+	// timestamp represents the time associated with the returned data revision.
+	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -943,11 +946,18 @@ func (x *DownloadPermissionSetsResponse) GetFiles() []*File {
 	return nil
 }
 
+func (x *DownloadPermissionSetsResponse) GetTimestamp() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Timestamp
+	}
+	return nil
+}
+
 var File_authzed_api_materialize_v0_watchpermissionsets_proto protoreflect.FileDescriptor
 
 const file_authzed_api_materialize_v0_watchpermissionsets_proto_rawDesc = "" +
 	"\n" +
-	"4authzed/api/materialize/v0/watchpermissionsets.proto\x12\x1aauthzed.api.materialize.v0\x1a\x19authzed/api/v1/core.proto\"n\n" +
+	"4authzed/api/materialize/v0/watchpermissionsets.proto\x12\x1aauthzed.api.materialize.v0\x1a\x19authzed/api/v1/core.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"n\n" +
 	"\x1aWatchPermissionSetsRequest\x12P\n" +
 	"\x17optional_starting_after\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x15optionalStartingAfter\"\xad\x03\n" +
 	"\x1bWatchPermissionSetsResponse\x12I\n" +
@@ -1002,9 +1012,10 @@ const file_authzed_api_materialize_v0_watchpermissionsets_proto_rawDesc = "" +
 	"\x14optional_at_revision\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x12optionalAtRevision\",\n" +
 	"\x04File\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
-	"\x03url\x18\x02 \x01(\tR\x03url\"X\n" +
+	"\x03url\x18\x02 \x01(\tR\x03url\"\x92\x01\n" +
 	"\x1eDownloadPermissionSetsResponse\x126\n" +
-	"\x05files\x18\x01 \x03(\v2 .authzed.api.materialize.v0.FileR\x05files2\xcd\x03\n" +
+	"\x05files\x18\x01 \x03(\v2 .authzed.api.materialize.v0.FileR\x05files\x128\n" +
+	"\ttimestamp\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp2\xcd\x03\n" +
 	"\x1aWatchPermissionSetsService\x12\x8a\x01\n" +
 	"\x13WatchPermissionSets\x126.authzed.api.materialize.v0.WatchPermissionSetsRequest\x1a7.authzed.api.materialize.v0.WatchPermissionSetsResponse\"\x000\x01\x12\x8d\x01\n" +
 	"\x14LookupPermissionSets\x127.authzed.api.materialize.v0.LookupPermissionSetsRequest\x1a8.authzed.api.materialize.v0.LookupPermissionSetsResponse\"\x000\x01\x12\x91\x01\n" +
@@ -1041,6 +1052,7 @@ var file_authzed_api_materialize_v0_watchpermissionsets_proto_goTypes = []any{
 	(*File)(nil),                           // 12: authzed.api.materialize.v0.File
 	(*DownloadPermissionSetsResponse)(nil), // 13: authzed.api.materialize.v0.DownloadPermissionSetsResponse
 	(*v1.ZedToken)(nil),                    // 14: authzed.api.v1.ZedToken
+	(*timestamppb.Timestamp)(nil),          // 15: google.protobuf.Timestamp
 }
 var file_authzed_api_materialize_v0_watchpermissionsets_proto_depIdxs = []int32{
 	14, // 0: authzed.api.materialize.v0.WatchPermissionSetsRequest.optional_starting_after:type_name -> authzed.api.v1.ZedToken
@@ -1062,17 +1074,18 @@ var file_authzed_api_materialize_v0_watchpermissionsets_proto_depIdxs = []int32{
 	14, // 16: authzed.api.materialize.v0.BreakingSchemaChange.change_at:type_name -> authzed.api.v1.ZedToken
 	14, // 17: authzed.api.materialize.v0.DownloadPermissionSetsRequest.optional_at_revision:type_name -> authzed.api.v1.ZedToken
 	12, // 18: authzed.api.materialize.v0.DownloadPermissionSetsResponse.files:type_name -> authzed.api.materialize.v0.File
-	1,  // 19: authzed.api.materialize.v0.WatchPermissionSetsService.WatchPermissionSets:input_type -> authzed.api.materialize.v0.WatchPermissionSetsRequest
-	4,  // 20: authzed.api.materialize.v0.WatchPermissionSetsService.LookupPermissionSets:input_type -> authzed.api.materialize.v0.LookupPermissionSetsRequest
-	11, // 21: authzed.api.materialize.v0.WatchPermissionSetsService.DownloadPermissionSets:input_type -> authzed.api.materialize.v0.DownloadPermissionSetsRequest
-	2,  // 22: authzed.api.materialize.v0.WatchPermissionSetsService.WatchPermissionSets:output_type -> authzed.api.materialize.v0.WatchPermissionSetsResponse
-	5,  // 23: authzed.api.materialize.v0.WatchPermissionSetsService.LookupPermissionSets:output_type -> authzed.api.materialize.v0.LookupPermissionSetsResponse
-	13, // 24: authzed.api.materialize.v0.WatchPermissionSetsService.DownloadPermissionSets:output_type -> authzed.api.materialize.v0.DownloadPermissionSetsResponse
-	22, // [22:25] is the sub-list for method output_type
-	19, // [19:22] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	15, // 19: authzed.api.materialize.v0.DownloadPermissionSetsResponse.timestamp:type_name -> google.protobuf.Timestamp
+	1,  // 20: authzed.api.materialize.v0.WatchPermissionSetsService.WatchPermissionSets:input_type -> authzed.api.materialize.v0.WatchPermissionSetsRequest
+	4,  // 21: authzed.api.materialize.v0.WatchPermissionSetsService.LookupPermissionSets:input_type -> authzed.api.materialize.v0.LookupPermissionSetsRequest
+	11, // 22: authzed.api.materialize.v0.WatchPermissionSetsService.DownloadPermissionSets:input_type -> authzed.api.materialize.v0.DownloadPermissionSetsRequest
+	2,  // 23: authzed.api.materialize.v0.WatchPermissionSetsService.WatchPermissionSets:output_type -> authzed.api.materialize.v0.WatchPermissionSetsResponse
+	5,  // 24: authzed.api.materialize.v0.WatchPermissionSetsService.LookupPermissionSets:output_type -> authzed.api.materialize.v0.LookupPermissionSetsResponse
+	13, // 25: authzed.api.materialize.v0.WatchPermissionSetsService.DownloadPermissionSets:output_type -> authzed.api.materialize.v0.DownloadPermissionSetsResponse
+	23, // [23:26] is the sub-list for method output_type
+	20, // [20:23] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_authzed_api_materialize_v0_watchpermissionsets_proto_init() }
