@@ -164,3 +164,50 @@ client, err := authzed.NewClient(
     grpcutil.WithInsecureBearerToken("some token"),
 )
 ```
+
+## Examples
+
+The [`examples/`](examples/) directory contains runnable examples demonstrating common operations:
+
+| Example | Description |
+|---------|-------------|
+| `Example_connectToAuthzed` | Connect to Authzed's hosted service |
+| `Example_connectToSpiceDB` | Connect to a local SpiceDB instance |
+| `Example_writeSchema` | Write a permission schema |
+| `Example_writeRelationships` | Create relationships between objects |
+| `Example_checkPermission` | Check if a subject has a permission |
+| `Example_checkBulkPermissions` | Check multiple permissions in one request |
+| `Example_lookupResources` | Find all resources a subject can access |
+| `Example_lookupSubjects` | Find all subjects with access to a resource |
+| `Example_readRelationships` | Read existing relationships |
+| `Example_deleteRelationships` | Delete relationships |
+| `Example_caveatedRelationship` | Use caveats (conditional permissions) |
+| `Example_watchForChanges` | Watch for relationship changes |
+
+To run the examples against a local SpiceDB instance:
+
+```sh
+# Start SpiceDB (in-memory datastore for testing)
+docker run --rm -p 50051:50051 authzed/spicedb serve \
+  --grpc-preshared-key "somerandomkeyhere" \
+  --datastore-engine memory
+
+# Run local examples (excludes Example_connectToAuthzed which requires a valid token)
+go test -v -tags=examples -run 'Example_connectToSpiceDB|Example_write|Example_check|Example_lookup|Example_read|Example_delete|Example_caveat|Example_watch' ./examples/...
+```
+
+> **Note:** `Example_connectToAuthzed` requires a valid Authzed API token and connects to the hosted service, not local SpiceDB.
+
+## Additional Resources
+
+- **[Protecting Your First App]** - Step-by-step guide to integrating SpiceDB
+- **[API Reference]** - Complete v1 API documentation
+- **[Schema Language Guide]** - Learn how to write permission schemas
+- **[Modeling Guides]** - Best practices for modeling permissions
+- **[SpiceDB Documentation]** - Comprehensive SpiceDB documentation
+
+[Protecting Your First App]: https://authzed.com/docs/guides/first-app
+[API Reference]: https://buf.build/authzed/api/docs/main/authzed.api.v1
+[Schema Language Guide]: https://authzed.com/docs/reference/schema-lang
+[Modeling Guides]: https://authzed.com/docs/modeling
+[SpiceDB Documentation]: https://authzed.com/docs
