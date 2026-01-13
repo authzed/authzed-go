@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
-	"github.com/samber/lo"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -131,12 +130,13 @@ func (rc *RetryableClient) writeBatchesWithRetry(ctx context.Context, relationsh
 
 	currentRetries := 0
 
-	updates := lo.Map[*v1.Relationship, *v1.RelationshipUpdate](relationships, func(item *v1.Relationship, _ int) *v1.RelationshipUpdate {
-		return &v1.RelationshipUpdate{
+	updates := make([]*v1.RelationshipUpdate, len(relationships))
+	for i, item := range relationships {
+		updates[i] = &v1.RelationshipUpdate{
 			Relationship: item,
 			Operation:    v1.RelationshipUpdate_OPERATION_TOUCH,
 		}
-	})
+	}
 
 	for {
 		cancelCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
