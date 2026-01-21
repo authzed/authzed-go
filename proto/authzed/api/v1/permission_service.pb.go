@@ -438,8 +438,12 @@ type RelationshipFilter struct {
 	OptionalRelation string `protobuf:"bytes,3,opt,name=optional_relation,json=optionalRelation,proto3" json:"optional_relation,omitempty"`
 	// optional_subject_filter is the optional filter for the subjects of the relationships.
 	OptionalSubjectFilter *SubjectFilter `protobuf:"bytes,4,opt,name=optional_subject_filter,json=optionalSubjectFilter,proto3" json:"optional_subject_filter,omitempty"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
+	// optional_resource_ids is the *optional* list of resource IDs for bulk operations.
+	// If specified, optional_resource_id and optional_resource_id_prefix cannot be specified.
+	// This enables efficient bulk queries using SQL IN clauses.
+	OptionalResourceIds []string `protobuf:"bytes,6,rep,name=optional_resource_ids,json=optionalResourceIds,proto3" json:"optional_resource_ids,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *RelationshipFilter) Reset() {
@@ -503,6 +507,13 @@ func (x *RelationshipFilter) GetOptionalRelation() string {
 func (x *RelationshipFilter) GetOptionalSubjectFilter() *SubjectFilter {
 	if x != nil {
 		return x.OptionalSubjectFilter
+	}
+	return nil
+}
+
+func (x *RelationshipFilter) GetOptionalResourceIds() []string {
+	if x != nil {
+		return x.OptionalResourceIds
 	}
 	return nil
 }
@@ -2489,13 +2500,14 @@ const file_authzed_api_v1_permission_service_proto_rawDesc = "" +
 	"\x11at_least_as_fresh\x18\x02 \x01(\v2\x18.authzed.api.v1.ZedTokenH\x00R\x0eatLeastAsFresh\x12F\n" +
 	"\x11at_exact_snapshot\x18\x03 \x01(\v2\x18.authzed.api.v1.ZedTokenH\x00R\x0fatExactSnapshot\x12;\n" +
 	"\x10fully_consistent\x18\x04 \x01(\bB\x0e\xfaB\x04j\x02\b\x01\xbaH\x04j\x02\b\x01H\x00R\x0ffullyConsistentB\x17\n" +
-	"\vrequirement\x12\b\xf8B\x01\xbaH\x02\b\x01\"\xb8\x05\n" +
+	"\vrequirement\x12\b\xf8B\x01\xbaH\x02\b\x01\"\x9a\x06\n" +
 	"\x12RelationshipFilter\x12\xbc\x01\n" +
 	"\rresource_type\x18\x01 \x01(\tB\x96\x01\xfaBHrF(\x80\x012A^(([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9])?$\xbaHHrF(\x80\x012A^(([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9])?$R\fresourceType\x12|\n" +
 	"\x14optional_resource_id\x18\x02 \x01(\tBJ\xfaB\"r (\x80\b2\x1b^([a-zA-Z0-9/_|\\-=+]{1,})?$\xbaH\"r (\x80\b2\x1b^([a-zA-Z0-9/_|\\-=+]{1,})?$R\x12optionalResourceId\x12\x89\x01\n" +
 	"\x1boptional_resource_id_prefix\x18\x05 \x01(\tBJ\xfaB\"r (\x80\b2\x1b^([a-zA-Z0-9/_|\\-=+]{1,})?$\xbaH\"r (\x80\b2\x1b^([a-zA-Z0-9/_|\\-=+]{1,})?$R\x18optionalResourceIdPrefix\x12\x81\x01\n" +
 	"\x11optional_relation\x18\x03 \x01(\tBT\xfaB'r%(@2!^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\xbaH'r%(@2!^([a-z][a-z0-9_]{1,62}[a-z0-9])?$R\x10optionalRelation\x12U\n" +
-	"\x17optional_subject_filter\x18\x04 \x01(\v2\x1d.authzed.api.v1.SubjectFilterR\x15optionalSubjectFilter\"\xad\x04\n" +
+	"\x17optional_subject_filter\x18\x04 \x01(\v2\x1d.authzed.api.v1.SubjectFilterR\x15optionalSubjectFilter\x12`\n" +
+	"\x15optional_resource_ids\x18\x06 \x03(\tB,\xfaB)\x92\x01&\x10d\"\"r (\x80\b2\x1b^([a-zA-Z0-9/_|\\-=+]{1,})?$R\x13optionalResourceIds\"\xad\x04\n" +
 	"\rSubjectFilter\x12\xb4\x01\n" +
 	"\fsubject_type\x18\x01 \x01(\tB\x90\x01\xfaBErC(\x80\x012>^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$\xbaHErC(\x80\x012>^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$R\vsubjectType\x12\x84\x01\n" +
 	"\x13optional_subject_id\x18\x02 \x01(\tBT\xfaB'r%(\x80\b2 ^(([a-zA-Z0-9/_|\\-=+]{1,})|\\*)?$\xbaH'r%(\x80\b2 ^(([a-zA-Z0-9/_|\\-=+]{1,})|\\*)?$R\x11optionalSubjectId\x12Y\n" +
