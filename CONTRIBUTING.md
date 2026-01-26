@@ -93,17 +93,47 @@ Continuous integration enforces that `go mod tidy` has been run.
 ### Updating generated Protobuf code
 
 All [Protobuf] code is managed using [buf].
-The [shebang] at the top of [magefiles/gen.go][gen-file] contains the [Buf Registry ref] that will be generated.
+The constants in [magefiles/gen.go][gen-file] specify the [Buf Registry ref] that will be generated.
 You can regenerate the code using the `mage` commands:
 
 [Protobuf]: https://developers.google.com/protocol-buffers/
 [buf]: https://docs.buf.build/installation
-[shebang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [Buf Registry ref]: https://buf.build/authzed/api/history
-[gen-file]: https://github.com/authzed/authzed-go/blob/main/magefiles/gen.go#L27
+[gen-file]: https://github.com/authzed/authzed-go/blob/main/magefiles/gen.go#L26
 
 ```sh
 mage gen:all
 # or just the proto
 mage gen:proto
 ```
+
+#### Building with locally modified protos
+
+If you need to test changes to the proto definitions before they're published to the Buf Registry:
+
+1. Clone the [authzed/api] repository locally:
+   ```sh
+   git clone https://github.com/authzed/api.git
+   ```
+
+2. Make your changes to the `.proto` files in the `authzed/api` repository.
+
+3. In the `authzed-go` repository, modify `magefiles/gen.go` to point to your local proto directory instead of the Buf Registry:
+   ```go
+   // Replace this line:
+   bufRef := BufRepository + ":" + BufTag
+   
+   // With a path to your local api directory:
+   bufRef := "/path/to/your/local/api"
+   ```
+
+4. Run the generation command:
+   ```sh
+   mage gen:proto
+   ```
+
+5. Before committing, remember to revert the changes to `magefiles/gen.go` so it points back to the Buf Registry reference.
+
+**Note:** Generated version files will still reference the `BufRepository` and `BufTag` constants from the original registry reference, not your local path. This is expected for local testing and won't affect functionality.
+
+[authzed/api]: https://github.com/authzed/api
