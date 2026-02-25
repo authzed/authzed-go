@@ -26,6 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WatchPermissionsServiceClient interface {
+	// Deprecated: Do not use.
 	// WatchPermissions returns a stream of PermissionChange events for the given permissions.
 	//
 	// WatchPermissions is a long-running RPC, and will stream events until the client
@@ -52,6 +53,7 @@ func NewWatchPermissionsServiceClient(cc grpc.ClientConnInterface) WatchPermissi
 	return &watchPermissionsServiceClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *watchPermissionsServiceClient) WatchPermissions(ctx context.Context, in *WatchPermissionsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchPermissionsResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &WatchPermissionsService_ServiceDesc.Streams[0], WatchPermissionsService_WatchPermissions_FullMethodName, cOpts...)
@@ -75,6 +77,7 @@ type WatchPermissionsService_WatchPermissionsClient = grpc.ServerStreamingClient
 // All implementations must embed UnimplementedWatchPermissionsServiceServer
 // for forward compatibility.
 type WatchPermissionsServiceServer interface {
+	// Deprecated: Do not use.
 	// WatchPermissions returns a stream of PermissionChange events for the given permissions.
 	//
 	// WatchPermissions is a long-running RPC, and will stream events until the client

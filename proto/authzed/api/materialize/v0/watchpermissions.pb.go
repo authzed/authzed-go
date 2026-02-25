@@ -407,9 +407,9 @@ const file_authzed_api_materialize_v0_watchpermissions_proto_rawDesc = "" +
 	"\x1aPERMISSIONSHIP_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cPERMISSIONSHIP_NO_PERMISSION\x10\x01\x12!\n" +
 	"\x1dPERMISSIONSHIP_HAS_PERMISSION\x10\x02\x12)\n" +
-	"%PERMISSIONSHIP_CONDITIONAL_PERMISSION\x10\x032\x9d\x01\n" +
-	"\x17WatchPermissionsService\x12\x81\x01\n" +
-	"\x10WatchPermissions\x123.authzed.api.materialize.v0.WatchPermissionsRequest\x1a4.authzed.api.materialize.v0.WatchPermissionsResponse\"\x000\x01Bb\n" +
+	"%PERMISSIONSHIP_CONDITIONAL_PERMISSION\x10\x032\xa0\x01\n" +
+	"\x17WatchPermissionsService\x12\x84\x01\n" +
+	"\x10WatchPermissions\x123.authzed.api.materialize.v0.WatchPermissionsRequest\x1a4.authzed.api.materialize.v0.WatchPermissionsResponse\"\x03\x88\x02\x010\x01Bb\n" +
 	"\x1ecom.authzed.api.materialize.v0P\x01Z>github.com/authzed/authzed-go/proto/authzed/api/materialize/v0b\x06proto3"
 
 var (

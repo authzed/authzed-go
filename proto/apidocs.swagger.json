@@ -1071,7 +1071,7 @@
         }
       }
     },
-    "apiv1Cursor": {
+    "apiV1Cursor": {
       "type": "object",
       "properties": {
         "token": {
@@ -1233,7 +1233,7 @@
           "description": "optional_limit, if non-zero, specifies the limit on the number of\nrelationships the server can return in one page. By default, the server\nwill pick a page size, and the server is free to choose a smaller size\nat will."
         },
         "optionalCursor": {
-          "$ref": "#/definitions/apiv1Cursor",
+          "$ref": "#/definitions/apiV1Cursor",
           "description": "optional_cursor, if specified, indicates the cursor after which results\nshould resume being returned. The cursor can be found on the\nBulkExportRelationshipsResponse object."
         },
         "optionalRelationshipFilter": {
@@ -1247,7 +1247,7 @@
       "type": "object",
       "properties": {
         "afterResultCursor": {
-          "$ref": "#/definitions/apiv1Cursor"
+          "$ref": "#/definitions/apiV1Cursor"
         },
         "relationships": {
           "type": "array",
@@ -2195,7 +2195,7 @@
           "description": "optional_limit, if non-zero, specifies the limit on the number of\nrelationships the server can return in one page. By default, the server\nwill pick a page size, and the server is free to choose a smaller size\nat will."
         },
         "optionalCursor": {
-          "$ref": "#/definitions/apiv1Cursor",
+          "$ref": "#/definitions/apiV1Cursor",
           "description": "optional_cursor, if specified, indicates the cursor after which results\nshould resume being returned. The cursor can be found on the\nBulkExportRelationshipsResponse object."
         },
         "optionalRelationshipFilter": {
@@ -2209,7 +2209,7 @@
       "type": "object",
       "properties": {
         "afterResultCursor": {
-          "$ref": "#/definitions/apiv1Cursor"
+          "$ref": "#/definitions/apiV1Cursor"
         },
         "relationships": {
           "type": "array",
@@ -2282,7 +2282,7 @@
           "description": "optional_limit, if non-zero, specifies the limit on the number of resources to return\nbefore the stream is closed on the server side. By default, the stream will continue\nresolving resources until exhausted or the stream is closed due to the client or a\nnetwork issue."
         },
         "optionalCursor": {
-          "$ref": "#/definitions/apiv1Cursor",
+          "$ref": "#/definitions/apiV1Cursor",
           "description": "optional_cursor, if specified, indicates the cursor after which results should resume being returned.\nThe cursor can be found on the LookupResourcesResponse object."
         }
       },
@@ -2308,7 +2308,7 @@
           "title": "partial_caveat_info holds information of a partially-evaluated caveated response"
         },
         "afterResultCursor": {
-          "$ref": "#/definitions/apiv1Cursor",
+          "$ref": "#/definitions/apiV1Cursor",
           "description": "after_result_cursor holds a cursor that can be used to resume the LookupResources stream after this\nresult."
         }
       },
@@ -2346,7 +2346,7 @@
           "description": "optional_concrete_limit is currently unimplemented for LookupSubjects\nand will return an error as of SpiceDB version 1.40.1. This will\nbe implemented in a future version of SpiceDB."
         },
         "optionalCursor": {
-          "$ref": "#/definitions/apiv1Cursor",
+          "$ref": "#/definitions/apiV1Cursor",
           "description": "optional_cursor is currently unimplemented for LookupSubjects\nand will be ignored as of SpiceDB version 1.40.1. This will\nbe implemented in a future version of SpiceDB."
         },
         "wildcardOption": {
@@ -2394,7 +2394,7 @@
           "description": "excluded_subjects are the subjects excluded. This list\nwill only contain subjects if `subject.subject_object_id` is a wildcard (`*`) and\nwill only be populated if exclusions exist from the wildcard."
         },
         "afterResultCursor": {
-          "$ref": "#/definitions/apiv1Cursor",
+          "$ref": "#/definitions/apiV1Cursor",
           "description": "after_result_cursor holds a cursor that can be used to resume the LookupSubjects stream after this\nresult."
         }
       },
@@ -2494,7 +2494,7 @@
           "description": "optional_limit, if non-zero, specifies the limit on the number of relationships to return\nbefore the stream is closed on the server side. By default, the stream will continue\nresolving relationships until exhausted or the stream is closed due to the client or a\nnetwork issue."
         },
         "optionalCursor": {
-          "$ref": "#/definitions/apiv1Cursor",
+          "$ref": "#/definitions/apiV1Cursor",
           "description": "optional_cursor, if specified, indicates the cursor after which results should resume being returned.\nThe cursor can be found on the ReadRelationshipsResponse object."
         }
       },
@@ -2512,7 +2512,7 @@
           "description": "relationship is the found relationship."
         },
         "afterResultCursor": {
-          "$ref": "#/definitions/apiv1Cursor",
+          "$ref": "#/definitions/apiV1Cursor",
           "description": "after_result_cursor holds a cursor that can be used to resume the ReadRelationships stream after this\nresult."
         }
       },
