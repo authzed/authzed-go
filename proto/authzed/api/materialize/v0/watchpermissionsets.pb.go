@@ -757,9 +757,11 @@ func (x *LookupPermissionSetsRequired) GetRequiredLookupAt() *v1.ZedToken {
 type BreakingSchemaChange struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// change_at is the revision at which a breaking schema event has happened.
-	ChangeAt      *v1.ZedToken `protobuf:"bytes,1,opt,name=change_at,json=changeAt,proto3" json:"change_at,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	ChangeAt *v1.ZedToken `protobuf:"bytes,1,opt,name=change_at,json=changeAt,proto3" json:"change_at,omitempty"`
+	// affected_permissions lists all the watched permissions that were directly affected by the breaking schema change.
+	AffectedPermissions []*WatchedPermission `protobuf:"bytes,2,rep,name=affected_permissions,json=affectedPermissions,proto3" json:"affected_permissions,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *BreakingSchemaChange) Reset() {
@@ -795,6 +797,13 @@ func (*BreakingSchemaChange) Descriptor() ([]byte, []int) {
 func (x *BreakingSchemaChange) GetChangeAt() *v1.ZedToken {
 	if x != nil {
 		return x.ChangeAt
+	}
+	return nil
+}
+
+func (x *BreakingSchemaChange) GetAffectedPermissions() []*WatchedPermission {
+	if x != nil {
+		return x.AffectedPermissions
 	}
 	return nil
 }
@@ -957,7 +966,7 @@ var File_authzed_api_materialize_v0_watchpermissionsets_proto protoreflect.FileD
 
 const file_authzed_api_materialize_v0_watchpermissionsets_proto_rawDesc = "" +
 	"\n" +
-	"4authzed/api/materialize/v0/watchpermissionsets.proto\x12\x1aauthzed.api.materialize.v0\x1a\x19authzed/api/v1/core.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"n\n" +
+	"4authzed/api/materialize/v0/watchpermissionsets.proto\x12\x1aauthzed.api.materialize.v0\x1a1authzed/api/materialize/v0/watchpermissions.proto\x1a\x19authzed/api/v1/core.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"n\n" +
 	"\x1aWatchPermissionSetsRequest\x12P\n" +
 	"\x17optional_starting_after\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x15optionalStartingAfter\"\xad\x03\n" +
 	"\x1bWatchPermissionSetsResponse\x12I\n" +
@@ -1005,9 +1014,10 @@ const file_authzed_api_materialize_v0_watchpermissionsets_proto_rawDesc = "" +
 	"\tobject_id\x18\x02 \x01(\tR\bobjectId\x12E\n" +
 	"\x1foptional_permission_or_relation\x18\x03 \x01(\tR\x1coptionalPermissionOrRelation\"f\n" +
 	"\x1cLookupPermissionSetsRequired\x12F\n" +
-	"\x12required_lookup_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x10requiredLookupAt\"M\n" +
+	"\x12required_lookup_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x10requiredLookupAt\"\xaf\x01\n" +
 	"\x14BreakingSchemaChange\x125\n" +
-	"\tchange_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\bchangeAt\"k\n" +
+	"\tchange_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\bchangeAt\x12`\n" +
+	"\x14affected_permissions\x18\x02 \x03(\v2-.authzed.api.materialize.v0.WatchedPermissionR\x13affectedPermissions\"k\n" +
 	"\x1dDownloadPermissionSetsRequest\x12J\n" +
 	"\x14optional_at_revision\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x12optionalAtRevision\",\n" +
 	"\x04File\x12\x12\n" +
@@ -1052,7 +1062,8 @@ var file_authzed_api_materialize_v0_watchpermissionsets_proto_goTypes = []any{
 	(*File)(nil),                           // 12: authzed.api.materialize.v0.File
 	(*DownloadPermissionSetsResponse)(nil), // 13: authzed.api.materialize.v0.DownloadPermissionSetsResponse
 	(*v1.ZedToken)(nil),                    // 14: authzed.api.v1.ZedToken
-	(*timestamppb.Timestamp)(nil),          // 15: google.protobuf.Timestamp
+	(*WatchedPermission)(nil),              // 15: authzed.api.materialize.v0.WatchedPermission
+	(*timestamppb.Timestamp)(nil),          // 16: google.protobuf.Timestamp
 }
 var file_authzed_api_materialize_v0_watchpermissionsets_proto_depIdxs = []int32{
 	14, // 0: authzed.api.materialize.v0.WatchPermissionSetsRequest.optional_starting_after:type_name -> authzed.api.v1.ZedToken
@@ -1072,20 +1083,21 @@ var file_authzed_api_materialize_v0_watchpermissionsets_proto_depIdxs = []int32{
 	8,  // 14: authzed.api.materialize.v0.PermissionSetChange.child_member:type_name -> authzed.api.materialize.v0.MemberReference
 	14, // 15: authzed.api.materialize.v0.LookupPermissionSetsRequired.required_lookup_at:type_name -> authzed.api.v1.ZedToken
 	14, // 16: authzed.api.materialize.v0.BreakingSchemaChange.change_at:type_name -> authzed.api.v1.ZedToken
-	14, // 17: authzed.api.materialize.v0.DownloadPermissionSetsRequest.optional_at_revision:type_name -> authzed.api.v1.ZedToken
-	12, // 18: authzed.api.materialize.v0.DownloadPermissionSetsResponse.files:type_name -> authzed.api.materialize.v0.File
-	15, // 19: authzed.api.materialize.v0.DownloadPermissionSetsResponse.timestamp:type_name -> google.protobuf.Timestamp
-	1,  // 20: authzed.api.materialize.v0.WatchPermissionSetsService.WatchPermissionSets:input_type -> authzed.api.materialize.v0.WatchPermissionSetsRequest
-	4,  // 21: authzed.api.materialize.v0.WatchPermissionSetsService.LookupPermissionSets:input_type -> authzed.api.materialize.v0.LookupPermissionSetsRequest
-	11, // 22: authzed.api.materialize.v0.WatchPermissionSetsService.DownloadPermissionSets:input_type -> authzed.api.materialize.v0.DownloadPermissionSetsRequest
-	2,  // 23: authzed.api.materialize.v0.WatchPermissionSetsService.WatchPermissionSets:output_type -> authzed.api.materialize.v0.WatchPermissionSetsResponse
-	5,  // 24: authzed.api.materialize.v0.WatchPermissionSetsService.LookupPermissionSets:output_type -> authzed.api.materialize.v0.LookupPermissionSetsResponse
-	13, // 25: authzed.api.materialize.v0.WatchPermissionSetsService.DownloadPermissionSets:output_type -> authzed.api.materialize.v0.DownloadPermissionSetsResponse
-	23, // [23:26] is the sub-list for method output_type
-	20, // [20:23] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	15, // 17: authzed.api.materialize.v0.BreakingSchemaChange.affected_permissions:type_name -> authzed.api.materialize.v0.WatchedPermission
+	14, // 18: authzed.api.materialize.v0.DownloadPermissionSetsRequest.optional_at_revision:type_name -> authzed.api.v1.ZedToken
+	12, // 19: authzed.api.materialize.v0.DownloadPermissionSetsResponse.files:type_name -> authzed.api.materialize.v0.File
+	16, // 20: authzed.api.materialize.v0.DownloadPermissionSetsResponse.timestamp:type_name -> google.protobuf.Timestamp
+	1,  // 21: authzed.api.materialize.v0.WatchPermissionSetsService.WatchPermissionSets:input_type -> authzed.api.materialize.v0.WatchPermissionSetsRequest
+	4,  // 22: authzed.api.materialize.v0.WatchPermissionSetsService.LookupPermissionSets:input_type -> authzed.api.materialize.v0.LookupPermissionSetsRequest
+	11, // 23: authzed.api.materialize.v0.WatchPermissionSetsService.DownloadPermissionSets:input_type -> authzed.api.materialize.v0.DownloadPermissionSetsRequest
+	2,  // 24: authzed.api.materialize.v0.WatchPermissionSetsService.WatchPermissionSets:output_type -> authzed.api.materialize.v0.WatchPermissionSetsResponse
+	5,  // 25: authzed.api.materialize.v0.WatchPermissionSetsService.LookupPermissionSets:output_type -> authzed.api.materialize.v0.LookupPermissionSetsResponse
+	13, // 26: authzed.api.materialize.v0.WatchPermissionSetsService.DownloadPermissionSets:output_type -> authzed.api.materialize.v0.DownloadPermissionSetsResponse
+	24, // [24:27] is the sub-list for method output_type
+	21, // [21:24] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_authzed_api_materialize_v0_watchpermissionsets_proto_init() }
@@ -1093,6 +1105,7 @@ func file_authzed_api_materialize_v0_watchpermissionsets_proto_init() {
 	if File_authzed_api_materialize_v0_watchpermissionsets_proto != nil {
 		return
 	}
+	file_authzed_api_materialize_v0_watchpermissions_proto_init()
 	file_authzed_api_materialize_v0_watchpermissionsets_proto_msgTypes[1].OneofWrappers = []any{
 		(*WatchPermissionSetsResponse_Change)(nil),
 		(*WatchPermissionSetsResponse_CompletedRevision)(nil),
