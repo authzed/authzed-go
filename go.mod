@@ -8,10 +8,10 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/ecordell/optgen v0.2.3
 	github.com/envoyproxy/protoc-gen-validate v1.3.3
-	github.com/golangci/golangci-lint/v2 v2.11.2
+	github.com/golangci/golangci-lint/v2 v2.11.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.28.0
 	github.com/jzelinskie/stringz v0.0.3
-	github.com/magefile/mage v1.16.0
+	github.com/magefile/mage v1.16.1
 	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10
 	github.com/stretchr/testify v1.11.1
 	go.uber.org/goleak v1.3.0
@@ -19,7 +19,7 @@ require (
 	golang.org/x/vuln v1.1.4
 	google.golang.org/genproto/googleapis/api v0.0.0-20260209200024-4cfbd4190f57
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260209200024-4cfbd4190f57
-	google.golang.org/grpc v1.79.1
+	google.golang.org/grpc v1.79.2
 	google.golang.org/protobuf v1.36.11
 )
 
@@ -184,7 +184,7 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2 // indirect
 	github.com/sashamelentyev/interfacebloat v1.1.0 // indirect
 	github.com/sashamelentyev/usestdlibvars v1.29.0 // indirect
-	github.com/securego/gosec/v2 v2.24.7 // indirect
+	github.com/securego/gosec/v2 v2.24.8-0.20260309165252-619ce2117e08 // indirect
 	github.com/sirupsen/logrus v1.9.4 // indirect
 	github.com/sivchari/containedctx v1.0.3 // indirect
 	github.com/sonatard/noctx v0.5.0 // indirect
