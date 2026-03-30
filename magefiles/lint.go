@@ -5,6 +5,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
+	"strings"
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
@@ -45,17 +47,28 @@ func (l Lint) Go() error {
 // Gofumpt runs gofumpt
 func (Lint) Gofumpt() error {
 	fmt.Println("formatting go")
-	return runDirV(".", "go", "run", "mvdan.cc/gofumpt", "-l", "-w", "..")
+	return runMagefilesTool("gofumpt", "-l", "-w", ".")
 }
 
 // Golangcilint runs golangci-lint
 func (Lint) Golangcilint() error {
 	fmt.Println("running golangci-lint")
-	return runDirV(".", "go", "run", "github.com/golangci/golangci-lint/v2/cmd/golangci-lint", "run", "--fix")
+	return runMagefilesTool("golangci-lint", "run", "--fix")
 }
 
 // Vulncheck runs vulncheck
 func (Lint) Vulncheck() error {
 	fmt.Println("running vulncheck")
-	return runDirV(".", "go", "run", "golang.org/x/vuln/cmd/govulncheck", "-show", "verbose", "./...")
+	return runMagefilesTool("govulncheck", "-show", "verbose", "./...")
+}
+
+// runMagefilesTool resolves a tool binary from the magefiles module and runs
+// it in the repo root directory.
+func runMagefilesTool(name string, args ...string) error {
+	out, err := exec.Command("go", "-C", "magefiles", "tool", "-n", name).Output()
+	if err != nil {
+		return fmt.Errorf("resolving tool %s: %w", name, err)
+	}
+	bin := strings.TrimSpace(string(out))
+	return runDirV(".", bin, args...)
 }
