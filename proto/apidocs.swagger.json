@@ -2878,6 +2878,13 @@
         "optionalSubjectFilter": {
           "$ref": "#/definitions/v1SubjectFilter",
           "description": "optional_subject_filter is the optional filter for the subjects of the relationships."
+        },
+        "optionalResourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "optional_resource_ids is the *optional* list of resource IDs for bulk operations.\nIf specified, optional_resource_id and optional_resource_id_prefix cannot be specified.\nThis enables efficient bulk queries using SQL IN clauses."
         }
       },
       "description": "RelationshipFilter is a collection of filters which when applied to a\nrelationship will return relationships that have exactly matching fields.\n\nAll fields are optional and if left unspecified will not filter relationships,\nbut at least one field must be specified.\n\nNOTE: The performance of the API will be affected by the selection of fields\non which to filter. If a field is not indexed, the performance of the API\ncan be significantly slower."
