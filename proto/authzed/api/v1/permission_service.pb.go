@@ -32,8 +32,16 @@ const (
 type LookupPermissionship int32
 
 const (
-	LookupPermissionship_LOOKUP_PERMISSIONSHIP_UNSPECIFIED            LookupPermissionship = 0
-	LookupPermissionship_LOOKUP_PERMISSIONSHIP_HAS_PERMISSION         LookupPermissionship = 1
+	// LOOKUP_PERMISSIONSHIP_UNSPECIFIED is the default value and should not be used or
+	// relied upon. Servers should not return this value.
+	LookupPermissionship_LOOKUP_PERMISSIONSHIP_UNSPECIFIED LookupPermissionship = 0
+	// LOOKUP_PERMISSIONSHIP_HAS_PERMISSION indicates that the subject has permission
+	// on the resource with no missing caveat context.
+	LookupPermissionship_LOOKUP_PERMISSIONSHIP_HAS_PERMISSION LookupPermissionship = 1
+	// LOOKUP_PERMISSIONSHIP_CONDITIONAL_PERMISSION indicates that the subject has
+	// permission on the resource, but only if a caveat condition is met. The
+	// `partial_caveat_info` field in the response should contain the missing context
+	// fields that must be provided to fully evaluate the caveat.
 	LookupPermissionship_LOOKUP_PERMISSIONSHIP_CONDITIONAL_PERMISSION LookupPermissionship = 2
 )
 
@@ -185,9 +193,19 @@ func (DeleteRelationshipsResponse_DeletionProgress) EnumDescriptor() ([]byte, []
 type CheckPermissionResponse_Permissionship int32
 
 const (
-	CheckPermissionResponse_PERMISSIONSHIP_UNSPECIFIED            CheckPermissionResponse_Permissionship = 0
-	CheckPermissionResponse_PERMISSIONSHIP_NO_PERMISSION          CheckPermissionResponse_Permissionship = 1
-	CheckPermissionResponse_PERMISSIONSHIP_HAS_PERMISSION         CheckPermissionResponse_Permissionship = 2
+	// PERMISSIONSHIP_UNSPECIFIED is the default value and should not be used or
+	// relied upon. Servers should not return this value.
+	CheckPermissionResponse_PERMISSIONSHIP_UNSPECIFIED CheckPermissionResponse_Permissionship = 0
+	// PERMISSIONSHIP_NO_PERMISSION indicates that the subject does not have the
+	// requested permission on the resource.
+	CheckPermissionResponse_PERMISSIONSHIP_NO_PERMISSION CheckPermissionResponse_Permissionship = 1
+	// PERMISSIONSHIP_HAS_PERMISSION indicates that the subject has the requested
+	// permission on the resource.
+	CheckPermissionResponse_PERMISSIONSHIP_HAS_PERMISSION CheckPermissionResponse_Permissionship = 2
+	// PERMISSIONSHIP_CONDITIONAL_PERMISSION indicates that the subject has the
+	// requested permission on the resource, but only if a caveat condition is met.
+	// The `partial_caveat_info` field in the response should contain the missing
+	// context fields that must be provided to fully evaluate the caveat.
 	CheckPermissionResponse_PERMISSIONSHIP_CONDITIONAL_PERMISSION CheckPermissionResponse_Permissionship = 3
 )
 
@@ -1713,8 +1731,13 @@ type LookupResourcesRequest struct {
 	// optional_cursor, if specified, indicates the cursor after which results should resume being returned.
 	// The cursor can be found on the LookupResourcesResponse object.
 	OptionalCursor *Cursor `protobuf:"bytes,7,opt,name=optional_cursor,json=optionalCursor,proto3" json:"optional_cursor,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// with_debug, if true, indicates that the response should return debug information
+	// if present and available. For now, ONLY enables debugging of maximum recursion depth
+	// errors, with additional context being returned in error details, but this may be
+	// extended in the future.
+	WithDebug     bool `protobuf:"varint,8,opt,name=with_debug,json=withDebug,proto3" json:"with_debug,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *LookupResourcesRequest) Reset() {
@@ -1794,6 +1817,13 @@ func (x *LookupResourcesRequest) GetOptionalCursor() *Cursor {
 		return x.OptionalCursor
 	}
 	return nil
+}
+
+func (x *LookupResourcesRequest) GetWithDebug() bool {
+	if x != nil {
+		return x.WithDebug
+	}
+	return false
 }
 
 // LookupResourcesResponse contains a single matching resource object ID for the
@@ -1903,9 +1933,8 @@ type LookupSubjectsRequest struct {
 	// and will return an error as of SpiceDB version 1.40.1. This will
 	// be implemented in a future version of SpiceDB.
 	OptionalConcreteLimit uint32 `protobuf:"varint,7,opt,name=optional_concrete_limit,json=optionalConcreteLimit,proto3" json:"optional_concrete_limit,omitempty"`
-	// optional_cursor is currently unimplemented for LookupSubjects
-	// and will be ignored as of SpiceDB version 1.40.1. This will
-	// be implemented in a future version of SpiceDB.
+	// optional_cursor is not currently supported for LookupSubjects and this
+	// field will be ignored. Cursoring support will be added in a future version.
 	OptionalCursor *Cursor `protobuf:"bytes,8,opt,name=optional_cursor,json=optionalCursor,proto3" json:"optional_cursor,omitempty"`
 	// wildcard_option specifies whether wildcards should be returned by LookupSubjects.
 	// For backwards compatibility, defaults to WILDCARD_OPTION_INCLUDE_WILDCARDS if unspecified.
@@ -2517,20 +2546,20 @@ const file_authzed_api_v1_permission_service_proto_rawDesc = "" +
 	"\tOperation\x12\x19\n" +
 	"\x15OPERATION_UNSPECIFIED\x10\x00\x12\x1c\n" +
 	"\x18OPERATION_MUST_NOT_MATCH\x10\x01\x12\x18\n" +
-	"\x14OPERATION_MUST_MATCH\x10\x02\"\xcf\x02\n" +
-	"\x19WriteRelationshipsRequest\x12V\n" +
-	"\aupdates\x18\x01 \x03(\v2\".authzed.api.v1.RelationshipUpdateB\x18\xfaB\n" +
-	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01\xbaH\b\x92\x01\x05\"\x03\xc8\x01\x01R\aupdates\x12m\n" +
-	"\x16optional_preconditions\x18\x02 \x03(\v2\x1c.authzed.api.v1.PreconditionB\x18\xfaB\n" +
-	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01\xbaH\b\x92\x01\x05\"\x03\xc8\x01\x01R\x15optionalPreconditions\x12k\n" +
+	"\x14OPERATION_MUST_MATCH\x10\x02\"\xb9\x02\n" +
+	"\x19WriteRelationshipsRequest\x12K\n" +
+	"\aupdates\x18\x01 \x03(\v2\".authzed.api.v1.RelationshipUpdateB\r\xfaB\n" +
+	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01R\aupdates\x12b\n" +
+	"\x16optional_preconditions\x18\x02 \x03(\v2\x1c.authzed.api.v1.PreconditionB\r\xfaB\n" +
+	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01R\x15optionalPreconditions\x12k\n" +
 	"\x1doptional_transaction_metadata\x18\x03 \x01(\v2\x17.google.protobuf.StructB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\x1boptionalTransactionMetadata\"U\n" +
 	"\x1aWriteRelationshipsResponse\x127\n" +
 	"\n" +
-	"written_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\twrittenAt\"\xdd\x03\n" +
+	"written_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\twrittenAt\"\xd2\x03\n" +
 	"\x1aDeleteRelationshipsRequest\x12c\n" +
-	"\x13relationship_filter\x18\x01 \x01(\v2\".authzed.api.v1.RelationshipFilterB\x0e\xfaB\x05\x8a\x01\x02\x10\x01\xbaH\x03\xc8\x01\x01R\x12relationshipFilter\x12m\n" +
-	"\x16optional_preconditions\x18\x02 \x03(\v2\x1c.authzed.api.v1.PreconditionB\x18\xfaB\n" +
-	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01\xbaH\b\x92\x01\x05\"\x03\xc8\x01\x01R\x15optionalPreconditions\x125\n" +
+	"\x13relationship_filter\x18\x01 \x01(\v2\".authzed.api.v1.RelationshipFilterB\x0e\xfaB\x05\x8a\x01\x02\x10\x01\xbaH\x03\xc8\x01\x01R\x12relationshipFilter\x12b\n" +
+	"\x16optional_preconditions\x18\x02 \x03(\v2\x1c.authzed.api.v1.PreconditionB\r\xfaB\n" +
+	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01R\x15optionalPreconditions\x125\n" +
 	"\x0eoptional_limit\x18\x03 \x01(\rB\x0e\xfaB\x04*\x02(\x00\xbaH\x04*\x02(\x00R\roptionalLimit\x12G\n" +
 	" optional_allow_partial_deletions\x18\x04 \x01(\bR\x1doptionalAllowPartialDeletions\x12k\n" +
 	"\x1doptional_transaction_metadata\x18\x05 \x01(\v2\x17.google.protobuf.StructB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\x1boptionalTransactionMetadata\"\xf7\x02\n" +
@@ -2564,11 +2593,11 @@ const file_authzed_api_v1_permission_service_proto_rawDesc = "" +
 	"\x1aPERMISSIONSHIP_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cPERMISSIONSHIP_NO_PERMISSION\x10\x01\x12!\n" +
 	"\x1dPERMISSIONSHIP_HAS_PERMISSION\x10\x02\x12)\n" +
-	"%PERMISSIONSHIP_CONDITIONAL_PERMISSION\x10\x03\"\xe0\x01\n" +
+	"%PERMISSIONSHIP_CONDITIONAL_PERMISSION\x10\x03\"\xd5\x01\n" +
 	"\x1bCheckBulkPermissionsRequest\x12=\n" +
-	"\vconsistency\x18\x01 \x01(\v2\x1b.authzed.api.v1.ConsistencyR\vconsistency\x12_\n" +
-	"\x05items\x18\x02 \x03(\v2/.authzed.api.v1.CheckBulkPermissionsRequestItemB\x18\xfaB\n" +
-	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01\xbaH\b\x92\x01\x05\"\x03\xc8\x01\x01R\x05items\x12!\n" +
+	"\vconsistency\x18\x01 \x01(\v2\x1b.authzed.api.v1.ConsistencyR\vconsistency\x12T\n" +
+	"\x05items\x18\x02 \x03(\v2/.authzed.api.v1.CheckBulkPermissionsRequestItemB\r\xfaB\n" +
+	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01R\x05items\x12!\n" +
 	"\fwith_tracing\x18\x03 \x01(\bR\vwithTracing\"\xf3\x02\n" +
 	"\x1fCheckBulkPermissionsRequestItem\x12K\n" +
 	"\bresource\x18\x01 \x01(\v2\x1f.authzed.api.v1.ObjectReferenceB\x0e\xfaB\x05\x8a\x01\x02\x10\x01\xbaH\x03\xc8\x01\x01R\bresource\x12t\n" +
@@ -2576,12 +2605,12 @@ const file_authzed_api_v1_permission_service_proto_rawDesc = "" +
 	"permission\x18\x02 \x01(\tBT\xfaB'r%(@2!^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\xbaH'r%(@2!^([a-z][a-z0-9_]{1,62}[a-z0-9])?$R\n" +
 	"permission\x12J\n" +
 	"\asubject\x18\x03 \x01(\v2 .authzed.api.v1.SubjectReferenceB\x0e\xfaB\x05\x8a\x01\x02\x10\x01\xbaH\x03\xc8\x01\x01R\asubject\x12A\n" +
-	"\acontext\x18\x04 \x01(\v2\x17.google.protobuf.StructB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\acontext\"\xc1\x01\n" +
+	"\acontext\x18\x04 \x01(\v2\x17.google.protobuf.StructB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\acontext\"\xb6\x01\n" +
 	"\x1cCheckBulkPermissionsResponse\x12G\n" +
 	"\n" +
-	"checked_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\tcheckedAt\x12X\n" +
-	"\x05pairs\x18\x02 \x03(\v2(.authzed.api.v1.CheckBulkPermissionsPairB\x18\xfaB\n" +
-	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01\xbaH\b\x92\x01\x05\"\x03\xc8\x01\x01R\x05pairs\"\xe5\x01\n" +
+	"checked_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\tcheckedAt\x12M\n" +
+	"\x05pairs\x18\x02 \x03(\v2(.authzed.api.v1.CheckBulkPermissionsPairB\r\xfaB\n" +
+	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01R\x05pairs\"\xe5\x01\n" +
 	"\x18CheckBulkPermissionsPair\x12I\n" +
 	"\arequest\x18\x01 \x01(\v2/.authzed.api.v1.CheckBulkPermissionsRequestItemR\arequest\x12F\n" +
 	"\x04item\x18\x02 \x01(\v20.authzed.api.v1.CheckBulkPermissionsResponseItemH\x00R\x04item\x12*\n" +
@@ -2602,7 +2631,7 @@ const file_authzed_api_v1_permission_service_proto_rawDesc = "" +
 	"\x1cExpandPermissionTreeResponse\x129\n" +
 	"\vexpanded_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\n" +
 	"expandedAt\x12G\n" +
-	"\ttree_root\x18\x02 \x01(\v2*.authzed.api.v1.PermissionRelationshipTreeR\btreeRoot\"\x94\x05\n" +
+	"\ttree_root\x18\x02 \x01(\v2*.authzed.api.v1.PermissionRelationshipTreeR\btreeRoot\"\xb3\x05\n" +
 	"\x16LookupResourcesRequest\x12=\n" +
 	"\vconsistency\x18\x01 \x01(\v2\x1b.authzed.api.v1.ConsistencyR\vconsistency\x12\xc3\x01\n" +
 	"\x14resource_object_type\x18\x02 \x01(\tB\x90\x01\xfaBErC(\x80\x012>^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$\xbaHErC(\x80\x012>^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$R\x12resourceObjectType\x12n\n" +
@@ -2612,7 +2641,9 @@ const file_authzed_api_v1_permission_service_proto_rawDesc = "" +
 	"\asubject\x18\x04 \x01(\v2 .authzed.api.v1.SubjectReferenceB\x0e\xfaB\x05\x8a\x01\x02\x10\x01\xbaH\x03\xc8\x01\x01R\asubject\x12A\n" +
 	"\acontext\x18\x05 \x01(\v2\x17.google.protobuf.StructB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\acontext\x125\n" +
 	"\x0eoptional_limit\x18\x06 \x01(\rB\x0e\xfaB\x04*\x02(\x00\xbaH\x04*\x02(\x00R\roptionalLimit\x12?\n" +
-	"\x0foptional_cursor\x18\a \x01(\v2\x16.authzed.api.v1.CursorR\x0eoptionalCursor\"\x92\x03\n" +
+	"\x0foptional_cursor\x18\a \x01(\v2\x16.authzed.api.v1.CursorR\x0eoptionalCursor\x12\x1d\n" +
+	"\n" +
+	"with_debug\x18\b \x01(\bR\twithDebug\"\x92\x03\n" +
 	"\x17LookupResourcesResponse\x12:\n" +
 	"\flooked_up_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\n" +
 	"lookedUpAt\x12,\n" +
@@ -2649,10 +2680,10 @@ const file_authzed_api_v1_permission_service_proto_rawDesc = "" +
 	"\x0fResolvedSubject\x12*\n" +
 	"\x11subject_object_id\x18\x01 \x01(\tR\x0fsubjectObjectId\x12b\n" +
 	"\x0epermissionship\x18\x02 \x01(\x0e2$.authzed.api.v1.LookupPermissionshipB\x14\xfaB\a\x82\x01\x04\x10\x01 \x00\xbaH\a\x82\x01\x04\x10\x01 \x00R\x0epermissionship\x12a\n" +
-	"\x13partial_caveat_info\x18\x03 \x01(\v2!.authzed.api.v1.PartialCaveatInfoB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\x11partialCaveatInfo\"~\n" +
-	"\x1eImportBulkRelationshipsRequest\x12\\\n" +
-	"\rrelationships\x18\x01 \x03(\v2\x1c.authzed.api.v1.RelationshipB\x18\xfaB\n" +
-	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01\xbaH\b\x92\x01\x05\"\x03\xc8\x01\x01R\rrelationships\"@\n" +
+	"\x13partial_caveat_info\x18\x03 \x01(\v2!.authzed.api.v1.PartialCaveatInfoB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\x11partialCaveatInfo\"s\n" +
+	"\x1eImportBulkRelationshipsRequest\x12Q\n" +
+	"\rrelationships\x18\x01 \x03(\v2\x1c.authzed.api.v1.RelationshipB\r\xfaB\n" +
+	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01R\rrelationships\"@\n" +
 	"\x1fImportBulkRelationshipsResponse\x12\x1d\n" +
 	"\n" +
 	"num_loaded\x18\x01 \x01(\x04R\tnumLoaded\"\xbd\x02\n" +

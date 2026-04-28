@@ -4060,6 +4060,8 @@ func (m *LookupResourcesRequest) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for WithDebug
+
 	if len(errors) > 0 {
 		return LookupResourcesRequestMultiError(errors)
 	}

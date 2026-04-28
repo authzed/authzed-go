@@ -515,6 +515,7 @@ func (m *LookupResourcesRequest) CloneVT() *LookupResourcesRequest {
 	r.Context = (*structpb.Struct)((*structpb1.Struct)(m.Context).CloneVT())
 	r.OptionalLimit = m.OptionalLimit
 	r.OptionalCursor = m.OptionalCursor.CloneVT()
+	r.WithDebug = m.WithDebug
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -1463,6 +1464,9 @@ func (this *LookupResourcesRequest) EqualVT(that *LookupResourcesRequest) bool {
 		return false
 	}
 	if !this.OptionalCursor.EqualVT(that.OptionalCursor) {
+		return false
+	}
+	if this.WithDebug != that.WithDebug {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -3131,6 +3135,16 @@ func (m *LookupResourcesRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.WithDebug {
+		i--
+		if m.WithDebug {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x40
+	}
 	if m.OptionalCursor != nil {
 		size, err := m.OptionalCursor.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -4293,6 +4307,9 @@ func (m *LookupResourcesRequest) SizeVT() (n int) {
 	if m.OptionalCursor != nil {
 		l = m.OptionalCursor.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if m.WithDebug {
+		n += 2
 	}
 	n += len(m.unknownFields)
 	return n
@@ -7916,6 +7933,26 @@ func (m *LookupResourcesRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 8:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WithDebug", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.WithDebug = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])

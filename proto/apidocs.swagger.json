@@ -1516,7 +1516,8 @@
         "PERMISSIONSHIP_HAS_PERMISSION",
         "PERMISSIONSHIP_CONDITIONAL_PERMISSION"
       ],
-      "default": "PERMISSIONSHIP_UNSPECIFIED"
+      "default": "PERMISSIONSHIP_UNSPECIFIED",
+      "description": " - PERMISSIONSHIP_UNSPECIFIED: PERMISSIONSHIP_UNSPECIFIED is the default value and should not be used or\nrelied upon. Servers should not return this value.\n - PERMISSIONSHIP_NO_PERMISSION: PERMISSIONSHIP_NO_PERMISSION indicates that the subject does not have the\nrequested permission on the resource.\n - PERMISSIONSHIP_HAS_PERMISSION: PERMISSIONSHIP_HAS_PERMISSION indicates that the subject has the requested\npermission on the resource.\n - PERMISSIONSHIP_CONDITIONAL_PERMISSION: PERMISSIONSHIP_CONDITIONAL_PERMISSION indicates that the subject has the\nrequested permission on the resource, but only if a caveat condition is met.\nThe `partial_caveat_info` field in the response should contain the missing\ncontext fields that must be provided to fully evaluate the caveat."
     },
     "v1ComputablePermissionsRequest": {
       "type": "object",
@@ -2252,6 +2253,7 @@
         "LOOKUP_PERMISSIONSHIP_CONDITIONAL_PERMISSION"
       ],
       "default": "LOOKUP_PERMISSIONSHIP_UNSPECIFIED",
+      "description": "- LOOKUP_PERMISSIONSHIP_UNSPECIFIED: LOOKUP_PERMISSIONSHIP_UNSPECIFIED is the default value and should not be used or\nrelied upon. Servers should not return this value.\n - LOOKUP_PERMISSIONSHIP_HAS_PERMISSION: LOOKUP_PERMISSIONSHIP_HAS_PERMISSION indicates that the subject has permission\non the resource with no missing caveat context.\n - LOOKUP_PERMISSIONSHIP_CONDITIONAL_PERMISSION: LOOKUP_PERMISSIONSHIP_CONDITIONAL_PERMISSION indicates that the subject has\npermission on the resource, but only if a caveat condition is met. The\n`partial_caveat_info` field in the response should contain the missing context\nfields that must be provided to fully evaluate the caveat.",
       "title": "LookupPermissionship represents whether a Lookup response was partially evaluated or not"
     },
     "v1LookupResourcesRequest": {
@@ -2284,6 +2286,10 @@
         "optionalCursor": {
           "$ref": "#/definitions/apiV1Cursor",
           "description": "optional_cursor, if specified, indicates the cursor after which results should resume being returned.\nThe cursor can be found on the LookupResourcesResponse object."
+        },
+        "withDebug": {
+          "type": "boolean",
+          "description": "with_debug, if true, indicates that the response should return debug information\nif present and available. For now, ONLY enables debugging of maximum recursion depth\nerrors, with additional context being returned in error details, but this may be\nextended in the future."
         }
       },
       "description": "LookupResourcesRequest performs a lookup of all resources of a particular\nkind on which the subject has the specified permission or the relation in\nwhich the subject exists, streaming back the IDs of those resources."
@@ -2347,7 +2353,7 @@
         },
         "optionalCursor": {
           "$ref": "#/definitions/apiV1Cursor",
-          "description": "optional_cursor is currently unimplemented for LookupSubjects\nand will be ignored as of SpiceDB version 1.40.1. This will\nbe implemented in a future version of SpiceDB."
+          "description": "optional_cursor is not currently supported for LookupSubjects and this\nfield will be ignored. Cursoring support will be added in a future version."
         },
         "wildcardOption": {
           "$ref": "#/definitions/LookupSubjectsRequestWildcardOption",
