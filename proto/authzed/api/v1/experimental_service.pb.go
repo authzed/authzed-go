@@ -2462,23 +2462,23 @@ const file_authzed_api_v1_experimental_service_proto_rawDesc = "" +
 	"\aread_at\x18\x02 \x01(\v2\x18.authzed.api.v1.ZedTokenB\x0e\xfaB\x05\x8a\x01\x02\x10\x01\xbaH\x03\xc8\x01\x01R\x06readAt\"\x9c\x01\n" +
 	"0ExperimentalUnregisterRelationshipCounterRequest\x12h\n" +
 	"\x04name\x18\x01 \x01(\tBT\xfaB'r%(@2!^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\xbaH'r%(@2!^([a-z][a-z0-9_]{1,62}[a-z0-9])?$R\x04name\"3\n" +
-	"1ExperimentalUnregisterRelationshipCounterResponse\"\xbd\x01\n" +
+	"1ExperimentalUnregisterRelationshipCounterResponse\"\xb2\x01\n" +
 	"\x1aBulkCheckPermissionRequest\x12=\n" +
-	"\vconsistency\x18\x01 \x01(\v2\x1b.authzed.api.v1.ConsistencyR\vconsistency\x12`\n" +
-	"\x05items\x18\x02 \x03(\v2..authzed.api.v1.BulkCheckPermissionRequestItemB\x1a\xfaB\n" +
-	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01\xbaH\b\x92\x01\x05\"\x03\xc8\x01\x01\x18\x01R\x05items\"\xf2\x02\n" +
+	"\vconsistency\x18\x01 \x01(\v2\x1b.authzed.api.v1.ConsistencyR\vconsistency\x12U\n" +
+	"\x05items\x18\x02 \x03(\v2..authzed.api.v1.BulkCheckPermissionRequestItemB\x0f\xfaB\n" +
+	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01\x18\x01R\x05items\"\xf2\x02\n" +
 	"\x1eBulkCheckPermissionRequestItem\x12K\n" +
 	"\bresource\x18\x01 \x01(\v2\x1f.authzed.api.v1.ObjectReferenceB\x0e\xfaB\x05\x8a\x01\x02\x10\x01\xbaH\x03\xc8\x01\x01R\bresource\x12t\n" +
 	"\n" +
 	"permission\x18\x02 \x01(\tBT\xfaB'r%(@2!^([a-z][a-z0-9_]{1,62}[a-z0-9])?$\xbaH'r%(@2!^([a-z][a-z0-9_]{1,62}[a-z0-9])?$R\n" +
 	"permission\x12J\n" +
 	"\asubject\x18\x03 \x01(\v2 .authzed.api.v1.SubjectReferenceB\x0e\xfaB\x05\x8a\x01\x02\x10\x01\xbaH\x03\xc8\x01\x01R\asubject\x12A\n" +
-	"\acontext\x18\x04 \x01(\v2\x17.google.protobuf.StructB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\acontext\"\xbf\x01\n" +
+	"\acontext\x18\x04 \x01(\v2\x17.google.protobuf.StructB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\acontext\"\xb4\x01\n" +
 	"\x1bBulkCheckPermissionResponse\x12G\n" +
 	"\n" +
-	"checked_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\tcheckedAt\x12W\n" +
-	"\x05pairs\x18\x02 \x03(\v2'.authzed.api.v1.BulkCheckPermissionPairB\x18\xfaB\n" +
-	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01\xbaH\b\x92\x01\x05\"\x03\xc8\x01\x01R\x05pairs\"\xe2\x01\n" +
+	"checked_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\tcheckedAt\x12L\n" +
+	"\x05pairs\x18\x02 \x03(\v2'.authzed.api.v1.BulkCheckPermissionPairB\r\xfaB\n" +
+	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01R\x05pairs\"\xe2\x01\n" +
 	"\x17BulkCheckPermissionPair\x12H\n" +
 	"\arequest\x18\x01 \x01(\v2..authzed.api.v1.BulkCheckPermissionRequestItemR\arequest\x12E\n" +
 	"\x04item\x18\x02 \x01(\v2/.authzed.api.v1.BulkCheckPermissionResponseItemH\x00R\x04item\x12*\n" +
@@ -2487,10 +2487,10 @@ const file_authzed_api_v1_experimental_service_proto_rawDesc = "" +
 	"\bresponse\"\xfa\x01\n" +
 	"\x1fBulkCheckPermissionResponseItem\x12t\n" +
 	"\x0epermissionship\x18\x01 \x01(\x0e26.authzed.api.v1.CheckPermissionResponse.PermissionshipB\x14\xfaB\a\x82\x01\x04\x10\x01 \x00\xbaH\a\x82\x01\x04\x10\x01 \x00R\x0epermissionship\x12a\n" +
-	"\x13partial_caveat_info\x18\x02 \x01(\v2!.authzed.api.v1.PartialCaveatInfoB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\x11partialCaveatInfo\"~\n" +
-	"\x1eBulkImportRelationshipsRequest\x12\\\n" +
-	"\rrelationships\x18\x01 \x03(\v2\x1c.authzed.api.v1.RelationshipB\x18\xfaB\n" +
-	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01\xbaH\b\x92\x01\x05\"\x03\xc8\x01\x01R\rrelationships\"@\n" +
+	"\x13partial_caveat_info\x18\x02 \x01(\v2!.authzed.api.v1.PartialCaveatInfoB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\x11partialCaveatInfo\"s\n" +
+	"\x1eBulkImportRelationshipsRequest\x12Q\n" +
+	"\rrelationships\x18\x01 \x03(\v2\x1c.authzed.api.v1.RelationshipB\r\xfaB\n" +
+	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01R\rrelationships\"@\n" +
 	"\x1fBulkImportRelationshipsResponse\x12\x1d\n" +
 	"\n" +
 	"num_loaded\x18\x01 \x01(\x04R\tnumLoaded\"\xbd\x02\n" +

@@ -830,11 +830,11 @@ const file_authzed_api_v1_core_proto_rawDesc = "" +
 	"\x04leaf\x18\x02 \x01(\v2 .authzed.api.v1.DirectSubjectSetH\x00R\x04leaf\x12H\n" +
 	"\x0fexpanded_object\x18\x03 \x01(\v2\x1f.authzed.api.v1.ObjectReferenceR\x0eexpandedObject\x12+\n" +
 	"\x11expanded_relation\x18\x04 \x01(\tR\x10expandedRelationB\x15\n" +
-	"\ttree_type\x12\b\xf8B\x01\xbaH\x02\b\x01\"\xcc\x02\n" +
+	"\ttree_type\x12\b\xf8B\x01\xbaH\x02\b\x01\"\xc1\x02\n" +
 	"\x13AlgebraicSubjectSet\x12a\n" +
-	"\toperation\x18\x01 \x01(\x0e2-.authzed.api.v1.AlgebraicSubjectSet.OperationB\x14\xfaB\a\x82\x01\x04\x10\x01 \x00\xbaH\a\x82\x01\x04\x10\x01 \x00R\toperation\x12`\n" +
-	"\bchildren\x18\x02 \x03(\v2*.authzed.api.v1.PermissionRelationshipTreeB\x18\xfaB\n" +
-	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01\xbaH\b\x92\x01\x05\"\x03\xc8\x01\x01R\bchildren\"p\n" +
+	"\toperation\x18\x01 \x01(\x0e2-.authzed.api.v1.AlgebraicSubjectSet.OperationB\x14\xfaB\a\x82\x01\x04\x10\x01 \x00\xbaH\a\x82\x01\x04\x10\x01 \x00R\toperation\x12U\n" +
+	"\bchildren\x18\x02 \x03(\v2*.authzed.api.v1.PermissionRelationshipTreeB\r\xfaB\n" +
+	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01R\bchildren\"p\n" +
 	"\tOperation\x12\x19\n" +
 	"\x15OPERATION_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fOPERATION_UNION\x10\x01\x12\x1a\n" +
