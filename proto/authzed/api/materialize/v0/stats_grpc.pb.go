@@ -28,7 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type StatsServiceClient interface {
 	ExperimentalCountLookupResources(ctx context.Context, in *ExperimentalCountLookupResourcesRequest, opts ...grpc.CallOption) (*ExperimentalCountLookupResourcesResponse, error)
-	ExperimentalCountLookupSubjects(ctx context.Context, in *ExperimentalCountLookupResourcesRequest, opts ...grpc.CallOption) (*ExperimentalCountLookupResourcesResponse, error)
+	ExperimentalCountLookupSubjects(ctx context.Context, in *ExperimentalCountLookupSubjectsRequest, opts ...grpc.CallOption) (*ExperimentalCountLookupSubjectsResponse, error)
 }
 
 type statsServiceClient struct {
@@ -49,9 +49,9 @@ func (c *statsServiceClient) ExperimentalCountLookupResources(ctx context.Contex
 	return out, nil
 }
 
-func (c *statsServiceClient) ExperimentalCountLookupSubjects(ctx context.Context, in *ExperimentalCountLookupResourcesRequest, opts ...grpc.CallOption) (*ExperimentalCountLookupResourcesResponse, error) {
+func (c *statsServiceClient) ExperimentalCountLookupSubjects(ctx context.Context, in *ExperimentalCountLookupSubjectsRequest, opts ...grpc.CallOption) (*ExperimentalCountLookupSubjectsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ExperimentalCountLookupResourcesResponse)
+	out := new(ExperimentalCountLookupSubjectsResponse)
 	err := c.cc.Invoke(ctx, StatsService_ExperimentalCountLookupSubjects_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -64,7 +64,7 @@ func (c *statsServiceClient) ExperimentalCountLookupSubjects(ctx context.Context
 // for forward compatibility.
 type StatsServiceServer interface {
 	ExperimentalCountLookupResources(context.Context, *ExperimentalCountLookupResourcesRequest) (*ExperimentalCountLookupResourcesResponse, error)
-	ExperimentalCountLookupSubjects(context.Context, *ExperimentalCountLookupResourcesRequest) (*ExperimentalCountLookupResourcesResponse, error)
+	ExperimentalCountLookupSubjects(context.Context, *ExperimentalCountLookupSubjectsRequest) (*ExperimentalCountLookupSubjectsResponse, error)
 	mustEmbedUnimplementedStatsServiceServer()
 }
 
@@ -78,7 +78,7 @@ type UnimplementedStatsServiceServer struct{}
 func (UnimplementedStatsServiceServer) ExperimentalCountLookupResources(context.Context, *ExperimentalCountLookupResourcesRequest) (*ExperimentalCountLookupResourcesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ExperimentalCountLookupResources not implemented")
 }
-func (UnimplementedStatsServiceServer) ExperimentalCountLookupSubjects(context.Context, *ExperimentalCountLookupResourcesRequest) (*ExperimentalCountLookupResourcesResponse, error) {
+func (UnimplementedStatsServiceServer) ExperimentalCountLookupSubjects(context.Context, *ExperimentalCountLookupSubjectsRequest) (*ExperimentalCountLookupSubjectsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ExperimentalCountLookupSubjects not implemented")
 }
 func (UnimplementedStatsServiceServer) mustEmbedUnimplementedStatsServiceServer() {}
@@ -121,7 +121,7 @@ func _StatsService_ExperimentalCountLookupResources_Handler(srv interface{}, ctx
 }
 
 func _StatsService_ExperimentalCountLookupSubjects_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ExperimentalCountLookupResourcesRequest)
+	in := new(ExperimentalCountLookupSubjectsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -133,7 +133,7 @@ func _StatsService_ExperimentalCountLookupSubjects_Handler(srv interface{}, ctx 
 		FullMethod: StatsService_ExperimentalCountLookupSubjects_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StatsServiceServer).ExperimentalCountLookupSubjects(ctx, req.(*ExperimentalCountLookupResourcesRequest))
+		return srv.(StatsServiceServer).ExperimentalCountLookupSubjects(ctx, req.(*ExperimentalCountLookupSubjectsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

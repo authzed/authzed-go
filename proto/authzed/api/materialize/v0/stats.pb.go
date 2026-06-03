@@ -277,10 +277,10 @@ const file_authzed_api_materialize_v0_stats_proto_rawDesc = "" +
 	"\x19optional_subject_relation\x18\x04 \x01(\tR\x17optionalSubjectRelation\"\x81\x01\n" +
 	"'ExperimentalCountLookupSubjectsResponse\x12#\n" +
 	"\rsubject_count\x18\x01 \x01(\x04R\fsubjectCount\x121\n" +
-	"\aread_at\x18\x02 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x06readAt2\xf1\x02\n" +
+	"\aread_at\x18\x02 \x01(\v2\x18.authzed.api.v1.ZedTokenR\x06readAt2\xef\x02\n" +
 	"\fStatsService\x12\xaf\x01\n" +
-	" ExperimentalCountLookupResources\x12C.authzed.api.materialize.v0.ExperimentalCountLookupResourcesRequest\x1aD.authzed.api.materialize.v0.ExperimentalCountLookupResourcesResponse\"\x00\x12\xae\x01\n" +
-	"\x1fExperimentalCountLookupSubjects\x12C.authzed.api.materialize.v0.ExperimentalCountLookupResourcesRequest\x1aD.authzed.api.materialize.v0.ExperimentalCountLookupResourcesResponse\"\x00Bb\n" +
+	" ExperimentalCountLookupResources\x12C.authzed.api.materialize.v0.ExperimentalCountLookupResourcesRequest\x1aD.authzed.api.materialize.v0.ExperimentalCountLookupResourcesResponse\"\x00\x12\xac\x01\n" +
+	"\x1fExperimentalCountLookupSubjects\x12B.authzed.api.materialize.v0.ExperimentalCountLookupSubjectsRequest\x1aC.authzed.api.materialize.v0.ExperimentalCountLookupSubjectsResponse\"\x00Bb\n" +
 	"\x1ecom.authzed.api.materialize.v0P\x01Z>github.com/authzed/authzed-go/proto/authzed/api/materialize/v0b\x06proto3"
 
 var (
@@ -311,9 +311,9 @@ var file_authzed_api_materialize_v0_stats_proto_depIdxs = []int32{
 	6, // 2: authzed.api.materialize.v0.ExperimentalCountLookupSubjectsRequest.resource:type_name -> authzed.api.v1.ObjectReference
 	5, // 3: authzed.api.materialize.v0.ExperimentalCountLookupSubjectsResponse.read_at:type_name -> authzed.api.v1.ZedToken
 	0, // 4: authzed.api.materialize.v0.StatsService.ExperimentalCountLookupResources:input_type -> authzed.api.materialize.v0.ExperimentalCountLookupResourcesRequest
-	0, // 5: authzed.api.materialize.v0.StatsService.ExperimentalCountLookupSubjects:input_type -> authzed.api.materialize.v0.ExperimentalCountLookupResourcesRequest
+	2, // 5: authzed.api.materialize.v0.StatsService.ExperimentalCountLookupSubjects:input_type -> authzed.api.materialize.v0.ExperimentalCountLookupSubjectsRequest
 	1, // 6: authzed.api.materialize.v0.StatsService.ExperimentalCountLookupResources:output_type -> authzed.api.materialize.v0.ExperimentalCountLookupResourcesResponse
-	1, // 7: authzed.api.materialize.v0.StatsService.ExperimentalCountLookupSubjects:output_type -> authzed.api.materialize.v0.ExperimentalCountLookupResourcesResponse
+	3, // 7: authzed.api.materialize.v0.StatsService.ExperimentalCountLookupSubjects:output_type -> authzed.api.materialize.v0.ExperimentalCountLookupSubjectsResponse
 	6, // [6:8] is the sub-list for method output_type
 	4, // [4:6] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
