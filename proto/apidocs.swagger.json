@@ -21,6 +21,9 @@
       "name": "RelationshipsService"
     },
     {
+      "name": "StatsService"
+    },
+    {
       "name": "WatchPermissionsService"
     },
     {
