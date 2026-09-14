@@ -62,9 +62,18 @@ type PermissionsServiceClient interface {
 	ExpandPermissionTree(ctx context.Context, in *ExpandPermissionTreeRequest, opts ...grpc.CallOption) (*ExpandPermissionTreeResponse, error)
 	// LookupResources returns all the resources of a given type that a subject
 	// can access whether via a computed permission or relation membership.
+	//
+	// Results are streamed and **not guaranteed to be unique**: the same resource
+	// may be returned more than once (for example via caveated/conditional
+	// results, or when a limit is set), possibly with differing permissionship.
+	// Callers that require uniqueness should deduplicate results.
 	LookupResources(ctx context.Context, in *LookupResourcesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[LookupResourcesResponse], error)
 	// LookupSubjects returns all the subjects of a given type that
 	// have access whether via a computed permission or relation membership.
+	//
+	// Results are streamed and **not guaranteed to be unique**: the same subject
+	// may be returned more than once, possibly with differing permissionship.
+	// Callers that require uniqueness should deduplicate results.
 	LookupSubjects(ctx context.Context, in *LookupSubjectsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[LookupSubjectsResponse], error)
 	// ImportBulkRelationships is a faster path to writing a large number of
 	// relationships at once. It is both batched and streaming. For maximum
@@ -258,9 +267,18 @@ type PermissionsServiceServer interface {
 	ExpandPermissionTree(context.Context, *ExpandPermissionTreeRequest) (*ExpandPermissionTreeResponse, error)
 	// LookupResources returns all the resources of a given type that a subject
 	// can access whether via a computed permission or relation membership.
+	//
+	// Results are streamed and **not guaranteed to be unique**: the same resource
+	// may be returned more than once (for example via caveated/conditional
+	// results, or when a limit is set), possibly with differing permissionship.
+	// Callers that require uniqueness should deduplicate results.
 	LookupResources(*LookupResourcesRequest, grpc.ServerStreamingServer[LookupResourcesResponse]) error
 	// LookupSubjects returns all the subjects of a given type that
 	// have access whether via a computed permission or relation membership.
+	//
+	// Results are streamed and **not guaranteed to be unique**: the same subject
+	// may be returned more than once, possibly with differing permissionship.
+	// Callers that require uniqueness should deduplicate results.
 	LookupSubjects(*LookupSubjectsRequest, grpc.ServerStreamingServer[LookupSubjectsResponse]) error
 	// ImportBulkRelationships is a faster path to writing a large number of
 	// relationships at once. It is both batched and streaming. For maximum

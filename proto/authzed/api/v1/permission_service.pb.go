@@ -929,8 +929,18 @@ type DeleteRelationshipsRequest struct {
 	// If specified, this metadata will be supplied in the WatchResponse for the deletions associated with
 	// this transaction.
 	OptionalTransactionMetadata *structpb.Struct `protobuf:"bytes,5,opt,name=optional_transaction_metadata,json=optionalTransactionMetadata,proto3" json:"optional_transaction_metadata,omitempty"`
-	unknownFields               protoimpl.UnknownFields
-	sizeCache                   protoimpl.SizeCache
+	// optional_cursor, if specified, indicates the cursor after which deletion should resume. It is used to
+	// continue a batched, partial deletion where a previous call left off, by passing back the
+	// after_result_cursor returned on the previous DeleteRelationshipsResponse.
+	//
+	// A cursor allows a large deletion to be performed as a series of calls without re-examining the
+	// relationships already deleted by earlier calls. It therefore requires optional_limit and
+	// optional_allow_partial_deletions to be set, and is only supported by datastores whose deletion can be
+	// ordered and resumed; datastores that do not support cursored deletion will return an error if a cursor
+	// is provided.
+	OptionalCursor *Cursor `protobuf:"bytes,6,opt,name=optional_cursor,json=optionalCursor,proto3" json:"optional_cursor,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *DeleteRelationshipsRequest) Reset() {
@@ -998,6 +1008,13 @@ func (x *DeleteRelationshipsRequest) GetOptionalTransactionMetadata() *structpb.
 	return nil
 }
 
+func (x *DeleteRelationshipsRequest) GetOptionalCursor() *Cursor {
+	if x != nil {
+		return x.OptionalCursor
+	}
+	return nil
+}
+
 type DeleteRelationshipsResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// deleted_at is the revision at which the relationships were deleted.
@@ -1006,8 +1023,14 @@ type DeleteRelationshipsResponse struct {
 	DeletionProgress DeleteRelationshipsResponse_DeletionProgress `protobuf:"varint,2,opt,name=deletion_progress,json=deletionProgress,proto3,enum=authzed.api.v1.DeleteRelationshipsResponse_DeletionProgress" json:"deletion_progress,omitempty"`
 	// relationships_deleted_count is the number of relationships that were deleted.
 	RelationshipsDeletedCount uint64 `protobuf:"varint,3,opt,name=relationships_deleted_count,json=relationshipsDeletedCount,proto3" json:"relationships_deleted_count,omitempty"`
-	unknownFields             protoimpl.UnknownFields
-	sizeCache                 protoimpl.SizeCache
+	// after_result_cursor holds a cursor that can be used to resume the deletion after the relationships
+	// deleted by this call, by supplying it as the optional_cursor on a subsequent DeleteRelationshipsRequest.
+	//
+	// It is populated only when deletion_progress is DELETION_PROGRESS_PARTIAL and the datastore supports
+	// cursored deletion; it is unset once DELETION_PROGRESS_COMPLETE is returned.
+	AfterResultCursor *Cursor `protobuf:"bytes,4,opt,name=after_result_cursor,json=afterResultCursor,proto3" json:"after_result_cursor,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *DeleteRelationshipsResponse) Reset() {
@@ -1059,6 +1082,13 @@ func (x *DeleteRelationshipsResponse) GetRelationshipsDeletedCount() uint64 {
 		return x.RelationshipsDeletedCount
 	}
 	return 0
+}
+
+func (x *DeleteRelationshipsResponse) GetAfterResultCursor() *Cursor {
+	if x != nil {
+		return x.AfterResultCursor
+	}
+	return nil
 }
 
 // CheckPermissionRequest issues a check on whether a subject has a permission
@@ -2555,19 +2585,21 @@ const file_authzed_api_v1_permission_service_proto_rawDesc = "" +
 	"\x1doptional_transaction_metadata\x18\x03 \x01(\v2\x17.google.protobuf.StructB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\x1boptionalTransactionMetadata\"U\n" +
 	"\x1aWriteRelationshipsResponse\x127\n" +
 	"\n" +
-	"written_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\twrittenAt\"\xd2\x03\n" +
+	"written_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\twrittenAt\"\x93\x04\n" +
 	"\x1aDeleteRelationshipsRequest\x12c\n" +
 	"\x13relationship_filter\x18\x01 \x01(\v2\".authzed.api.v1.RelationshipFilterB\x0e\xfaB\x05\x8a\x01\x02\x10\x01\xbaH\x03\xc8\x01\x01R\x12relationshipFilter\x12b\n" +
 	"\x16optional_preconditions\x18\x02 \x03(\v2\x1c.authzed.api.v1.PreconditionB\r\xfaB\n" +
 	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01R\x15optionalPreconditions\x125\n" +
 	"\x0eoptional_limit\x18\x03 \x01(\rB\x0e\xfaB\x04*\x02(\x00\xbaH\x04*\x02(\x00R\roptionalLimit\x12G\n" +
 	" optional_allow_partial_deletions\x18\x04 \x01(\bR\x1doptionalAllowPartialDeletions\x12k\n" +
-	"\x1doptional_transaction_metadata\x18\x05 \x01(\v2\x17.google.protobuf.StructB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\x1boptionalTransactionMetadata\"\xf7\x02\n" +
+	"\x1doptional_transaction_metadata\x18\x05 \x01(\v2\x17.google.protobuf.StructB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\x1boptionalTransactionMetadata\x12?\n" +
+	"\x0foptional_cursor\x18\x06 \x01(\v2\x16.authzed.api.v1.CursorR\x0eoptionalCursor\"\xbf\x03\n" +
 	"\x1bDeleteRelationshipsResponse\x127\n" +
 	"\n" +
 	"deleted_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\tdeletedAt\x12i\n" +
 	"\x11deletion_progress\x18\x02 \x01(\x0e2<.authzed.api.v1.DeleteRelationshipsResponse.DeletionProgressR\x10deletionProgress\x12>\n" +
-	"\x1brelationships_deleted_count\x18\x03 \x01(\x04R\x19relationshipsDeletedCount\"t\n" +
+	"\x1brelationships_deleted_count\x18\x03 \x01(\x04R\x19relationshipsDeletedCount\x12F\n" +
+	"\x13after_result_cursor\x18\x04 \x01(\v2\x16.authzed.api.v1.CursorR\x11afterResultCursor\"t\n" +
 	"\x10DeletionProgress\x12!\n" +
 	"\x1dDELETION_PROGRESS_UNSPECIFIED\x10\x00\x12\x1e\n" +
 	"\x1aDELETION_PROGRESS_COMPLETE\x10\x01\x12\x1d\n" +
@@ -2804,86 +2836,88 @@ var file_authzed_api_v1_permission_service_proto_depIdxs = []int32{
 	6,  // 16: authzed.api.v1.DeleteRelationshipsRequest.relationship_filter:type_name -> authzed.api.v1.RelationshipFilter
 	10, // 17: authzed.api.v1.DeleteRelationshipsRequest.optional_preconditions:type_name -> authzed.api.v1.Precondition
 	38, // 18: authzed.api.v1.DeleteRelationshipsRequest.optional_transaction_metadata:type_name -> google.protobuf.Struct
-	34, // 19: authzed.api.v1.DeleteRelationshipsResponse.deleted_at:type_name -> authzed.api.v1.ZedToken
-	2,  // 20: authzed.api.v1.DeleteRelationshipsResponse.deletion_progress:type_name -> authzed.api.v1.DeleteRelationshipsResponse.DeletionProgress
-	5,  // 21: authzed.api.v1.CheckPermissionRequest.consistency:type_name -> authzed.api.v1.Consistency
-	39, // 22: authzed.api.v1.CheckPermissionRequest.resource:type_name -> authzed.api.v1.ObjectReference
-	40, // 23: authzed.api.v1.CheckPermissionRequest.subject:type_name -> authzed.api.v1.SubjectReference
-	38, // 24: authzed.api.v1.CheckPermissionRequest.context:type_name -> google.protobuf.Struct
-	34, // 25: authzed.api.v1.CheckPermissionResponse.checked_at:type_name -> authzed.api.v1.ZedToken
-	3,  // 26: authzed.api.v1.CheckPermissionResponse.permissionship:type_name -> authzed.api.v1.CheckPermissionResponse.Permissionship
-	41, // 27: authzed.api.v1.CheckPermissionResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	42, // 28: authzed.api.v1.CheckPermissionResponse.debug_trace:type_name -> authzed.api.v1.DebugInformation
-	43, // 29: authzed.api.v1.CheckPermissionResponse.optional_expires_at:type_name -> google.protobuf.Timestamp
-	5,  // 30: authzed.api.v1.CheckBulkPermissionsRequest.consistency:type_name -> authzed.api.v1.Consistency
-	18, // 31: authzed.api.v1.CheckBulkPermissionsRequest.items:type_name -> authzed.api.v1.CheckBulkPermissionsRequestItem
-	39, // 32: authzed.api.v1.CheckBulkPermissionsRequestItem.resource:type_name -> authzed.api.v1.ObjectReference
-	40, // 33: authzed.api.v1.CheckBulkPermissionsRequestItem.subject:type_name -> authzed.api.v1.SubjectReference
-	38, // 34: authzed.api.v1.CheckBulkPermissionsRequestItem.context:type_name -> google.protobuf.Struct
-	34, // 35: authzed.api.v1.CheckBulkPermissionsResponse.checked_at:type_name -> authzed.api.v1.ZedToken
-	20, // 36: authzed.api.v1.CheckBulkPermissionsResponse.pairs:type_name -> authzed.api.v1.CheckBulkPermissionsPair
-	18, // 37: authzed.api.v1.CheckBulkPermissionsPair.request:type_name -> authzed.api.v1.CheckBulkPermissionsRequestItem
-	21, // 38: authzed.api.v1.CheckBulkPermissionsPair.item:type_name -> authzed.api.v1.CheckBulkPermissionsResponseItem
-	44, // 39: authzed.api.v1.CheckBulkPermissionsPair.error:type_name -> google.rpc.Status
-	3,  // 40: authzed.api.v1.CheckBulkPermissionsResponseItem.permissionship:type_name -> authzed.api.v1.CheckPermissionResponse.Permissionship
-	41, // 41: authzed.api.v1.CheckBulkPermissionsResponseItem.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	42, // 42: authzed.api.v1.CheckBulkPermissionsResponseItem.debug_trace:type_name -> authzed.api.v1.DebugInformation
-	5,  // 43: authzed.api.v1.ExpandPermissionTreeRequest.consistency:type_name -> authzed.api.v1.Consistency
-	39, // 44: authzed.api.v1.ExpandPermissionTreeRequest.resource:type_name -> authzed.api.v1.ObjectReference
-	34, // 45: authzed.api.v1.ExpandPermissionTreeResponse.expanded_at:type_name -> authzed.api.v1.ZedToken
-	45, // 46: authzed.api.v1.ExpandPermissionTreeResponse.tree_root:type_name -> authzed.api.v1.PermissionRelationshipTree
-	5,  // 47: authzed.api.v1.LookupResourcesRequest.consistency:type_name -> authzed.api.v1.Consistency
-	40, // 48: authzed.api.v1.LookupResourcesRequest.subject:type_name -> authzed.api.v1.SubjectReference
-	38, // 49: authzed.api.v1.LookupResourcesRequest.context:type_name -> google.protobuf.Struct
-	35, // 50: authzed.api.v1.LookupResourcesRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
-	34, // 51: authzed.api.v1.LookupResourcesResponse.looked_up_at:type_name -> authzed.api.v1.ZedToken
-	0,  // 52: authzed.api.v1.LookupResourcesResponse.permissionship:type_name -> authzed.api.v1.LookupPermissionship
-	41, // 53: authzed.api.v1.LookupResourcesResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	35, // 54: authzed.api.v1.LookupResourcesResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
-	5,  // 55: authzed.api.v1.LookupSubjectsRequest.consistency:type_name -> authzed.api.v1.Consistency
-	39, // 56: authzed.api.v1.LookupSubjectsRequest.resource:type_name -> authzed.api.v1.ObjectReference
-	38, // 57: authzed.api.v1.LookupSubjectsRequest.context:type_name -> google.protobuf.Struct
-	35, // 58: authzed.api.v1.LookupSubjectsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
-	4,  // 59: authzed.api.v1.LookupSubjectsRequest.wildcard_option:type_name -> authzed.api.v1.LookupSubjectsRequest.WildcardOption
-	34, // 60: authzed.api.v1.LookupSubjectsResponse.looked_up_at:type_name -> authzed.api.v1.ZedToken
-	0,  // 61: authzed.api.v1.LookupSubjectsResponse.permissionship:type_name -> authzed.api.v1.LookupPermissionship
-	41, // 62: authzed.api.v1.LookupSubjectsResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	28, // 63: authzed.api.v1.LookupSubjectsResponse.subject:type_name -> authzed.api.v1.ResolvedSubject
-	28, // 64: authzed.api.v1.LookupSubjectsResponse.excluded_subjects:type_name -> authzed.api.v1.ResolvedSubject
-	35, // 65: authzed.api.v1.LookupSubjectsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
-	0,  // 66: authzed.api.v1.ResolvedSubject.permissionship:type_name -> authzed.api.v1.LookupPermissionship
-	41, // 67: authzed.api.v1.ResolvedSubject.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	36, // 68: authzed.api.v1.ImportBulkRelationshipsRequest.relationships:type_name -> authzed.api.v1.Relationship
-	5,  // 69: authzed.api.v1.ExportBulkRelationshipsRequest.consistency:type_name -> authzed.api.v1.Consistency
-	35, // 70: authzed.api.v1.ExportBulkRelationshipsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
-	6,  // 71: authzed.api.v1.ExportBulkRelationshipsRequest.optional_relationship_filter:type_name -> authzed.api.v1.RelationshipFilter
-	35, // 72: authzed.api.v1.ExportBulkRelationshipsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
-	36, // 73: authzed.api.v1.ExportBulkRelationshipsResponse.relationships:type_name -> authzed.api.v1.Relationship
-	8,  // 74: authzed.api.v1.PermissionsService.ReadRelationships:input_type -> authzed.api.v1.ReadRelationshipsRequest
-	11, // 75: authzed.api.v1.PermissionsService.WriteRelationships:input_type -> authzed.api.v1.WriteRelationshipsRequest
-	13, // 76: authzed.api.v1.PermissionsService.DeleteRelationships:input_type -> authzed.api.v1.DeleteRelationshipsRequest
-	15, // 77: authzed.api.v1.PermissionsService.CheckPermission:input_type -> authzed.api.v1.CheckPermissionRequest
-	17, // 78: authzed.api.v1.PermissionsService.CheckBulkPermissions:input_type -> authzed.api.v1.CheckBulkPermissionsRequest
-	22, // 79: authzed.api.v1.PermissionsService.ExpandPermissionTree:input_type -> authzed.api.v1.ExpandPermissionTreeRequest
-	24, // 80: authzed.api.v1.PermissionsService.LookupResources:input_type -> authzed.api.v1.LookupResourcesRequest
-	26, // 81: authzed.api.v1.PermissionsService.LookupSubjects:input_type -> authzed.api.v1.LookupSubjectsRequest
-	29, // 82: authzed.api.v1.PermissionsService.ImportBulkRelationships:input_type -> authzed.api.v1.ImportBulkRelationshipsRequest
-	31, // 83: authzed.api.v1.PermissionsService.ExportBulkRelationships:input_type -> authzed.api.v1.ExportBulkRelationshipsRequest
-	9,  // 84: authzed.api.v1.PermissionsService.ReadRelationships:output_type -> authzed.api.v1.ReadRelationshipsResponse
-	12, // 85: authzed.api.v1.PermissionsService.WriteRelationships:output_type -> authzed.api.v1.WriteRelationshipsResponse
-	14, // 86: authzed.api.v1.PermissionsService.DeleteRelationships:output_type -> authzed.api.v1.DeleteRelationshipsResponse
-	16, // 87: authzed.api.v1.PermissionsService.CheckPermission:output_type -> authzed.api.v1.CheckPermissionResponse
-	19, // 88: authzed.api.v1.PermissionsService.CheckBulkPermissions:output_type -> authzed.api.v1.CheckBulkPermissionsResponse
-	23, // 89: authzed.api.v1.PermissionsService.ExpandPermissionTree:output_type -> authzed.api.v1.ExpandPermissionTreeResponse
-	25, // 90: authzed.api.v1.PermissionsService.LookupResources:output_type -> authzed.api.v1.LookupResourcesResponse
-	27, // 91: authzed.api.v1.PermissionsService.LookupSubjects:output_type -> authzed.api.v1.LookupSubjectsResponse
-	30, // 92: authzed.api.v1.PermissionsService.ImportBulkRelationships:output_type -> authzed.api.v1.ImportBulkRelationshipsResponse
-	32, // 93: authzed.api.v1.PermissionsService.ExportBulkRelationships:output_type -> authzed.api.v1.ExportBulkRelationshipsResponse
-	84, // [84:94] is the sub-list for method output_type
-	74, // [74:84] is the sub-list for method input_type
-	74, // [74:74] is the sub-list for extension type_name
-	74, // [74:74] is the sub-list for extension extendee
-	0,  // [0:74] is the sub-list for field type_name
+	35, // 19: authzed.api.v1.DeleteRelationshipsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	34, // 20: authzed.api.v1.DeleteRelationshipsResponse.deleted_at:type_name -> authzed.api.v1.ZedToken
+	2,  // 21: authzed.api.v1.DeleteRelationshipsResponse.deletion_progress:type_name -> authzed.api.v1.DeleteRelationshipsResponse.DeletionProgress
+	35, // 22: authzed.api.v1.DeleteRelationshipsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	5,  // 23: authzed.api.v1.CheckPermissionRequest.consistency:type_name -> authzed.api.v1.Consistency
+	39, // 24: authzed.api.v1.CheckPermissionRequest.resource:type_name -> authzed.api.v1.ObjectReference
+	40, // 25: authzed.api.v1.CheckPermissionRequest.subject:type_name -> authzed.api.v1.SubjectReference
+	38, // 26: authzed.api.v1.CheckPermissionRequest.context:type_name -> google.protobuf.Struct
+	34, // 27: authzed.api.v1.CheckPermissionResponse.checked_at:type_name -> authzed.api.v1.ZedToken
+	3,  // 28: authzed.api.v1.CheckPermissionResponse.permissionship:type_name -> authzed.api.v1.CheckPermissionResponse.Permissionship
+	41, // 29: authzed.api.v1.CheckPermissionResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	42, // 30: authzed.api.v1.CheckPermissionResponse.debug_trace:type_name -> authzed.api.v1.DebugInformation
+	43, // 31: authzed.api.v1.CheckPermissionResponse.optional_expires_at:type_name -> google.protobuf.Timestamp
+	5,  // 32: authzed.api.v1.CheckBulkPermissionsRequest.consistency:type_name -> authzed.api.v1.Consistency
+	18, // 33: authzed.api.v1.CheckBulkPermissionsRequest.items:type_name -> authzed.api.v1.CheckBulkPermissionsRequestItem
+	39, // 34: authzed.api.v1.CheckBulkPermissionsRequestItem.resource:type_name -> authzed.api.v1.ObjectReference
+	40, // 35: authzed.api.v1.CheckBulkPermissionsRequestItem.subject:type_name -> authzed.api.v1.SubjectReference
+	38, // 36: authzed.api.v1.CheckBulkPermissionsRequestItem.context:type_name -> google.protobuf.Struct
+	34, // 37: authzed.api.v1.CheckBulkPermissionsResponse.checked_at:type_name -> authzed.api.v1.ZedToken
+	20, // 38: authzed.api.v1.CheckBulkPermissionsResponse.pairs:type_name -> authzed.api.v1.CheckBulkPermissionsPair
+	18, // 39: authzed.api.v1.CheckBulkPermissionsPair.request:type_name -> authzed.api.v1.CheckBulkPermissionsRequestItem
+	21, // 40: authzed.api.v1.CheckBulkPermissionsPair.item:type_name -> authzed.api.v1.CheckBulkPermissionsResponseItem
+	44, // 41: authzed.api.v1.CheckBulkPermissionsPair.error:type_name -> google.rpc.Status
+	3,  // 42: authzed.api.v1.CheckBulkPermissionsResponseItem.permissionship:type_name -> authzed.api.v1.CheckPermissionResponse.Permissionship
+	41, // 43: authzed.api.v1.CheckBulkPermissionsResponseItem.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	42, // 44: authzed.api.v1.CheckBulkPermissionsResponseItem.debug_trace:type_name -> authzed.api.v1.DebugInformation
+	5,  // 45: authzed.api.v1.ExpandPermissionTreeRequest.consistency:type_name -> authzed.api.v1.Consistency
+	39, // 46: authzed.api.v1.ExpandPermissionTreeRequest.resource:type_name -> authzed.api.v1.ObjectReference
+	34, // 47: authzed.api.v1.ExpandPermissionTreeResponse.expanded_at:type_name -> authzed.api.v1.ZedToken
+	45, // 48: authzed.api.v1.ExpandPermissionTreeResponse.tree_root:type_name -> authzed.api.v1.PermissionRelationshipTree
+	5,  // 49: authzed.api.v1.LookupResourcesRequest.consistency:type_name -> authzed.api.v1.Consistency
+	40, // 50: authzed.api.v1.LookupResourcesRequest.subject:type_name -> authzed.api.v1.SubjectReference
+	38, // 51: authzed.api.v1.LookupResourcesRequest.context:type_name -> google.protobuf.Struct
+	35, // 52: authzed.api.v1.LookupResourcesRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	34, // 53: authzed.api.v1.LookupResourcesResponse.looked_up_at:type_name -> authzed.api.v1.ZedToken
+	0,  // 54: authzed.api.v1.LookupResourcesResponse.permissionship:type_name -> authzed.api.v1.LookupPermissionship
+	41, // 55: authzed.api.v1.LookupResourcesResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	35, // 56: authzed.api.v1.LookupResourcesResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	5,  // 57: authzed.api.v1.LookupSubjectsRequest.consistency:type_name -> authzed.api.v1.Consistency
+	39, // 58: authzed.api.v1.LookupSubjectsRequest.resource:type_name -> authzed.api.v1.ObjectReference
+	38, // 59: authzed.api.v1.LookupSubjectsRequest.context:type_name -> google.protobuf.Struct
+	35, // 60: authzed.api.v1.LookupSubjectsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	4,  // 61: authzed.api.v1.LookupSubjectsRequest.wildcard_option:type_name -> authzed.api.v1.LookupSubjectsRequest.WildcardOption
+	34, // 62: authzed.api.v1.LookupSubjectsResponse.looked_up_at:type_name -> authzed.api.v1.ZedToken
+	0,  // 63: authzed.api.v1.LookupSubjectsResponse.permissionship:type_name -> authzed.api.v1.LookupPermissionship
+	41, // 64: authzed.api.v1.LookupSubjectsResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	28, // 65: authzed.api.v1.LookupSubjectsResponse.subject:type_name -> authzed.api.v1.ResolvedSubject
+	28, // 66: authzed.api.v1.LookupSubjectsResponse.excluded_subjects:type_name -> authzed.api.v1.ResolvedSubject
+	35, // 67: authzed.api.v1.LookupSubjectsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	0,  // 68: authzed.api.v1.ResolvedSubject.permissionship:type_name -> authzed.api.v1.LookupPermissionship
+	41, // 69: authzed.api.v1.ResolvedSubject.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	36, // 70: authzed.api.v1.ImportBulkRelationshipsRequest.relationships:type_name -> authzed.api.v1.Relationship
+	5,  // 71: authzed.api.v1.ExportBulkRelationshipsRequest.consistency:type_name -> authzed.api.v1.Consistency
+	35, // 72: authzed.api.v1.ExportBulkRelationshipsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	6,  // 73: authzed.api.v1.ExportBulkRelationshipsRequest.optional_relationship_filter:type_name -> authzed.api.v1.RelationshipFilter
+	35, // 74: authzed.api.v1.ExportBulkRelationshipsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	36, // 75: authzed.api.v1.ExportBulkRelationshipsResponse.relationships:type_name -> authzed.api.v1.Relationship
+	8,  // 76: authzed.api.v1.PermissionsService.ReadRelationships:input_type -> authzed.api.v1.ReadRelationshipsRequest
+	11, // 77: authzed.api.v1.PermissionsService.WriteRelationships:input_type -> authzed.api.v1.WriteRelationshipsRequest
+	13, // 78: authzed.api.v1.PermissionsService.DeleteRelationships:input_type -> authzed.api.v1.DeleteRelationshipsRequest
+	15, // 79: authzed.api.v1.PermissionsService.CheckPermission:input_type -> authzed.api.v1.CheckPermissionRequest
+	17, // 80: authzed.api.v1.PermissionsService.CheckBulkPermissions:input_type -> authzed.api.v1.CheckBulkPermissionsRequest
+	22, // 81: authzed.api.v1.PermissionsService.ExpandPermissionTree:input_type -> authzed.api.v1.ExpandPermissionTreeRequest
+	24, // 82: authzed.api.v1.PermissionsService.LookupResources:input_type -> authzed.api.v1.LookupResourcesRequest
+	26, // 83: authzed.api.v1.PermissionsService.LookupSubjects:input_type -> authzed.api.v1.LookupSubjectsRequest
+	29, // 84: authzed.api.v1.PermissionsService.ImportBulkRelationships:input_type -> authzed.api.v1.ImportBulkRelationshipsRequest
+	31, // 85: authzed.api.v1.PermissionsService.ExportBulkRelationships:input_type -> authzed.api.v1.ExportBulkRelationshipsRequest
+	9,  // 86: authzed.api.v1.PermissionsService.ReadRelationships:output_type -> authzed.api.v1.ReadRelationshipsResponse
+	12, // 87: authzed.api.v1.PermissionsService.WriteRelationships:output_type -> authzed.api.v1.WriteRelationshipsResponse
+	14, // 88: authzed.api.v1.PermissionsService.DeleteRelationships:output_type -> authzed.api.v1.DeleteRelationshipsResponse
+	16, // 89: authzed.api.v1.PermissionsService.CheckPermission:output_type -> authzed.api.v1.CheckPermissionResponse
+	19, // 90: authzed.api.v1.PermissionsService.CheckBulkPermissions:output_type -> authzed.api.v1.CheckBulkPermissionsResponse
+	23, // 91: authzed.api.v1.PermissionsService.ExpandPermissionTree:output_type -> authzed.api.v1.ExpandPermissionTreeResponse
+	25, // 92: authzed.api.v1.PermissionsService.LookupResources:output_type -> authzed.api.v1.LookupResourcesResponse
+	27, // 93: authzed.api.v1.PermissionsService.LookupSubjects:output_type -> authzed.api.v1.LookupSubjectsResponse
+	30, // 94: authzed.api.v1.PermissionsService.ImportBulkRelationships:output_type -> authzed.api.v1.ImportBulkRelationshipsResponse
+	32, // 95: authzed.api.v1.PermissionsService.ExportBulkRelationships:output_type -> authzed.api.v1.ExportBulkRelationshipsResponse
+	86, // [86:96] is the sub-list for method output_type
+	76, // [76:86] is the sub-list for method input_type
+	76, // [76:76] is the sub-list for extension type_name
+	76, // [76:76] is the sub-list for extension extendee
+	0,  // [0:76] is the sub-list for field type_name
 }
 
 func init() { file_authzed_api_v1_permission_service_proto_init() }
