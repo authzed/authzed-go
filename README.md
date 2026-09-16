@@ -165,6 +165,45 @@ client, err := authzed.NewClient(
 )
 ```
 
+### Configuring gRPC middleware
+
+Because [`NewClient()`] accepts arbitrary [DialOptions], any client-side gRPC middleware can be installed by chaining interceptors. This includes the ecosystem of existing middleware for concerns such as retries, timeouts, metrics, logging, and tracing.
+
+For example, [go-grpc-middleware]'s retry interceptor adds automatic retries with exponential backoff:
+
+```go
+import (
+	"time"
+
+	"github.com/authzed/grpcutil"
+	grpcretry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+
+	"github.com/authzed/authzed-go/v1"
+)
+
+...
+retryOpts := []grpcretry.CallOption{
+	grpcretry.WithMax(3),
+	grpcretry.WithBackoff(grpcretry.BackoffExponentialWithJitter(100*time.Millisecond, 0.1)),
+	grpcretry.WithCodes(codes.Unavailable, codes.ResourceExhausted),
+}
+
+client, err := authzed.NewClient(
+	"grpc.authzed.com:443",
+	systemCerts,
+	grpcutil.WithBearerToken("t_your_token_here_1234567deadbeef"),
+	grpc.WithChainUnaryInterceptor(grpcretry.UnaryClientInterceptor(retryOpts...)),
+)
+```
+
+Note that retries installed this way apply to every unary call, including writes. A retry after an ambiguous failure (e.g. `Unavailable`) can replay a write that already committed, so make sure your writes are idempotent or disable retries for them per-call with `grpcretry.Disable()`.
+
+See `Example_retryMiddleware` in the [`examples/`](examples/) directory for a runnable version.
+
+[go-grpc-middleware]: https://github.com/grpc-ecosystem/go-grpc-middleware
+
 ## Examples
 
 The [`examples/`](examples/) directory contains runnable examples demonstrating common operations:
@@ -173,6 +212,7 @@ The [`examples/`](examples/) directory contains runnable examples demonstrating 
 |---------|-------------|
 | `Example_connectToAuthzed` | Connect to Authzed's hosted service |
 | `Example_connectToSpiceDB` | Connect to a local SpiceDB instance |
+| `Example_retryMiddleware` | Configure retry middleware with exponential backoff |
 | `Example_writeSchema` | Write a permission schema |
 | `Example_writeRelationships` | Create relationships between objects |
 | `Example_checkPermission` | Check if a subject has a permission |
@@ -193,7 +233,7 @@ docker run --rm -p 50051:50051 authzed/spicedb serve \
   --datastore-engine memory
 
 # Run local examples (excludes Example_connectToAuthzed which requires a valid token)
-go test -v -tags=examples -run 'Example_connectToSpiceDB|Example_write|Example_check|Example_lookup|Example_read|Example_delete|Example_caveat|Example_watch' ./examples/...
+go test -v -tags=examples -run 'Example_connectToSpiceDB|Example_retry|Example_write|Example_check|Example_lookup|Example_read|Example_delete|Example_caveat|Example_watch' ./examples/...
 ```
 
 > **Note:** `Example_connectToAuthzed` requires a valid Authzed API token and connects to the hosted service, not local SpiceDB.
