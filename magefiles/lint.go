@@ -22,7 +22,7 @@ func (l Lint) All() error {
 
 // Extra lits everything that's not code
 func (l Lint) Extra() error {
-	mg.Deps(l.Yaml)
+	mg.Deps(l.Yaml, l.Depsync)
 	return nil
 }
 
