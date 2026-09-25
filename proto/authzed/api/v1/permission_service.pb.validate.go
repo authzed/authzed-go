@@ -421,6 +421,44 @@ func (m *RelationshipFilter) validate(all bool) error {
 		}
 	}
 
+	if len(m.GetOptionalResourceIds()) > 100 {
+		err := RelationshipFilterValidationError{
+			field:  "OptionalResourceIds",
+			reason: "value must contain no more than 100 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetOptionalResourceIds() {
+		_, _ = idx, item
+
+		if len(item) > 1024 {
+			err := RelationshipFilterValidationError{
+				field:  fmt.Sprintf("OptionalResourceIds[%v]", idx),
+				reason: "value length must be at most 1024 bytes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_RelationshipFilter_OptionalResourceIds_Pattern.MatchString(item) {
+			err := RelationshipFilterValidationError{
+				field:  fmt.Sprintf("OptionalResourceIds[%v]", idx),
+				reason: "value does not match regex pattern \"^([a-zA-Z0-9/_|\\\\-=+]{1,})?$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return RelationshipFilterMultiError(errors)
 	}
@@ -508,6 +546,8 @@ var _RelationshipFilter_OptionalResourceId_Pattern = regexp.MustCompile("^([a-zA
 var _RelationshipFilter_OptionalResourceIdPrefix_Pattern = regexp.MustCompile("^([a-zA-Z0-9/_|\\-=+]{1,})?$")
 
 var _RelationshipFilter_OptionalRelation_Pattern = regexp.MustCompile("^([a-z][a-z0-9_]{1,62}[a-z0-9])?$")
+
+var _RelationshipFilter_OptionalResourceIds_Pattern = regexp.MustCompile("^([a-zA-Z0-9/_|\\-=+]{1,})?$")
 
 // Validate checks the field values on SubjectFilter with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
