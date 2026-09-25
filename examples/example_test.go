@@ -10,7 +10,7 @@
 //
 // Then run the local examples with the build tag:
 //
-//	go test -v -tags=examples -run 'Example_connectToSpiceDB|Example_write|Example_check|Example_lookup|Example_read|Example_delete|Example_caveat|Example_watch' ./examples/...
+//	go test -v -tags=examples -run 'Example_connectToSpiceDB|Example_retry|Example_write|Example_check|Example_lookup|Example_read|Example_delete|Example_caveat|Example_watch' ./examples/...
 //
 // Note: Example_connectToAuthzed requires a valid Authzed API token and connects to the hosted service.
 package examples
@@ -24,7 +24,9 @@ import (
 	"time"
 
 	"github.com/authzed/grpcutil"
+	grpcretry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/types/known/structpb"
 
@@ -66,6 +68,49 @@ func Example_connectToSpiceDB() {
 	defer client.Close()
 
 	fmt.Println("Connected to SpiceDB")
+}
+
+// Example_retryMiddleware demonstrates how to install client-side gRPC
+// middleware, in this case automatic retries with exponential backoff.
+//
+// NewClient accepts arbitrary gRPC DialOptions, so any client interceptor
+// (e.g. for retries, timeouts, metrics, or tracing) can be chained in.
+func Example_retryMiddleware() {
+	retryOpts := []grpcretry.CallOption{
+		grpcretry.WithMax(3),
+		grpcretry.WithBackoff(grpcretry.BackoffExponentialWithJitter(100*time.Millisecond, 0.1)),
+		grpcretry.WithCodes(codes.Unavailable, codes.ResourceExhausted),
+	}
+
+	// A grpcretry.StreamClientInterceptor is also available, but it only
+	// supports retrying server-side streams; with retries enabled it rejects
+	// client-streaming RPCs such as ImportBulkRelationships.
+	client, err := authzed.NewClient(
+		"localhost:50051",
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpcutil.WithInsecureBearerToken("somerandomkeyhere"),
+		grpc.WithChainUnaryInterceptor(grpcretry.UnaryClientInterceptor(retryOpts...)),
+	)
+	if err != nil {
+		log.Fatalf("failed to create client: %s", err)
+	}
+	defer client.Close()
+
+	// Every unary call made with this client is now retried automatically
+	// when the server returns one of the configured status codes. This
+	// includes mutating calls: a retry after an ambiguous failure (e.g.
+	// Unavailable) can replay a write that already committed, so make sure
+	// your writes are idempotent or disable retries for them per-call with
+	// grpcretry.Disable().
+	_, err = client.WriteSchema(context.Background(), &v1.WriteSchemaRequest{
+		Schema: `definition user {}`,
+	})
+	if err != nil {
+		log.Fatalf("failed to write schema: %s", err)
+	}
+
+	fmt.Println("Schema written")
+	// Output: Schema written
 }
 
 // Example_writeSchema demonstrates how to write a permission schema to SpiceDB.
