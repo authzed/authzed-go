@@ -298,7 +298,7 @@ func (x LookupSubjectsRequest_WildcardOption) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use LookupSubjectsRequest_WildcardOption.Descriptor instead.
 func (LookupSubjectsRequest_WildcardOption) EnumDescriptor() ([]byte, []int) {
-	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{21, 0}
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{23, 0}
 }
 
 // Consistency will define how a request is handled by the backend.
@@ -1766,9 +1766,25 @@ type LookupResourcesRequest struct {
 	// if present and available. For now, ONLY enables debugging of maximum recursion depth
 	// errors, with additional context being returned in error details, but this may be
 	// extended in the future.
-	WithDebug     bool `protobuf:"varint,8,opt,name=with_debug,json=withDebug,proto3" json:"with_debug,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	WithDebug bool `protobuf:"varint,8,opt,name=with_debug,json=withDebug,proto3" json:"with_debug,omitempty"`
+	// optional_response_batch_size, if non-zero, requests that the server return
+	// multiple resources per response message (up to this many) in
+	// LookupResourcesResponse.batched, instead of a single resource per message.
+	// Zero (the default) preserves one-resource-per-message streaming for
+	// backward compatibility.
+	//
+	// The batch size trades time-to-first-result against overall throughput: a
+	// larger batch size increases throughput (fewer, larger messages, less
+	// per-message overhead) but delays the first results, since the server
+	// accumulates more of them before sending a message; a smaller batch size
+	// returns initial results sooner. A value around 1000 is a good default.
+	//
+	// The maximum batch size is bounded by a server-side configuration flag;
+	// requesting more than the server allows is clamped to that maximum rather
+	// than rejected.
+	OptionalResponseBatchSize uint32 `protobuf:"varint,9,opt,name=optional_response_batch_size,json=optionalResponseBatchSize,proto3" json:"optional_response_batch_size,omitempty"`
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
 }
 
 func (x *LookupResourcesRequest) Reset() {
@@ -1857,6 +1873,13 @@ func (x *LookupResourcesRequest) GetWithDebug() bool {
 	return false
 }
 
+func (x *LookupResourcesRequest) GetOptionalResponseBatchSize() uint32 {
+	if x != nil {
+		return x.OptionalResponseBatchSize
+	}
+	return 0
+}
+
 // LookupResourcesResponse contains a single matching resource object ID for the
 // requested object type, permission, and subject.
 type LookupResourcesResponse struct {
@@ -1870,10 +1893,16 @@ type LookupResourcesResponse struct {
 	// partial_caveat_info holds information of a partially-evaluated caveated response
 	PartialCaveatInfo *PartialCaveatInfo `protobuf:"bytes,4,opt,name=partial_caveat_info,json=partialCaveatInfo,proto3" json:"partial_caveat_info,omitempty"`
 	// after_result_cursor holds a cursor that can be used to resume the LookupResources stream after this
-	// result.
+	// result. Used only for the singular, one-resource-per-message form.
 	AfterResultCursor *Cursor `protobuf:"bytes,5,opt,name=after_result_cursor,json=afterResultCursor,proto3" json:"after_result_cursor,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// batched, when set, holds multiple found resources in a single response
+	// message along with a single resume cursor for the batch. It is populated
+	// instead of the singular fields above when the request set
+	// optional_response_batch_size > 0. A response message uses either the
+	// singular fields or batched, never both.
+	Batched       *LookupResourcesBatch `protobuf:"bytes,6,opt,name=batched,proto3" json:"batched,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *LookupResourcesResponse) Reset() {
@@ -1941,6 +1970,139 @@ func (x *LookupResourcesResponse) GetAfterResultCursor() *Cursor {
 	return nil
 }
 
+func (x *LookupResourcesResponse) GetBatched() *LookupResourcesBatch {
+	if x != nil {
+		return x.Batched
+	}
+	return nil
+}
+
+// LookupResourcesBatch holds multiple found resources returned in a single
+// LookupResourcesResponse, together with one cursor that resumes the stream
+// after the last result in the batch. Grouping the results with a single cursor
+// (rather than a cursor per result) keeps the response compact: a stream is
+// consumed message-by-message, so only one resume point per message is ever
+// needed.
+type LookupResourcesBatch struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// results holds the found resources, in stream order.
+	Results []*LookupResourcesResult `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
+	// after_cursor holds a cursor that can be used to resume the LookupResources
+	// stream after the last result in this batch.
+	AfterCursor   *Cursor `protobuf:"bytes,2,opt,name=after_cursor,json=afterCursor,proto3" json:"after_cursor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LookupResourcesBatch) Reset() {
+	*x = LookupResourcesBatch{}
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LookupResourcesBatch) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LookupResourcesBatch) ProtoMessage() {}
+
+func (x *LookupResourcesBatch) ProtoReflect() protoreflect.Message {
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LookupResourcesBatch.ProtoReflect.Descriptor instead.
+func (*LookupResourcesBatch) Descriptor() ([]byte, []int) {
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *LookupResourcesBatch) GetResults() []*LookupResourcesResult {
+	if x != nil {
+		return x.Results
+	}
+	return nil
+}
+
+func (x *LookupResourcesBatch) GetAfterCursor() *Cursor {
+	if x != nil {
+		return x.AfterCursor
+	}
+	return nil
+}
+
+// LookupResourcesResult is a single found resource within a batched
+// LookupResourcesResponse (see LookupResourcesBatch.results).
+type LookupResourcesResult struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// resource_object_id is the object ID of the found resource.
+	ResourceObjectId string `protobuf:"bytes,1,opt,name=resource_object_id,json=resourceObjectId,proto3" json:"resource_object_id,omitempty"`
+	// permissionship indicates whether the result was partially evaluated or not.
+	Permissionship LookupPermissionship `protobuf:"varint,2,opt,name=permissionship,proto3,enum=authzed.api.v1.LookupPermissionship" json:"permissionship,omitempty"`
+	// partial_caveat_info holds information of a partially-evaluated caveated result.
+	PartialCaveatInfo *PartialCaveatInfo `protobuf:"bytes,3,opt,name=partial_caveat_info,json=partialCaveatInfo,proto3" json:"partial_caveat_info,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *LookupResourcesResult) Reset() {
+	*x = LookupResourcesResult{}
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LookupResourcesResult) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LookupResourcesResult) ProtoMessage() {}
+
+func (x *LookupResourcesResult) ProtoReflect() protoreflect.Message {
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LookupResourcesResult.ProtoReflect.Descriptor instead.
+func (*LookupResourcesResult) Descriptor() ([]byte, []int) {
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *LookupResourcesResult) GetResourceObjectId() string {
+	if x != nil {
+		return x.ResourceObjectId
+	}
+	return ""
+}
+
+func (x *LookupResourcesResult) GetPermissionship() LookupPermissionship {
+	if x != nil {
+		return x.Permissionship
+	}
+	return LookupPermissionship_LOOKUP_PERMISSIONSHIP_UNSPECIFIED
+}
+
+func (x *LookupResourcesResult) GetPartialCaveatInfo() *PartialCaveatInfo {
+	if x != nil {
+		return x.PartialCaveatInfo
+	}
+	return nil
+}
+
 // LookupSubjectsRequest performs a lookup of all subjects of a particular
 // kind for which the subject has the specified permission or the relation in
 // which the subject exists, streaming back the IDs of those subjects.
@@ -1976,7 +2138,7 @@ type LookupSubjectsRequest struct {
 
 func (x *LookupSubjectsRequest) Reset() {
 	*x = LookupSubjectsRequest{}
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[21]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1988,7 +2150,7 @@ func (x *LookupSubjectsRequest) String() string {
 func (*LookupSubjectsRequest) ProtoMessage() {}
 
 func (x *LookupSubjectsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[21]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2001,7 +2163,7 @@ func (x *LookupSubjectsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LookupSubjectsRequest.ProtoReflect.Descriptor instead.
 func (*LookupSubjectsRequest) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{21}
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *LookupSubjectsRequest) GetConsistency() *Consistency {
@@ -2110,7 +2272,7 @@ type LookupSubjectsResponse struct {
 
 func (x *LookupSubjectsResponse) Reset() {
 	*x = LookupSubjectsResponse{}
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[22]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2122,7 +2284,7 @@ func (x *LookupSubjectsResponse) String() string {
 func (*LookupSubjectsResponse) ProtoMessage() {}
 
 func (x *LookupSubjectsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[22]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2135,7 +2297,7 @@ func (x *LookupSubjectsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LookupSubjectsResponse.ProtoReflect.Descriptor instead.
 func (*LookupSubjectsResponse) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{22}
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *LookupSubjectsResponse) GetLookedUpAt() *ZedToken {
@@ -2214,7 +2376,7 @@ type ResolvedSubject struct {
 
 func (x *ResolvedSubject) Reset() {
 	*x = ResolvedSubject{}
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[23]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2226,7 +2388,7 @@ func (x *ResolvedSubject) String() string {
 func (*ResolvedSubject) ProtoMessage() {}
 
 func (x *ResolvedSubject) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[23]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2239,7 +2401,7 @@ func (x *ResolvedSubject) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResolvedSubject.ProtoReflect.Descriptor instead.
 func (*ResolvedSubject) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{23}
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *ResolvedSubject) GetSubjectObjectId() string {
@@ -2279,7 +2441,7 @@ type ImportBulkRelationshipsRequest struct {
 
 func (x *ImportBulkRelationshipsRequest) Reset() {
 	*x = ImportBulkRelationshipsRequest{}
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[24]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2291,7 +2453,7 @@ func (x *ImportBulkRelationshipsRequest) String() string {
 func (*ImportBulkRelationshipsRequest) ProtoMessage() {}
 
 func (x *ImportBulkRelationshipsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[24]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2304,7 +2466,7 @@ func (x *ImportBulkRelationshipsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportBulkRelationshipsRequest.ProtoReflect.Descriptor instead.
 func (*ImportBulkRelationshipsRequest) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{24}
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ImportBulkRelationshipsRequest) GetRelationships() []*Relationship {
@@ -2325,7 +2487,7 @@ type ImportBulkRelationshipsResponse struct {
 
 func (x *ImportBulkRelationshipsResponse) Reset() {
 	*x = ImportBulkRelationshipsResponse{}
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[25]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2337,7 +2499,7 @@ func (x *ImportBulkRelationshipsResponse) String() string {
 func (*ImportBulkRelationshipsResponse) ProtoMessage() {}
 
 func (x *ImportBulkRelationshipsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[25]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2350,7 +2512,7 @@ func (x *ImportBulkRelationshipsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportBulkRelationshipsResponse.ProtoReflect.Descriptor instead.
 func (*ImportBulkRelationshipsResponse) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{25}
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ImportBulkRelationshipsResponse) GetNumLoaded() uint64 {
@@ -2383,7 +2545,7 @@ type ExportBulkRelationshipsRequest struct {
 
 func (x *ExportBulkRelationshipsRequest) Reset() {
 	*x = ExportBulkRelationshipsRequest{}
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[26]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2395,7 +2557,7 @@ func (x *ExportBulkRelationshipsRequest) String() string {
 func (*ExportBulkRelationshipsRequest) ProtoMessage() {}
 
 func (x *ExportBulkRelationshipsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[26]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2408,7 +2570,7 @@ func (x *ExportBulkRelationshipsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportBulkRelationshipsRequest.ProtoReflect.Descriptor instead.
 func (*ExportBulkRelationshipsRequest) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{26}
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ExportBulkRelationshipsRequest) GetConsistency() *Consistency {
@@ -2453,7 +2615,7 @@ type ExportBulkRelationshipsResponse struct {
 
 func (x *ExportBulkRelationshipsResponse) Reset() {
 	*x = ExportBulkRelationshipsResponse{}
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[27]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2465,7 +2627,7 @@ func (x *ExportBulkRelationshipsResponse) String() string {
 func (*ExportBulkRelationshipsResponse) ProtoMessage() {}
 
 func (x *ExportBulkRelationshipsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[27]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2478,7 +2640,7 @@ func (x *ExportBulkRelationshipsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportBulkRelationshipsResponse.ProtoReflect.Descriptor instead.
 func (*ExportBulkRelationshipsResponse) Descriptor() ([]byte, []int) {
-	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{27}
+	return file_authzed_api_v1_permission_service_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ExportBulkRelationshipsResponse) GetAfterResultCursor() *Cursor {
@@ -2504,7 +2666,7 @@ type SubjectFilter_RelationFilter struct {
 
 func (x *SubjectFilter_RelationFilter) Reset() {
 	*x = SubjectFilter_RelationFilter{}
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[28]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2516,7 +2678,7 @@ func (x *SubjectFilter_RelationFilter) String() string {
 func (*SubjectFilter_RelationFilter) ProtoMessage() {}
 
 func (x *SubjectFilter_RelationFilter) ProtoReflect() protoreflect.Message {
-	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[28]
+	mi := &file_authzed_api_v1_permission_service_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2664,7 +2826,7 @@ const file_authzed_api_v1_permission_service_proto_rawDesc = "" +
 	"\x1cExpandPermissionTreeResponse\x129\n" +
 	"\vexpanded_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\n" +
 	"expandedAt\x12G\n" +
-	"\ttree_root\x18\x02 \x01(\v2*.authzed.api.v1.PermissionRelationshipTreeR\btreeRoot\"\xb3\x05\n" +
+	"\ttree_root\x18\x02 \x01(\v2*.authzed.api.v1.PermissionRelationshipTreeR\btreeRoot\"\xf4\x05\n" +
 	"\x16LookupResourcesRequest\x12=\n" +
 	"\vconsistency\x18\x01 \x01(\v2\x1b.authzed.api.v1.ConsistencyR\vconsistency\x12\xc3\x01\n" +
 	"\x14resource_object_type\x18\x02 \x01(\tB\x90\x01\xfaBErC(\x80\x012>^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$\xbaHErC(\x80\x012>^([a-z][a-z0-9_]{1,61}[a-z0-9]/)*[a-z][a-z0-9_]{1,62}[a-z0-9]$R\x12resourceObjectType\x12n\n" +
@@ -2676,14 +2838,23 @@ const file_authzed_api_v1_permission_service_proto_rawDesc = "" +
 	"\x0eoptional_limit\x18\x06 \x01(\rB\x0e\xfaB\x04*\x02(\x00\xbaH\x04*\x02(\x00R\roptionalLimit\x12?\n" +
 	"\x0foptional_cursor\x18\a \x01(\v2\x16.authzed.api.v1.CursorR\x0eoptionalCursor\x12\x1d\n" +
 	"\n" +
-	"with_debug\x18\b \x01(\bR\twithDebug\"\x92\x03\n" +
+	"with_debug\x18\b \x01(\bR\twithDebug\x12?\n" +
+	"\x1coptional_response_batch_size\x18\t \x01(\rR\x19optionalResponseBatchSize\"\xd2\x03\n" +
 	"\x17LookupResourcesResponse\x12:\n" +
 	"\flooked_up_at\x18\x01 \x01(\v2\x18.authzed.api.v1.ZedTokenR\n" +
 	"lookedUpAt\x12,\n" +
 	"\x12resource_object_id\x18\x02 \x01(\tR\x10resourceObjectId\x12b\n" +
 	"\x0epermissionship\x18\x03 \x01(\x0e2$.authzed.api.v1.LookupPermissionshipB\x14\xfaB\a\x82\x01\x04\x10\x01 \x00\xbaH\a\x82\x01\x04\x10\x01 \x00R\x0epermissionship\x12a\n" +
 	"\x13partial_caveat_info\x18\x04 \x01(\v2!.authzed.api.v1.PartialCaveatInfoB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\x11partialCaveatInfo\x12F\n" +
-	"\x13after_result_cursor\x18\x05 \x01(\v2\x16.authzed.api.v1.CursorR\x11afterResultCursor\"\x9c\b\n" +
+	"\x13after_result_cursor\x18\x05 \x01(\v2\x16.authzed.api.v1.CursorR\x11afterResultCursor\x12>\n" +
+	"\abatched\x18\x06 \x01(\v2$.authzed.api.v1.LookupResourcesBatchR\abatched\"\x92\x01\n" +
+	"\x14LookupResourcesBatch\x12?\n" +
+	"\aresults\x18\x01 \x03(\v2%.authzed.api.v1.LookupResourcesResultR\aresults\x129\n" +
+	"\fafter_cursor\x18\x02 \x01(\v2\x16.authzed.api.v1.CursorR\vafterCursor\"\x8c\x02\n" +
+	"\x15LookupResourcesResult\x12,\n" +
+	"\x12resource_object_id\x18\x01 \x01(\tR\x10resourceObjectId\x12b\n" +
+	"\x0epermissionship\x18\x02 \x01(\x0e2$.authzed.api.v1.LookupPermissionshipB\x14\xfaB\a\x82\x01\x04\x10\x01 \x00\xbaH\a\x82\x01\x04\x10\x01 \x00R\x0epermissionship\x12a\n" +
+	"\x13partial_caveat_info\x18\x03 \x01(\v2!.authzed.api.v1.PartialCaveatInfoB\x0e\xfaB\x05\x8a\x01\x02\x10\x00\xbaH\x03\xc8\x01\x00R\x11partialCaveatInfo\"\x9c\b\n" +
 	"\x15LookupSubjectsRequest\x12=\n" +
 	"\vconsistency\x18\x01 \x01(\v2\x1b.authzed.api.v1.ConsistencyR\vconsistency\x12K\n" +
 	"\bresource\x18\x02 \x01(\v2\x1f.authzed.api.v1.ObjectReferenceB\x0e\xfaB\x05\x8a\x01\x02\x10\x01\xbaH\x03\xc8\x01\x01R\bresource\x12t\n" +
@@ -2768,7 +2939,7 @@ func file_authzed_api_v1_permission_service_proto_rawDescGZIP() []byte {
 }
 
 var file_authzed_api_v1_permission_service_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_authzed_api_v1_permission_service_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
+var file_authzed_api_v1_permission_service_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
 var file_authzed_api_v1_permission_service_proto_goTypes = []any{
 	(LookupPermissionship)(0),                         // 0: authzed.api.v1.LookupPermissionship
 	(Precondition_Operation)(0),                       // 1: authzed.api.v1.Precondition.Operation
@@ -2796,129 +2967,136 @@ var file_authzed_api_v1_permission_service_proto_goTypes = []any{
 	(*ExpandPermissionTreeResponse)(nil),              // 23: authzed.api.v1.ExpandPermissionTreeResponse
 	(*LookupResourcesRequest)(nil),                    // 24: authzed.api.v1.LookupResourcesRequest
 	(*LookupResourcesResponse)(nil),                   // 25: authzed.api.v1.LookupResourcesResponse
-	(*LookupSubjectsRequest)(nil),                     // 26: authzed.api.v1.LookupSubjectsRequest
-	(*LookupSubjectsResponse)(nil),                    // 27: authzed.api.v1.LookupSubjectsResponse
-	(*ResolvedSubject)(nil),                           // 28: authzed.api.v1.ResolvedSubject
-	(*ImportBulkRelationshipsRequest)(nil),            // 29: authzed.api.v1.ImportBulkRelationshipsRequest
-	(*ImportBulkRelationshipsResponse)(nil),           // 30: authzed.api.v1.ImportBulkRelationshipsResponse
-	(*ExportBulkRelationshipsRequest)(nil),            // 31: authzed.api.v1.ExportBulkRelationshipsRequest
-	(*ExportBulkRelationshipsResponse)(nil),           // 32: authzed.api.v1.ExportBulkRelationshipsResponse
-	(*SubjectFilter_RelationFilter)(nil),              // 33: authzed.api.v1.SubjectFilter.RelationFilter
-	(*ZedToken)(nil),                                  // 34: authzed.api.v1.ZedToken
-	(*Cursor)(nil),                                    // 35: authzed.api.v1.Cursor
-	(*Relationship)(nil),                              // 36: authzed.api.v1.Relationship
-	(*RelationshipUpdate)(nil),                        // 37: authzed.api.v1.RelationshipUpdate
-	(*structpb.Struct)(nil),                           // 38: google.protobuf.Struct
-	(*ObjectReference)(nil),                           // 39: authzed.api.v1.ObjectReference
-	(*SubjectReference)(nil),                          // 40: authzed.api.v1.SubjectReference
-	(*PartialCaveatInfo)(nil),                         // 41: authzed.api.v1.PartialCaveatInfo
-	(*DebugInformation)(nil),                          // 42: authzed.api.v1.DebugInformation
-	(*timestamppb.Timestamp)(nil),                     // 43: google.protobuf.Timestamp
-	(*status.Status)(nil),                             // 44: google.rpc.Status
-	(*PermissionRelationshipTree)(nil),                // 45: authzed.api.v1.PermissionRelationshipTree
+	(*LookupResourcesBatch)(nil),                      // 26: authzed.api.v1.LookupResourcesBatch
+	(*LookupResourcesResult)(nil),                     // 27: authzed.api.v1.LookupResourcesResult
+	(*LookupSubjectsRequest)(nil),                     // 28: authzed.api.v1.LookupSubjectsRequest
+	(*LookupSubjectsResponse)(nil),                    // 29: authzed.api.v1.LookupSubjectsResponse
+	(*ResolvedSubject)(nil),                           // 30: authzed.api.v1.ResolvedSubject
+	(*ImportBulkRelationshipsRequest)(nil),            // 31: authzed.api.v1.ImportBulkRelationshipsRequest
+	(*ImportBulkRelationshipsResponse)(nil),           // 32: authzed.api.v1.ImportBulkRelationshipsResponse
+	(*ExportBulkRelationshipsRequest)(nil),            // 33: authzed.api.v1.ExportBulkRelationshipsRequest
+	(*ExportBulkRelationshipsResponse)(nil),           // 34: authzed.api.v1.ExportBulkRelationshipsResponse
+	(*SubjectFilter_RelationFilter)(nil),              // 35: authzed.api.v1.SubjectFilter.RelationFilter
+	(*ZedToken)(nil),                                  // 36: authzed.api.v1.ZedToken
+	(*Cursor)(nil),                                    // 37: authzed.api.v1.Cursor
+	(*Relationship)(nil),                              // 38: authzed.api.v1.Relationship
+	(*RelationshipUpdate)(nil),                        // 39: authzed.api.v1.RelationshipUpdate
+	(*structpb.Struct)(nil),                           // 40: google.protobuf.Struct
+	(*ObjectReference)(nil),                           // 41: authzed.api.v1.ObjectReference
+	(*SubjectReference)(nil),                          // 42: authzed.api.v1.SubjectReference
+	(*PartialCaveatInfo)(nil),                         // 43: authzed.api.v1.PartialCaveatInfo
+	(*DebugInformation)(nil),                          // 44: authzed.api.v1.DebugInformation
+	(*timestamppb.Timestamp)(nil),                     // 45: google.protobuf.Timestamp
+	(*status.Status)(nil),                             // 46: google.rpc.Status
+	(*PermissionRelationshipTree)(nil),                // 47: authzed.api.v1.PermissionRelationshipTree
 }
 var file_authzed_api_v1_permission_service_proto_depIdxs = []int32{
-	34, // 0: authzed.api.v1.Consistency.at_least_as_fresh:type_name -> authzed.api.v1.ZedToken
-	34, // 1: authzed.api.v1.Consistency.at_exact_snapshot:type_name -> authzed.api.v1.ZedToken
+	36, // 0: authzed.api.v1.Consistency.at_least_as_fresh:type_name -> authzed.api.v1.ZedToken
+	36, // 1: authzed.api.v1.Consistency.at_exact_snapshot:type_name -> authzed.api.v1.ZedToken
 	7,  // 2: authzed.api.v1.RelationshipFilter.optional_subject_filter:type_name -> authzed.api.v1.SubjectFilter
-	33, // 3: authzed.api.v1.SubjectFilter.optional_relation:type_name -> authzed.api.v1.SubjectFilter.RelationFilter
+	35, // 3: authzed.api.v1.SubjectFilter.optional_relation:type_name -> authzed.api.v1.SubjectFilter.RelationFilter
 	5,  // 4: authzed.api.v1.ReadRelationshipsRequest.consistency:type_name -> authzed.api.v1.Consistency
 	6,  // 5: authzed.api.v1.ReadRelationshipsRequest.relationship_filter:type_name -> authzed.api.v1.RelationshipFilter
-	35, // 6: authzed.api.v1.ReadRelationshipsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
-	34, // 7: authzed.api.v1.ReadRelationshipsResponse.read_at:type_name -> authzed.api.v1.ZedToken
-	36, // 8: authzed.api.v1.ReadRelationshipsResponse.relationship:type_name -> authzed.api.v1.Relationship
-	35, // 9: authzed.api.v1.ReadRelationshipsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	37, // 6: authzed.api.v1.ReadRelationshipsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	36, // 7: authzed.api.v1.ReadRelationshipsResponse.read_at:type_name -> authzed.api.v1.ZedToken
+	38, // 8: authzed.api.v1.ReadRelationshipsResponse.relationship:type_name -> authzed.api.v1.Relationship
+	37, // 9: authzed.api.v1.ReadRelationshipsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
 	1,  // 10: authzed.api.v1.Precondition.operation:type_name -> authzed.api.v1.Precondition.Operation
 	6,  // 11: authzed.api.v1.Precondition.filter:type_name -> authzed.api.v1.RelationshipFilter
-	37, // 12: authzed.api.v1.WriteRelationshipsRequest.updates:type_name -> authzed.api.v1.RelationshipUpdate
+	39, // 12: authzed.api.v1.WriteRelationshipsRequest.updates:type_name -> authzed.api.v1.RelationshipUpdate
 	10, // 13: authzed.api.v1.WriteRelationshipsRequest.optional_preconditions:type_name -> authzed.api.v1.Precondition
-	38, // 14: authzed.api.v1.WriteRelationshipsRequest.optional_transaction_metadata:type_name -> google.protobuf.Struct
-	34, // 15: authzed.api.v1.WriteRelationshipsResponse.written_at:type_name -> authzed.api.v1.ZedToken
+	40, // 14: authzed.api.v1.WriteRelationshipsRequest.optional_transaction_metadata:type_name -> google.protobuf.Struct
+	36, // 15: authzed.api.v1.WriteRelationshipsResponse.written_at:type_name -> authzed.api.v1.ZedToken
 	6,  // 16: authzed.api.v1.DeleteRelationshipsRequest.relationship_filter:type_name -> authzed.api.v1.RelationshipFilter
 	10, // 17: authzed.api.v1.DeleteRelationshipsRequest.optional_preconditions:type_name -> authzed.api.v1.Precondition
-	38, // 18: authzed.api.v1.DeleteRelationshipsRequest.optional_transaction_metadata:type_name -> google.protobuf.Struct
-	35, // 19: authzed.api.v1.DeleteRelationshipsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
-	34, // 20: authzed.api.v1.DeleteRelationshipsResponse.deleted_at:type_name -> authzed.api.v1.ZedToken
+	40, // 18: authzed.api.v1.DeleteRelationshipsRequest.optional_transaction_metadata:type_name -> google.protobuf.Struct
+	37, // 19: authzed.api.v1.DeleteRelationshipsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	36, // 20: authzed.api.v1.DeleteRelationshipsResponse.deleted_at:type_name -> authzed.api.v1.ZedToken
 	2,  // 21: authzed.api.v1.DeleteRelationshipsResponse.deletion_progress:type_name -> authzed.api.v1.DeleteRelationshipsResponse.DeletionProgress
-	35, // 22: authzed.api.v1.DeleteRelationshipsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	37, // 22: authzed.api.v1.DeleteRelationshipsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
 	5,  // 23: authzed.api.v1.CheckPermissionRequest.consistency:type_name -> authzed.api.v1.Consistency
-	39, // 24: authzed.api.v1.CheckPermissionRequest.resource:type_name -> authzed.api.v1.ObjectReference
-	40, // 25: authzed.api.v1.CheckPermissionRequest.subject:type_name -> authzed.api.v1.SubjectReference
-	38, // 26: authzed.api.v1.CheckPermissionRequest.context:type_name -> google.protobuf.Struct
-	34, // 27: authzed.api.v1.CheckPermissionResponse.checked_at:type_name -> authzed.api.v1.ZedToken
+	41, // 24: authzed.api.v1.CheckPermissionRequest.resource:type_name -> authzed.api.v1.ObjectReference
+	42, // 25: authzed.api.v1.CheckPermissionRequest.subject:type_name -> authzed.api.v1.SubjectReference
+	40, // 26: authzed.api.v1.CheckPermissionRequest.context:type_name -> google.protobuf.Struct
+	36, // 27: authzed.api.v1.CheckPermissionResponse.checked_at:type_name -> authzed.api.v1.ZedToken
 	3,  // 28: authzed.api.v1.CheckPermissionResponse.permissionship:type_name -> authzed.api.v1.CheckPermissionResponse.Permissionship
-	41, // 29: authzed.api.v1.CheckPermissionResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	42, // 30: authzed.api.v1.CheckPermissionResponse.debug_trace:type_name -> authzed.api.v1.DebugInformation
-	43, // 31: authzed.api.v1.CheckPermissionResponse.optional_expires_at:type_name -> google.protobuf.Timestamp
+	43, // 29: authzed.api.v1.CheckPermissionResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	44, // 30: authzed.api.v1.CheckPermissionResponse.debug_trace:type_name -> authzed.api.v1.DebugInformation
+	45, // 31: authzed.api.v1.CheckPermissionResponse.optional_expires_at:type_name -> google.protobuf.Timestamp
 	5,  // 32: authzed.api.v1.CheckBulkPermissionsRequest.consistency:type_name -> authzed.api.v1.Consistency
 	18, // 33: authzed.api.v1.CheckBulkPermissionsRequest.items:type_name -> authzed.api.v1.CheckBulkPermissionsRequestItem
-	39, // 34: authzed.api.v1.CheckBulkPermissionsRequestItem.resource:type_name -> authzed.api.v1.ObjectReference
-	40, // 35: authzed.api.v1.CheckBulkPermissionsRequestItem.subject:type_name -> authzed.api.v1.SubjectReference
-	38, // 36: authzed.api.v1.CheckBulkPermissionsRequestItem.context:type_name -> google.protobuf.Struct
-	34, // 37: authzed.api.v1.CheckBulkPermissionsResponse.checked_at:type_name -> authzed.api.v1.ZedToken
+	41, // 34: authzed.api.v1.CheckBulkPermissionsRequestItem.resource:type_name -> authzed.api.v1.ObjectReference
+	42, // 35: authzed.api.v1.CheckBulkPermissionsRequestItem.subject:type_name -> authzed.api.v1.SubjectReference
+	40, // 36: authzed.api.v1.CheckBulkPermissionsRequestItem.context:type_name -> google.protobuf.Struct
+	36, // 37: authzed.api.v1.CheckBulkPermissionsResponse.checked_at:type_name -> authzed.api.v1.ZedToken
 	20, // 38: authzed.api.v1.CheckBulkPermissionsResponse.pairs:type_name -> authzed.api.v1.CheckBulkPermissionsPair
 	18, // 39: authzed.api.v1.CheckBulkPermissionsPair.request:type_name -> authzed.api.v1.CheckBulkPermissionsRequestItem
 	21, // 40: authzed.api.v1.CheckBulkPermissionsPair.item:type_name -> authzed.api.v1.CheckBulkPermissionsResponseItem
-	44, // 41: authzed.api.v1.CheckBulkPermissionsPair.error:type_name -> google.rpc.Status
+	46, // 41: authzed.api.v1.CheckBulkPermissionsPair.error:type_name -> google.rpc.Status
 	3,  // 42: authzed.api.v1.CheckBulkPermissionsResponseItem.permissionship:type_name -> authzed.api.v1.CheckPermissionResponse.Permissionship
-	41, // 43: authzed.api.v1.CheckBulkPermissionsResponseItem.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	42, // 44: authzed.api.v1.CheckBulkPermissionsResponseItem.debug_trace:type_name -> authzed.api.v1.DebugInformation
+	43, // 43: authzed.api.v1.CheckBulkPermissionsResponseItem.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	44, // 44: authzed.api.v1.CheckBulkPermissionsResponseItem.debug_trace:type_name -> authzed.api.v1.DebugInformation
 	5,  // 45: authzed.api.v1.ExpandPermissionTreeRequest.consistency:type_name -> authzed.api.v1.Consistency
-	39, // 46: authzed.api.v1.ExpandPermissionTreeRequest.resource:type_name -> authzed.api.v1.ObjectReference
-	34, // 47: authzed.api.v1.ExpandPermissionTreeResponse.expanded_at:type_name -> authzed.api.v1.ZedToken
-	45, // 48: authzed.api.v1.ExpandPermissionTreeResponse.tree_root:type_name -> authzed.api.v1.PermissionRelationshipTree
+	41, // 46: authzed.api.v1.ExpandPermissionTreeRequest.resource:type_name -> authzed.api.v1.ObjectReference
+	36, // 47: authzed.api.v1.ExpandPermissionTreeResponse.expanded_at:type_name -> authzed.api.v1.ZedToken
+	47, // 48: authzed.api.v1.ExpandPermissionTreeResponse.tree_root:type_name -> authzed.api.v1.PermissionRelationshipTree
 	5,  // 49: authzed.api.v1.LookupResourcesRequest.consistency:type_name -> authzed.api.v1.Consistency
-	40, // 50: authzed.api.v1.LookupResourcesRequest.subject:type_name -> authzed.api.v1.SubjectReference
-	38, // 51: authzed.api.v1.LookupResourcesRequest.context:type_name -> google.protobuf.Struct
-	35, // 52: authzed.api.v1.LookupResourcesRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
-	34, // 53: authzed.api.v1.LookupResourcesResponse.looked_up_at:type_name -> authzed.api.v1.ZedToken
+	42, // 50: authzed.api.v1.LookupResourcesRequest.subject:type_name -> authzed.api.v1.SubjectReference
+	40, // 51: authzed.api.v1.LookupResourcesRequest.context:type_name -> google.protobuf.Struct
+	37, // 52: authzed.api.v1.LookupResourcesRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	36, // 53: authzed.api.v1.LookupResourcesResponse.looked_up_at:type_name -> authzed.api.v1.ZedToken
 	0,  // 54: authzed.api.v1.LookupResourcesResponse.permissionship:type_name -> authzed.api.v1.LookupPermissionship
-	41, // 55: authzed.api.v1.LookupResourcesResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	35, // 56: authzed.api.v1.LookupResourcesResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
-	5,  // 57: authzed.api.v1.LookupSubjectsRequest.consistency:type_name -> authzed.api.v1.Consistency
-	39, // 58: authzed.api.v1.LookupSubjectsRequest.resource:type_name -> authzed.api.v1.ObjectReference
-	38, // 59: authzed.api.v1.LookupSubjectsRequest.context:type_name -> google.protobuf.Struct
-	35, // 60: authzed.api.v1.LookupSubjectsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
-	4,  // 61: authzed.api.v1.LookupSubjectsRequest.wildcard_option:type_name -> authzed.api.v1.LookupSubjectsRequest.WildcardOption
-	34, // 62: authzed.api.v1.LookupSubjectsResponse.looked_up_at:type_name -> authzed.api.v1.ZedToken
-	0,  // 63: authzed.api.v1.LookupSubjectsResponse.permissionship:type_name -> authzed.api.v1.LookupPermissionship
-	41, // 64: authzed.api.v1.LookupSubjectsResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	28, // 65: authzed.api.v1.LookupSubjectsResponse.subject:type_name -> authzed.api.v1.ResolvedSubject
-	28, // 66: authzed.api.v1.LookupSubjectsResponse.excluded_subjects:type_name -> authzed.api.v1.ResolvedSubject
-	35, // 67: authzed.api.v1.LookupSubjectsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
-	0,  // 68: authzed.api.v1.ResolvedSubject.permissionship:type_name -> authzed.api.v1.LookupPermissionship
-	41, // 69: authzed.api.v1.ResolvedSubject.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
-	36, // 70: authzed.api.v1.ImportBulkRelationshipsRequest.relationships:type_name -> authzed.api.v1.Relationship
-	5,  // 71: authzed.api.v1.ExportBulkRelationshipsRequest.consistency:type_name -> authzed.api.v1.Consistency
-	35, // 72: authzed.api.v1.ExportBulkRelationshipsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
-	6,  // 73: authzed.api.v1.ExportBulkRelationshipsRequest.optional_relationship_filter:type_name -> authzed.api.v1.RelationshipFilter
-	35, // 74: authzed.api.v1.ExportBulkRelationshipsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
-	36, // 75: authzed.api.v1.ExportBulkRelationshipsResponse.relationships:type_name -> authzed.api.v1.Relationship
-	8,  // 76: authzed.api.v1.PermissionsService.ReadRelationships:input_type -> authzed.api.v1.ReadRelationshipsRequest
-	11, // 77: authzed.api.v1.PermissionsService.WriteRelationships:input_type -> authzed.api.v1.WriteRelationshipsRequest
-	13, // 78: authzed.api.v1.PermissionsService.DeleteRelationships:input_type -> authzed.api.v1.DeleteRelationshipsRequest
-	15, // 79: authzed.api.v1.PermissionsService.CheckPermission:input_type -> authzed.api.v1.CheckPermissionRequest
-	17, // 80: authzed.api.v1.PermissionsService.CheckBulkPermissions:input_type -> authzed.api.v1.CheckBulkPermissionsRequest
-	22, // 81: authzed.api.v1.PermissionsService.ExpandPermissionTree:input_type -> authzed.api.v1.ExpandPermissionTreeRequest
-	24, // 82: authzed.api.v1.PermissionsService.LookupResources:input_type -> authzed.api.v1.LookupResourcesRequest
-	26, // 83: authzed.api.v1.PermissionsService.LookupSubjects:input_type -> authzed.api.v1.LookupSubjectsRequest
-	29, // 84: authzed.api.v1.PermissionsService.ImportBulkRelationships:input_type -> authzed.api.v1.ImportBulkRelationshipsRequest
-	31, // 85: authzed.api.v1.PermissionsService.ExportBulkRelationships:input_type -> authzed.api.v1.ExportBulkRelationshipsRequest
-	9,  // 86: authzed.api.v1.PermissionsService.ReadRelationships:output_type -> authzed.api.v1.ReadRelationshipsResponse
-	12, // 87: authzed.api.v1.PermissionsService.WriteRelationships:output_type -> authzed.api.v1.WriteRelationshipsResponse
-	14, // 88: authzed.api.v1.PermissionsService.DeleteRelationships:output_type -> authzed.api.v1.DeleteRelationshipsResponse
-	16, // 89: authzed.api.v1.PermissionsService.CheckPermission:output_type -> authzed.api.v1.CheckPermissionResponse
-	19, // 90: authzed.api.v1.PermissionsService.CheckBulkPermissions:output_type -> authzed.api.v1.CheckBulkPermissionsResponse
-	23, // 91: authzed.api.v1.PermissionsService.ExpandPermissionTree:output_type -> authzed.api.v1.ExpandPermissionTreeResponse
-	25, // 92: authzed.api.v1.PermissionsService.LookupResources:output_type -> authzed.api.v1.LookupResourcesResponse
-	27, // 93: authzed.api.v1.PermissionsService.LookupSubjects:output_type -> authzed.api.v1.LookupSubjectsResponse
-	30, // 94: authzed.api.v1.PermissionsService.ImportBulkRelationships:output_type -> authzed.api.v1.ImportBulkRelationshipsResponse
-	32, // 95: authzed.api.v1.PermissionsService.ExportBulkRelationships:output_type -> authzed.api.v1.ExportBulkRelationshipsResponse
-	86, // [86:96] is the sub-list for method output_type
-	76, // [76:86] is the sub-list for method input_type
-	76, // [76:76] is the sub-list for extension type_name
-	76, // [76:76] is the sub-list for extension extendee
-	0,  // [0:76] is the sub-list for field type_name
+	43, // 55: authzed.api.v1.LookupResourcesResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	37, // 56: authzed.api.v1.LookupResourcesResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	26, // 57: authzed.api.v1.LookupResourcesResponse.batched:type_name -> authzed.api.v1.LookupResourcesBatch
+	27, // 58: authzed.api.v1.LookupResourcesBatch.results:type_name -> authzed.api.v1.LookupResourcesResult
+	37, // 59: authzed.api.v1.LookupResourcesBatch.after_cursor:type_name -> authzed.api.v1.Cursor
+	0,  // 60: authzed.api.v1.LookupResourcesResult.permissionship:type_name -> authzed.api.v1.LookupPermissionship
+	43, // 61: authzed.api.v1.LookupResourcesResult.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	5,  // 62: authzed.api.v1.LookupSubjectsRequest.consistency:type_name -> authzed.api.v1.Consistency
+	41, // 63: authzed.api.v1.LookupSubjectsRequest.resource:type_name -> authzed.api.v1.ObjectReference
+	40, // 64: authzed.api.v1.LookupSubjectsRequest.context:type_name -> google.protobuf.Struct
+	37, // 65: authzed.api.v1.LookupSubjectsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	4,  // 66: authzed.api.v1.LookupSubjectsRequest.wildcard_option:type_name -> authzed.api.v1.LookupSubjectsRequest.WildcardOption
+	36, // 67: authzed.api.v1.LookupSubjectsResponse.looked_up_at:type_name -> authzed.api.v1.ZedToken
+	0,  // 68: authzed.api.v1.LookupSubjectsResponse.permissionship:type_name -> authzed.api.v1.LookupPermissionship
+	43, // 69: authzed.api.v1.LookupSubjectsResponse.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	30, // 70: authzed.api.v1.LookupSubjectsResponse.subject:type_name -> authzed.api.v1.ResolvedSubject
+	30, // 71: authzed.api.v1.LookupSubjectsResponse.excluded_subjects:type_name -> authzed.api.v1.ResolvedSubject
+	37, // 72: authzed.api.v1.LookupSubjectsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	0,  // 73: authzed.api.v1.ResolvedSubject.permissionship:type_name -> authzed.api.v1.LookupPermissionship
+	43, // 74: authzed.api.v1.ResolvedSubject.partial_caveat_info:type_name -> authzed.api.v1.PartialCaveatInfo
+	38, // 75: authzed.api.v1.ImportBulkRelationshipsRequest.relationships:type_name -> authzed.api.v1.Relationship
+	5,  // 76: authzed.api.v1.ExportBulkRelationshipsRequest.consistency:type_name -> authzed.api.v1.Consistency
+	37, // 77: authzed.api.v1.ExportBulkRelationshipsRequest.optional_cursor:type_name -> authzed.api.v1.Cursor
+	6,  // 78: authzed.api.v1.ExportBulkRelationshipsRequest.optional_relationship_filter:type_name -> authzed.api.v1.RelationshipFilter
+	37, // 79: authzed.api.v1.ExportBulkRelationshipsResponse.after_result_cursor:type_name -> authzed.api.v1.Cursor
+	38, // 80: authzed.api.v1.ExportBulkRelationshipsResponse.relationships:type_name -> authzed.api.v1.Relationship
+	8,  // 81: authzed.api.v1.PermissionsService.ReadRelationships:input_type -> authzed.api.v1.ReadRelationshipsRequest
+	11, // 82: authzed.api.v1.PermissionsService.WriteRelationships:input_type -> authzed.api.v1.WriteRelationshipsRequest
+	13, // 83: authzed.api.v1.PermissionsService.DeleteRelationships:input_type -> authzed.api.v1.DeleteRelationshipsRequest
+	15, // 84: authzed.api.v1.PermissionsService.CheckPermission:input_type -> authzed.api.v1.CheckPermissionRequest
+	17, // 85: authzed.api.v1.PermissionsService.CheckBulkPermissions:input_type -> authzed.api.v1.CheckBulkPermissionsRequest
+	22, // 86: authzed.api.v1.PermissionsService.ExpandPermissionTree:input_type -> authzed.api.v1.ExpandPermissionTreeRequest
+	24, // 87: authzed.api.v1.PermissionsService.LookupResources:input_type -> authzed.api.v1.LookupResourcesRequest
+	28, // 88: authzed.api.v1.PermissionsService.LookupSubjects:input_type -> authzed.api.v1.LookupSubjectsRequest
+	31, // 89: authzed.api.v1.PermissionsService.ImportBulkRelationships:input_type -> authzed.api.v1.ImportBulkRelationshipsRequest
+	33, // 90: authzed.api.v1.PermissionsService.ExportBulkRelationships:input_type -> authzed.api.v1.ExportBulkRelationshipsRequest
+	9,  // 91: authzed.api.v1.PermissionsService.ReadRelationships:output_type -> authzed.api.v1.ReadRelationshipsResponse
+	12, // 92: authzed.api.v1.PermissionsService.WriteRelationships:output_type -> authzed.api.v1.WriteRelationshipsResponse
+	14, // 93: authzed.api.v1.PermissionsService.DeleteRelationships:output_type -> authzed.api.v1.DeleteRelationshipsResponse
+	16, // 94: authzed.api.v1.PermissionsService.CheckPermission:output_type -> authzed.api.v1.CheckPermissionResponse
+	19, // 95: authzed.api.v1.PermissionsService.CheckBulkPermissions:output_type -> authzed.api.v1.CheckBulkPermissionsResponse
+	23, // 96: authzed.api.v1.PermissionsService.ExpandPermissionTree:output_type -> authzed.api.v1.ExpandPermissionTreeResponse
+	25, // 97: authzed.api.v1.PermissionsService.LookupResources:output_type -> authzed.api.v1.LookupResourcesResponse
+	29, // 98: authzed.api.v1.PermissionsService.LookupSubjects:output_type -> authzed.api.v1.LookupSubjectsResponse
+	32, // 99: authzed.api.v1.PermissionsService.ImportBulkRelationships:output_type -> authzed.api.v1.ImportBulkRelationshipsResponse
+	34, // 100: authzed.api.v1.PermissionsService.ExportBulkRelationships:output_type -> authzed.api.v1.ExportBulkRelationshipsResponse
+	91, // [91:101] is the sub-list for method output_type
+	81, // [81:91] is the sub-list for method input_type
+	81, // [81:81] is the sub-list for extension type_name
+	81, // [81:81] is the sub-list for extension extendee
+	0,  // [0:81] is the sub-list for field type_name
 }
 
 func init() { file_authzed_api_v1_permission_service_proto_init() }
@@ -2944,7 +3122,7 @@ func file_authzed_api_v1_permission_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_authzed_api_v1_permission_service_proto_rawDesc), len(file_authzed_api_v1_permission_service_proto_rawDesc)),
 			NumEnums:      5,
-			NumMessages:   29,
+			NumMessages:   31,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
