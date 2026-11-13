@@ -2,7 +2,7 @@ module github.com/authzed/authzed-go/magefiles
 
 go 1.27.4
 
-require github.com/magefile/mage v1.17.0
+require github.com/magefile/mage v1.17.2
 
 require (
 	4d63.com/gocheckcompilerdirectives v1.4.0 // indirect
