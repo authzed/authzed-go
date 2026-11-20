@@ -2269,6 +2269,24 @@
       "description": "- LOOKUP_PERMISSIONSHIP_UNSPECIFIED: LOOKUP_PERMISSIONSHIP_UNSPECIFIED is the default value and should not be used or\nrelied upon. Servers should not return this value.\n - LOOKUP_PERMISSIONSHIP_HAS_PERMISSION: LOOKUP_PERMISSIONSHIP_HAS_PERMISSION indicates that the subject has permission\non the resource with no missing caveat context.\n - LOOKUP_PERMISSIONSHIP_CONDITIONAL_PERMISSION: LOOKUP_PERMISSIONSHIP_CONDITIONAL_PERMISSION indicates that the subject has\npermission on the resource, but only if a caveat condition is met. The\n`partial_caveat_info` field in the response should contain the missing context\nfields that must be provided to fully evaluate the caveat.",
       "title": "LookupPermissionship represents whether a Lookup response was partially evaluated or not"
     },
+    "v1LookupResourcesBatch": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1LookupResourcesResult"
+          },
+          "description": "results holds the found resources, in stream order."
+        },
+        "afterCursor": {
+          "$ref": "#/definitions/apiV1Cursor",
+          "description": "after_cursor holds a cursor that can be used to resume the LookupResources\nstream after the last result in this batch."
+        }
+      },
+      "description": "LookupResourcesBatch holds multiple found resources returned in a single\nLookupResourcesResponse, together with one cursor that resumes the stream\nafter the last result in the batch. Grouping the results with a single cursor\n(rather than a cursor per result) keeps the response compact: a stream is\nconsumed message-by-message, so only one resume point per message is ever\nneeded."
+    },
     "v1LookupResourcesRequest": {
       "type": "object",
       "properties": {
@@ -2303,6 +2321,11 @@
         "withDebug": {
           "type": "boolean",
           "description": "with_debug, if true, indicates that the response should return debug information\nif present and available. For now, ONLY enables debugging of maximum recursion depth\nerrors, with additional context being returned in error details, but this may be\nextended in the future."
+        },
+        "optionalResponseBatchSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": "optional_response_batch_size, if non-zero, requests that the server return\nmultiple resources per response message (up to this many) in\nLookupResourcesResponse.batched, instead of a single resource per message.\nZero (the default) preserves one-resource-per-message streaming for\nbackward compatibility.\n\nThe batch size trades time-to-first-result against overall throughput: a\nlarger batch size increases throughput (fewer, larger messages, less\nper-message overhead) but delays the first results, since the server\naccumulates more of them before sending a message; a smaller batch size\nreturns initial results sooner. A value around 1000 is a good default.\n\nThe maximum batch size is bounded by a server-side configuration flag;\nrequesting more than the server allows is clamped to that maximum rather\nthan rejected."
         }
       },
       "description": "LookupResourcesRequest performs a lookup of all resources of a particular\nkind on which the subject has the specified permission or the relation in\nwhich the subject exists, streaming back the IDs of those resources."
@@ -2328,10 +2351,32 @@
         },
         "afterResultCursor": {
           "$ref": "#/definitions/apiV1Cursor",
-          "description": "after_result_cursor holds a cursor that can be used to resume the LookupResources stream after this\nresult."
+          "description": "after_result_cursor holds a cursor that can be used to resume the LookupResources stream after this\nresult. Used only for the singular, one-resource-per-message form."
+        },
+        "batched": {
+          "$ref": "#/definitions/v1LookupResourcesBatch",
+          "description": "batched, when set, holds multiple found resources in a single response\nmessage along with a single resume cursor for the batch. It is populated\ninstead of the singular fields above when the request set\noptional_response_batch_size \u003e 0. A response message uses either the\nsingular fields or batched, never both."
         }
       },
       "description": "LookupResourcesResponse contains a single matching resource object ID for the\nrequested object type, permission, and subject."
+    },
+    "v1LookupResourcesResult": {
+      "type": "object",
+      "properties": {
+        "resourceObjectId": {
+          "type": "string",
+          "description": "resource_object_id is the object ID of the found resource."
+        },
+        "permissionship": {
+          "$ref": "#/definitions/v1LookupPermissionship",
+          "description": "permissionship indicates whether the result was partially evaluated or not."
+        },
+        "partialCaveatInfo": {
+          "$ref": "#/definitions/v1PartialCaveatInfo",
+          "description": "partial_caveat_info holds information of a partially-evaluated caveated result."
+        }
+      },
+      "description": "LookupResourcesResult is a single found resource within a batched\nLookupResourcesResponse (see LookupResourcesBatch.results)."
     },
     "v1LookupSubjectsRequest": {
       "type": "object",
