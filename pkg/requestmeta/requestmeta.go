@@ -34,6 +34,15 @@ const (
 	// through SpiceDB for the lifetime of the request. This can be used to correlate logs
 	// and traces with a specific request.
 	RequestIDKey RequestMetadataHeaderKey = "x-request-id"
+
+	// RequestDispatchStrategyKey, if specified in a request header, overrides the secondary
+	// dispatch expression for this request and every dispatch it causes. The value is a
+	// secondary dispatch CEL expression, such as `prefer_secondary(['tiger'], duration('50ms'))`,
+	// that may not reference `request`.
+	// The server must enable experimental strategy overrides: otherwise, and for an invalid
+	// expression, the request fails with InvalidArgument.
+	// Value: a CEL expression of printable ASCII characters.
+	RequestDispatchStrategyKey RequestMetadataHeaderKey = "io.spicedb.dispatchstrategy"
 )
 
 // AddRequestHeaders returns a new context with the given values as request headers.
@@ -62,4 +71,10 @@ func WithOverlapKey(ctx context.Context, key string) context.Context {
 
 func WithRequestID(ctx context.Context, requestID string) context.Context {
 	return metadata.AppendToOutgoingContext(ctx, string(RequestIDKey), requestID)
+}
+
+// WithDispatchStrategy returns a new context that overrides the secondary dispatch strategy of
+// the request with the given CEL expression. See RequestDispatchStrategyKey.
+func WithDispatchStrategy(ctx context.Context, expr string) context.Context {
+	return metadata.AppendToOutgoingContext(ctx, string(RequestDispatchStrategyKey), expr)
 }
